@@ -2454,12 +2454,15 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
 
       
       const username = usernames[payer]?.username || '';
-      const timestamp = new Date(parsedMessage.created).toLocaleTimeString('en-US', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      }); // Format time as HH:MM:SS
+      const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
+  hour12: false,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit'
+}); // Format as MM/DD/YYYY HH:MM:SS
 
       // Store the message in the external array
       storedMessages.push(parsedMessage);
@@ -2579,12 +2582,15 @@ function isValidUrl(string) {
 // Check if payerImage is valid, if not use fallback
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
     const username = usernames[payer]?.username || '';
-    const timestamp = new Date(parsedMessage.created).toLocaleTimeString('en-US', {
+    const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
   hour12: false,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
   hour: '2-digit',
   minute: '2-digit',
   second: '2-digit'
-}); // Format time as HH:MM:SS
+}); // Format as MM/DD/YYYY HH:MM:SS
 
     if (payer !== previousPayer) {
       filteredMessagesHtml +=  `<div style="display: flex; align-items: center; font-size: 1em; margin-top: 1em;">
@@ -2671,12 +2677,15 @@ function isValidUrl(string) {
 // Check if payerImage is valid, if not use fallback
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
     const username = usernames[payer]?.username || '';
-    const timestamp = new Date(parsedMessage.created).toLocaleTimeString('en-US', {
+    const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
   hour12: false,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
   hour: '2-digit',
   minute: '2-digit',
   second: '2-digit'
-}); // Format time as HH:MM:SS
+}); // Format as MM/DD/YYYY HH:MM:SS
 
     if (payer !== previousPayer) {
       filteredMessagesHtml += `<div style="display: flex; align-items: center; font-size: 1em; margin-top: 1em;">
@@ -4669,9 +4678,9 @@ function animate() {
   cumulativeLat += deltaLat;
   prevLat = lat;
 
-  // Apply rotations
-  stars.rotation.y = (cumulativeLng / 180); // Longitude rotation
-  stars.rotation.x = (cumulativeLat / 90); // Latitude rotation
+  // Apply rotations: Map 360 degrees of lng to 2π radians (full circle)
+  stars.rotation.y = (cumulativeLng * Math.PI) / 180; // Convert degrees to radians
+  stars.rotation.x = (cumulativeLat * Math.PI) / 180; // Convert degrees to radians for latitude
 
   renderer.render(scene, camera);
 }
