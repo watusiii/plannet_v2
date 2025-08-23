@@ -55,7 +55,7 @@ data-script-id="walletconnect"
 ></script>
 
 <script
-data-src="hcs://1/0.0.9676833"
+data-src="hcs://1/0.0.9678314"
 data-script-id="DRACOLoader"
 ></script>
 
@@ -67,11 +67,6 @@ data-script-id="draco_wasm_wrapper"
 <script
 data-src="hcs://1/0.0.9677055"
 data-script-id="draco_decoder"
-></script>
-
-<script
-data-src="hcs://1/0.0.9677121"
-data-script-id="draco_decoder.wasm"
 ></script>
 
 
@@ -2172,8 +2167,7 @@ maxlength="256"
         const THREE = window.THREE;
         const scene = new THREE.Scene();
 
- 
-
+        
 // Function to load the UFO model
 let currentUfoModel = null; // Declare outside the function to persist across calls
 
@@ -6121,6 +6115,9 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
 
 async function loadUfoModel(modelUrl) {
     const ufoLoader = new THREE.GLTFLoader(); // Create a GLTFLoader instance
+
+    // Initialize DRACOLoader
+    const dracoLoader = new THREE.DRACOLoader();
 
     // Check if the model URL is defined and valid
     if (!modelUrl || typeof modelUrl !== 'string' || modelUrl.trim() === '') {
