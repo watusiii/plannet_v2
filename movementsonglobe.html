@@ -54,6 +54,27 @@ data-src="hcs://1/0.0.9196067"
 data-script-id="walletconnect"
 ></script>
 
+<script
+data-src="hcs://1/0.0.9676833"
+data-script-id="DRACOLoader"
+></script>
+
+<script
+data-src="hcs://1/0.0.9676987"
+data-script-id="draco_wasm_wrapper"
+></script>
+
+<script
+data-src="hcs://1/0.0.9677055"
+data-script-id="draco_decoder"
+></script>
+
+<script
+data-src="hcs://1/0.0.9677121"
+data-script-id="draco_decoder.wasm"
+></script>
+
+
     <style>
       
       html, body {
@@ -4679,7 +4700,7 @@ function animate() {
   prevLat = lat;
 
   // Apply rotations: Map 360 degrees of lng to 2π radians (full circle)
-  stars.rotation.y = (cumulativeLng * Math.PI) / 180; // Convert degrees to radians
+  stars.rotation.y = -(cumulativeLng * Math.PI) / 180; // Convert degrees to radians
   stars.rotation.x = (cumulativeLat * Math.PI) / 180; // Convert degrees to radians for latitude
 
   renderer.render(scene, camera);
