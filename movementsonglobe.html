@@ -6111,15 +6111,21 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
         }
       }
 
-async function loadUfoModel(modelUrl) {
+      async function loadUfoModel(modelUrl) {
     const ufoLoader = new THREE.GLTFLoader(); // Create a GLTFLoader instance
+    const dracoLoader = new window.THREE.DRACOLoader();
+
+    // Set the decoder path (replace with your web-accessible path, e.g., GitHub Pages)
+    dracoLoader.setDecoderPath('C:\Users\josip\Desktop\dont touch\system\PlanNet\draco');
+    // Note: 'C:\Users\josip\Desktop\dont touch\system\PlanNet\draco' is a local path and won't work in a browser.
+    // Host the Draco files (draco_decoder.js, draco_decoder.wasm, draco_wasm_wrapper.js) on a server and update this URL.
 
     // Check if the model URL is defined and valid
     if (!modelUrl || typeof modelUrl !== 'string' || modelUrl.trim() === '') {
         modelUrl = defaultModelUrl; // Use the default model URL
     }
 
-    // Load the GLTF model
+    // Load the model based on file extension
     try {
         // Remove the previous model if it exists
         if (currentUfoModel) {
@@ -6127,13 +6133,43 @@ async function loadUfoModel(modelUrl) {
             currentUfoModel = null; // Clear the reference to the removed model
         }
 
-        const gltf = await new Promise((resolve, reject) => {
-            ufoLoader.load(modelUrl, resolve, undefined, (error) => {
-                console.error("Error loading GLTF model:", error);
-                reject(error);
+        let gltf;
+        const extension = modelUrl.split('.').pop().toLowerCase();
+
+        if (extension === 'drc') {
+            // Load Draco-compressed model directly with DRACOLoader
+            gltf = await new Promise((resolve, reject) => {
+                dracoLoader.load(
+                    modelUrl,
+                    (geometry) => {
+                        // Convert geometry to a mesh and resolve with a scene-like structure
+                        const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 }); // Default material
+                        const mesh = new THREE.Mesh(geometry, material);
+                        resolve({ scene: new THREE.Group().add(mesh) }); // Mimic GLTF structure
+                    },
+                    undefined,
+                    (error) => {
+                        console.error("Error loading Draco model:", error);
+                        reject(error);
+                    }
+                );
             });
-        });
-        
+        } else {
+            // Load GLTF model with GLTFLoader, supporting Draco compression
+            ufoLoader.setDRACOLoader(dracoLoader); // Enable Draco support for GLTF
+            gltf = await new Promise((resolve, reject) => {
+                ufoLoader.load(
+                    modelUrl,
+                    resolve,
+                    undefined,
+                    (error) => {
+                        console.error("Error loading GLTF model:", error);
+                        reject(error);
+                    }
+                );
+            });
+        }
+
         currentUfoModel = gltf.scene; // Get the loaded model
 
         // Step 1: Calculate the model's bounding box
@@ -6228,7 +6264,6 @@ async function loadUfoModel(modelUrl) {
             currentUfoModel.position.y = parseFloat(value); // Update the y position of the model
         });
 
-        // Add Z position slider
         document.getElementById("position-z").addEventListener("input", (event) => {
             const value = event.target.value;
             document.getElementById("position-z-value").value = value; // Update number input
@@ -6311,7 +6346,7 @@ async function loadUfoModel(modelUrl) {
         document.getElementById("scale-factor-value").value = currentUfoModel.scale.x;
 
     } catch (error) {
-        console.error('An error occurred while loading the GLTF model:', error);
+        console.error('An error occurred while loading the model:', error);
     }
 }
 loader.updateProgress();
