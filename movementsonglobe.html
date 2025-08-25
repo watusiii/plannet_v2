@@ -3282,8 +3282,8 @@ let finalScaleForModel = 1;
 
 
 async function confirmNFTFunction(accountId) {
-  let tokenIdForModel = "0.0.9605694";
-  let tokenIDForBeta = "0.0.9606657";
+  let tokenIdForModel = "0.0.9605689";
+  let tokenIDForBeta = "0.0.9606654";
   let userInput = document.getElementById("input-field").value.toLowerCase();
 let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
 let topicId;
@@ -6111,13 +6111,8 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
         }
       }
 
-   
-
 async function loadUfoModel(modelUrl) {
     const ufoLoader = new THREE.GLTFLoader(); // Create a GLTFLoader instance
-
-    // Initialize DRACOLoader
-    const dracoLoader = new THREE.DRACOLoader();
 
     // Check if the model URL is defined and valid
     if (!modelUrl || typeof modelUrl !== 'string' || modelUrl.trim() === '') {
