@@ -60,13 +60,8 @@ data-script-id="DRACOLoader"
 ></script>
 
 <script
-data-src="hcs://1/0.0.9676987"
-data-script-id="draco_wasm_wrapper"
-></script>
-
-<script
-data-src="hcs://1/0.0.9677055"
-data-script-id="draco_decoder"
+data-src="hcs://1/0.0.9705945"
+data-script-id="dracoBase64"
 ></script>
 
 
@@ -2167,6 +2162,146 @@ maxlength="256"
         const THREE = window.THREE;
         const scene = new THREE.Scene();
 
+        async function ensureDracoLoaderReady() {
+          for (let attempt = 1; attempt <= 5; attempt++) {
+            if (typeof THREE !== 'undefined' && typeof THREE.DRACOLoader !== 'undefined') {
+              try {
+                new THREE.DRACOLoader();
+                return true;
+              } catch (e) {
+              }
+            }
+            await new Promise(resolve => setTimeout(resolve, 200));
+          }
+        }
+
+        await ensureDracoLoaderReady();
+
+        // Define SelfContainedDRACOLoader inside HCSReady with explicit prototype binding
+        function SelfContainedDRACOLoader() {
+
+
+          // Create a base instance and extend it
+          const baseLoader = Object.create(THREE.DRACOLoader.prototype);
+          THREE.DRACOLoader.call(baseLoader);
+
+          for (let prop in baseLoader) {
+            if (baseLoader.hasOwnProperty(prop)) {
+              this[prop] = baseLoader[prop];
+              console.log(`Copied property ${prop} to this:`, this[prop]);
+            }
+          }
+
+          this.decoderType = 'wasm';
+          this.wasmBinary = null;
+          this.jsWrapperBlob = null;
+          this.jsWrapperUrl = null;
+          this.jsDecoderBlob = null;
+          this.jsDecoderUrl = null;
+
+          this.initBlobs();
+        }
+
+        // Ensure prototype is correctly set
+        if (!THREE.DRACOLoader.prototype) {
+          throw new Error('THREE.DRACOLoader prototype is undefined.');
+        }
+        
+        SelfContainedDRACOLoader.prototype = Object.create(THREE.DRACOLoader.prototype);
+        SelfContainedDRACOLoader.prototype.constructor = SelfContainedDRACOLoader;
+
+        SelfContainedDRACOLoader.prototype.initBlobs = function () {
+          console.log('initBlobs method called on:', this);
+
+          if (window.DRACO_WASM_BASE64) {
+            const binaryString = atob(window.DRACO_WASM_BASE64);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
+            this.wasmBinary = bytes.buffer;
+            console.log('WASM binary set, length:', bytes.length);
+          }
+
+          if (window.DRACO_JS_BASE64) {
+            const jsText = atob(window.DRACO_JS_BASE64.split(',')[1]);
+            this.jsWrapperBlob = new Blob([jsText], { type: 'application/javascript' });
+            this.jsWrapperUrl = URL.createObjectURL(this.jsWrapperBlob);
+            this.jsDecoderBlob = this.jsWrapperBlob;
+            this.jsDecoderUrl = this.jsWrapperUrl;
+            console.log('JS wrapper URL created:', this.jsWrapperUrl);
+          } else {
+            this.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
+          }
+        };
+
+        SelfContainedDRACOLoader.prototype.setDecoderPath = function (path) {
+          console.log('setDecoderPath called with path:', path);
+          this.decoderPath = path;
+        };
+
+        SelfContainedDRACOLoader.prototype.getDecoderModule = function () {
+          console.log('getDecoderModule called on:', this);
+          if (this.decoderModule) {
+            console.log('Returning cached decoder module');
+            return Promise.resolve(this.decoderModule);
+          }
+
+          return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = this.decoderType === 'wasm' ? this.jsWrapperUrl : this.jsDecoderUrl || `${this.decoderPath}draco_wasm_wrapper.js`;
+            console.log('Loading decoder script from:', script.src);
+            script.onload = () => {
+              console.log('Decoder script loaded');
+              if (typeof DracoDecoderModule !== 'undefined') {
+                const moduleConfig = this.decoderType === 'wasm' ? { wasmBinary: this.wasmBinary } : {};
+                DracoDecoderModule(moduleConfig).then((module) => {
+                  this.decoderModule = module;
+                  console.log('Decoder module initialized:', module);
+                  resolve(module);
+                }).catch(reject);
+              } else {
+                console.error('DracoDecoderModule not exposed');
+                reject(new Error('DracoDecoderModule not exposed'));
+              }
+            };
+            script.onerror = (e) => {
+              console.error('Failed to load decoder script:', e);
+              reject(e);
+            };
+            document.head.appendChild(script);
+          });
+        };
+
+        SelfContainedDRACOLoader.prototype.dispose = function () {
+          console.log('dispose called on:', this);
+          if (typeof THREE.DRACOLoader.prototype.dispose === 'function') {
+            THREE.DRACOLoader.prototype.dispose.call(this);
+            console.log('Base dispose called');
+          }
+          if (this.jsWrapperUrl) {
+            URL.revokeObjectURL(this.jsWrapperUrl);
+            console.log('Revoked jsWrapperUrl');
+          }
+          if (this.jsDecoderUrl && this.jsDecoderUrl !== this.jsWrapperUrl) {
+            URL.revokeObjectURL(this.jsDecoderUrl);
+            console.log('Revoked jsDecoderUrl');
+          }
+        };
+
+        // Expose globally, but only if not already defined
+        if (!window.SelfContainedDRACOLoader) {
+          window.SelfContainedDRACOLoader = SelfContainedDRACOLoader;
+        }
+
+        let dracoLoader;
+        try {
+          dracoLoader = new SelfContainedDRACOLoader();
+        } catch (e) {
+          dracoLoader = new THREE.DRACOLoader();
+          dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
+        }
+
+        const ufoLoader = new THREE.GLTFLoader();
+        ufoLoader.setDRACOLoader(dracoLoader);
         
 // Function to load the UFO model
 let currentUfoModel = null; // Declare outside the function to persist across calls
@@ -6111,21 +6246,16 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
         }
       }
 
-      async function loadUfoModel(modelUrl) {
-    const ufoLoader = new THREE.GLTFLoader(); // Create a GLTFLoader instance
-    const dracoLoader = new window.THREE.DRACOLoader();
-
-    // Set the decoder path (replace with your web-accessible path, e.g., GitHub Pages)
-    dracoLoader.setDecoderPath('https://github.com/1ksn1ks/PlanNet/tree/main/draco');
-    // Note: 'C:\Users\josip\Desktop\dont touch\system\PlanNet\draco' is a local path and won't work in a browser.
-    // Host the Draco files (draco_decoder.js, draco_decoder.wasm, draco_wasm_wrapper.js) on a server and update this URL.
+async function loadUfoModel(modelUrl) {
 
     // Check if the model URL is defined and valid
     if (!modelUrl || typeof modelUrl !== 'string' || modelUrl.trim() === '') {
         modelUrl = defaultModelUrl; // Use the default model URL
+        console.log('Using default model URL:', modelUrl);
+
     }
 
-    // Load the model based on file extension
+    // Load the GLTF model
     try {
         // Remove the previous model if it exists
         if (currentUfoModel) {
@@ -6133,43 +6263,13 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
             currentUfoModel = null; // Clear the reference to the removed model
         }
 
-        let gltf;
-        const extension = modelUrl.split('.').pop().toLowerCase();
-
-        if (extension === 'drc') {
-            // Load Draco-compressed model directly with DRACOLoader
-            gltf = await new Promise((resolve, reject) => {
-                dracoLoader.load(
-                    modelUrl,
-                    (geometry) => {
-                        // Convert geometry to a mesh and resolve with a scene-like structure
-                        const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 }); // Default material
-                        const mesh = new THREE.Mesh(geometry, material);
-                        resolve({ scene: new THREE.Group().add(mesh) }); // Mimic GLTF structure
-                    },
-                    undefined,
-                    (error) => {
-                        console.error("Error loading Draco model:", error);
-                        reject(error);
-                    }
-                );
+        const gltf = await new Promise((resolve, reject) => {
+            ufoLoader.load(modelUrl, resolve, undefined, (error) => {
+                console.error("Error loading GLTF model:", error);
+                reject(error);
             });
-        } else {
-            // Load GLTF model with GLTFLoader, supporting Draco compression
-            ufoLoader.setDRACOLoader(dracoLoader); // Enable Draco support for GLTF
-            gltf = await new Promise((resolve, reject) => {
-                ufoLoader.load(
-                    modelUrl,
-                    resolve,
-                    undefined,
-                    (error) => {
-                        console.error("Error loading GLTF model:", error);
-                        reject(error);
-                    }
-                );
-            });
-        }
-
+        });
+        
         currentUfoModel = gltf.scene; // Get the loaded model
 
         // Step 1: Calculate the model's bounding box
@@ -6264,6 +6364,7 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
             currentUfoModel.position.y = parseFloat(value); // Update the y position of the model
         });
 
+        // Add Z position slider
         document.getElementById("position-z").addEventListener("input", (event) => {
             const value = event.target.value;
             document.getElementById("position-z-value").value = value; // Update number input
@@ -6346,7 +6447,7 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
         document.getElementById("scale-factor-value").value = currentUfoModel.scale.x;
 
     } catch (error) {
-        console.error('An error occurred while loading the model:', error);
+        console.error('An error occurred while loading the GLTF model:', error);
     }
 }
 loader.updateProgress();
