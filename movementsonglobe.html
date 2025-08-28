@@ -7061,7 +7061,8 @@ const customLayer = {
     this.renderer.autoClear = false;
     
 
-    const loader = new THREE.GLTFLoader(); 
+    const loader = new THREE.GLTFLoader();
+    loader.setDRACOLoader(dracoLoader);
 
     models.forEach(({ url, origin, altitude, scaleFactorNFT }) => {
       loader.load(url, (gltf) => {
