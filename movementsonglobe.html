@@ -129,6 +129,22 @@ data-script-id="dracoBase64"
             resize: none; /* Prevent manual resizing */
       }
 
+      .topic-chat-container {
+        background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1vh 1vw; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+            border-radius: 1vh;      
+            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: 80vh; /* Limit the height to 80% of the viewport */
+            touch-action: auto; /* Enable touch interactions */
+            width: 73.5vw;
+            padding-right: 2vw;
+            resize: none; /* Prevent manual resizing */
+      }
+
+
       .toolbar-column {
         display: block;
           width: 100% !important;
@@ -1513,13 +1529,12 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
 </div>
 
 
-<div id="topic-chat-container" class="toolbar-containers" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;
+<div id="topic-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;
     scrollbar-width: thin; /* Firefox */
     scrollbar-color: #888 #f1f1f1; /* Firefox */
     ">
 
   <div style="          
-  background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 1vh 1vw;
   box-sizing: border-box;
@@ -1583,21 +1598,25 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
 </div>
 
 
-<textarea
-  class="toolbar-column"
-  type="text"
-  id="user-write-message"
-  placeholder="Write a message"
-  style="
-  background-color: transparent;
-  max-height: 50vh; /* Set maximum height */
-  overflow: auto; /* Enable scrolling */
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-maxlength="256"
-></textarea>
-
+<div style="position: relative;">
+  <textarea
+    class="toolbar-column"
+    type="text"
+    id="user-write-message"
+    placeholder="Write a message (max 256 characters)"
+    style="
+      background-color: transparent;
+      max-height: 50vh;
+      overflow: auto;
+    "
+    onclick="event.stopPropagation();"
+    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter').textContent = this.value.length + '/256';"
+    maxlength="256"
+  ></textarea>
+  <div id="char-counter" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">
+    0/256
+  </div>
+</div>
 
     <div style="display: flex; align-items: center; margin-top: 1.5vh;"> 
       <button id="go-to-top-msgs" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; ">Go to the top</button> <!-- Changed width to auto -->
@@ -7061,8 +7080,9 @@ const customLayer = {
     this.renderer.autoClear = false;
     
 
-    const loader = new THREE.GLTFLoader();
+    const loader = new THREE.GLTFLoader(); 
     loader.setDRACOLoader(dracoLoader);
+
 
     models.forEach(({ url, origin, altitude, scaleFactorNFT }) => {
       loader.load(url, (gltf) => {
