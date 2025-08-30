@@ -393,9 +393,11 @@ data-script-id="dracoBase64"
       .maplibregl-popup {
   position: fixed !important; /* Viewport-based positioning */
   top: 50% !important; /* Center vertically */
-  left: 7.5% !important; /* Center horizontally */
-  transform: translateY(-50%) !important; /* Center vertically only; x-axis handled by JS */
-  max-width: none; /* Allow content to dictate width */
+  left: 50% !important; /* Center horizontally */
+  transform: translate(-50%, -50%) !important; /* Center both horizontally and vertically */
+  max-width: 80vw !important; /* Limit width to 90% of viewport width */
+  width: auto !important; /* Allow content to dictate width up to max-width */
+  box-sizing: border-box; /* Ensure padding/borders don’t increase width */
   font: 2vh/3vh 'Helvetica Neue', Arial, Helvetica, sans-serif;
   text-align: left;
   z-index: 1000 !important; /* Above map elements */
@@ -423,6 +425,7 @@ data-script-id="dracoBase64"
   overflow-y: auto; /* Scroll if content exceeds max-height */
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.8);
+  overflow-x: auto; /* Allow horizontal scrolling for wide content */
 }
 
 .maplibregl-popup-content::-webkit-scrollbar {
@@ -4929,20 +4932,20 @@ function createLowQualityImage(imageUrl, size = 32) {
 
 let lastBounds = null;
 
+const activeMarkerPopups = [];
+
+
 function updateClusters() {
   if (geojson.features.length === 0) {
-    console.log("No features to update clusters."); // Debugging log
+    console.log("No features to update clusters.");
     return;
   }
 
   const currentBounds = map.getBounds().toArray().flat();
-  
-  // Remove the bounds change check to always update clusters
   lastBounds = currentBounds;
-  
   const zoom = map.getZoom();
   const clusters = index.getClusters(currentBounds, Math.floor(zoom));
-  
+
   // Remove existing markers
   existingMarkers.forEach((marker) => marker.remove());
   existingMarkers = [];
@@ -4963,7 +4966,6 @@ function updateClusters() {
       el.style.lineHeight = iconSize[0];
       el.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
 
-      // Add click event listener for clusters
       el.addEventListener("click", async (e) => {
         e.stopPropagation();
         const expansionZoom = await index.getClusterExpansionZoom(cluster.id);
@@ -4971,15 +4973,16 @@ function updateClusters() {
           center: cluster.geometry.coordinates,
           zoom: expansionZoom,
         });
+        // Close all polygon popups when zooming to a cluster
+        activePolygonPopups.forEach((popup) => popup.remove());
+        activeMarkerPopups.forEach((popup) => popup.remove());
       });
     } else {
       try {
-        // Create low quality version of the image
         const lowQualityUrl = await createLowQualityImage(cluster.properties.imageUrl);
         el.style.backgroundImage = `url(${lowQualityUrl})`;
         el.style.backgroundSize = "cover";
-        
-        // Load high quality version in the background
+
         const img = new Image();
         img.onload = () => {
           el.style.backgroundImage = `url(${cluster.properties.imageUrl})`;
@@ -4987,7 +4990,6 @@ function updateClusters() {
         img.src = cluster.properties.imageUrl;
       } catch (error) {
         console.error("Error loading marker image:", error);
-        // Use a fallback color or image
         el.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
       }
     }
@@ -4997,32 +4999,30 @@ function updateClusters() {
       .addTo(map);
 
     if (!cluster.properties.cluster) {
-      const popup = new maplibregl.Popup().setHTML(
-        cluster.properties.message
-      );
-      // Add a listener for the popup's close event
-popup.on('close', () => {
-  if (currentUfoModel) {
-    scene.add(currentUfoModel);
-  }
-});
-      
+      const popup = new maplibregl.Popup().setHTML(cluster.properties.message);
+      activeMarkerPopups.push(popup);
+
+      popup.on("close", () => {
+        if (currentUfoModel) {
+          scene.add(currentUfoModel);
+        }
+      });
+
       el.addEventListener("click", (e) => {
-        e.stopPropagation(); // Stop event from reaching polygon layer
-        if (!cluster.properties.cluster) {
-          popup.setLngLat(cluster.geometry.coordinates).addTo(map);
-          if (currentUfoModel) {
-            scene.remove(currentUfoModel);
-          }
+        e.stopPropagation();
+        // Close all polygon popups
+        activePolygonPopups.forEach((popup) => popup.remove());
+        activeMarkerPopups.forEach((popup) => popup.remove());
+        // Open the marker popup
+        popup.setLngLat(cluster.geometry.coordinates).addTo(map);
+        if (currentUfoModel) {
+          scene.remove(currentUfoModel);
         }
       });
     }
 
-    
-
     existingMarkers.push(marker);
   });
-
 }
 
 
@@ -5078,6 +5078,7 @@ function createResizedImage(imageUrl, maxWidth = 256, maxHeight = 256) {
 
 // Track added layers to avoid duplicates
 const addedLayers = new Set();
+const activePolygonPopups = [];
 
 function addPolygonWithImageFill(map, polygon) {
   const sourceId = `${polygon.id}-source`;
@@ -5179,6 +5180,9 @@ function addPolygonWithImageFill(map, polygon) {
               .setLngLat(e.lngLat)
               .setHTML(polygon.description)
               .addTo(map);
+              activePolygonPopups.forEach((popup) => popup.remove());
+              activeMarkerPopups.forEach((popup) => popup.remove());
+              activePolygonPopups.push(popup);
           }
           if (currentUfoModel) {
             scene.remove(currentUfoModel);
@@ -5188,6 +5192,11 @@ function addPolygonWithImageFill(map, polygon) {
 popup.on('close', () => {
   if (currentUfoModel) {
     scene.add(currentUfoModel);
+        // Remove popup from tracking array when closed
+        const index = activePolygonPopups.indexOf(popup);
+    if (index > -1) {
+      activePolygonPopups.splice(index, 1);
+    }
   }
 });
         map.on('mouseenter', maskLayerId, () => {
