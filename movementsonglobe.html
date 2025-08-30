@@ -393,7 +393,7 @@ data-script-id="dracoBase64"
       .maplibregl-popup {
   position: fixed !important; /* Viewport-based positioning */
   top: 50% !important; /* Center vertically */
-  left: 10% !important; /* Center horizontally */
+  left: 7.5% !important; /* Center horizontally */
   transform: translateY(-50%) !important; /* Center vertically only; x-axis handled by JS */
   max-width: none; /* Allow content to dictate width */
   font: 2vh/3vh 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -4884,13 +4884,6 @@ window.addEventListener("resize", () => {
 
 animate();
 
-function openPopup(marker) {
-  new maplibregl.Popup({ anchor: 'bottom'})
-    .setLngLat(marker.geometry.coordinates)
-    .setText(marker.properties.message)
-    .addTo(map);
-}
-
 const index = new Supercluster({
   radius: 60,
   maxZoom: 11,
@@ -5004,22 +4997,34 @@ function updateClusters() {
       .addTo(map);
 
     if (!cluster.properties.cluster) {
-      const popup = new maplibregl.Popup({ anchor: 'bottom'}).setHTML(
+      const popup = new maplibregl.Popup().setHTML(
         cluster.properties.message
       );
+      // Add a listener for the popup's close event
+popup.on('close', () => {
+  if (currentUfoModel) {
+    scene.add(currentUfoModel);
+  }
+});
       
       el.addEventListener("click", (e) => {
         e.stopPropagation(); // Stop event from reaching polygon layer
         if (!cluster.properties.cluster) {
           popup.setLngLat(cluster.geometry.coordinates).addTo(map);
+          if (currentUfoModel) {
+            scene.remove(currentUfoModel);
+          }
         }
       });
     }
+
+    
 
     existingMarkers.push(marker);
   });
 
 }
+
 
 const debouncedUpdateClusters = debounce(updateClusters, 2000); // Increase from 200 to 1000ms
 
@@ -5164,7 +5169,7 @@ function addPolygonWithImageFill(map, polygon) {
 }, layerId); // Ensure mask layer is above raster layer
 
       // Add interactivity
-      const popup = new maplibregl.Popup({ anchor: 'bottom'});
+      const popup = new maplibregl.Popup();
 
       // Check if the layer has already been added
       if (!addedLayers.has(maskLayerId)) {
@@ -5175,8 +5180,16 @@ function addPolygonWithImageFill(map, polygon) {
               .setHTML(polygon.description)
               .addTo(map);
           }
+          if (currentUfoModel) {
+            scene.remove(currentUfoModel);
+          }
         });
-
+// Add a listener for the popup's close event
+popup.on('close', () => {
+  if (currentUfoModel) {
+    scene.add(currentUfoModel);
+  }
+});
         map.on('mouseenter', maskLayerId, () => {
           map.getCanvas().style.cursor = 'pointer';
         });
