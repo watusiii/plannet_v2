@@ -50,7 +50,7 @@ data-script-id="map css"
 ></script>
 
 <script
-data-src="hcs://1/0.0.9196067"
+data-src="hcs://1/0.0.9728394"
 data-script-id="walletconnect"
 ></script>
 
@@ -2424,8 +2424,7 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
         return match;
     });
 
-    console.log(filteredFeatures, 'filteredFeatures');
-    console.log(filteredPolygons, 'filteredPolygons');
+
 
         // Clear existing features and polygons
         geojson.features = filteredFeatures;
@@ -3296,6 +3295,7 @@ if (domainEntry && domainEntry.lastMessage) {
 } else {
   topicId = userInput || "0.0.9609912";
 }
+
     const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
 
     globalLoadedTopicIdsWithNames = [];
