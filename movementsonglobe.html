@@ -49,10 +49,10 @@ data-script-id="map css"
   data-script-id="threejs 137 + GLTFLoader"
 ></script>
 
-<script
-data-src="hcs://1/0.0.9728394"
+<<script
+data-src="hcs://1/0.0.9740486"
 data-script-id="walletconnect"
-></script>
+></script>>
 
 <script
 data-src="hcs://1/0.0.9678314"
@@ -3012,7 +3012,7 @@ loadDomains().then(domains => {
   loader.updateProgress();
         
 // Define a default model URL
-const defaultModelUrl = 'https://kiloscribe.com/api/inscription-cdn/0.0.8392276?network=mainnet'; // Replace with your actual default model URL
+const defaultModelUrl = 'https://kiloscribe.com/api/inscription-cdn/0.0.9650711'; // Replace with your actual default model URL
 await loadUfoModel(defaultModelUrl);
 let BetaNFTScaleFactor = 1;
 
@@ -6374,9 +6374,9 @@ async function loadUfoModel(modelUrl) {
             currentUfoModel.rotation.set(
                 THREE.MathUtils.degToRad(0),
                 THREE.MathUtils.degToRad(90),
-                THREE.MathUtils.degToRad(45)
+                THREE.MathUtils.degToRad(0)
             ); // Default rotation
-            const defaultScaleFactor = 20; // Default scale factor
+            const defaultScaleFactor = 1; // Default scale factor
             currentUfoModel.scale.set(defaultScaleFactor, defaultScaleFactor, defaultScaleFactor); // Scale the model uniformly
         }
 
