@@ -7290,6 +7290,36 @@ document.getElementById("toggle-3d-model-visibility").addEventListener("click", 
     }
 });
 
+function extractTopicId() {
+  // Get the current URL from the browser
+  const currentUrl = window.location.pathname; // Use pathname to focus on the path part
+  
+  // Regular expression to extract topicid (assumes topicid is after the last '/')
+  const regex = /\/([^/]+)$/;
+  const match = currentUrl.match(regex);
+  
+  // Check if we found a topicid
+  if (match && match[1]) {
+    const topicId = match[1];
+    console.log('Extracted Topic ID:', topicId);
+    // Use topicId in your code here
+    // Example: useTopicId(topicId);
+    return topicId;
+  } else {
+    console.log('No Topic ID found in URL');
+    return null;
+  }
+}
+
+// Run the function when the page loads
+window.onload = function() {
+  const topicId = extractTopicId();
+  if (topicId) {
+    // Example: Update the page or use topicId in your logic
+    document.body.innerHTML += `<p>Topic ID: ${topicId}</p>`;
+  }
+};
+
 
 function requestPeerList() {
     if (ws && ws.readyState === WebSocket.OPEN) {
