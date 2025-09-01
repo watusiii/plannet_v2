@@ -2411,6 +2411,7 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
         }
     });
 
+await function extractTopicId() {
 // Default topic ID
 const defaultTopicId = '0.0.9609912';
 
@@ -2424,6 +2425,8 @@ const topicid = path && path !== '/' ? path.slice(1) : '';
 const initialTopicId = topicid.startsWith('0.0.') ? topicid : defaultTopicId;
 
 console.log('Topic ID:', initialTopicId); // Log the topic ID
+return initialTopicId;
+}
 
     await handleAllMessages();
 
