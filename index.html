@@ -2408,8 +2408,10 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
 extractTopicId();
 
               await loadUfoModel(modelUrl); // Load the model using the determined URL
-               confirmNFTFunction(accountId); // Call confirmNFTFunction after the process is complete
-
+// Debounced version of confirmNFTFunction
+const debouncedConfirmNFTFunction = debounce(async (accountId) => {
+  await confirmNFTFunction(accountId); // Assuming confirmNFTFunction is async
+}, 250);
               document.getElementById("submit-button").addEventListener("click", debounce(async () => {
               await confirmNFTFunction(accountId);
             }, 250));
