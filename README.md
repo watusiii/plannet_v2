@@ -2,6 +2,7 @@ Hello
 
 this is HTML code,
 curentlly in pure chaos but logic works
+check it out live on allinhbar.com
 
 videos about project
 https://x.com/PlanNet_HBAR
