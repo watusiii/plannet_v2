@@ -2404,9 +2404,12 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
 
               await loadUfoModel(modelUrl); // Load the model using the determined URL
 
+              confirmNFTFunction(accountId);
+
               document.getElementById("submit-button").addEventListener("click", debounce(async () => {
               await confirmNFTFunction(accountId);
             }, 1000));
+
                await extractAccountId();       
         }
         loader.updateProgress();
