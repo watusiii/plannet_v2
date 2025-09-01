@@ -3304,6 +3304,7 @@ let globalLoadedTopicIdsWithNames = [];
 
 
   async function handleAllMessages() {
+    await extractTopicId();
   try {
     const profilePics = await loadProfilePicture();
     const usernames = await loadUsername();
@@ -3471,6 +3472,7 @@ let finalScaleForModel = 1;
 
 
 async function confirmNFTFunction(accountId) {
+  await extractTopicId();
   let tokenIdForModel = "0.0.9605689";
   let tokenIDForBeta = "0.0.9606654";
   let userInput = document.getElementById("input-field").value.toLowerCase();
