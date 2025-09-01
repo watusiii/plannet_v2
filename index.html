@@ -514,7 +514,7 @@ data-script-id="dracoBase64"
       #crosshair::before {
         content: '';
         position: absolute;
-        background-color: var(--crosshair-color, rgb(250, 4, 4)); /* Default color if variable is not set */
+        background-color: var(--crosshair-color, rgb(0, 0, 0)); /* Default color if variable is not set */
         width: var(--crosshair-before-width, 20px); /* Width of the crosshair line */
         height: var(--crosshair-before-height, 2px); /* Default thickness */
         top: 50%; /* Center vertically */
@@ -524,7 +524,7 @@ data-script-id="dracoBase64"
       #crosshair::after {
         content: '';
         position: absolute;
-        background-color: var(--crosshair-color, rgb(250, 4, 4)); /* Default color if variable is not set */
+        background-color: var(--crosshair-color, rgb(0, 0, 0)); /* Default color if variable is not set */
         width: var(--crosshair-after-width, 2px); /* Width of the crosshair line */
         height: var(--crosshair-after-height, 20px); /* Height of the crosshair line */
         top: 50%; /* Center vertically */
@@ -3031,7 +3031,7 @@ loadDomains().then(domains => {
   loader.updateProgress();
         
 // Define a default model URL
-const defaultModelUrl = 'https://kiloscribe.com/api/inscription-cdn/0.0.9650711'; // Replace with your actual default model URL
+const defaultModelUrl = 'https://kiloscribe.com/api/inscription-cdn/0.0.9742046'; // Replace with your actual default model URL
 await loadUfoModel(defaultModelUrl);
 let BetaNFTScaleFactor = 1;
 
