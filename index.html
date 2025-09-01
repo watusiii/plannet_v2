@@ -2411,6 +2411,20 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
         }
     });
 
+// Default topic ID
+const defaultTopicId = '0.0.9609912';
+
+// Get the pathname from the URL (e.g., "/0.0.11" or "/0.0.123")
+const path = window.location.pathname;
+
+// Extract topicid by removing leading "/" if path exists and isn't just "/"
+const topicid = path && path !== '/' ? path.slice(1) : '';
+
+// Set initialTopicId: use topicid if it starts with "0.0.", otherwise use default
+const initialTopicId = topicid.startsWith('0.0.') ? topicid : defaultTopicId;
+
+console.log('Topic ID:', initialTopicId); // Log the topic ID
+
     await handleAllMessages();
 
     // Filter geojson.features based on the specified payers
@@ -3293,7 +3307,7 @@ let topicId;
 if (domainEntry && domainEntry.lastMessage) {
   topicId = domainEntry.lastMessage.topic;
 } else {
-  topicId = userInput || "0.0.9609912";
+  topicId = userInput || initialTopicId;
 }
 
     const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
@@ -3458,7 +3472,7 @@ let topicId;
 if (domainEntry && domainEntry.lastMessage) {
   topicId = domainEntry.lastMessage.topic;
 } else {
-  topicId = userInput || "0.0.9609912";
+  topicId = userInput || initialTopicId;
 }
   await handleAllMessages();
 
@@ -7289,11 +7303,6 @@ document.getElementById("toggle-3d-model-visibility").addEventListener("click", 
         updatesValue.textContent = "Off"; // Turn updates "Off" when 3D models are hidden
     }
 });
-
-const path = window.location.pathname; // e.g., "/0.0.11" or "/0.0.123"
-const topicid = path.slice(1); // Removes leading "/" to get "0.0.11" or "0.0.123"
-console.log('Topic ID:', topicid); // Use topicid in your logic
-// Example: if (topicid === '0.0.11') { loadVersion(topicid); }
 
 function requestPeerList() {
     if (ws && ws.readyState === WebSocket.OPEN) {
