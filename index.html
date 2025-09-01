@@ -2411,7 +2411,7 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
         }
     });
 
-await function extractTopicId() {
+async function extractTopicId() {
 // Default topic ID
 const defaultTopicId = '0.0.9609912';
 
@@ -3300,6 +3300,7 @@ let globalLoadedTopicIdsWithNames = [];
 
   async function handleAllMessages() {
   try {
+    await extractTopicId();
     const profilePics = await loadProfilePicture();
     const usernames = await loadUsername();
 // Get the user input
@@ -3466,6 +3467,7 @@ let finalScaleForModel = 1;
 
 
 async function confirmNFTFunction(accountId) {
+  await extractTopicId();
   let tokenIdForModel = "0.0.9605689";
   let tokenIDForBeta = "0.0.9606654";
   let userInput = document.getElementById("input-field").value.toLowerCase();
