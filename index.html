@@ -2209,22 +2209,17 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
 
         await ensureDracoLoaderReady();
 
-        
-async function extractTopicId() {
-// Default topic ID
+// Global variables
+let initialTopicId = ''; // Will be set by extractTopicId
 const defaultTopicId = '0.0.9609912';
 
-// Get the pathname from the URL (e.g., "/0.0.11" or "/0.0.123")
-const path = window.location.pathname;
-
-// Extract topicid by removing leading "/" if path exists and isn't just "/"
-const topicid = path && path !== '/' ? path.slice(1) : '';
-
-// Set initialTopicId: use topicid if it starts with "0.0.", otherwise use default
-const initialTopicId = topicid.startsWith('0.0.') ? topicid : defaultTopicId;
-
-console.log('Topic ID:', initialTopicId); // Log the topic ID
-return initialTopicId;
+// Async function to extract topic ID from URL
+async function extractTopicId() {
+  const path = window.location.pathname;
+  const topicid = path && path !== '/' ? path.slice(1) : '';
+  initialTopicId = topicid.startsWith('0.0.') ? topicid : defaultTopicId; // Set global variable
+  console.log('Topic ID:', initialTopicId);
+  return initialTopicId; // Return for use in async flows
 }
 
 
@@ -2405,13 +2400,10 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
                       : defaultModelUrl; // Use default model URL if no valid URL is found
 
                       
-extractTopicId();
+              extractTopicId();
 
               await loadUfoModel(modelUrl); // Load the model using the determined URL
-// Debounced version of confirmNFTFunction
-const debouncedConfirmNFTFunction = debounce(async (accountId) => {
-  await confirmNFTFunction(accountId); // Assuming confirmNFTFunction is async
-}, 250);
+
               document.getElementById("submit-button").addEventListener("click", debounce(async () => {
               await confirmNFTFunction(accountId);
             }, 250));
