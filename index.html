@@ -2209,6 +2209,26 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
 
         await ensureDracoLoaderReady();
 
+        
+async function extractTopicId() {
+// Default topic ID
+const defaultTopicId = '0.0.9609912';
+
+// Get the pathname from the URL (e.g., "/0.0.11" or "/0.0.123")
+const path = window.location.pathname;
+
+// Extract topicid by removing leading "/" if path exists and isn't just "/"
+const topicid = path && path !== '/' ? path.slice(1) : '';
+
+// Set initialTopicId: use topicid if it starts with "0.0.", otherwise use default
+const initialTopicId = topicid.startsWith('0.0.') ? topicid : defaultTopicId;
+
+console.log('Topic ID:', initialTopicId); // Log the topic ID
+return initialTopicId;
+}
+
+        await extractTopicId();
+
         // Define SelfContainedDRACOLoader inside HCSReady with explicit prototype binding
         function SelfContainedDRACOLoader() {
 
@@ -2410,23 +2430,6 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
             } 
         }
     });
-
-async function extractTopicId() {
-// Default topic ID
-const defaultTopicId = '0.0.9609912';
-
-// Get the pathname from the URL (e.g., "/0.0.11" or "/0.0.123")
-const path = window.location.pathname;
-
-// Extract topicid by removing leading "/" if path exists and isn't just "/"
-const topicid = path && path !== '/' ? path.slice(1) : '';
-
-// Set initialTopicId: use topicid if it starts with "0.0.", otherwise use default
-const initialTopicId = topicid.startsWith('0.0.') ? topicid : defaultTopicId;
-
-console.log('Topic ID:', initialTopicId); // Log the topic ID
-return initialTopicId;
-}
 
     await handleAllMessages();
 
@@ -3300,7 +3303,6 @@ let globalLoadedTopicIdsWithNames = [];
 
   async function handleAllMessages() {
   try {
-    await extractTopicId();
     const profilePics = await loadProfilePicture();
     const usernames = await loadUsername();
 // Get the user input
@@ -3467,7 +3469,6 @@ let finalScaleForModel = 1;
 
 
 async function confirmNFTFunction(accountId) {
-  await extractTopicId();
   let tokenIdForModel = "0.0.9605689";
   let tokenIDForBeta = "0.0.9606654";
   let userInput = document.getElementById("input-field").value.toLowerCase();
