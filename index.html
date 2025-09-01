@@ -2227,7 +2227,6 @@ console.log('Topic ID:', initialTopicId); // Log the topic ID
 return initialTopicId;
 }
 
-        await extractTopicId();
 
         // Define SelfContainedDRACOLoader inside HCSReady with explicit prototype binding
         function SelfContainedDRACOLoader() {
@@ -2404,6 +2403,9 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
                       const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0 
                       ? profileObjectSettings[0].urls[0] 
                       : defaultModelUrl; // Use default model URL if no valid URL is found
+
+                      
+        await extractTopicId();
 
               await loadUfoModel(modelUrl); // Load the model using the determined URL
                confirmNFTFunction(accountId); // Call confirmNFTFunction after the process is complete
