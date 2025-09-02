@@ -187,7 +187,6 @@ data-script-id="dracoBase64"
         display: block;
           width: 100% !important;
           color: white !important;
-          padding: 1vh 1vw;
           border: 0.1vh solid white;
           border-radius: 1vh;
           font-size: 2vh;
@@ -196,6 +195,8 @@ data-script-id="dracoBase64"
           height: 5vh;
           background-color: transparent;
           border: 0.1vh solid rgb(0, 123, 255);
+          margin-bottom: 1vh;
+
       }
 
       .toolbar-column-btns:hover,
@@ -714,8 +715,7 @@ readonly
 ></textarea>
 <button class="toolbar-column-btns" id="button4">Check domain availability</button>
 
-<label for="domain-time-left" style="font-size: 2vh; padding-bottom: 0.5vh;">1 USDC (0.0.456858):</label>
-<button class="toolbar-column-btns" id="button5">Add 28 days to domain</button>
+<label for="domain-time-left" style="font-size: 2vh;">1 USDC (<span style="cursor: pointer; color: rgb(255, 255, 255); text-decoration: underline;" onclick="navigator.clipboard.writeText('0.0.456858').then(() => alert('Copied to clipboard: 0.0.456858')).catch(err => console.error('Failed to copy: ', err));">0.0.456858</span>):</label><button class="toolbar-column-btns" id="button5" style="margin-top: 0.5vh;">Add 28 days to domain</button>
 </div>
 </div>
 
