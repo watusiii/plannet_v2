@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-    <title>Start Screen</title>
+    <title>Meritocracy</title>
 
 
         <div class="loader-container" id="loaderContainer">
@@ -965,6 +965,8 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       onclick="event.stopPropagation();"
       oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea>
+      <div style="position: relative;">
+
         <textarea
           class="toolbar-column"
           type="text"
@@ -975,9 +977,14 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
           overflow: hidden; /* Hide scrollbars */
           resize: none; /* Prevent manual resizing */
         "
+        maxlength="256"
         onclick="event.stopPropagation();"
-        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter-marker').textContent = this.value.length + '/256';"
         ></textarea>
+        <div id="char-counter-marker" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">
+          0/256
+        </div>
+      </div>
         <button id="submit-button-column2" class="toolbar-column-btns">
           Submit
         </button>
@@ -1091,6 +1098,7 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     onclick="event.stopPropagation();"
     oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
+    <div style="position: relative;">
       <textarea
         class="toolbar-column"
         id="input-field-3-2"
@@ -1098,10 +1106,15 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
         style="
         background-color: transparent;
       "
+      maxlength="256"
       onclick="event.stopPropagation();"
-        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter-polygon').textContent = this.value.length + '/256';"
       ></textarea>
-      
+
+      <div id="char-counte-polygon" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">
+        0/256
+      </div>
+      </div>
 
 
       <button id="submit-button-column3" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">
@@ -1983,14 +1996,14 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
                 background-color: transparent;
                 overflow: hidden; /* Hide scrollbars */
                 resize: none; /* Prevent manual resizing */
-              "  id="color-red" min="0" max="255" value="255"/>
+              "  id="color-red" min="0" max="255" value="0"/>
                 <input type="number" id="color-red-value"   class="toolbar-column"          style="
                 background-color: transparent;
                 overflow: hidden; /* Hide scrollbars */
                 resize: none; /* Prevent manual resizing */
                 text-align: center; /* Center-align the text */
                 text-shadow: 0 0 0.5vh black;
-              " value="255" onchange="document.getElementById('color-red').value = this.value;" />
+              " value="0" onchange="document.getElementById('color-red').value = this.value;" />
             </div>
             <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
                 <label for="color-green" class="toolbar-column" style="
@@ -2006,14 +2019,14 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
                 background-color: transparent;
                 overflow: hidden; /* Hide scrollbars */
                 resize: none; /* Prevent manual resizing */
-              "  id="color-green" min="0" max="255" value="255"/>
+              "  id="color-green" min="0" max="255" value="0"/>
                 <input type="number" id="color-green-value" class="toolbar-column"          style="
                 background-color: transparent;
                 overflow: hidden; /* Hide scrollbars */
                 resize: none; /* Prevent manual resizing */
                 text-align: center; /* Center-align the text */
                 text-shadow: 0 0 0.5vh black;
-              " value="255" onchange="document.getElementById('color-green').value = this.value;" />
+              " value="0" onchange="document.getElementById('color-green').value = this.value;" />
             </div>
             <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
                 <label for="color-blue" class="toolbar-column" style="
@@ -2029,14 +2042,14 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
                 background-color: transparent;
                 overflow: hidden; /* Hide scrollbars */
                 resize: none; /* Prevent manual resizing */
-              "  id="color-blue" min="0" max="255" value="255"/>
+              "  id="color-blue" min="0" max="255" value="0"/>
                 <input type="number" id="color-blue-value" class="toolbar-column"          style="
                 background-color: transparent;
                 overflow: hidden; /* Hide scrollbars */
                 resize: none; /* Prevent manual resizing */
                 text-align: center; /* Center-align the text */
                 text-shadow: 0 0 0.5vh black;
-              " value="255" onchange="document.getElementById('color-blue').value = this.value;" />
+              " value="0" onchange="document.getElementById('color-blue').value = this.value;" />
             </div>
             <!-- New Sliders for Crosshair -->
             <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
@@ -5024,6 +5037,7 @@ function updateClusters() {
       popup.on("close", () => {
         if (currentUfoModel) {
           scene.add(currentUfoModel);
+          crosshair.style.display = "block";
         }
       });
 
@@ -5036,6 +5050,7 @@ function updateClusters() {
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         if (currentUfoModel) {
           scene.remove(currentUfoModel);
+          crosshair.style.display = "none";
         }
       });
     }
@@ -5205,12 +5220,14 @@ function addPolygonWithImageFill(map, polygon) {
           }
           if (currentUfoModel) {
             scene.remove(currentUfoModel);
+            crosshair.style.display = "none";
           }
         });
 // Add a listener for the popup's close event
 popup.on('close', () => {
   if (currentUfoModel) {
     scene.add(currentUfoModel);
+    crosshair.style.display = "block";
         // Remove popup from tracking array when closed
         const index = activePolygonPopups.indexOf(popup);
     if (index > -1) {
