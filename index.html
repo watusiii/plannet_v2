@@ -448,6 +448,13 @@ data-script-id="dracoBase64"
   -ms-user-select: text !important;
 }
 
+#topic-chat-container * {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+}
+
 .maplibregl-popup-close-button {
   color: white;
   font-size: 3vh;
@@ -678,11 +685,10 @@ font-size: 1.5vh;
     style="background-color: transparent;"
     oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
   ></textarea>
-  <label for="change-profile" style="font-size: 2vh; padding-bottom: 0.5vh;">CHANGE:</label>
   <div style="display: flex; flex-direction: row; width: 100%;">
-  <button class="toolbar-column-btns" id="button1" style="display: block; width: 20vw;">Profile pic</button>
-  <label for="change-profile" style="font-size: 2vh; padding-bottom: 0.5vh; text-align: center; margin-left: 4vw; margin-right: 4vw; padding-top: 1.5vh;">OR</label>
-  <button class="toolbar-column-btns" id="button2" style="display: block; width: 20vw;">Username</button>
+  <button class="toolbar-column-btns" id="button1" style="display: block; width: 30%;">Profile pic</button>
+  <button class="toolbar-column-btns" id="button2" style="display: block; width: 30%; margin-left: 5%;">Username</button>
+  <button class="toolbar-column-btns" id="button_for_click_url" style="display: block; width: 30%; margin-left: 5%;">CLICK2LINK</button>
 </div>
   <textarea 
   type="text" 
@@ -2122,7 +2128,7 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       font-size: 1.5vh;
       display: none; /* Initially hidden */
       margin-left: 0.3vh;
-    ">Model</button>
+    ">POV</button>
 
     <button id="toggle-visibility-controls-btn" style="
       position: fixed;
@@ -2503,7 +2509,7 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
         document.getElementById("button4").addEventListener("click", async () => {
 
 
-  const domain = document.getElementById("toolbar-input").value;
+  const domain = document.getElementById("toolbar-input").value.toLowerCase();
   const domainObject = loadedDomains.find(d => d.domain === domain);
 
   if (domainObject) {
@@ -2666,7 +2672,6 @@ function isValidUrl(string) {
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
 
       
-      const username = usernames[payer]?.username || '';
       const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
   hour12: false,
   year: 'numeric',
@@ -2677,20 +2682,31 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
   second: '2-digit'
 }); // Format as MM/DD/YYYY HH:MM:SS
 
+const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
+              const username = message.payer && usernames[message.payer] ? 
+                ` ${usernames[message.payer].username}` : 
+                '';
+              
+              // Combine username and payerInfo with h2 tags
+              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a> ${username}`; 
+
       // Store the message in the external array
       storedMessages.push(parsedMessage);
 
+      
+
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
-        allMessages += `<div style="display: flex; align-items: center; font-size: 1em; margin-top: 1em;">
+        allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
                           <img src="${validPayerImage}" alt="Payer Image" style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
-                            <div>${payer}${username ? ` ${username}` : ''}&nbsp;&nbsp;<span style="font-size: 0.8em; color: gray;">${timestamp}</span></div>
+                            <div>${displayHeader}</div>
+                            <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
                             <div>${userMessage}</div>
                           </div>
                         </div><br>`;
       } else {
-        allMessages += `<div style="display: flex; align-items: center; font-size: 1em; margin-left: 2.5em; margin-top: -1.25em;">
+        allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
                           <div>${userMessage}</div>
                         </div><br>`;
       }
@@ -2794,7 +2810,6 @@ function isValidUrl(string) {
 
 // Check if payerImage is valid, if not use fallback
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
-    const username = usernames[payer]?.username || '';
     const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
   hour12: false,
   year: 'numeric',
@@ -2805,21 +2820,35 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
   second: '2-digit'
 }); // Format as MM/DD/YYYY HH:MM:SS
 
-    if (payer !== previousPayer) {
-      filteredMessagesHtml +=  `<div style="display: flex; align-items: center; font-size: 1em; margin-top: 1em;">
-                              <img src="${validPayerImage}" alt="Payer Image" style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">
-                              <div style="display: flex; flex-direction: column; justify-content: center;">
-                                <div>${payer}${username ? ` ${username}` : ''}&nbsp;&nbsp;<span style="font-size: 0.8em; color: gray;">${timestamp}</span></div>
-                                <div>${userMessage}</div>
-                              </div>
-                            </div><br>`;
-    } else {
-      filteredMessagesHtml += `<div style="display: flex; align-items: center; font-size: 1em; margin-left: 2.5em; margin-top: -1.25em;">
-                              <div>${userMessage}</div>
-                            </div><br>`;
-    }
+const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
+              const username = message.payer && usernames[message.payer] ? 
+                ` ${usernames[message.payer].username}` : 
+                '';
+              
+              // Combine username and payerInfo with h2 tags
+              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a> ${username}`; 
 
-    previousPayer = payer;
+      // Store the message in the external array
+      storedMessages.push(parsedMessage);
+
+      
+
+      // Only show the payer and image if it's different from the previous one
+      if (payer !== previousPayer) {
+        allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
+                          <img src="${validPayerImage}" alt="Payer Image" style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">
+                          <div style="display: flex; flex-direction: column; justify-content: center;">
+                            <div>${displayHeader}</div>
+                            <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
+                            <div>${userMessage}</div>
+                          </div>
+                        </div><br>`;
+      } else {
+        allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
+                          <div>${userMessage}</div>
+                        </div><br>`;
+      }
+      previousPayer = payer; // Update the previous payer
   });
 
   const messageContainer = document.getElementById("messages-from-topic-chat");
@@ -2889,7 +2918,6 @@ function isValidUrl(string) {
 
 // Check if payerImage is valid, if not use fallback
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
-    const username = usernames[payer]?.username || '';
     const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
   hour12: false,
   year: 'numeric',
@@ -2900,21 +2928,35 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
   second: '2-digit'
 }); // Format as MM/DD/YYYY HH:MM:SS
 
-    if (payer !== previousPayer) {
-      filteredMessagesHtml += `<div style="display: flex; align-items: center; font-size: 1em; margin-top: 1em;">
-                                <img src="${validPayerImage}" alt="Payer Image" style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">
-                                <div style="display: flex; flex-direction: column; justify-content: center;">
-                                  <div>${payer}${username ? ` ${username}` : ''}&nbsp;&nbsp;<span style="font-size: 0.8em; color: gray;">${timestamp}</span></div>
-                                  <div>${userMessage}</div>
-                                </div>
-                              </div><br>`;
-    } else {
-      filteredMessagesHtml += `<div style="display: flex; align-items: center; font-size: 1em; margin-left: 2.5em; margin-top: -1.25em;" >
-                                <div>${userMessage}</div>
-                              </div><br>`;
-    }
+const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
+              const username = message.payer && usernames[message.payer] ? 
+                ` ${usernames[message.payer].username}` : 
+                '';
+              
+              // Combine username and payerInfo with h2 tags
+              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a> ${username}`; 
 
-    previousPayer = payer;
+      // Store the message in the external array
+      storedMessages.push(parsedMessage);
+
+      
+
+      // Only show the payer and image if it's different from the previous one
+      if (payer !== previousPayer) {
+        allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
+                          <img src="${validPayerImage}" alt="Payer Image" style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">
+                          <div style="display: flex; flex-direction: column; justify-content: center;">
+                            <div>${displayHeader}</div>
+                            <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
+                            <div>${userMessage}</div>
+                          </div>
+                        </div><br>`;
+      } else {
+        allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
+                          <div>${userMessage}</div>
+                        </div><br>`;
+      }
+      previousPayer = payer; // Update the previous payer
   });
 
   const messageContainer = document.getElementById("messages-from-topic-chat");
@@ -3257,38 +3299,38 @@ document.getElementById("submit-button-change-memo").addEventListener("click", a
           loader.updateProgress();
 
           async function loadUsername() {
-            const topicId = "0.0.9609904";
-            const accountUsernames = {}; // Dictionary to store account IDs and their usernames
+  const topicId = "0.0.9609904";
+  const accountUsernames = {}; // Dictionary to store account IDs and their usernames
 
-            try {
-              const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
-           
+  try {
+    const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
 
-              // Check if result exists and has messages
-              if (!result || !Array.isArray(result.messages)) {
-                console.log("No usernames found, using defaults");
-                return {};
-              }
+    // Check if result exists and has messages
+    if (!result || !Array.isArray(result.messages)) {
+      console.log("No usernames found, using defaults");
+      return {};
+    }
 
-              // Process all messages to build the accountUsernames dictionary
-              result.messages.forEach(message => {
-                if (message.payer && message.data) {
-                  // Store or update the username for this account
-                  accountUsernames[message.payer] = {
-                    username: message.data.username,
-                    timestamp: message.timestamp
-                  };
-                }
-              });
+    // Process all messages to build the accountUsernames dictionary
+    result.messages.forEach(message => {
+      if (message.payer && message.data && message.data.username) {
+        // Only store usernames with less than 20 characters
+        if (message.data.username.length < 20) {
+          accountUsernames[message.payer] = {
+            username: message.data.username,
+            timestamp: message.timestamp
+          };
+        }
+      }
+    });
 
-    
-              return accountUsernames;
+    return accountUsernames;
 
-            } catch (error) {
-              console.log("Error in loadUsername:", error);
-              return {}; // Return empty object instead of throwing error
-            }
-          }
+  } catch (error) {
+    console.log("Error in loadUsername:", error);
+    return {}; // Return empty object instead of throwing error
+  }
+}
 
           const geojson = {
                 type: "FeatureCollection",
@@ -5354,32 +5396,33 @@ popup.on('close', () => {
       });
 
       document.getElementById("button2").addEventListener("click", async (event) => {
-        event.stopPropagation();
-        const inputValue = document.getElementById("toolbar-input").value;
-        
-        try {
-          const topicId = "0.0.9609904";
-          
-          const messageData = {
-            data: {
-              username: inputValue,
-            },
-          };
-          const message = JSON.stringify(messageData);
+  event.stopPropagation();
+  const inputValue = document.getElementById("toolbar-input").value;
 
-          const receipt = await sdk.submitMessageToTopic(
-            topicId,
-            message
-          );
-          console.log("Username updated successfully:", receipt);
-          
-          document.getElementById("toolbar-input").value = "";
-          
-        } catch (error) {
-          console.error("Error updating username:", error);
-          // Removed alert
-        }
-      });
+  // Check if inputValue has less than 20 characters
+  if (inputValue.length >= 20) {
+    console.error("Input must be less than 20 characters");
+    return; // Exit the function if the input is too long
+  }
+
+  try {
+    const topicId = "0.0.9609904";
+
+    const messageData = {
+      data: {
+        username: inputValue,
+      },
+    };
+    const message = JSON.stringify(messageData);
+
+    const receipt = await sdk.submitMessageToTopic(topicId, message);
+    console.log("Username updated successfully:", receipt);
+
+    document.getElementById("toolbar-input").value = "";
+  } catch (error) {
+    console.error("Error updating username:", error);
+  }
+});
 
 
       document.addEventListener('touchstart', (event) => {
@@ -6933,8 +6976,7 @@ async function processTopicMessages(topicId) {
                 '';
               
               // Combine username and payerInfo with h2 tags
-              const displayHeader = `<h2><a href="https://explore.hashpack.app/${payerInfo}" target="_blank">${payerInfo}</a><br>${username}</h2>`;
-                                  
+              const displayHeader = `<h2><a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a><br>${username}</h2>`;                                  
               // Handle marker type messages
               if (parsedMessage.marker && parsedMessage.marker.data) {
                 const markerOwner = markerOwnershipArray.find(owner => owner.payerId === message.payer);
