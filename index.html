@@ -783,7 +783,7 @@ readonly
     class="toolbar-column"
     type="text"
     id="input-field-5-2"
-    placeholder="Use publickey here"
+    placeholder="Use Private Key here"
     style="
     background-color: transparent;
     overflow: hidden; /* Hide scrollbars */
@@ -851,6 +851,7 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
 
     <button id="submit-button-column5" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Create</button>
   </div>
+  <!--
   <div class="toolbar-group">
     <label for="public-key-label"style="font-size: 2vh; padding: 0px;">Public Key:</label>
     <textarea
@@ -865,6 +866,7 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     readonly
     onclick="event.stopPropagation();"
   ></textarea>
+  -->
 
   <label for="private-key-label"style="font-size: 2vh; padding: 0px;">Private Key:</label>
   <textarea
@@ -2580,6 +2582,7 @@ document.getElementById("load-msgs-from").addEventListener("click", async () => 
 
     const profilePictures = await loadProfilePicture(); // Load profile pictures
     const usernames = await loadUsername(); // Load usernames
+    const click2url = await loadCLICK2URL();
 
 
     let allMessages = ''; // Initialize an empty string to hold all messages
@@ -2686,9 +2689,14 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
               const username = message.payer && usernames[message.payer] ? 
                 ` ${usernames[message.payer].username}` : 
                 '';
+
+                const click2link= message.payer && click2url[message.payer] ? 
+                ` ${click2url[message.payer].click2url}` : 
+                '';
               
               // Combine username and payerInfo with h2 tags
-              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a> ${username}`; 
+              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
+              ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`; 
 
       // Store the message in the external array
       storedMessages.push(parsedMessage);
@@ -2698,7 +2706,11 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-                          <img src="${validPayerImage}" alt="Payer Image" style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">
+                ${click2link ? `<a href="${click2link}" target="_blank">
+  <img src="${validPayerImage}" alt="Profile photo" 
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"></a>` : `<img src="${validPayerImage}" 
+  alt="Profile photo" 
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">`}
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
                             <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
@@ -2774,6 +2786,7 @@ document.getElementById("topic-msgs-filter").addEventListener("click", async () 
   
   const profilePictures = await loadProfilePicture(); // Load profile pictures
   const usernames = await loadUsername(); // Load usernames
+  const click2url = await loadCLICK2URL();
 
   const fromDate = new Date(fromDateInput.slice(4, 8), fromDateInput.slice(0, 2) - 1, fromDateInput.slice(2, 4));
   const toDate = new Date(toDateInput.slice(4, 8), toDateInput.slice(0, 2) - 1, toDateInput.slice(2, 4));
@@ -2824,9 +2837,14 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
               const username = message.payer && usernames[message.payer] ? 
                 ` ${usernames[message.payer].username}` : 
                 '';
+
+                const click2link= message.payer && click2url[message.payer] ? 
+                ` ${click2url[message.payer].click2url}` : 
+                '';
               
               // Combine username and payerInfo with h2 tags
-              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a> ${username}`; 
+              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
+               ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`; 
 
       // Store the message in the external array
       storedMessages.push(parsedMessage);
@@ -2836,7 +2854,11 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-                          <img src="${validPayerImage}" alt="Payer Image" style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">
+                ${click2link ? `<a href="${click2link}" target="_blank">
+  <img src="${validPayerImage}" alt="Profile photo" 
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"></a>` : `<img src="${validPayerImage}" 
+  alt="Profile photo" 
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">`}
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
                             <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
@@ -2871,6 +2893,7 @@ document.getElementById("topic-msgs-filter-time").addEventListener("click", asyn
 
   const profilePictures = await loadProfilePicture(); // Load profile pictures
   const usernames = await loadUsername(); // Load usernames
+  const click2url = await loadCLICK2URL();
 
   const fromDate = new Date(
     fromDateInput.slice(4, 8), 
@@ -2932,9 +2955,14 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
               const username = message.payer && usernames[message.payer] ? 
                 ` ${usernames[message.payer].username}` : 
                 '';
+
+                const click2link= message.payer && click2url[message.payer] ? 
+                ` ${click2url[message.payer].click2url}` : 
+                '';
               
               // Combine username and payerInfo with h2 tags
-              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a> ${username}`; 
+              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
+               ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`; 
 
       // Store the message in the external array
       storedMessages.push(parsedMessage);
@@ -2944,7 +2972,11 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-                          <img src="${validPayerImage}" alt="Payer Image" style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">
+                ${click2link ? `<a href="${click2link}" target="_blank">
+  <img src="${validPayerImage}" alt="Profile photo" 
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"></a>` : `<img src="${validPayerImage}" 
+  alt="Profile photo" 
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">`}
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
                             <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
@@ -3332,6 +3364,38 @@ document.getElementById("submit-button-change-memo").addEventListener("click", a
   }
 }
 
+async function loadCLICK2URL() {
+  const topicId = "0.0.9752486";
+  const accountCLICK2URL = {}; // Dictionary to store account IDs and their usernames
+
+  try {
+    const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+
+    // Check if result exists and has messages
+    if (!result || !Array.isArray(result.messages)) {
+      console.log("No CLICK2URL found, using defaults");
+      return {};
+    }
+
+    // Process all messages to build the accountUsernames dictionary
+    result.messages.forEach(message => {
+      if (message.payer && message.data && message.data.click2url && message.data.click2url.length > 0) {
+        // Only store usernames with less than 20 characters
+          accountCLICK2URL[message.payer] = {
+            click2url: message.data.click2url[0],
+            timestamp: message.timestamp
+          };
+        }
+    });
+
+    return accountCLICK2URL;
+
+  } catch (error) {
+    console.log("Error in loadCLICK2URL:", error);
+    return {}; // Return empty object instead of throwing error
+  }
+}
+
           const geojson = {
                 type: "FeatureCollection",
                 features: []
@@ -3359,6 +3423,7 @@ let globalLoadedTopicIdsWithNames = [];
   try {
     const profilePics = await loadProfilePicture();
     const usernames = await loadUsername();
+    const click2url = await loadCLICK2URL();
 // Get the user input
 let userInput = document.getElementById("input-field").value.toLowerCase();
 let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
@@ -5424,6 +5489,36 @@ popup.on('close', () => {
   }
 });
 
+      // Add event listeners for the new buttons
+      document.getElementById("button_for_click_url").addEventListener("click", async (event) => {
+        event.stopPropagation();
+        const inputValue = document.getElementById("toolbar-input").value;
+        
+        try {
+          const topicId = "0.0.9752486";
+          const cleanUrl = inputValue.replace(/\?network=mainnet$/, "");
+
+          const messageData = {
+            data: {
+              click2url: [cleanUrl],
+            },
+          };
+          const message = JSON.stringify(messageData);
+
+          const receipt = await sdk.submitMessageToTopic(
+            topicId,
+            message
+          );
+          console.log("Profile CLICK2URL updated successfully:", receipt);
+          
+          document.getElementById("toolbar-input").value = "";
+          
+        } catch (error) {
+          console.error("Error updating profile CLICK2URL:", error);
+          // Removed alert
+        }
+      });
+
 
       document.addEventListener('touchstart', (event) => {
         if (event.touches.length > 1) {
@@ -6766,6 +6861,7 @@ async function processTopicMessages(topicId) {
         let loadedTopicName = ''; // Initialize loadedTopicName
         const profilePics = await loadProfilePicture();
         const usernames = await loadUsername();
+        const click2url = await loadCLICK2URL();
       
         try {
           const response = await window.HashinalsWalletConnectSDK.getMessages(topicId);
@@ -6974,9 +7070,13 @@ async function processTopicMessages(topicId) {
               const username = message.payer && usernames[message.payer] ? 
                 ` ${usernames[message.payer].username}` : 
                 '';
+                const click2link= message.payer && click2url[message.payer] ? 
+                ` ${click2url[message.payer].click2url}` : 
+                '';
               
               // Combine username and payerInfo with h2 tags
-              const displayHeader = `<h2><a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a><br>${username}</h2>`;                                  
+              const displayHeader = `<h2><a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
+                <br>${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}</h2>`;                                  
               // Handle marker type messages
               if (parsedMessage.marker && parsedMessage.marker.data) {
                 const markerOwner = markerOwnershipArray.find(owner => owner.payerId === message.payer);
@@ -7026,9 +7126,11 @@ async function processTopicMessages(topicId) {
     `
       <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.marker.data.numberOfMarker}</div> <!-- Display number of markers -->
       <div style="display: flex; align-items: center;">
-        <img src="${profileUrl}" 
-        // alt="Profile photo style" 
-        // style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%">
+${click2link ? `<a href="${click2link}" target="_blank">
+  <img src="${profileUrl}" alt="Profile photo" 
+  style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;"></a>` : `<img src="${profileUrl}" 
+  alt="Profile photo" 
+  style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;">`}
         <div>${displayHeader}</div>
       </div>
       <div style="text-align: center;"> <!-- Center the title -->
@@ -7101,9 +7203,11 @@ async function processTopicMessages(topicId) {
                           description: `
           <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.polygon.data.numberOfPolygon}</div> 
           <div style="display: flex; align-items: center;">
-            <img src="${profileUrl}" 
-            // alt="Profile photo style" 
-            // style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%">
+${click2link ? `<a href="${click2link}" target="_blank">
+  <img src="${profileUrl}" alt="Profile photo" 
+  style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;"></a>` : `<img src="${profileUrl}" 
+  alt="Profile photo" 
+  style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;">`}
             <div>${displayHeader}</div>
           </div>
           <div style="text-align: center;"> <!-- Center the title and image -->
