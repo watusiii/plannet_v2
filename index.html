@@ -6933,8 +6933,8 @@ async function processTopicMessages(topicId) {
                 '';
               
               // Combine username and payerInfo with h2 tags
-              const displayHeader = `<h2>${payerInfo}<br>${username}</h2>`;
-      
+              const displayHeader = `<h2><a href="https://explore.hashpack.app/${payerInfo}" target="_blank">${payerInfo}</a><br>${username}</h2>`;
+                                  
               // Handle marker type messages
               if (parsedMessage.marker && parsedMessage.marker.data) {
                 const markerOwner = markerOwnershipArray.find(owner => owner.payerId === message.payer);
