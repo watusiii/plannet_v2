@@ -700,7 +700,12 @@ font-size: 1.5vh;
   onclick="event.stopPropagation();"
   oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
 ></textarea>
+<div style="display: flex; flex-direction: row; width: 100%;">
+
 <button class="toolbar-column-btns" id="button3">Change topic ID name</button>
+<button class="toolbar-column-btns" id="button_for_topic2pic" style="margin-left: 1vw;">TOPIC2PIC</button>
+
+</div>
 <textarea 
 type="text" 
 id="domain-time-left"
@@ -1642,6 +1647,7 @@ oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       background-color: transparent;
       max-height: 50vh;
       overflow: auto;
+      margin-top: 2vh;
     "
     onclick="event.stopPropagation();"
     oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter').textContent = this.value.length + '/256';"
@@ -2583,6 +2589,7 @@ document.getElementById("load-msgs-from").addEventListener("click", async () => 
     const profilePictures = await loadProfilePicture(); // Load profile pictures
     const usernames = await loadUsername(); // Load usernames
     const click2url = await loadCLICK2URL();
+    const topic2pic = await loadTOPIC2PIC();
 
 
     let allMessages = ''; // Initialize an empty string to hold all messages
@@ -2706,11 +2713,9 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-                ${click2link ? `<a href="${click2link}" target="_blank">
   <img src="${validPayerImage}" alt="Profile photo" 
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"></a>` : `<img src="${validPayerImage}" 
-  alt="Profile photo" 
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">`}
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
+  onclick="loadTOPIC4PIC('${message.payer}').then(result => console.log(result)).catch(err => console.error('Error:', err));">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
                             <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
@@ -2787,6 +2792,7 @@ document.getElementById("topic-msgs-filter").addEventListener("click", async () 
   const profilePictures = await loadProfilePicture(); // Load profile pictures
   const usernames = await loadUsername(); // Load usernames
   const click2url = await loadCLICK2URL();
+  const topic2pic = await loadTOPIC2PIC();
 
   const fromDate = new Date(fromDateInput.slice(4, 8), fromDateInput.slice(0, 2) - 1, fromDateInput.slice(2, 4));
   const toDate = new Date(toDateInput.slice(4, 8), toDateInput.slice(0, 2) - 1, toDateInput.slice(2, 4));
@@ -2854,11 +2860,9 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-                ${click2link ? `<a href="${click2link}" target="_blank">
   <img src="${validPayerImage}" alt="Profile photo" 
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"></a>` : `<img src="${validPayerImage}" 
-  alt="Profile photo" 
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">`}
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
+  onclick="loadTOPIC4PIC('${message.payer}').then(result => console.log(result)).catch(err => console.error('Error:', err));">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
                             <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
@@ -2894,6 +2898,7 @@ document.getElementById("topic-msgs-filter-time").addEventListener("click", asyn
   const profilePictures = await loadProfilePicture(); // Load profile pictures
   const usernames = await loadUsername(); // Load usernames
   const click2url = await loadCLICK2URL();
+  const topic2pic = await loadTOPIC2PIC();
 
   const fromDate = new Date(
     fromDateInput.slice(4, 8), 
@@ -2972,11 +2977,9 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-                ${click2link ? `<a href="${click2link}" target="_blank">
   <img src="${validPayerImage}" alt="Profile photo" 
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"></a>` : `<img src="${validPayerImage}" 
-  alt="Profile photo" 
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;">`}
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
+  onclick="loadTOPIC4PIC('${message.payer}').then(result => console.log(result)).catch(err => console.error('Error:', err));">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
                             <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
@@ -3396,6 +3399,177 @@ async function loadCLICK2URL() {
   }
 }
 
+
+async function loadTOPIC2PIC() {
+  const topicId = "0.0.9759201";
+  const accountTOPIC2PIC = {}; // Dictionary to store account IDs and their topics2pic
+
+  try {
+    const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+
+    // Check if result exists and has messages
+    if (!result || !Array.isArray(result.messages)) {
+      console.log("No TOPIC2PIC found, using defaults");
+      return {};
+    }
+
+    // Process all messages to build the accountTOPIC2PIC dictionary
+    result.messages.forEach(message => {
+      if (message.payer && message.data && message.data.topic2pic) {
+        // Only store topics2pic with less than 20 characters
+        if (message.data.topic2pic.length < 20) {
+          accountTOPIC2PIC[message.payer] = {
+            topic2pic: message.data.topic2pic,
+            timestamp: message.timestamp
+          };
+        }
+      }
+    });
+
+    return accountTOPIC2PIC;
+
+  } catch (error) {
+    console.log("Error in loadTOPIC2PIC:", error);
+    return {}; // Return empty object instead of throwing error
+  }
+}
+
+window.loadTOPIC4PIC = async function(payer) {
+  try {
+    // Load the accountTOPIC2PIC dictionary
+    const accountTOPIC2PIC = await loadTOPIC2PIC();
+    console.log("accountTOPIC2PIC", accountTOPIC2PIC);
+    // Check if the payer exists and has a topic2pic
+    if (!accountTOPIC2PIC[payer] || !accountTOPIC2PIC[payer].topic2pic) {
+      console.log(`No topicId found for payer ${payer}, returning empty object`);
+      return {};
+    }
+
+    // Get the topicId (topic2pic) for the payer
+    const topicId = accountTOPIC2PIC[payer].topic2pic;
+    const topicIdStr = topicId[0]; // "0.0.9759318"
+    const topicInfo = await window.HashinalsWalletConnectSDK.getTopicInfo(topicIdStr);
+    const topicAdmin = [];
+    const memo = topicInfo.memo;
+
+    // Split the memo by commas and collect admin accounts
+    const parts = memo.split(',');
+    let hasRules = false;
+    parts.forEach(part => {
+      if (part.startsWith("0.0.")) {
+        topicAdmin.push(part);
+        hasRules = true;
+      }
+    });
+
+    // Fetch messages for the topicId
+    const result = await window.HashinalsWalletConnectSDK.getMessages(topicIdStr);
+    console.log("result", result);
+
+    // Check if result exists and has messages
+    if (!result || !Array.isArray(result.messages)) {
+      console.log(`No messages found for topicId ${topicId}, returning empty object`);
+      return {};
+    }
+
+    // Initialize variables for processing messages
+    let hasMoreThanOneTopic = false;
+    const topicActions = new Map();
+
+    // Process messages to track add/remove actions
+    for (let index = 0; index < result.messages.length; index++) {
+      const message = result.messages[index];
+      try {
+        let parsedMessage = message;
+        if (typeof message === 'string') {
+          parsedMessage = JSON.parse(message);
+        }
+        const timestamp = message.timestamp || Date.now();
+
+        if (
+          parsedMessage.addTopic &&
+          parsedMessage.addTopic.addTopic &&
+          (topicAdmin.length === 0 || topicAdmin.includes(message.payer))
+        ) {
+          hasMoreThanOneTopic = true;
+          const topics =
+            typeof parsedMessage.addTopic.addTopic === 'string'
+              ? parsedMessage.addTopic.addTopic.split(',')
+              : [];
+          topics.forEach(topic => {
+            topicActions.set(topic, { action: 'add', timestamp });
+          });
+        }
+
+        if (
+          parsedMessage.removeTopic &&
+          parsedMessage.removeTopic.removeTopic &&
+          (topicAdmin.length === 0 || topicAdmin.includes(message.payer))
+        ) {
+          hasMoreThanOneTopic = true;
+          const topics =
+            typeof parsedMessage.removeTopic.removeTopic === 'string'
+              ? parsedMessage.removeTopic.removeTopic.split(',')
+              : [];
+          topics.forEach(topic => {
+            topicActions.set(topic, { action: 'remove', timestamp });
+          });
+        }
+      } catch (messageError) {
+        console.error(`Error processing message ${index}:`, messageError);
+      }
+    }
+
+    // Determine the final list of topics based on the latest action
+    const loadedTopicsIds = Array.from(topicActions.entries())
+      .filter(([topic, { action }]) => action === 'add' && topic.startsWith('0.0.'))
+      .map(([topic]) => topic);
+
+    // Process messages for each topic and build loadedTopicIdsWithNames
+    const loadedTopicIdsWithNames = [];
+    for (const topicId of loadedTopicsIds) {
+      const { loadedTopicName } = await processTopicMessages(topicId);
+
+      // Add topic ID with name (if available) to the list
+      if (loadedTopicName !== undefined) {
+        const topicNamePart = loadedTopicName ? `-${loadedTopicName}` : '';
+        loadedTopicIdsWithNames.push(`${topicId}${topicNamePart}`);
+      }
+    }
+
+    // Sort loadedTopicIdsWithNames by numeric topic ID
+    globalLoadedTopicIdsWithNames = loadedTopicIdsWithNames.sort((a, b) => {
+      const idA = parseFloat(a.split('-')[0].replace('0.0.', ''));
+      const idB = parseFloat(b.split('-')[0].replace('0.0.', ''));
+      return idA - idB;
+    });
+
+ 
+  closeAllColumns();
+  const inputToolbar = document.getElementById("load-column");
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "block";
+  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
+  inputToolbar.style.display = "block";
+  inputToolbar.style.left = `${toolbarRect.right + 0}px`;
+  inputToolbar.style.top = `${toolbarRect.top}px`;
+  checkToolbarStatus();
+  const loaded_text_area = document.getElementById("loaded-topics");
+  loaded_text_area.value = ''; // Clear the current value
+  loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
+  adjustTextareaHeight(loaded_text_area); // Adjust height after loading
+
+
+    // Return the processed topic IDs with names
+    console.log("loadedTopicIdsWithNames", loadedTopicIdsWithNames);
+    return { loadedTopicIdsWithNames };
+
+  } catch (error) {
+    console.log(`Error in loadTOPIC4PIC for payer ${payer}:`, error);
+    return {};
+  }
+}
+
           const geojson = {
                 type: "FeatureCollection",
                 features: []
@@ -3415,9 +3589,7 @@ async function loadCLICK2URL() {
   }
 }
 
-
 let globalLoadedTopicIdsWithNames = [];
-
 
   async function handleAllMessages() {
   try {
@@ -5519,6 +5691,42 @@ popup.on('close', () => {
         }
       });
 
+            // Add event listeners for the new buttons
+            document.getElementById("button_for_topic2pic").addEventListener("click", async (event) => {
+        event.stopPropagation();
+        const inputValue = document.getElementById("edit-profile-topic-id").value;
+
+          // Check if inputValue has less than 20 characters
+  if (inputValue.length >= 20) {
+    console.error("Input must be less than 20 characters");
+    return; // Exit the function if the input is too long
+  }
+        
+        try {
+          const topicId = "0.0.9759201";
+
+          const messageData = {
+            data: {
+              topic2pic: [inputValue],
+            },
+          };
+
+          const message = JSON.stringify(messageData);
+
+          const receipt = await sdk.submitMessageToTopic(
+            topicId,
+            message
+          );
+          console.log("Profile TOPIC2PIC updated successfully:", receipt);
+          
+          document.getElementById("edit-profile-topic-id").value = "";
+          
+        } catch (error) {
+          console.error("Error updating profile TOPIC2PIC:", error);
+          // Removed alert
+        }
+      });
+
 
       document.addEventListener('touchstart', (event) => {
         if (event.touches.length > 1) {
@@ -7126,11 +7334,9 @@ async function processTopicMessages(topicId) {
     `
       <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.marker.data.numberOfMarker}</div> <!-- Display number of markers -->
       <div style="display: flex; align-items: center;">
-${click2link ? `<a href="${click2link}" target="_blank">
-  <img src="${profileUrl}" alt="Profile photo" 
-  style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;"></a>` : `<img src="${profileUrl}" 
-  alt="Profile photo" 
-  style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;">`}
+<img src="${profileUrl}" alt="Profile photo" 
+      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;" 
+      onclick="loadTOPIC4PIC('${message.payer}').then(result => console.log(result)).catch(err => console.error('Error:', err));">
         <div>${displayHeader}</div>
       </div>
       <div style="text-align: center;"> <!-- Center the title -->
@@ -7203,11 +7409,9 @@ ${click2link ? `<a href="${click2link}" target="_blank">
                           description: `
           <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.polygon.data.numberOfPolygon}</div> 
           <div style="display: flex; align-items: center;">
-${click2link ? `<a href="${click2link}" target="_blank">
-  <img src="${profileUrl}" alt="Profile photo" 
-  style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;"></a>` : `<img src="${profileUrl}" 
-  alt="Profile photo" 
-  style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;">`}
+<img src="${profileUrl}" alt="Profile photo" 
+      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;" 
+      onclick="loadTOPIC4PIC('${message.payer}').then(result => console.log(result)).catch(err => console.error('Error:', err));">
             <div>${displayHeader}</div>
           </div>
           <div style="text-align: center;"> <!-- Center the title and image -->
