@@ -1,397 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-    <title>Meritocracy</title>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<title>Meritocracy</title>
 
 
-        <div class="loader-container" id="loaderContainer">
-        <div>
-            <div class="loader">
-                <div class="progress" id="progressBar"></div>
-            </div>
-            <div class="percentage" id="percentageText">0%</div>
-        </div>
-    </div>
-
-    <script
-      data-hcs-config=""
-      data-hcs-cdn-url="https://kiloscribe.com/api/inscription-cdn/"
-      data-hcs-network="mainnet"
-      data-hcs-debug="true"
-      data-hcs-retry-attempts="5"
-      data-hcs-retry-backoff="500"
-      data-hcs-show-loading-indicator="true"
-      data-hcs-loading-callback-name="setLoadingIndicator"
-      type="e5a3c1b79eab779120034ec1-text/javascript"
-    ></script>
-
-
-
-<    <link
-data-src="hcs://1/0.0.8287094"
-data-script-id="map css"
-    />
-
-    <script
-    data-src="hcs://1/0.0.8269272"
-    data-script-id="maplibre"
-    ></script>
-    
-    <script
-    data-src="hcs://1/0.0.8269285"
-    data-script-id="supercluster"
-  ></script>
-
-  <script
-  data-src="hcs://1/0.0.8355670"
-  data-script-id="threejs 137 + GLTFLoader"
-></script>
-
-<<script
-data-src="hcs://1/0.0.9740486"
-data-script-id="walletconnect"
-></script>>
+<div class="loader-container" id="loaderContainer">
+<div>
+<div class="loader">
+<div class="progress" id="progressBar"></div>
+</div>
+<div class="percentage" id="percentageText">0%</div>
+</div>
+</div>
 
 <script
-data-src="hcs://1/0.0.9678314"
-data-script-id="DRACOLoader"
+  data-hcs-config=""
+  data-hcs-cdn-url="https://kiloscribe.com/api/inscription-cdn/"
+  data-hcs-network="mainnet"
+  data-hcs-debug="true"
+  data-hcs-retry-attempts="5"
+  data-hcs-retry-backoff="500"
+  data-hcs-show-loading-indicator="true"
+  data-hcs-loading-callback-name="setLoadingIndicator"
+  type="e5a3c1b79eab779120034ec1-text/javascript"
 ></script>
 
-<script
-data-src="hcs://1/0.0.9705945"
-data-script-id="dracoBase64"
-></script>
+<link data-src="hcs://1/0.0.8287094"data-script-id="map css"/>
+
+<script data-src="hcs://1/0.0.8269272" data-script-id="maplibre"></script>
+
+<script data-src="hcs://1/0.0.8269285" data-script-id="supercluster"></script>
+
+<script data-src="hcs://1/0.0.8355670" data-script-id="threejs 137 + GLTFLoader"></script>
+
+<script data-src="hcs://1/0.0.9740486" data-script-id="walletconnect"></script>
+
+<script data-src="hcs://1/0.0.9678314" data-script-id="DRACOLoader"></script>
+
+<script data-src="hcs://1/0.0.9705945" data-script-id="dracoBase64"></script>
+
+<style>
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+}
+
+.maplibregl-canvas {
+  background-color: rgb(0, 0, 0) !important;
+}
+
+#map {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#three-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.options-and-topic {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8vh 1vw;
+  border-radius: 0.8vh;
+  cursor: pointer;
+  font-size: 1.5vh;
+}
+
+.rotation-controls {
+  position: fixed;
+display: flex;
+flex-direction: column;
+background-color: rgba(0, 0, 0, 0.8);
+color: white;
+padding: 1vh 1vw;
+border-radius: 1vh;
+z-index: 1001;
+justify-content: space-around;
+width: 98%;
+top: 10vh;
+left: 0;
+transform: none;
+display: none;
+}
+
+.menu_buttons {
+  position: fixed;
+  left: 0;
+  z-index: 1006;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8vh 1vw;
+  border-radius: 0.8vh;
+  cursor: pointer;
+  font-size: 1.5vh;
+  display: none;
+  margin-left: 0.3vh;
+}
+
+.copy-coordinates {
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1001; /* Ensure the button is above the input field */
+  background-color: transparent; /* Make the button invisible */
+  border: none;
+  cursor: pointer;
+  font-size: 1.5vh;
+}
+
+.container {
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  padding: 1vh 1vw;
+  box-sizing: border-box;
+  border-radius: 1vh;
+}
+
+.toolbar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 1vh 1vw;
+  border-radius: 1vh;
+  z-index: 1001;
+  justify-content: space-around;
+  top: 10vh;
+  left: 0;
+  transform: none;
+}
+
+.toolbar-containers {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 1vh 1vw;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-radius: 1vh;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 80vh; /* Limit the height to 80% of the viewport */
+  touch-action: auto; /* Enable touch interactions */
+  width: 73.5vw;
+  padding-right: 2vw;
+  resize: none; /* Prevent manual resizing */
+}
+
+.topic-chat-container {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 1vh 1vw;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-radius: 1vh;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 80vh; /* Limit the height to 80% of the viewport */
+  touch-action: auto; /* Enable touch interactions */
+  width: 73.5vw;
+  padding-right: 2vw;
+  resize: none; /* Prevent manual resizing */
+}
 
 
-    <style>
-      
-      html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        position: fixed;
-      }
+.toolbar-column {
+  display: block;
+  width: 100% !important;
+  color: white;
+  padding-left: 1vw;
+  border: 0.1vh solid white;
+  border-radius: 1vh;
+  font-size: 2vh;
+  box-sizing: border-box;
+  margin-bottom: 0.5vh;
+  height: 5vh;
+  border: 0.1vh solid rgb(0, 123, 255);
+  overflow: hidden; /* Hide scrollbars */
+  resize: none; /* Prevent manual resizing */
+  background-color: transparent;
+  touch-action: auto; /* Enable touch interactions */
+}
 
-      .maplibregl-canvas {
-        background-color: rgb(0, 0, 0) !important;
-      }
+.chat-container {
+  display: block;
+  width: 100% !important;
+  color: white;
+  padding-left: 1vw;
+  border-radius: 1vh;
+  font-size: 2vh;
+  box-sizing: border-box;
+  margin-bottom: 0.5vh;
+  border: 0.1vh solid rgb(0, 123, 255);
+  overflow: hidden; /* Hide scrollbars */
+  resize: none; /* Prevent manual resizing */
+  background-color: transparent;
+  touch-action: auto; /* Enable touch interactions */
+  max-height: 50vh; /* Set maximum height */
+  overflow-y: scroll; /* Explicitly enable vertical scrolling */
+  user-select: text; /* Allow text selection */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Firefox */
+  -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
+}
 
-      #map {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      #three-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-      }
-
-      .toolbar {
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 1vh 1vw;
-        border-radius: 1vh;
-        z-index: 1001;
-        justify-content: space-around;
-        top: 10vh;
-        left: 0;
-        transform: none;
-      }
-
-      .toolbar-containers {
-        background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 1vh 1vw; 
-            border-radius: 4px; 
-            box-sizing: border-box; 
-            border-radius: 1vh;      
-            overflow-y: auto; /* Enable vertical scrolling */
-            max-height: 80vh; /* Limit the height to 80% of the viewport */
-            touch-action: auto; /* Enable touch interactions */
-            width: 73.5vw;
-            padding-right: 2vw;
-            resize: none; /* Prevent manual resizing */
-      }
-
-      .topic-chat-container {
-        background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 1vh 1vw; 
-            border-radius: 4px; 
-            box-sizing: border-box; 
-            border-radius: 1vh;      
-            overflow-y: auto; /* Enable vertical scrolling */
-            max-height: 80vh; /* Limit the height to 80% of the viewport */
-            touch-action: auto; /* Enable touch interactions */
-            width: 73.5vw;
-            padding-right: 2vw;
-            resize: none; /* Prevent manual resizing */
-      }
-
-
-      .toolbar-column {
-        display: block;
-          width: 100% !important;
-          color: white;
-          padding-left: 1vw;
-          border: 0.1vh solid white;
-          border-radius: 1vh;
-          font-size: 2vh;
-          box-sizing: border-box;
-          margin-bottom: 0.5vh;
-          height: 5vh;
-          border: 0.1vh solid rgb(0, 123, 255);
-          overflow: hidden; /* Hide scrollbars */
-          resize: none; /* Prevent manual resizing */
-          background-color: transparent;
-          touch-action: auto; /* Enable touch interactions */
-
-      }
-
-      .toolbar-group {
-          width: 100% !important;
-          color: white;
-          padding-top: 1vh;
-          padding-bottom: 0vh !important;
-          padding-left: 1vw;
-          padding-right: 1vw;
-          border: 0.1vh solid white;
-          border-radius: 1vh;
-          box-sizing: border-box;
-          margin-bottom: 0.5vh;
-          border: 0.1vh solid #ffc107;
-          overflow: hidden; /* Hide scrollbars */
-          resize: none; /* Prevent manual resizing */
-          background-color: transparent;
-          touch-action: auto; /* Enable touch interactions */
-
-      }
-
-      .toolbar-column-btns {
-        display: block;
-          width: 100% !important;
-          color: white !important;
-          border: 0.1vh solid white;
-          border-radius: 1vh;
-          font-size: 2vh;
-          box-sizing: border-box;
-          margin-bottom: 0.5vh;
-          height: 5vh;
-          background-color: transparent;
-          border: 0.1vh solid rgb(0, 123, 255);
-          margin-bottom: 1vh;
-
-      }
-
-      .toolbar-column-btns:hover,
-      .toolbar-column-btns:active {
-        background-color: rgb(0, 123, 255) !important;
-        color: white !important;
-      }
-
-      .toolbar-column:hover,
-      .toolbar-column.active {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-      .flex-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1.33vh;
-        position: relative;
-        z-index: 003;
-      }
-      #wallet-section {
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: flex;
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start;
-        font-size: 1.6vw;
-        border-radius: 1.07vw;
-        background-color: rgba(51, 51, 51, 0.0);
-        z-index: 5003;
-        backdrop-filter: blur(5px);
-      }
-
-      #connect-wallet-btn {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 0.8vh 1vw;
-        border-radius: 0.8vh;
-        cursor: pointer;
-        font-size: 1.5vh;
-        text-shadow: 0 0 0.5vh black;
-        margin-top: 0.3vh;
-        margin-left: 0.3vh;
-      }
-      #disconnect-wallet-btn {
-        display: none;
-        background-color: #ffc107;
-        color: white;
-        border: none;
-        padding: 0.8vh 1vw;
-        border-radius: 0.8vh;
-        cursor: pointer;
-        font-size: 1.5vh;
-        text-shadow: 0 0 0.5vh black;
-        margin-top: 0.3vh;
-        margin-left: 0.3vh;
-      }
-      .account-info {
-        display: flex;
-        flex-direction: column;
-        font-family: Arial, sans-serif;
-        color: white;
-        padding-top: 0.5vh;
-        border: none;
-        border-radius: 0.8vh;
-        cursor: pointer;
-        font-size: 1.5vh;
-      }
-      #account-id {
-        color: white;
-      }
-
-      #coordinates-display {
-        position: fixed; 
-        right: 0; 
-        background-color: rgba(0, 0, 0, 0.7); 
-        color: white; 
-        padding: 5px 10px; 
-        border-radius: 4px; 
-        font-family: Arial, sans-serif; 
-        z-index: 1000; 
-        top: 0; 
-        font-size: 2vh; 
-        border: none; 
-        width: auto;
-        pointer-events: none; /* Allow clicks to pass through */
-      }
-
-      #speed-slider {
-        position: absolute;
-        top: 3vh;
-        right: 0;
-        z-index: 1005;
-        width: 32.5vw;
-        height: 3vh;
-        writing-mode: bt-lr;
-        transform: rotate(0deg);
-      }
-      
-      .touch-button {
-        background-color: rgba(0, 0, 0, 0.2);
-        color: white;
-        border: 2px solid white;
-        padding: 0.5vh;
-        margin: 0.3vh;
-        border-radius: 1vh;
-        cursor: pointer;
-        font-size: 2vh;
-        width: 6vh;
-        height: 6vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(2px);
-      }
-
-      .touch-button:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.8);
-      }
-      .button-container {
-        display: grid;
-        position: fixed;
-        bottom: 5vh;
-        z-index: 1004;
-        grid-template-columns: repeat(3, 6vh);
-        grid-template-rows: repeat(3, 6vh);
-        gap: 0.3vh;
-        justify-items: center;
-        align-items: center;
-      }
-
-      #left-dpad {
-        left: 0.5vw;
-      }
-
-      #right-dpad {
-        right: 0.5vw;
-      }
-
-      #left-dpad,
-      #right-dpad {
-        display: none;
-      }
-
-      #zoom-controls {
-        position: fixed;
-        bottom: 40vh;
-        right: 0.5vw;
-        z-index: 1005;
-        display: none;
-        flex-direction: column;
-        gap: 0.5vh;
-      }
-
-      .zoom-button {
-        background-color: rgba(0, 0, 0, 0.2);
-        color: white;
-        border: 2px solid white;
-        width: 8vh;
-        height: 8vh;
-        margin: 0.3vh;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 2.5vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(2px);
-      }
-
-      .zoom-button:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.8);
-      }
-
-      #toggle-controls-btn {
-        position: fixed;
-        top: 6.5vh;
-        left: 0;
-        z-index: 1006;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 0.8vh 1vw;
-        border-radius: 0.8vh;
-        cursor: pointer;
-        font-size: 1.5vh;
-        display: none;
-      }
+.model_sliders {
+  display: block;
+  width: 100% !important;
+  color: white;
+  padding-left: 1vw;
+  border: 0.1vh solid white;
+  border-radius: 1vh;
+  font-size: 2vh;
+  box-sizing: border-box;
+  margin-bottom: 0.5vh;
+  height: 5vh;
+  border: 0.1vh solid rgb(0, 123, 255);
+  overflow: hidden; /* Hide scrollbars */
+  resize: none; /* Prevent manual resizing */
+  background-color: transparent;
+  touch-action: auto; /* Enable touch interactions */
+  text-align: center; /* Center-align the text */
+  text-shadow: 0 0 0.5vh black;
+}
 
 
 
-      .maplibregl-popup {
+.yourfov {
+  display: block;
+  width: 100% !important;
+  color: white;
+  padding-left: 1vw;
+  border: 0.1vh solid white;
+  border-radius: 1vh;
+  font-size: 2vh;
+  box-sizing: border-box;
+  margin-bottom: 0.5vh;
+  height: 5vh;
+  border: 0.1vh solid rgb(0, 123, 255);
+  overflow: hidden; /* Hide scrollbars */
+  resize: none; /* Prevent manual resizing */
+  background-color: transparent;
+  touch-action: auto; /* Enable touch interactions */
+  background-color: transparent;
+  text-align: left; /* Center-align the text */
+  text-shadow: 0 0 0.5vh black;
+}
+
+
+.toolbar-group {
+  width: 100% !important;
+  color: white;
+  padding-top: 1vh;
+  padding-bottom: 0vh !important;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border: 0.1vh solid white;
+  border-radius: 1vh;
+  box-sizing: border-box;
+  margin-bottom: 0.5vh;
+  border: 0.1vh solid #ffc107;
+  overflow: hidden; /* Hide scrollbars */
+  resize: none; /* Prevent manual resizing */
+  background-color: transparent;
+  touch-action: auto; /* Enable touch interactions */
+}
+
+.toolbar-column-btns {
+  display: block;
+  width: 100% !important;
+  color: white !important;
+  border: 0.1vh solid white;
+  border-radius: 1vh;
+  font-size: 2vh;
+  box-sizing: border-box;
+  margin-bottom: 0.5vh;
+  height: 5vh;
+  background-color: transparent;
+  border: 0.1vh solid rgb(0, 123, 255);
+  margin-bottom: 1vh;
+}
+
+.toolbar-column-btns:hover,
+.toolbar-column-btns:active {
+  background-color: rgb(0, 123, 255) !important;
+  color: white !important;
+}
+
+.toolbar-column:hover,
+.toolbar-column.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.33vh;
+  position: relative;
+  z-index: 003;
+}
+
+#wallet-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start;
+  font-size: 1.6vw;
+  border-radius: 1.07vw;
+  background-color: rgba(51, 51, 51, 0.0);
+  z-index: 5003;
+  backdrop-filter: blur(5px);
+}
+
+#connect-wallet-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8vh 1vw;
+  border-radius: 0.8vh;
+  cursor: pointer;
+  font-size: 1.5vh;
+  text-shadow: 0 0 0.5vh black;
+  margin-top: 0.3vh;
+  margin-left: 0.3vh;
+}
+
+#disconnect-wallet-btn {
+  display: none;
+  background-color: #ffc107;
+  color: white;
+  border: none;
+  padding: 0.8vh 1vw;
+  border-radius: 0.8vh;
+  cursor: pointer;
+  font-size: 1.5vh;
+  text-shadow: 0 0 0.5vh black;
+  margin-top: 0.3vh;
+  margin-left: 0.3vh;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  color: white;
+  padding-top: 0.5vh;
+  border: none;
+  border-radius: 0.8vh;
+  cursor: pointer;
+  font-size: 1.5vh;
+}
+
+#account-id {
+  color: white;
+}
+
+#coordinates-display {
+  position: fixed;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  z-index: 1000;
+  top: 0;
+  font-size: 2vh;
+  border: none;
+  width: auto;
+  pointer-events: none; /* Allow clicks to pass through */
+}
+
+#speed-slider {
+  position: absolute;
+  top: 3vh;
+  right: 0;
+  z-index: 1005;
+  width: 32.5vw;
+  height: 3vh;
+  writing-mode: bt-lr;
+  transform: rotate(0deg);
+}
+
+.touch-button {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+  border: 2px solid white;
+  padding: 0.5vh;
+  margin: 0.3vh;
+  border-radius: 1vh;
+  cursor: pointer;
+  font-size: 2vh;
+  width: 6vh;
+  height: 6vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  visibility: hidden;
+}
+
+.touch-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.button-container {
+  display: grid;
+  position: fixed;
+  bottom: 5vh;
+  z-index: 1004;
+  grid-template-columns: repeat(3, 6vh);
+  grid-template-rows: repeat(3, 6vh);
+  gap: 0.3vh;
+  justify-items: center;
+  align-items: center;
+}
+
+#left-dpad {
+  left: 0.5vw;
+}
+
+#right-dpad {
+  right: 0.5vw;
+}
+
+#left-dpad,
+#right-dpad {
+  display: none;
+}
+
+#zoom-controls {
+  position: fixed;
+  bottom: 40vh;
+  right: 0.5vw;
+  z-index: 1005;
+  display: none;
+  flex-direction: column;
+  gap: 0.5vh;
+}
+
+.zoom-button {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+  border: 2px solid white;
+  width: 8vh;
+  height: 8vh;
+  margin: 0.3vh;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 2.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+.zoom-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+#toggle-controls-btn {
+  position: fixed;
+  top: 6.5vh;
+  left: 0;
+  z-index: 1006;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8vh 1vw;
+  border-radius: 0.8vh;
+  cursor: pointer;
+  font-size: 1.5vh;
+  display: none;
+}
+
+
+
+.maplibregl-popup {
   position: fixed !important; /* Viewport-based positioning */
   top: 50% !important; /* Center vertically */
   left: 50% !important; /* Center horizontally */
@@ -475,72 +582,74 @@ data-script-id="dracoBase64"
 }
 
 
-      * {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        touch-action: none;
-      }
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
 
-      input, textarea {
-        -webkit-user-select: text;
-        -khtml-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
-        user-select: text;
-        touch-action: manipulation;
-      }
+input, textarea {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  touch-action: manipulation;
+}
 
-      button[type="submit"],
-      #submit-button,
-      #submit-button-column2,
-      #submit-button-column3,
-      #submit-button-column5,
-      #submit-button-change-memo,
-      #submit-button-set-rules,
-      #add-topic-id,
-      #remove-topic-id {
-        height: 5vh; /* Adjust the height as needed */
-        font-size: 2vh; /* Adjust the font size for better readability */
-        border-radius: 1vh; /* Add this line to make the buttons round */
-      }
+button[type="submit"],
+  #submit-button,
+  #submit-button-column2,
+  #submit-button-column3,
+  #submit-button-column5,
+  #submit-button-change-memo,
+  #submit-button-set-rules,
+  #add-topic-id,
+  #remove-topic-id {
+  height: 5vh; /* Adjust the height as needed */
+  font-size: 2vh; /* Adjust the font size for better readability */
+  border-radius: 1vh; /* Add this line to make the buttons round */
+}
 
-      #crosshair {
-        display: none; /* Add this line to hide by default */
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 2px;
-        height: 2px;
-        background-color: white;
-        transform: translate(-50%, -50%);
-        z-index: 1007;
-      }
-      #crosshair::before {
-        content: '';
-        position: absolute;
-        background-color: var(--crosshair-color, rgb(0, 0, 0)); /* Default color if variable is not set */
-        width: var(--crosshair-before-width, 20px); /* Width of the crosshair line */
-        height: var(--crosshair-before-height, 2px); /* Default thickness */
-        top: 50%; /* Center vertically */
-        left: 50%; /* Center horizontally */
-        transform: translate(-50%, -50%); /* Adjust to center */
-      }
-      #crosshair::after {
-        content: '';
-        position: absolute;
-        background-color: var(--crosshair-color, rgb(0, 0, 0)); /* Default color if variable is not set */
-        width: var(--crosshair-after-width, 2px); /* Width of the crosshair line */
-        height: var(--crosshair-after-height, 20px); /* Height of the crosshair line */
-        top: 50%; /* Center vertically */
-        left: 50%; /* Center horizontally */
-        transform: translate(-50%, -50%); /* Adjust to center */
-      }
+#crosshair {
+  display: none; /* Add this line to hide by default */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  z-index: 1007;
+}
 
-      .popup-welcome-msg {
+#crosshair::before {
+  content: '';
+  position: absolute;
+  background-color: var(--crosshair-color, rgb(0, 0, 0)); /* Default color if variable is not set */
+  width: var(--crosshair-before-width, 20px); /* Width of the crosshair line */
+  height: var(--crosshair-before-height, 2px); /* Default thickness */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust to center */
+}
+
+#crosshair::after {
+  content: '';
+  position: absolute;
+  background-color: var(--crosshair-color, rgb(0, 0, 0)); /* Default color if variable is not set */
+  width: var(--crosshair-after-width, 2px); /* Width of the crosshair line */
+  height: var(--crosshair-after-height, 20px); /* Height of the crosshair line */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust to center */
+}
+
+.popup-welcome-msg {
   position: fixed;
   top: 27.5vh; /* Use vh for vertical positioning */
   left: 50vw; /* Use vw for horizontal positioning */
@@ -563,7 +672,6 @@ data-script-id="dracoBase64"
   border-radius: 1em; /* Use em for border radius */
   font-size: 2em; /* Base font size */
   line-height: 1em;
-
 }
 
 #close-welcome-msg {
@@ -578,1589 +686,911 @@ data-script-id="dracoBase64"
 }
 
 @media (min-aspect-ratio: 11/10) {
-  .popup-welcome-msg {
-    padding: 2vh; /* Use vh for padding */
-    font-size: 3vh; /* Use vh for font size */
-    line-height: 1.5vh; /* Use vh for line spacing */
-    top: 40vh;
-    width: 40vw;
-  }
 
-  .popup-content-welcome {
-    border-radius: 1vh; /* Use vh for border radius */
-    font-size: 3vh; /* Use vh for button font size */
+.popup-welcome-msg {
+  padding: 2vh; /* Use vh for padding */
+  font-size: 3vh; /* Use vh for font size */
+  line-height: 1.5vh; /* Use vh for line spacing */
+  top: 40vh;
+  width: 40vw;
+}
 
-  }
+.popup-content-welcome {
+  border-radius: 1vh; /* Use vh for border radius */
+  font-size: 3vh; /* Use vh for button font size */
+}
 
-  #close-welcome-msg {
-    margin-top: 1vh; /* Use vh for margin */
-    padding: 0.5vh 1vh; /* Use vh for padding */
-    border-radius: 1vh; /* Use vh for border radius */
-    font-size: 3vh; /* Use vh for button font size */
-  }
+#close-welcome-msg {
+  margin-top: 1vh; /* Use vh for margin */
+  padding: 0.5vh 1vh; /* Use vh for padding */
+  border-radius: 1vh; /* Use vh for border radius */
+  font-size: 3vh; /* Use vh for button font size */
+}
 
 }
 
 .loader-container {
-            text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 6000;
-        }
-        .loader {
-            width: 200px;
-            height: 20px;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            margin-top: 50vh;
-        }
-        .progress {
-            width: 0%;
-            height: 100%;
-            background-color: #4CAF50;
-            transition: width 0.3s ease;
-        }
-        .percentage {
-            margin-top: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-        }
-        .hidden {
-            display: none;
-        }
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 6000;
+}
 
-    </style>
-  </head>
+.loader {
+  width: 200px;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 50vh;
+}
 
-  <body>
-    <div id="map"></div>
-    <div id="three-container"></div>
-    <input id="coordinates-display" value="Coordinates:"/>
-<button id="copy-coordinates" style="
-position: fixed;
-right: 0;
-top: 0;
-z-index: 1001; /* Ensure the button is above the input field */
-background-color: transparent; /* Make the button invisible */
-border: none;
-cursor: pointer;
-font-size: 1.5vh;
-"></button>
+.progress {
+  width: 0%;
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.3s ease;
+}
 
-    <div id="toolbar" class="toolbar" style="display: none; flex-direction: column; width: 25vw; ">
+.percentage {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
 
-      <div class="toolbar-column" id="edit-profile">Edit</div>
-      <div class="toolbar-column" id="column1">Load</div>
-      <div class="toolbar-column" id="column5">Create</div>
-      <div class="toolbar-column" id="column2">Marker</div>
-      <div class="toolbar-column" id="column3">Polygon</div>
-      <div class="toolbar-column" id="set-rules">Set Rules</div>
-      <div class="toolbar-column" id="change-memo">Update Topic</div>
-      <div class="toolbar-column" id="stack-topic-ids-column">Stack topic IDs</div>
+.hidden {
+  display: none;
+}
 
-    </div>
+</style>
+</head>
 
-    <div id="edit-profile-column" style="display: none; position: absolute; z-index: 1002;">
-      <div id="edit-profile-column-container"
-      class="toolbar-containers"
-      onclick="event.stopPropagation();"
-      >
-    <textarea 
-    type="text" 
-    id="toolbar-input"
-    placeholder="URL/name/domain"
-    class="toolbar-column"
-    onclick="event.stopPropagation();"
-    style="background-color: transparent;"
-    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-  <div style="display: flex; flex-direction: row; width: 100%;">
-  <button class="toolbar-column-btns" id="button1" style="display: block; width: 24vw;">Picture</button>
-  <button class="toolbar-column-btns" id="button2" style="display: block; width: 24vw; margin-left: 1vw;">Username</button>
-  <button class="toolbar-column-btns" id="button_for_click_url" style="display: block; width: 24vw; margin-left: 1vw;">CLICK2LINK</button>
-</div>
-  <textarea 
-  type="text" 
-  id="edit-profile-topic-id"
-  placeholder="Topic ID"
-  class="toolbar-column"
-  style="background-color: transparent;"
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-<div style="display: flex; flex-direction: row; width: 100%;">
+<body>
 
-<button class="toolbar-column-btns" id="button3">Change topic ID name</button>
-<button class="toolbar-column-btns" id="button_for_topic2pic" style="margin-left: 1vw;">TOPIC2PIC</button>
-
-</div>
-<textarea 
-type="text" 
-id="domain-time-left"
-placeholder="Domain time left"
-class="toolbar-column"
-style="        background-color: transparent;
-overflow: hidden; /* Hide scrollbars */
-resize: none; /* Prevent manual resizing */
-"
-onclick="event.stopPropagation();"
-readonly
-></textarea>
-<button class="toolbar-column-btns" id="button4">Check domain availability</button>
-
-<label for="domain-time-left" style="font-size: 2vh;">1 USDC (<span style="cursor: pointer; color: rgb(255, 255, 255); text-decoration: underline;" onclick="navigator.clipboard.writeText('0.0.456858').then(() => alert('Copied to clipboard: 0.0.456858')).catch(err => console.error('Failed to copy: ', err));">0.0.456858</span>):</label><button class="toolbar-column-btns" id="button5" style="margin-top: 0.5vh;">Add 28 days to domain</button>
-</div>
+<div class="popup-welcome-msg" id="welcome-msg" style="display: none;">
+  <div class="popup-content-welcome">
+    <p>Welcome to Hedera Network
+    </p>
+    <p>U must be connected via wallet to use this app.
+    </p>
+  </div>
 </div>
 
-    <div id="load-column" style="display: none; position: absolute; z-index: 1002;">
-      <div
-        id="load-column-container"
-        class="toolbar-containers"
-        onclick="event.stopPropagation();"
-        >
-        <textarea
-          class="toolbar-column"
-          type="text"
-          id="input-field"
-          placeholder="Domain/Topic ID"
-          onclick="event.stopPropagation();"
-          style="background-color: transparent;"
-          oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-        ></textarea>
-        <button id="submit-button" class="toolbar-column-btns">Load Data</button>
-        <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topics with names not domains:</label>
-        <textarea
-        class="toolbar-column"
-        type="text"
-        id="loaded-topics"
-        placeholder="Loaded Topics"
-        onclick="event.stopPropagation();"
-        style="background-color: transparent;"
-        readonly
-      ></textarea>
-      <textarea
-      class="toolbar-column"
-      type="text"
-      id="load-msgs-from-ids"
-      placeholder="user ID or IDs separated by comma"
-      onclick="event.stopPropagation();"
-      style="background-color: transparent;"
-      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-    ></textarea>
-    <button id="load-msgs-from-ids-button" class="toolbar-column-btns">Load Messages From</button>
-      </div>
-    </div>
+<div id="map"></div>
 
-    <div
-    id="create-column"
-    style="display: none; position: absolute; z-index: 1002;"
-  >
-    <div id="create-column-container" class="toolbar-containers"
-    onclick="event.stopPropagation();"
-    >
-    <div class="toolbar-group">
-  <textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-5-1"
-  placeholder="Admins 0.0.1,0.0.2.."
-  style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-    <textarea
-    class="toolbar-column"
-    type="text"
-    id="input-field-5-2"
-    placeholder="Use Private Key here"
-    style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-          onclick="event.stopPropagation();"
-          oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-          ></textarea>
-          <label for="public-key-label"style="font-size: 2vh; padding: 0px; user-select: text;">If it doesnt load go to hashscan.io or app.dragonglass.me and input your acc id:</label>
+<div id="three-container"></div>
 
-  <input
-  class="toolbar-column"
-  type="text"
-  id="input-field-5"
-  placeholder="Generated Topic ID"
-  style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-onclick="event.stopPropagation();"
-readonly
-/>
+<input id="coordinates-display" value="Coordinates:"/>
 
-<!-- <label for="public-key-label"style="font-size: 2vh; padding: 0px;">Set fee for each message:</label>
-<textarea
-class="toolbar-column"
-type="text"
-id="input-field-5-3"
-placeholder="Set amount of fee"
-style="
-  background-color: transparent;
-  overflow: hidden; /* Hide scrollbars */
-  resize: none; /* Prevent manual resizing */
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-<textarea
-class="toolbar-column"
-type="text"
-id="input-field-5-4"
-placeholder="Set token id of fee"
-style="
-  background-color: transparent;
-  overflow: hidden; /* Hide scrollbars */
-  resize: none; /* Prevent manual resizing */
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-<textarea
-class="toolbar-column"
-type="text"
-id="input-field-5-5"
-placeholder="Set royalty account"
-style="
-  background-color: transparent;
-  overflow: hidden; /* Hide scrollbars */
-  resize: none; /* Prevent manual resizing */
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea> -->
+<button id="copy-coordinates" class="copy-coordinates"></button>
 
-    <button id="submit-button-column5" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Create</button>
+<div id="crosshair"></div>
+
+<div style="display: flex; position: fixed; top: 6.5vh; left: 0; z-index: 1006;">
+  <button id="main-toggle-btn" class="options-and-topic" style="margin-left: 0.3vh;">OPTIONS
+  </button>
+  <button id="topic-chat-btn" class="options-and-topic" style="margin-left: 1vw;">TOPIC CHAT
+  </button>
+</div>
+
+<button id="toggle-controls-btn" class="menu_buttons" style="top: 6.5vh;">CONTROLS
+</button>
+
+<button id="toggle-rotation-controls-btn" class="menu_buttons" style="top: 11vh;">YOUR FOV
+</button>
+
+<button id="toggle-visibility-controls-btn" class="menu_buttons" style="top: 15.5vh;">VISIBILITY
+</button>
+
+<button id="toggle-toolbar-btn" class="menu_buttons" style="top: 20vh;">TOOLBAR
+</button>
+
+<div id="toolbar" class="toolbar" style="display: none; flex-direction: column; width: 25vw; ">
+  <div class="toolbar-column" id="edit-profile">Edit
   </div>
-  <!--
-  <div class="toolbar-group">
-    <label for="public-key-label"style="font-size: 2vh; padding: 0px;">Public Key:</label>
-    <textarea
-    class="toolbar-column"
-    id="generated-public-key"
-    placeholder="Generated Public Key"
-    style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-    readonly
-    onclick="event.stopPropagation();"
-  ></textarea>
-  -->
-
-  <label for="private-key-label"style="font-size: 2vh; padding: 0px;">Private Key:</label>
-  <textarea
-    class="toolbar-column"
-    id="generated-private-key"
-    placeholder="Generated Private Key"
-    style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-    onclick="event.stopPropagation();"
-    readonly
-  ></textarea>
-
-
-    <button id="generate-private-and-public-key" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Generate</button>
+  <div class="toolbar-column" id="column1">Load
   </div>
+  <div class="toolbar-column" id="column5">Create
   </div>
+  <div class="toolbar-column" id="column2">Marker
   </div>
+  <div class="toolbar-column" id="column3">Polygon
+  </div>
+  <div class="toolbar-column" id="set-rules">Set Rules
+  </div>
+  <div class="toolbar-column" id="change-memo">Update Topic
+  </div>
+  <div class="toolbar-column" id="stack-topic-ids-column">Stack topic IDs
+  </div>
+</div>
 
-    <div
-      id="marker-column"
-      style="display: none; position: absolute; z-index: 1002;"
-    >
-      <div id="marker-column-container" 
-      class="toolbar-containers"
-      onclick="event.stopPropagation();"
-      >
-      <div class="toolbar-group">
-        <textarea
-          class="toolbar-column"
-          type="text"
-          id="input-field-2-0"
-          placeholder="Domain/Topic ID"
-          onclick="event.stopPropagation();"
-          style="background-color: transparent;"
-          oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-          ></textarea>
-          <textarea
-          class="toolbar-column"
-          type="text"
-          id="input-field-number-of-marker"
-          placeholder="Number of marker"
-          style="
-          background-color: transparent;
-          overflow: hidden; /* Hide scrollbars */
-          resize: none; /* Prevent manual resizing */
-          "
-        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-        ></textarea>
-        <textarea
-        class="toolbar-column"
-        type="text"
-        id="input-field-2-3"
-        placeholder="Coordinates long,lat"
-        style="
-        background-color: transparent;
-        overflow: hidden; /* Hide scrollbars */
-        resize: none; /* Prevent manual resizing */
-        margin-bottom: 0vh !important;
-      "
-      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-      onclick="event.stopPropagation();"
-      ></textarea>
-    </div>
-        <textarea
-        class="toolbar-column"
-        type="text"
-        id="input-field-coverimage-marker"
-        placeholder="Cover Image URL"
-        style="
-        background-color: transparent;
-        overflow: hidden; /* Hide scrollbars */
-        resize: none; /* Prevent manual resizing */
-        "
-      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-      onclick="event.stopPropagation();"
-      ></textarea>
+<div id="edit-profile-column" style="display: none; position: absolute; z-index: 1002;">
+  <div id="edit-profile-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
-        <textarea
-          class="toolbar-column"
-          type="text"
-          id="input-field-2-1"
-          placeholder="Title"
-          style="
-          background-color: transparent;
-          overflow: hidden; /* Hide scrollbars */
-          resize: none; /* Prevent manual resizing */
-        "
-        onclick="event.stopPropagation();"
-        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-        ></textarea>
-        <textarea
-        class="toolbar-column"
-        type="text"
-        id="input-field-image-marker"
-        placeholder="Image URL"
-        style="
-        background-color: transparent;
-        overflow: hidden; /* Hide scrollbars */
-        resize: none; /* Prevent manual resizing */
-      "
-      onclick="event.stopPropagation();"
-      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-      ></textarea>
-      <div style="position: relative;">
-
-        <textarea
-          class="toolbar-column"
-          type="text"
-          id="input-field-2-2"
-          placeholder="Message"
-          style="
-          background-color: transparent;
-          overflow: hidden; /* Hide scrollbars */
-          resize: none; /* Prevent manual resizing */
-        "
-        maxlength="256"
-        onclick="event.stopPropagation();"
-        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter-marker').textContent = this.value.length + '/256';"
-        ></textarea>
-        <div id="char-counter-marker" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">
-          0/256
-        </div>
-      </div>
-        <button id="submit-button-column2" class="toolbar-column-btns">
-          Submit
-        </button>
-        <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
-        <textarea
-        class="toolbar-column"
-        type="text"
-        id="loaded-topic-rules-for-marker"
-        placeholder="Loaded Topic Rules"
-        style="
-        background-color: transparent;
-        overflow: hidden; /* Hide scrollbars */
-        resize: none; /* Prevent manual resizing */
-      "
-      onclick="event.stopPropagation();"
-        readonly
-        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-        ></textarea>
-        <button id="load-topic-rules-for-marker" class="toolbar-column-btns">
-          Load Topic Rules
-        </button>
-      </div>
-    </div>
-
-    <div
-      id="polygon-column"
-      style="display: none; position: absolute; z-index: 1002;"
-    >
-      <div id="polygon-column-container"       
-      class="toolbar-containers"
-      onclick="event.stopPropagation();"
-      >
-      <div class="toolbar-group">
-      <textarea
-        class="toolbar-column"
-        type="text"
-        id="input-field-3-0"
-        placeholder="Domain/Topic ID"
-        style="
-        background-color: transparent;
-      "
-        onclick="event.stopPropagation();"
-        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-        ></textarea>
-        <textarea
-        class="toolbar-column"
-        type="text"
-        id="input-field-number-of-polygon"
-        placeholder="Number of polygon"
-        style="
-        background-color: transparent;
-        overflow: hidden; /* Hide scrollbars */
-        resize: none; /* Prevent manual resizing */
-        "
-      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-      ></textarea>
-      <textarea
-      class="toolbar-column"
-      type="text"
-      id="input-field-3-3"
-      placeholder="TOP LEFT long,lat"
-      style="
-      background-color: transparent;
-    "
-    onclick="event.stopPropagation();"
+    <textarea type="text" id="toolbar-input" placeholder="URL/name/domain"
+    class="toolbar-column" onclick="event.stopPropagation();"
     oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
 
-    <textarea
-      class="toolbar-column"
-      type="text"
-      id="input-field-3-5"
-      placeholder="BOTTOM RIGHT long,lat"
-      style="
-      background-color: transparent;
-"
-    onclick="event.stopPropagation();"
-    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-    ></textarea>
-  </div>
-      <textarea
-      class="toolbar-column"
-      type="text"
-      id="input-field-coverimage-polygon"
-      placeholder="Cover Image URL"
-      style="
-      background-color: transparent;
-      "
-      onclick="event.stopPropagation();"
-      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-      ></textarea>
-      <textarea
-        class="toolbar-column"
-        type="text"
-        id="input-field-3-1"
-        placeholder="Title"
-        style="
-        background-color: transparent;
-      "
-      onclick="event.stopPropagation();"
-      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-      ></textarea>
-      <textarea
-      class="toolbar-column"
-      type="text"
-      id="input-field-image-polygon"
-      placeholder="Image URL"
-      style="
-      background-color: transparent;
-    "
-    onclick="event.stopPropagation();"
-    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-    ></textarea>
-    <div style="position: relative;">
-      <textarea
-        class="toolbar-column"
-        id="input-field-3-2"
-        placeholder="Message"
-        style="
-        background-color: transparent;
-      "
-      maxlength="256"
-      onclick="event.stopPropagation();"
-        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter-polygon').textContent = this.value.length + '/256';"
-      ></textarea>
-
-      <div id="char-counte-polygon" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">
-        0/256
-      </div>
-      </div>
-
-
-      <button id="submit-button-column3" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">
-        Submit
+    <div style="display: flex; flex-direction: row; width: 100%;">
+      <button class="toolbar-column-btns" id="button1" style="display: block; width: 24vw;">Picture
       </button>
-      <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
+      <button class="toolbar-column-btns" id="button2" style="display: block; width: 24vw; margin-left: 1vw;">Username
+      </button>
+      <button class="toolbar-column-btns" id="button_for_click_url" style="display: block; width: 24vw; margin-left: 1vw;">CLICK2LINK
+      </button>
+    </div>
+
+    <textarea type="text" id="edit-profile-topic-id" placeholder="Topic ID"
+    class="toolbar-column" onclick="event.stopPropagation();"
+    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+
+    <div style="display: flex; flex-direction: row; width: 100%;">
+      <button class="toolbar-column-btns" id="button3">Change topic ID name
+      </button>
+      <button class="toolbar-column-btns" id="button_for_topic2pic" style="margin-left: 1vw;">TOPIC2PIC
+      </button>
+    </div>
+
+    <textarea type="text" id="domain-time-left" placeholder="Domain time left"
+    class="toolbar-column" onclick="event.stopPropagation();" readonly>
+    </textarea>
+
+    <button class="toolbar-column-btns" id="button4">Check domain availability
+    </button>
+
+    <label for="domain-time-left" style="font-size: 2vh;">1 USDC
+    (<span style="cursor: pointer; color: rgb(255, 255, 255); text-decoration: underline;"
+    onclick="navigator.clipboard.writeText('0.0.456858')
+    .then(() => alert('Copied to clipboard: 0.0.456858'))
+    .catch(err => console.error('Failed to copy: ', err));">0.0.456858</span>):
+    </label>
+    <button class="toolbar-column-btns" id="button5" style="margin-top: 0.5vh;">Add 28 days to domain
+    </button>
+
+  </div>
+</div>
+
+<div id="load-column" style="display: none; position: absolute; z-index: 1002;">
+  <div id="load-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+
+    <textarea class="toolbar-column" type="text" id="input-field" placeholder="Domain/Topic ID" onclick="event.stopPropagation();"
+    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+
+    <button id="submit-button" class="toolbar-column-btns">Load Data
+    </button>
+
+    <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topics with names not domains:
+    </label>
+
+    <textarea class="toolbar-column" type="text" id="loaded-topics" placeholder="Loaded Topics" onclick="event.stopPropagation();" readonly
+    ></textarea>
+
+    <textarea class="toolbar-column" type="text" id="load-msgs-from-ids" placeholder="user ID or IDs separated by comma"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+
+    <button id="load-msgs-from-ids-button" class="toolbar-column-btns">Load Messages From
+    </button>
+
+  </div>
+</div>
+
+<div id="create-column" style="display: none; position: absolute; z-index: 1002;">
+  <div id="create-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+    <div class="toolbar-group">
+      <textarea class="toolbar-column" type="text" id="input-field-5-1" placeholder="Admins 0.0.1,0.0.2.."
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+
+      <textarea class="toolbar-column" type="text" id="input-field-5-2" placeholder="Use Private Key here"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+
+      <label for="public-key-label"style="font-size: 2vh; padding: 0px; user-select: text;">If it doesnt load go to hashscan.io or app.dragonglass.me and input your acc id:
+      </label>
+
+      <input class="toolbar-column" type="text" id="input-field-5" placeholder="Generated Topic ID"
+      onclick="event.stopPropagation();"readonly/>
+
+      <!-- <label for="public-key-label"style="font-size: 2vh; padding: 0px;">Set fee for each message:</label>
       <textarea
       class="toolbar-column"
       type="text"
-      id="loaded-topic-rules-for-polygon"
-      placeholder="Loaded Topic Rules"
+      id="input-field-5-3"
+      placeholder="Set amount of fee"
+      style="
+        background-color: transparent;
+        overflow: hidden; /* Hide scrollbars */
+        resize: none; /* Prevent manual resizing */
+      "
+      onclick="event.stopPropagation();"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea
+      class="toolbar-column"
+      type="text"
+      id="input-field-5-4"
+      placeholder="Set token id of fee"
+      style="
+        background-color: transparent;
+        overflow: hidden; /* Hide scrollbars */
+        resize: none; /* Prevent manual resizing */
+      "
+      onclick="event.stopPropagation();"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea
+      class="toolbar-column"
+      type="text"
+      id="input-field-5-5"
+      placeholder="Set royalty account"
+      style="
+        background-color: transparent;
+        overflow: hidden; /* Hide scrollbars */
+        resize: none; /* Prevent manual resizing */
+      "
+      onclick="event.stopPropagation();"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea> -->
+
+      <button id="submit-button-column5" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Create
+      </button>
+    </div>
+    <!--
+    <div class="toolbar-group">
+      <label for="public-key-label"style="font-size: 2vh; padding: 0px;">Public Key:</label>
+      <textarea
+      class="toolbar-column"
+      id="generated-public-key"
+      placeholder="Generated Public Key"
       style="
       background-color: transparent;
       overflow: hidden; /* Hide scrollbars */
       resize: none; /* Prevent manual resizing */
     "
-    onclick="event.stopPropagation();"
       readonly
+      onclick="event.stopPropagation();"
+    ></textarea>
+    -->
+
+    <label for="private-key-label"style="font-size: 2vh; padding: 0px;">Private Key:
+    </label>
+
+    <textarea class="toolbar-column" id="generated-private-key" placeholder="Generated Private Key"
+    onclick="event.stopPropagation();" readonly
+    ></textarea>
+
+    <button id="generate-private-and-public-key" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Generate
+    </button>
+
+  </div>
+</div>
+
+
+<div id="marker-column" style="display: none; position: absolute; z-index: 1002;">
+  <div id="marker-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+    <div class="toolbar-group">
+      <textarea class="toolbar-column" type="text" id="input-field-2-0" placeholder="Domain/Topic ID"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea>
-      <button id="load-topic-rules-for-polygon" class="toolbar-column-btns">
-        Load Topic Rules
+      <textarea class="toolbar-column" type="text" id="input-field-number-of-marker" placeholder="Number of marker"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-2-3" placeholder="Coordinates long,lat"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';" onclick="event.stopPropagation();"
+      ></textarea>
+    </div>
+
+    <textarea class="toolbar-column" type="text" id="input-field-coverimage-marker" placeholder="Cover Image URL"
+    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';" onclick="event.stopPropagation();"
+    ></textarea>
+    <textarea class="toolbar-column" type="text" id="input-field-2-1" placeholder="Title"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    <textarea class="toolbar-column" type="text" id="input-field-image-marker" placeholder="Image URL"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+
+    <div style="position: relative;">
+      <textarea class="toolbar-column" type="text" id="input-field-2-2" placeholder="Message" maxlength="256"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';
+      document.getElementById('char-counter-marker').textContent = this.value.length + '/256';"
+      ></textarea>
+      <div id="char-counter-marker" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">0/256
+      </div>
+    </div>
+
+    <button id="submit-button-column2" class="toolbar-column-btns">
+    Submit
+    </button>
+
+    <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
+    
+    <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-marker" placeholder="Loaded Topic Rules"
+    onclick="event.stopPropagation();" readonly oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    <button id="load-topic-rules-for-marker" class="toolbar-column-btns">
+    Load Topic Rules
+    </button>
+  </div>
+</div>
+
+<div id="polygon-column" style="display: none; position: absolute; z-index: 1002;">
+  <div id="polygon-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+    <div class="toolbar-group">
+      <textarea class="toolbar-column" type="text" id="input-field-3-0" placeholder="Domain/Topic ID"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-number-of-polygon" placeholder="Number of polygon"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-3-3" placeholder="TOP LEFT long,lat"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-3-5" placeholder="BOTTOM RIGHT long,lat"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+    </div>
+    
+    <textarea class="toolbar-column" type="text" id="input-field-coverimage-polygon" placeholder="Cover Image URL"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    <textarea class="toolbar-column" type="text" id="input-field-3-1" placeholder="Title" 
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    <textarea class="toolbar-column" type="text" id="input-field-image-polygon" placeholder="Image URL"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+
+    <div style="position: relative;">
+      <textarea class="toolbar-column" id="input-field-3-2" placeholder="Message" maxlength="256"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';
+      document.getElementById('char-counter-polygon').textContent = this.value.length + '/256';"
+      ></textarea>
+      <div id="char-counte-polygon" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">0/256
+      </div>
+    </div>
+
+
+    <button id="submit-button-column3" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Submit
+    </button>
+    <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
+    <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-polygon" placeholder="Loaded Topic Rules"
+    onclick="event.stopPropagation();" readonly
+    ></textarea>
+    <button id="load-topic-rules-for-polygon" class="toolbar-column-btns">Load Topic Rules
+    </button>
+  </div>
+</div>
+
+<div id="rules-column" style="display: none; position: absolute; z-index: 1002;">
+  <div id="rules-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+    <textarea class="toolbar-column" type="text" id="input-field-topic-id-for-rules" placeholder="Domain/Topic ID"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:
+    </label>
+    <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-topic" placeholder="Loaded Topic Rules"
+    onclick="event.stopPropagation();" readonly></textarea>
+    <button id="load-topic-rules-for-topic" class="toolbar-column-btns">Load Topic Rules
+    </button>
+    <label for="input-field-rules-for-polygons"style="font-size: 2vh; padding: 0px;">These come in pair and they overwrite last set:
+    </label>
+
+    <div class="toolbar-group">
+      <div style="margin-bottom: 0px;">
+        <label for="input-field-rules-for-polygons"style="font-size: 2vh; padding: 0px;">For polygons:
+        </label>
+        <textarea class="toolbar-column" type="text" id="input-field-topic-id-for-polygons" placeholder="NFT ID (set to zero to allow all)"
+        onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+        ></textarea>
+      </div>
+
+      <textarea class="toolbar-column" type="text" id="input-field-messages-per-nft-for-polygons" placeholder="how many polygons per NFT"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+
+      <textarea class="toolbar-column" type="text" id="input-field-messages-size-for-polygons" placeholder="max size = (360,180) / (number)"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+
+      <div style="margin-bottom: 10px;">
+        <label for="input-field-add-rules" style=" font-size: 2vh;padding: 0px;">For markers:
+        </label>
+        <textarea class="toolbar-column" type="text" id="input-field-topic-id-for-markers" placeholder="NFT ID (set to zero to allow all)"
+        onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+        ></textarea>
+      </div>
+
+      <textarea class="toolbar-column" type="text" id="input-field-messages-per-nft-for-markers" placeholder="how many markers per NFT"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <button id="submit-button-set-rules" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Submit
       </button>
-    </div>
-    </div>
-
-    <div
-    id="rules-column"
-    style="display: none; position: absolute; z-index: 1002;"
-  >
-    <div id="rules-column-container"
-    class="toolbar-containers"
-    onclick="event.stopPropagation();"
-    >
-<textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-topic-id-for-rules"
-  placeholder="Domain/Topic ID"
-  style="
-  background-color: transparent;
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-<label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
-<textarea
-class="toolbar-column"
-type="text"
-id="loaded-topic-rules-for-topic"
-placeholder="Loaded Topic Rules"
-style="
-background-color: transparent;
-overflow: hidden; /* Hide scrollbars */
-resize: none; /* Prevent manual resizing */
-"
-onclick="event.stopPropagation();"
-readonly
-></textarea>
-<button id="load-topic-rules-for-topic" class="toolbar-column-btns">
-  Load Topic Rules
-</button>
-<label for="input-field-rules-for-polygons"style="font-size: 2vh; padding: 0px;">These come in pair and they overwrite last set:</label>
-
-<div class="toolbar-group">
-<div style="margin-bottom: 0px;">
-<label for="input-field-rules-for-polygons"style="font-size: 2vh; padding: 0px;">For polygons:</label>
-<textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-topic-id-for-polygons"
-  placeholder="NFT ID (set to zero to allow all)"
-  style="
-    background-color: transparent;
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+  <div style="margin-bottom: 10px;"></div>
+  </div>
+  <label for="input-field-add-remove-NFT-for-model" style=" font-size: 2vh;padding: 0px;"> Model sharing:
+  </label>
+  <textarea class="toolbar-column" type="text" id="input-field-add-remove-NFT-for-model" placeholder="NFT ID (or IDs seperated by commas)"
+  onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';" 
   ></textarea>
-</div>
+  <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
+  <button id="submit-button-add-NFT-for-model" class="toolbar-column-btns" style="color: black; width: 20vw;">Add
+  </button>
+  <button id="submit-button-remove-NFT-for-model" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove
+  </button>
+  </div>
 
+  <label for="input-field-add-remove-scale-for-model" style=" font-size: 2vh;padding: 0px;">Model scale factor:
+  </label>
+  <textarea class="toolbar-column" type="text" id="input-field-add-remove-scale-for-model" placeholder="scale (only one NFT at a time)"
+  onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+  ></textarea>
+  <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
+  <button id="submit-button-add-scale-for-model" class="toolbar-column-btns" style="color: black; width: 20vw;">Add
+  </button>
+  <button id="submit-button-remove-scale-for-model" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove
+  </button>
+  </div>
+
+
+  <label for="input-field-add-remove-topic-chat" style=" font-size: 2vh;padding: 0px;">Topic Chat:
+  </label>
   <textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-messages-per-nft-for-polygons"
-  placeholder="how many polygons per NFT"
-  style="
-    background-color: transparent;
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-
-<textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-messages-size-for-polygons"
-  placeholder="max size = (360,180) / (number)"
-  style="
-  background-color: transparent;
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-
-<div style="margin-bottom: 10px;">
-<label for="input-field-add-rules" style=" font-size: 2vh;padding: 0px;">For markers:</label>
-<textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-topic-id-for-markers"
-  placeholder="NFT ID (set to zero to allow all)"
-  style="
-    background-color: transparent;
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-</div>
-
-  <textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-messages-per-nft-for-markers"
-  placeholder="how many markers per NFT"
-  style="
-    background-color: transparent;
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-<button id="submit-button-set-rules" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Submit</button>
-<div style="margin-bottom: 10px;"></div>
-</div>
-<label for="input-field-add-remove-NFT-for-model" style=" font-size: 2vh;padding: 0px;"> Model sharing:</label>
-<textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-add-remove-NFT-for-model"
-  placeholder="NFT ID (or IDs seperated by commas)"
-  style="
-    background-color: transparent;
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-<div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
-  <button id="submit-button-add-NFT-for-model" class="toolbar-column-btns" style="color: black; width: 20vw;">Add</button>
-  <button id="submit-button-remove-NFT-for-model" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove</button>
-</div>
-
-<label for="input-field-add-remove-scale-for-model" style=" font-size: 2vh;padding: 0px;">Model scale factor:</label>
-<textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-add-remove-scale-for-model"
-  placeholder="scale (only one NFT at a time)"
-  style="
-    background-color: transparent;
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-<div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
-  <button id="submit-button-add-scale-for-model" class="toolbar-column-btns" style="color: black; width: 20vw;">Add</button>
-  <button id="submit-button-remove-scale-for-model" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove</button>
-</div>
-
-
-<label for="input-field-add-remove-topic-chat" style=" font-size: 2vh;padding: 0px;">Topic Chat:</label>
-<textarea
   class="toolbar-column"
   type="text"
   id="input-field-add-remove-topic-chat"
   placeholder="NFT ID (or IDs seperated by commas)"
-  style="
-    background-color: transparent;
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-<div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
-  <button id="submit-button-add-topic-chat" class="toolbar-column-btns" style="color: black; width: 20vw;">Add</button>
-  <button id="submit-button-remove-topic-chat" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove</button>
-</div>
-
-
-
-</div>
-</div>
+  onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"></textarea>
+  <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
+  <button id="submit-button-add-topic-chat" class="toolbar-column-btns" style="color: black; width: 20vw;">Add
+  </button>
+  <button id="submit-button-remove-topic-chat" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove
+  </button>
   </div>
 
-    <div
-    id="memo-column"
-    style="display: none; position: absolute; z-index: 1002;"
-  >
-    <div id="memo-column-container"
-    class="toolbar-containers"
-    onclick="event.stopPropagation();"
-    >
+  </div>
+</div>
+
+<div id="memo-column" style="display: none; position: absolute; z-index: 1002;">
+  <div id="memo-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+
     <div class="toolbar-group">
-  <textarea
-  class="toolbar-column"
-  type="text"
-  id="input-field-topic-id"
-  placeholder="Domain/Topic ID"
-  style="
-    background-color: transparent;
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-topic-id" placeholder="Domain/Topic ID"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-admin-key" placeholder="public key"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-memo" placeholder="Admins 0.0.1,0.0.2.."
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+    </div>
 
-    <textarea
-      class="toolbar-column"
-      type="text"
-      id="input-field-admin-key"
-      placeholder="public key"
-      style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    <label for="public-key-label"style="font-size: 2vh; padding: 0px;">Optional fee for each message:
+    </label>
+
+    <div class="toolbar-group">
+      <textarea class="toolbar-column" type="text" id="input-field-fee" placeholder="Set amount of fee"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-fee-token" placeholder="Set token id of fee"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <textarea class="toolbar-column" type="text" id="input-field-royal-acc" placeholder="Set royalty account"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+    </div>
+
+    <button id="submit-button-change-memo" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Submit
+    </button>
+
+  </div>
+</div>
+
+<div id="stack-topic-ids" style="display: none; position: absolute; z-index: 1002;">
+  <div id="stack-topic-ids-container" class="toolbar-containers" onclick="event.stopPropagation();">
+
+    <textarea class="toolbar-column" type="text" id="stack-topic-ids-topic" placeholder="Domain/Topic ID"
+    click="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
+    <textarea class="toolbar-column" type="text" id="stack-topic-add-topic" placeholder="0.0.1,0.0.2.."
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    <button id="add-topic-id" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Stack
+    </button>
+    <textarea class="toolbar-column" type="text" id="stack-topic-remove-topic" placeholder="0.0.1,0.0.2.."
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    <button id="remove-topic-id" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Remove
+    </button>
 
-    <textarea
-      class="toolbar-column"
-      type="text"
-      id="input-field-memo"
-      placeholder="Admins 0.0.1,0.0.2.."
-      style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
+  </div>
 </div>
-<label for="public-key-label"style="font-size: 2vh; padding: 0px;">Optional fee for each message:</label>
 
-  <div class="toolbar-group">
-<textarea
-class="toolbar-column"
-type="text"
-id="input-field-fee"
-placeholder="Set amount of fee"
-style="
-  background-color: transparent;
-  overflow: hidden; /* Hide scrollbars */
-  resize: none; /* Prevent manual resizing */
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-<textarea
-class="toolbar-column"
-type="text"
-id="input-field-fee-token"
-placeholder="Set token id of fee"
-style="
-  background-color: transparent;
-  overflow: hidden; /* Hide scrollbars */
-  resize: none; /* Prevent manual resizing */
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-<textarea
-class="toolbar-column"
-type="text"
-id="input-field-royal-acc"
-placeholder="Set royalty account"
-style="
-  background-color: transparent;
-  overflow: hidden; /* Hide scrollbars */
-  resize: none; /* Prevent manual resizing */
-"
-onclick="event.stopPropagation();"
-oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-></textarea>
-</div>
-    <button id="submit-button-change-memo" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Submit</button>
-
+<div class="flex-container">
+  <div id="wallet-section">
+    <button id="connect-wallet-btn">Connect Wallet
+    </button>
+    <button id="disconnect-wallet-btn">Disconnect
+    </button>
+    <div class="account-info">
+    <div id="account-id" style="margin-left: 0.3vh;"></div>
     </div>
   </div>
-
-  <div id="stack-topic-ids" style="display: none; position: absolute; z-index: 1002;">
-    <div
-      id="stack-topic-ids-container"
-      class="toolbar-containers"
-      onclick="event.stopPropagation();"
-      >
-      
-    <textarea
-    class="toolbar-column"
-    type="text"
-    id="stack-topic-ids-topic"
-    placeholder="Domain/Topic ID"
-    style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-
-    <textarea
-    class="toolbar-column"
-    type="text"
-    id="stack-topic-add-topic"
-    placeholder="0.0.1,0.0.2.."
-    style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-
-      <button id="add-topic-id" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Stack</button>
-
-      <textarea
-      class="toolbar-column"
-      type="text"
-      id="stack-topic-remove-topic"
-      placeholder="0.0.1,0.0.2.."
-      style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-  "
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-    ></textarea>
-  
-        <button id="remove-topic-id" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Remove</button>
-    </div>
-  </div>
-
-    <div class="flex-container">
-      <div id="wallet-section">
-        <button id="connect-wallet-btn">Connect Wallet</button>
-        <button id="disconnect-wallet-btn">Disconnect</button>
-        <div class="account-info">
-          <div id="account-id" style="margin-left: 0.3vh;"></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="left-dpad" class="button-container">
-      <button class="touch-button" style="visibility: hidden;"></button>
-      <button id="left-up" class="touch-button"></button>
-      <button class="touch-button" style="visibility: hidden;"></button>
-      <button id="left-left" class="touch-button"></button>
-      <button class="touch-button" style="visibility: hidden;"></button>
-      <button id="left-right" class="touch-button"></button>
-      <button class="touch-button" style="visibility: hidden;"></button>
-      <button id="left-down" class="touch-button"></button>
-      <button class="touch-button" style="visibility: hidden;"></button>
-    </div>
-    
-    <div id="right-dpad" class="button-container">
-      <button class="touch-button" style="visibility: hidden;"></button>
-      <button id="right-up" class="touch-button"></button>
-      <button class="touch-button" style="visibility: hidden;"></button>
-      <button id="right-left" class="touch-button"></button>
-      <button class="touch-button" style="visibility: hidden;"></button>
-      <button id="right-right" class="touch-button"></button>
-      <button class="touch-button" style="visibility: hidden;"></button>
-      <button id="right-down" class="touch-button"></button>
-      <button class="touch-button" style="visibility: hidden;"></button>
-    </div>
-
-    <div id="zoom-controls">
-      <button id="zoom-in" class="zoom-button">+</button>
-      <button id="zoom-out" class="zoom-button">-</button>
-    </div>
-
-    <input type="range" id="speed-slider" min="0.1" max="5" step="0.01" value="1" style="display: none;" />
-
-    <button id="toggle-controls-btn" style="
-      position: fixed;
-      top: 6.5vh;
-      left: 0;
-      z-index: 1006;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 0.8vh 1vw;
-      border-radius: 0.8vh;
-      cursor: pointer;
-      font-size: 1.5vh;
-      display: none;
-      margin-left: 0.3vh;
-    ">CONTROLS</button>
-
-    <button id="toggle-toolbar-btn" style="
-      position: fixed;
-      top: 20vh;
-      left: 0;
-      z-index: 1006;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 0.8vh 1vw;
-      border-radius: 0.8vh;
-      cursor: pointer;
-      font-size: 1.5vh;
-      display: none;
-      margin-left: 0.3vh;
-    ">TOOLBAR</button>
-
-<div style="display: flex; position: fixed; top: 6.5vh; left: 0; z-index: 1006;">
-  <button id="main-toggle-btn" style="
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.8vh 1vw;
-    border-radius: 0.8vh;
-    cursor: pointer;
-    font-size: 1.5vh;
-    margin-left: 0.3vh;
-  ">OPTIONS</button>
-
-  <button id="topic-chat-btn" style="
-    background-color: rgb(0, 123, 255);
-    color: white;
-    border: none;
-    padding: 0.8vh 1vw;
-    border-radius: 0.8vh;
-    cursor: pointer;
-    font-size: 1.5vh;
-    margin-left: 1vw; /* Add some space between buttons */
-  ">TOPIC CHAT</button>
 </div>
+
+<div id="left-dpad" class="button-container">
+  <button class="touch-button"></button>
+  <button id="left-up" class="touch-button"></button>
+  <button class="touch-button"></button>
+  <button id="left-left" class="touch-button"></button>
+  <button class="touch-button"></button>
+  <button id="left-right" class="touch-button"></button>
+  <button class="touch-button"></button>
+  <button id="left-down" class="touch-button"></button>
+  <button class="touch-button"></button>
+</div>
+
+<div id="right-dpad" class="button-container">
+  <button class="touch-button"></button>
+  <button id="right-up" class="touch-button"></button>
+  <button class="touch-button"></button>
+  <button id="right-left" class="touch-button"></button>
+  <button class="touch-button"></button>
+  <button id="right-right" class="touch-button"></button>
+  <button class="touch-button"></button>
+  <button id="right-down" class="touch-button"></button>
+  <button class="touch-button"></button>
+</div>
+
+<div id="zoom-controls">
+  <button id="zoom-in" class="zoom-button">+</button>
+  <button id="zoom-out" class="zoom-button">-</button>
+</div>
+
+<input type="range" id="speed-slider" min="0.1" max="5" step="0.01" value="1" style="display: none;" />
 
 
 <div id="topic-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: #888 #f1f1f1; /* Firefox */
-    ">
+scrollbar-width: thin; /* Firefox */ scrollbar-color: #888 #f1f1f1; /* Firefox */">
+  <div class="container"  onclick="event.stopPropagation();">
 
-  <div style="          
-  color: white;
-  padding: 1vh 1vw;
-  box-sizing: border-box;
-  border-radius: 1vh;
-"  onclick="event.stopPropagation();"
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <textarea class="toolbar-column" type="text" id="topic-chat-topic-id" placeholder="Domain/Topic ID"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <button id="load-msgs-from" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Use
+      </button>
+    </div>
 
->
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <input type="number" id="from-mmddyyyy" class="toolbar-column-btns" step="1" placeholder="MMDDYYYY" />
+      <input type="number" id="to-mmddyyyy" class="toolbar-column-btns" step="1" placeholder="MMDDYYYY" style="margin-left: 1vw;" />
+      <button id="topic-msgs-filter" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Filter
+      </button>
+    </div>
 
-<div style="display: flex; align-items: center; margin-bottom: 1vh;">
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <input type="number" id="from-hhmmss" class="toolbar-column-btns" step="1" placeholder="HHMMSS" />
+      <input type="number" id="to-hhmmss" class="toolbar-column-btns" step="1" placeholder="HHMMSS" style="margin-left: 1vw;" />
+      <button id="topic-msgs-filter-time" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Filter
+      </button>
+    </div>
 
-  <textarea
-  class="toolbar-column"
-  type="text"
-  id="topic-chat-topic-id"
-  placeholder="Domain/Topic ID"
-  style="background-color: transparent;"
-  onclick="event.stopPropagation();"
-  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-  <button id="load-msgs-from" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Use</button>
-</div>
-
-<div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-  <input type="number" id="from-mmddyyyy" class="toolbar-column-btns" step="1" placeholder="MMDDYYYY" />
-  <input type="number" id="to-mmddyyyy" class="toolbar-column-btns" step="1" placeholder="MMDDYYYY" style="margin-left: 1vw;" />
-  <button id="topic-msgs-filter" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Filter</button> <!-- Changed width to auto -->
-</div>
-
-<div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-  <input type="number" id="from-hhmmss" class="toolbar-column-btns" step="1" placeholder="HHMMSS" />
-  <input type="number" id="to-hhmmss" class="toolbar-column-btns" step="1" placeholder="HHMMSS" style="margin-left: 1vw;" />
-  <button id="topic-msgs-filter-time" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Filter</button> <!-- Changed width to auto -->
-</div>
-
-<div
-  class="toolbar-column"
-  id="messages-from-topic-chat"
-  style="
-    background-color: transparent;
-    max-height: 50vh; /* Set maximum height */
-    overflow-y: scroll; /* Explicitly enable vertical scrolling */
-    user-select: text; /* Allow text selection */
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: #888 #f1f1f1; /* Firefox */
-    -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
-    touch-action: auto; /* Ensure touch actions are allowed */
-  "
-  onclick="event.stopPropagation();"
->
-  <textarea
-    style="
+    <div class="chat-container" id="messages-from-topic-chat" onclick="event.stopPropagation();">
+      <textarea
+      style="
       width: 100%;
       height: 100px;
       resize: none; /* Prevent manual resizing */
       overflow: auto; /* Enable scrolling */
       background-color: transparent;
       border: none;
-    "
-    onfocus="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-  ></textarea>
-</div>
+      "
+      onfocus="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+    </div>
 
-
-<div style="position: relative;">
-  <textarea
-    class="toolbar-column"
-    type="text"
-    id="user-write-message"
-    placeholder="Write a message (max 256 characters)"
-    style="
-      background-color: transparent;
+    <div style="position: relative;">
+      <textarea
+      class="toolbar-column"
+      type="text"
+      id="user-write-message"
+      placeholder="Write a message (max 256 characters)"
+      style="
       max-height: 50vh;
       overflow: auto;
       margin-top: 2vh;
-    "
-    onclick="event.stopPropagation();"
-    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter').textContent = this.value.length + '/256';"
-    maxlength="256"
-  ></textarea>
-  <div id="char-counter" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">
-    0/256
-  </div>
-</div>
-
-    <div style="display: flex; align-items: center; margin-top: 1.5vh;"> 
-      <button id="go-to-top-msgs" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; ">Go to the top</button> <!-- Changed width to auto -->
-      <button id="post-msg" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw ">Submit Message</button> <!-- Changed width to auto -->
+      "
+      onclick="event.stopPropagation();"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter').textContent = this.value.length + '/256';"
+      maxlength="256"
+      ></textarea>
+      <div id="char-counter" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">0/256
+      </div>
     </div>
 
-
-  </div>
-
-</div>
-
-
-
-
-    <div id="rotation-controls" style="position: fixed;
-    display: flex;
-    flex-direction: column;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 1vh 1vw;
-    border-radius: 1vh;
-    z-index: 1001;
-    justify-content: space-around;
-    width: 98%;
-    top: 10vh;
-    left: 0;
-    transform: none;
-    display: none;"
-    onclick="event.stopPropagation();">
-
-      <div class="toolbar-column" id="change-model-settings">Change model settings</div>
-      <div class="toolbar-column" id="change-crosshair-settings" style="width: 98vw;">Change crosshair settings</div>
-
+    <div style="display: flex; align-items: center; margin-top: 1.5vh;">
+      <button id="go-to-top-msgs" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; ">Go to the top
+      </button>
+      <button id="post-msg" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw ">Submit Message
+      </button>
     </div>
 
-
-
-
-
-    
-      <div id="model-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-        <div
-        id="model-column-container"
-        style="
-          background-color: rgba(0, 0, 0, 0);
-          color: white;
-          padding: 1vh 1vw;
-          box-sizing: border-box;
-          border-radius: 1vh;
-        "
-        onclick="event.stopPropagation();"
-        >
-
-        <input 
-        type="text" 
-        class="toolbar-column"
-        id="object-input"
-        placeholder="Enter URL"
-        style="
-    background-color: transparent;
-    overflow: hidden; /* Hide scrollbars */
-    resize: none; /* Prevent manual resizing */
-    text-align: center; /* Center-align the text */
-  "
-        onclick="event.stopPropagation();"
-        />
-        <button id="buttonforobject" class="toolbar-column-btns" 
-        style="text-shadow: 0 0 0.5vh black;
-        margin-top: 1vh;
-        ">Change object</button>
-
-
-        <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh; padding-top: 1vh;">
-            <label for="rotation-x"
-            class="toolbar-column"
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: left; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          ">Rotation X:</label>
-            <input type="range" class="toolbar-column" style="
-                            margin-left: 5vw;
-                            margin-right: 5vw;
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-          " id="rotation-x" min="0" max="360" value="0"/>
-            <input type="number" class="toolbar-column" style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: center; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          " id="rotation-x-value"
-           value="0" onchange="document.getElementById('rotation-x').value = this.value;" />
-        </div>
-        <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-            <label for="rotation-y"
-            class="toolbar-column"
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: left; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          ">Rotation Y:</label>
-            <input type="range" class="toolbar-column" style="
-                            margin-left: 5vw;
-                            margin-right: 5vw;
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-          " id="rotation-y" min="0" max="360" value="0"/>
-            <input type="number" class="toolbar-column" id="rotation-y-value" 
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: center; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          " value="0" onchange="document.getElementById('rotation-y').value = this.value;" />
-        </div>
-        <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-            <label for="rotation-z"
-            class="toolbar-column"
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: left; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          ">Rotation Z:</label>
-            <input type="range" class="toolbar-column" style="
-                            margin-left: 5vw;
-                            margin-right: 5vw;
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-          " id="rotation-z" min="0" max="360" value="0"/>
-            <input type="number" class="toolbar-column" id="rotation-z-value" 
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: center; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          " value="0" onchange="document.getElementById('rotation-z').value = this.value;" />
-        </div>
-        <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-            <label for="position-x"
-            class="toolbar-column"
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: left; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          ">Position X:</label>
-            <input type="range" class="toolbar-column" style="
-                            margin-left: 5vw;
-                            margin-right: 5vw;
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-          " id="position-x" min="-100" max="100" step="0.1" value="0"/>
-            <input type="number" class="toolbar-column" id="position-x-value" 
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: center; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          " value="0" onchange="document.getElementById('position-x').value = this.value;" />
-        </div>
-        <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-            <label for="position-y"    class="toolbar-column" style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: left; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          ">Position Y:</label>
-            <input type="range" class="toolbar-column" style="
-                            margin-left: 5vw;
-                            margin-right: 5vw;
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-          " id="position-y" min="-100" max="100" step="0.1" value="0"/>
-            <input type="number" class="toolbar-column" id="position-y-value" 
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: center; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          " value="0" onchange="document.getElementById('position-y').value = this.value;" />
-        </div>
-        <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-            <label for="position-z"   class="toolbar-column" style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: left; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          ">Position Z:</label>
-            <input type="range" class="toolbar-column" style="
-                            margin-left: 5vw;
-                            margin-right: 5vw;
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-          " id="position-z" min="-100" max="100" step="0.1" value="0"/>
-            <input type="number" class="toolbar-column" id="position-z-value" 
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: center; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          " value="0" onchange="document.getElementById('position-z').value = this.value;" />
-        </div>
-        <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-            <label for="scale-factor" class="toolbar-column" style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: left; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          ">Scale Factor:</label>
-            <input type="range" class="toolbar-column" style="
-                            margin-left: 5vw;
-                            margin-right: 5vw;
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-          " id="scale-factor" step="0.000001" value="1"/>
-            <input type="number" class="toolbar-column" id="scale-factor-value" 
-            style="
-            background-color: transparent;
-            overflow: hidden; /* Hide scrollbars */
-            resize: none; /* Prevent manual resizing */
-            text-align: center; /* Center-align the text */
-            text-shadow: 0 0 0.5vh black;
-          " value="1" onchange="document.getElementById('scale-factor').value = this.value;" />
-        </div>
-        <button id="savesettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black;">Save settings</button>
-
-            </div>
-        </div>
-      </div>
-
-
-
-
-
-      <div id="visibility-controls" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-
-        <div style="          background-color: rgba(0, 0, 0, 0.2);
-        color: white;
-        padding: 1vh 1vw;
-        box-sizing: border-box;
-        border-radius: 1vh;
-      ">
-
-
-
-          <div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-            <label for="time-input" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">Enter a time of update in milliseconds:</label>
-          </div>
-
-          <div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-            <input type="number" id="time-input" class="toolbar-column-btns" />
-            <button id="update-loop" class="toolbar-column-btns" style="width: 50vw;  margin-left: 1vw; color: white; text-shadow: 0 0 0.5vh black;">Update time</button> <!-- Changed width to auto -->
-          </div>
-
-          <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-            <label for="raster-opacity-slider" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">
-              Polygon transparency:</label>
-
-              <input type="range" id="raster-opacity-slider" min="0" max="1" step="0.01" value="1" class="toolbar-column" style="
-              background-color: transparent;
-              overflow: hidden; /* Hide scrollbars */
-              resize: none; /* Prevent manual resizing */
-              color: white;
-              text-shadow: 0 0 0.5vh black;
-            " >
-          </div>
-
-          <div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-            <button id="toggle-polygon-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show polygons:</button> <!-- Changed width to auto -->
-            <span id="polygon-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On</span> <!-- Updated to reflect button state -->
-          </div>
-
-          <div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-            <button id="toggle-marker-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show markers</button> <!-- Changed width to auto -->
-            <span id="marker-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On</span> <!-- Updated to reflect button state -->
-          </div>
-
-          <div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-            <button id="toggle-3d-model-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show 3D models</button> <!-- Changed width to auto -->
-            <span id="3d-model-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On</span> <!-- Updated to reflect button state -->
-          </div>
-
-          <div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-            <button id="toggle-updates" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">model updates</button> <!-- Changed width to auto -->
-            <span id="updates-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On</span> <!-- Updated to reflect button state -->
-          </div>
-
-          <div style="display: flex; align-items: center; margin-bottom: 1vh;"> 
-            <button id="update-map-layer-btn" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Update Map</button>
-          </div>
-
-          
-        </div>
-
-      </div>
-
-
-
-
-
-
-      <div id="crosshair-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-        <div
-        id="crosshair-column-container"
-        style="
-          background-color: rgba(0, 0, 0, 0);
-          color: white;
-          padding: 1vh 1vw;
-          box-sizing: border-box;
-          border-radius: 1vh;
-        "
-        onclick="event.stopPropagation();"
-      >
-
-
-            <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-                <label for="color-red" class="toolbar-column" style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: left; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              ">Red:</label>
-                <input type="range" class="toolbar-column" style="
-                                margin-left: 5vw;
-                                margin-right: 5vw;
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-              "  id="color-red" min="0" max="255" value="0"/>
-                <input type="number" id="color-red-value"   class="toolbar-column"          style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: center; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              " value="0" onchange="document.getElementById('color-red').value = this.value;" />
-            </div>
-            <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-                <label for="color-green" class="toolbar-column" style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: left; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              ">Green:</label>
-                <input type="range" class="toolbar-column" style="
-                                                margin-left: 5vw;
-                                                margin-right: 5vw;
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-              "  id="color-green" min="0" max="255" value="0"/>
-                <input type="number" id="color-green-value" class="toolbar-column"          style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: center; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              " value="0" onchange="document.getElementById('color-green').value = this.value;" />
-            </div>
-            <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-                <label for="color-blue" class="toolbar-column" style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: left; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              ">Blue:</label>
-                <input type="range" class="toolbar-column" style="
-                margin-left: 5vw;
-                margin-right: 5vw;
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-              "  id="color-blue" min="0" max="255" value="0"/>
-                <input type="number" id="color-blue-value" class="toolbar-column"          style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: center; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              " value="0" onchange="document.getElementById('color-blue').value = this.value;" />
-            </div>
-            <!-- New Sliders for Crosshair -->
-            <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-                <label for="crosshair-before-after" class="toolbar-column" style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: left; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              ">Length:</label>
-                <input type="range" class="toolbar-column" style="
-                                                margin-left: 5vw;
-                                                margin-right: 5vw;
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-              "  id="crosshair-before-after" min="0" max="100" value="20"/>
-                <input type="number" id="crosshair-before-after-value" class="toolbar-column"          style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: center; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              " value="20" onchange="document.getElementById('crosshair-before-after').value = this.value;" />
-            </div>
-            <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-                <label for="crosshair-after-before" class="toolbar-column" style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: left; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              ">Thickness:</label>
-                <input type="range" class="toolbar-column" style="
-                                                margin-left: 5vw;
-                                                margin-right: 5vw;
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-              "  id="crosshair-after-before" min="0" max="10" value="2"/>
-                <input type="number" id="crosshair-after-before-value" class="toolbar-column"          style="
-                background-color: transparent;
-                overflow: hidden; /* Hide scrollbars */
-                resize: none; /* Prevent manual resizing */
-                text-align: center; /* Center-align the text */
-                text-shadow: 0 0 0.5vh black;
-              " value="2" onchange="document.getElementById('crosshair-after-before').value = this.value;" />
-            </div>
-            <div id="savecrosshair" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center;">Save crosshair</div>
-        </div>
-      </div>
-      </div>
-
-    
-
-
-    <div id="crosshair"></div>
-
-    <button id="toggle-rotation-controls-btn" style="
-      position: fixed;
-      top: 11vh;
-      left: 0;
-      z-index: 1006;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 0.8vh 1vw;
-      border-radius: 0.8vh;
-      cursor: pointer;
-      font-size: 1.5vh;
-      display: none; /* Initially hidden */
-      margin-left: 0.3vh;
-    ">YOUR FOV</button>
-
-    <button id="toggle-visibility-controls-btn" style="
-      position: fixed;
-      top: 15.5vh;
-      left: 0;
-      z-index: 1006;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 0.8vh 1vw;
-      border-radius: 0.8vh;
-      cursor: pointer;
-      font-size: 1.5vh;
-      display: none; /* Initially hidden */
-      margin-left: 0.3vh;
-    ">VISIBILITY</button>
-
-
-<div class="popup-welcome-msg" id="welcome-msg" style="display: none;">
-  <div class="popup-content-welcome">
-    <p>Welcome to Hedera Network</p>
-    <p>U must be connected via wallet to use this app.</p>
   </div>
 </div>
 
 
+
+
+<div id="rotation-controls" class='rotation-controls' onclick="event.stopPropagation();">
+  <div class="toolbar-column" id="change-model-settings">Change model settings
+  </div>
+  <div class="toolbar-column" id="change-crosshair-settings" style="width: 98vw;">Change crosshair settings
+  </div>
+  <div class="toolbar-column" id="change-popup-settings" style="width: 98vw;">Change popup colors
+  </div>
+</div>
+
+
+
+
+
+
+<div id="model-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div id="model-column-container" class="container" onclick="event.stopPropagation();" >
+
+    <input type="text" class="toolbar-column" id="object-input" placeholder="Enter URL" style="text-align: center;" onclick="event.stopPropagation();" />
+    <button id="buttonforobject" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; margin-top: 1vh;">Change object
+    </button>
+
+    <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh; padding-top: 1vh;">
+      <label for="rotation-x"class="toolbar-column">Rotation X:
+      </label>
+      <input type="range" class="model_sliders" id="rotation-x" min="0" max="360" value="0"/>
+      <input type="number" class="toolbar-column" style="text-align: center;" id="rotation-x-value" value="0"
+      onchange="document.getElementById('rotation-x').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
+      <label for="rotation-y" class="toolbar-column">Rotation Y:
+      </label>
+      <input type="range" class="model_sliders" id="rotation-y" min="0" max="360" value="0"/>
+      <input type="number" class="toolbar-column" style="text-align: center;" id="rotation-y-value" value="0"
+      onchange="document.getElementById('rotation-y').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
+      <label for="rotation-z" class="toolbar-column">Rotation Z:
+      </label>
+      <input type="range" class="model_sliders" id="rotation-z" min="0" max="360" value="0"/>
+      <input type="number" class="toolbar-column" style="text-align: center;" id="rotation-z-value" value="0"
+      onchange="document.getElementById('rotation-z').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
+      <label for="position-x" class="toolbar-column">Position X:
+      </label>
+      <input type="range" class="model_sliders" id="position-x" min="-100" max="100" step="0.1" value="0"/>
+      <input type="number" class="toolbar-column" style="text-align: center;" id="position-x-value" value="0"
+      onchange="document.getElementById('position-x').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
+      <label for="position-y"    class="toolbar-column">Position Y:
+      </label>
+      <input type="range" class="model_sliders" id="position-y" min="-100" max="100" step="0.1" value="0"/>
+      <input type="number" class="toolbar-column" style="text-align: center;" id="position-y-value" value="0"
+      onchange="document.getElementById('position-y').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
+      <label for="position-z"   class="toolbar-column">Position Z:
+      </label>
+      <input type="range" class="model_sliders" id="position-z" min="-100" max="100" step="0.1" value="0"/>
+      <input type="number" class="toolbar-column" style="text-align: center;" id="position-z-value" value="0"
+      onchange="document.getElementById('position-z').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
+      <label for="scale-factor" class="toolbar-column">Scale Factor:
+      </label>
+      <input type="range" class="model_sliders" id="scale-factor" step="0.000001" value="1"/>
+      <input type="number" class="toolbar-column" style="text-align: center;" id="scale-factor-value" value="1"
+      onchange="document.getElementById('scale-factor').value = this.value;" />
+    </div>
+
+    <button id="savesettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black;">Save settings
+    </button>
+
+  </div>
+</div>
+
+
+
+
+<div id="visibility-controls" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div class="container" onclick="event.stopPropagation();">
+
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <label for="time-input" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">Enter a time of update in milliseconds:
+      </label>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <input type="number" id="time-input" class="toolbar-column-btns" />
+      <button id="update-loop" class="toolbar-column-btns" style="width: 50vw;  margin-left: 1vw; color: white; text-shadow: 0 0 0.5vh black;">Update time
+      </button>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
+      <label for="raster-opacity-slider" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">Polygon transparency:
+      </label>
+      <input type="range" id="raster-opacity-slider" min="0" max="1" step="0.01" value="1" class="yourfov">
+    </div>
+
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <button id="toggle-polygon-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show polygons:
+      </button>
+      <span id="polygon-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      </span>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <button id="toggle-marker-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show markers
+      </button>
+      <span id="marker-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      </span>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <button id="toggle-3d-model-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show 3D models
+      </button>
+      <span id="3d-model-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      </span>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <button id="toggle-updates" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">model updates
+      </button>
+      <span id="updates-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      </span>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <button id="update-map-layer-btn" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Update Map
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<div id="popup-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div id="popup-column-container" class="container" onclick="event.stopPropagation();">
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Border:
+      </label>
+      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">username:
+      </label>
+      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">User AccID:
+      </label>
+      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">text:
+      </label>
+      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Titles:
+      </label>
+      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+    </div>
+
+  </div>
+</div>
+
+
+<div id="crosshair-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div id="crosshair-column-container" class="container" onclick="event.stopPropagation();">
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-red" class="yourfov">Red:
+      </label>
+      <input type="range" class="yourfov" id="color-red" min="0" max="255" value="0"/>
+      <input type="number" id="color-red-value"   class="yourfov" value="0"
+      onchange="document.getElementById('color-red').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Green:
+      </label>
+      <input type="range" class="yourfov" id="color-green" min="0" max="255" value="0"/>
+      <input type="number" id="color-green-value" class="yourfov" value="0"
+      onchange="document.getElementById('color-green').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-blue" class="yourfov">Blue:
+      </label>
+      <input type="range" class="yourfov" id="color-blue" min="0" max="255" value="0"/>
+      <input type="number" id="color-blue-value" class="yourfov" value="0"
+      onchange="document.getElementById('color-blue').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="crosshair-before-after" class="yourfov">Length:
+      </label>
+      <input type="range" class="yourfov" id="crosshair-before-after" min="0" max="100" value="20"/>
+      <input type="number" id="crosshair-before-after-value" class="yourfov" value="20"
+      onchange="document.getElementById('crosshair-before-after').value = this.value;" />
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="crosshair-after-before" class="yourfov">Thickness:
+      </label>
+      <input type="range" class="yourfov" id="crosshair-after-before" min="0" max="10" value="2"/>
+      <input type="number" id="crosshair-after-before-value" class="yourfov" value="2"
+      onchange="document.getElementById('crosshair-after-before').value = this.value;" />
+    </div>
+
+    <div id="savecrosshair" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save crosshair
+    </div>
+
+  </div>
+</div>
 
 
   </body>
@@ -2277,7 +1707,7 @@ async function extractTopicId() {
         if (!THREE.DRACOLoader.prototype) {
           throw new Error('THREE.DRACOLoader prototype is undefined.');
         }
-        
+
         SelfContainedDRACOLoader.prototype = Object.create(THREE.DRACOLoader.prototype);
         SelfContainedDRACOLoader.prototype.constructor = SelfContainedDRACOLoader;
 
@@ -2373,7 +1803,7 @@ async function extractTopicId() {
 
         const ufoLoader = new THREE.GLTFLoader();
         ufoLoader.setDRACOLoader(dracoLoader);
-        
+
 // Function to load the UFO model
 let currentUfoModel = null; // Declare outside the function to persist across calls
 
@@ -2385,7 +1815,7 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
             document.getElementById("disconnect-wallet-btn").style.display =
               "none";
             document.getElementById("account-id").textContent = ``;
-            document.getElementById("crosshair").style.display = "none";  
+            document.getElementById("crosshair").style.display = "none";
           // Show welcome message
           document.getElementById("welcome-msg").style.display = "block";
 
@@ -2420,11 +1850,11 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
 
                       const profileObjectSettings = await loadProfileSettings();
 
-                      const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0 
-                      ? profileObjectSettings[0].urls[0] 
+                      const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0
+                      ? profileObjectSettings[0].urls[0]
                       : defaultModelUrl; // Use default model URL if no valid URL is found
 
-                      
+
               extractTopicId();
 
               await loadUfoModel(modelUrl); // Load the model using the determined URL
@@ -2435,7 +1865,7 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
               await confirmNFTFunction(accountId);
             }, 1000));
 
-               await extractAccountId();       
+               await extractAccountId();
         }
         loader.updateProgress();
 
@@ -2443,7 +1873,7 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
         document.getElementById("load-msgs-from-ids-button").addEventListener("click", async () => {
     const ids = document.getElementById("load-msgs-from-ids").value.toLowerCase();
     const idsArray = ids.split(",").map(id => id.trim()).filter(id => id.length > 0); // Trim whitespace and filter out empty strings
- 
+
         // New logic to process idsArray
     idsArray.forEach(id => {
         if (!id.startsWith("0.0.")) {
@@ -2451,7 +1881,7 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
             idsArray.splice(idsArray.indexOf(id), 1); // Remove the id from idsArray
             if (domainEntry) {
                 idsArray.push(domainEntry.lastMessage.topic); // Add the domain entry to idsArray
-            } 
+            }
         }
     });
 
@@ -2541,11 +1971,11 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
 document.getElementById('go-to-top-msgs').addEventListener('click', function() {
     // Get the container element
     const container = document.getElementById('topic-chat-container');
-    
+
     // Scroll to the top of the container
     container.scrollTop = 0;
   });
-        
+
 
   let storedMessages = []; // Declare an external array to store messages
 
@@ -2672,14 +2102,14 @@ function isValidUrl(string) {
     new URL(string);
     return true;
   } catch (_) {
-    return false;  
+    return false;
   }
 }
 
 // Check if payerImage is valid, if not use fallback
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
 
-      
+
       const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
   hour12: false,
   year: 'numeric',
@@ -2691,27 +2121,27 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
 }); // Format as MM/DD/YYYY HH:MM:SS
 
 const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
-              const username = message.payer && usernames[message.payer] ? 
-                ` ${usernames[message.payer].username}` : 
+              const username = message.payer && usernames[message.payer] ?
+                ` ${usernames[message.payer].username}` :
                 '';
 
-                const click2link= message.payer && click2url[message.payer] ? 
-                ` ${click2url[message.payer].click2url}` : 
+                const click2link= message.payer && click2url[message.payer] ?
+                ` ${click2url[message.payer].click2url}` :
                 '';
-              
+
               // Combine username and payerInfo with h2 tags
               const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
-              ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`; 
+              ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`;
 
       // Store the message in the external array
       storedMessages.push(parsedMessage);
 
-      
+
 
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-  <img src="${validPayerImage}" alt="Profile photo" 
+  <img src="${validPayerImage}" alt="Profile photo"
   style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
   onclick="loadTOPIC4PIC('${message.payer}');">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
@@ -2786,7 +2216,7 @@ document.getElementById("topic-msgs-filter").addEventListener("click", async () 
     console.error("Please provide both from and to dates.");
     return;
   }
-  
+
   const profilePictures = await loadProfilePicture(); // Load profile pictures
   const usernames = await loadUsername(); // Load usernames
   const click2url = await loadCLICK2URL();
@@ -2797,7 +2227,7 @@ document.getElementById("topic-msgs-filter").addEventListener("click", async () 
 
   console.log("fromDate", fromDate);
   console.log("toDate", toDate);
-  
+
   // Adjust toDate to include the entire day
   toDate.setHours(23, 59, 59, 999);
 
@@ -2808,7 +2238,7 @@ document.getElementById("topic-msgs-filter").addEventListener("click", async () 
 
   let filteredMessagesHtml = '';
   let previousPayer = null;
-  
+
 
   filteredMessages.forEach(parsedMessage => {
     const userMessage = parsedMessage.userMessage;
@@ -2821,7 +2251,7 @@ function isValidUrl(string) {
     new URL(string);
     return true;
   } catch (_) {
-    return false;  
+    return false;
   }
 }
 
@@ -2838,27 +2268,27 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
 }); // Format as MM/DD/YYYY HH:MM:SS
 
 const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
-              const username = message.payer && usernames[message.payer] ? 
-                ` ${usernames[message.payer].username}` : 
+              const username = message.payer && usernames[message.payer] ?
+                ` ${usernames[message.payer].username}` :
                 '';
 
-                const click2link= message.payer && click2url[message.payer] ? 
-                ` ${click2url[message.payer].click2url}` : 
+                const click2link= message.payer && click2url[message.payer] ?
+                ` ${click2url[message.payer].click2url}` :
                 '';
-              
+
               // Combine username and payerInfo with h2 tags
               const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
-               ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`; 
+               ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`;
 
       // Store the message in the external array
       storedMessages.push(parsedMessage);
 
-      
+
 
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-  <img src="${validPayerImage}" alt="Profile photo" 
+  <img src="${validPayerImage}" alt="Profile photo"
   style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
   onclick="loadTOPIC4PIC('${message.payer}');">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
@@ -2899,8 +2329,8 @@ document.getElementById("topic-msgs-filter-time").addEventListener("click", asyn
   const topic2pic = await loadTOPIC2PIC();
 
   const fromDate = new Date(
-    fromDateInput.slice(4, 8), 
-    fromDateInput.slice(0, 2) - 1, 
+    fromDateInput.slice(4, 8),
+    fromDateInput.slice(0, 2) - 1,
     fromDateInput.slice(2, 4),
     fromTimeInput.slice(0, 2), // Hours
     fromTimeInput.slice(2, 4), // Minutes
@@ -2908,8 +2338,8 @@ document.getElementById("topic-msgs-filter-time").addEventListener("click", asyn
   );
 
   const toDate = new Date(
-    toDateInput.slice(4, 8), 
-    toDateInput.slice(0, 2) - 1, 
+    toDateInput.slice(4, 8),
+    toDateInput.slice(0, 2) - 1,
     toDateInput.slice(2, 4),
     toTimeInput.slice(0, 2), // Hours
     toTimeInput.slice(2, 4), // Minutes
@@ -2938,7 +2368,7 @@ function isValidUrl(string) {
     new URL(string);
     return true;
   } catch (_) {
-    return false;  
+    return false;
   }
 }
 
@@ -2955,27 +2385,27 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
 }); // Format as MM/DD/YYYY HH:MM:SS
 
 const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
-              const username = message.payer && usernames[message.payer] ? 
-                ` ${usernames[message.payer].username}` : 
+              const username = message.payer && usernames[message.payer] ?
+                ` ${usernames[message.payer].username}` :
                 '';
 
-                const click2link= message.payer && click2url[message.payer] ? 
-                ` ${click2url[message.payer].click2url}` : 
+                const click2link= message.payer && click2url[message.payer] ?
+                ` ${click2url[message.payer].click2url}` :
                 '';
-              
+
               // Combine username and payerInfo with h2 tags
               const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
-               ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`; 
+               ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`;
 
       // Store the message in the external array
       storedMessages.push(parsedMessage);
 
-      
+
 
       // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-  <img src="${validPayerImage}" alt="Profile photo" 
+  <img src="${validPayerImage}" alt="Profile photo"
   style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
   onclick="loadTOPIC4PIC('${message.payer}');">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
@@ -3001,14 +2431,14 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
 
 
 
-        
+
         let loadedDomains = [
         ];
 
 
 async function loadDomains() {
   try {
-    const topicId = "0.0.9606779"; 
+    const topicId = "0.0.9606779";
 
     const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
 
@@ -3110,7 +2540,7 @@ loadDomains().then(domains => {
     // Get the current center of the map
     const center = map.getCenter();
     const coordinates = `${center.lng.toFixed(5)},${center.lat.toFixed(5)}`;
-  
+
     // Copy the coordinates to the clipboard
     navigator.clipboard.writeText(coordinates).then(() => {
     }).catch(err => {
@@ -3118,7 +2548,7 @@ loadDomains().then(domains => {
     });
   });
   loader.updateProgress();
-        
+
 // Define a default model URL
 const defaultModelUrl = 'https://kiloscribe.com/api/inscription-cdn/0.0.9742046'; // Replace with your actual default model URL
 await loadUfoModel(defaultModelUrl);
@@ -3164,7 +2594,7 @@ let BetaNFTScaleFactor = 1;
           }
         }
 
- 
+
         initAccount()
         updateAccountInfo();
 
@@ -3181,7 +2611,7 @@ let BetaNFTScaleFactor = 1;
             console.log("globalAccountId is", thisAccountId)
             return thisAccountId;
           }
-         
+
 
                 // Create a new topic
                 document
@@ -3218,7 +2648,7 @@ let BetaNFTScaleFactor = 1;
     }
   });
 
-          function adjustTextareaHeight(textarea) 
+          function adjustTextareaHeight(textarea)
           {
           textarea.style.height = ''; // Reset the height
           textarea.style.height = textarea.scrollHeight + 10 + 'px'; // Set it to the scroll height
@@ -3293,9 +2723,9 @@ document.getElementById("submit-button-change-memo").addEventListener("click", a
 });
 
 
-          
 
-          
+
+
 
           async function loadProfilePicture() {
             const topicId = "0.0.9609881";
@@ -3321,7 +2751,7 @@ document.getElementById("submit-button-change-memo").addEventListener("click", a
                 }
               });
 
-      
+
               return accountUrls;
 
             } catch (error) {
@@ -3540,7 +2970,7 @@ window.loadTOPIC4PIC = async function(payer) {
       return idA - idB;
     });
 
- 
+
   closeAllColumns();
   const inputToolbar = document.getElementById("load-column");
   const toolbar = document.getElementById("toolbar");
@@ -3667,8 +3097,8 @@ if (domainEntry && domainEntry.lastMessage) {
 
         if (parsedMessage.addTopic && parsedMessage.addTopic.addTopic && (topicAdmin.length === 0 || topicAdmin.includes(message.payer))) {
           hasMoreThanOneTopic = true;
-          const topics = typeof parsedMessage.addTopic.addTopic === 'string' 
-            ? parsedMessage.addTopic.addTopic.split(',') 
+          const topics = typeof parsedMessage.addTopic.addTopic === 'string'
+            ? parsedMessage.addTopic.addTopic.split(',')
             : [];
           topics.forEach(topic => {
             topicActions.set(topic, { action: 'add', timestamp });
@@ -3677,8 +3107,8 @@ if (domainEntry && domainEntry.lastMessage) {
 
         if (parsedMessage.removeTopic && parsedMessage.removeTopic.removeTopic && (topicAdmin.length === 0 || topicAdmin.includes(message.payer))) {
           hasMoreThanOneTopic = true;
-          const topics = typeof parsedMessage.removeTopic.removeTopic === 'string' 
-            ? parsedMessage.removeTopic.removeTopic.split(',') 
+          const topics = typeof parsedMessage.removeTopic.removeTopic === 'string'
+            ? parsedMessage.removeTopic.removeTopic.split(',')
             : [];
           topics.forEach(topic => {
             topicActions.set(topic, { action: 'remove', timestamp });
@@ -3734,9 +3164,9 @@ return loadedTopicIdsWithNames; // Return the loadedTopicsIds array
 
 
 
-    
-    
-    
+
+
+
   } catch (error) {
     console.error("Error processing topic messages:", error);
   }
@@ -3798,7 +3228,7 @@ if (domainEntry && domainEntry.lastMessage) {
       }
     }
   }
- 
+
 
   if (NFTForModel.length > 0) {
     try {
@@ -3949,11 +3379,12 @@ function checkToolbarStatus() {
     document.getElementById("crosshair-column"),
     document.getElementById("rotation-controls"),
     document.getElementById("visibility-controls"),
+    document.getElementById("popup-column"),
     document.getElementById("topic-chat-container")
 
   ];
-  
-  isToolbarOpen = toolbars.some(toolbar => 
+
+  isToolbarOpen = toolbars.some(toolbar =>
     toolbar.style.display === "block" || toolbar.style.display === "flex"
   );
 }
@@ -4093,13 +3524,13 @@ document.addEventListener("click", () => {
 document.getElementById("toggle-toolbar-btn").addEventListener("click", function(event) {
   // Stop event propagation to prevent document click handler from firing
   event.stopPropagation();
-  
+
   // Get the toolbar element
   const toolbar = document.getElementById("toolbar");
-  
+
   // Toggle isToolbarOpen state
   isToolbarOpen = !isToolbarOpen;
-  
+
   // Explicitly set display style based on current state
   if (isToolbarOpen) {
     toolbar.style.display = "flex";
@@ -4108,7 +3539,7 @@ document.getElementById("toggle-toolbar-btn").addEventListener("click", function
     toolbar.style.display = "none";
     console.log("Toolbar should be hidden now", toolbar);
   }
-  
+
   // Hide both toggle buttons and show the main button
   document.getElementById("toggle-controls-btn").style.display = "none";
   document.getElementById("toggle-toolbar-btn").style.display = "none";
@@ -4186,10 +3617,9 @@ function closeAllColumns() {
     "rotation-controls",
     "edit-profile-column",
     "topic-chat-container",
-    "crosshair-column",
     "visibility-controls"
   ];
-  
+
   columns.forEach(columnId => {
     const column = document.getElementById(columnId);
     if (column) {
@@ -4249,6 +3679,13 @@ document.getElementById("stack-topic-ids-column").addEventListener("click", (eve
         isToolbarOpen = true;
       });
 
+      document.getElementById("change-popup-settings").addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent event bubbling
+        closeAllColumns(); // Close any open columns
+        document.getElementById("popup-column").style.display = "block"; // Show popup column
+        document.getElementById("popup-column-container").style.display = "block"; // Show popup column container
+        isToolbarOpen = true;
+      });
             // Close columns when clicking elsewhere on the screen
             document.addEventListener("click", (event) => {
         const modelColumn = document.getElementById("model-column");
@@ -4338,7 +3775,7 @@ document.getElementById("change-memo").addEventListener("click", (event) => {
 document.getElementById("set-rules").addEventListener("click", (event) => {
   closeAllColumns();
   const inputToolbarSetRules = document.getElementById("rules-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect(); 
+  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
   inputToolbarSetRules.style.display = "block";
   inputToolbarSetRules.style.left = `${toolbarRect.right + 0}px`;
   inputToolbarSetRules.style.top = `${toolbarRect.top}px`;
@@ -4420,8 +3857,8 @@ document
               const SizeForPolygons = document.getElementById("input-field-messages-size-for-polygons").value;
 
               const meesageobject = {
-                rules : { 
-                  forpolygon: { 
+                rules : {
+                  forpolygon: {
                     polygonTopicId: polygonTopicId,
                     polygonMessagesPerNft: messagesPerNftPolygon,
                     polygonSize: SizeForPolygons
@@ -4436,7 +3873,7 @@ document
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4492,7 +3929,7 @@ document
                     lastRule = parsedMessage.rules;
                     break; // Exit the loop after finding the last message with rules
                 }
-                
+
             } catch (messageError) {
                 console.error(`Error processing message ${index}:`, messageError);
             }
@@ -4573,14 +4010,14 @@ if (lastRule) {
     const maxLongitudeSize = 360 / polygonSize;
     const maxLatitudeSize = 180 / polygonSize;
 
-    formattedRules += 
+    formattedRules +=
       `Polygon Topic ID: ${lastRule.forpolygon.polygonTopicId}\n` +
       `Polygon Messages Per NFT: ${lastRule.forpolygon.polygonMessagesPerNft}\n` +
       `Polygon Size: ${polygonSize}\n` +
       `Maximum distance between points is:\n360/${polygonSize}=${maxLongitudeSize} for longitude\n180/${polygonSize}=${maxLatitudeSize} for latitude.\n`;
   }
   if (lastRule.formarker ) {
-    formattedRules += 
+    formattedRules +=
       `Marker Topic ID: ${lastRule.formarker.markerTopicId}\n` +
       `Marker Messages Per NFT: ${lastRule.formarker.markerMessagesPerNft}\n`;
   }
@@ -4604,7 +4041,7 @@ if (lastRule) {
     }
 });
 
-          
+
 
           document
 .getElementById("button5")
@@ -4624,7 +4061,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4660,7 +4097,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4691,7 +4128,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4721,7 +4158,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4751,7 +4188,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4781,7 +4218,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4811,7 +4248,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4836,7 +4273,7 @@ if (lastRule) {
 
 
               const meesageobject = {
-                  addTopic: { 
+                  addTopic: {
                     addTopic: stackTopicAddTopic
                   },
               };
@@ -4845,7 +4282,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4877,7 +4314,7 @@ if (lastRule) {
 
               const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, meesage);
               console.log("Reciept is", reciept);
-              
+
             } catch (error) {
               console.error("Error setting rules:", error);
             }
@@ -4915,22 +4352,22 @@ document
             alert("Please fill in all required fields: Number of Marker, Topic ID, and Coordinates.");
             return; // Stop the submission if any field is empty
           }
-      
+
       const messageObj = {marker: {data: {title: title, image: [cleanUrl], coverimage: [cleanCoverimage], msg: msg, cord: cord, numberOfMarker: numberOfMarker }}};
       const message = JSON.stringify(messageObj); // Convert to string
-      
+
       const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
         topicId,
         message // Send stringified message
       );
       console.log('Receipt:', receipt);
-      
+
       // Clear inputs after successful submission
       document.getElementById("input-field-2-0").value = '';
       document.getElementById("input-field-2-1").value = '';
       document.getElementById("input-field-2-2").value = '';
       document.getElementById("input-field-2-3").value = '';
-      
+
     } catch (error) {
       console.error('Error submitting message:', error);
     }
@@ -5005,9 +4442,9 @@ document
       ];
 
       // Ensure all coordinates are valid numbers
-      const isValid = formattedCord.every(cord => 
-        Array.isArray(cord) && 
-        cord.length === 2 && 
+      const isValid = formattedCord.every(cord =>
+        Array.isArray(cord) &&
+        cord.length === 2 &&
         cord.every(num => !isNaN(num) && isFinite(num))
       );
 
@@ -5017,7 +4454,7 @@ document
 
       // Create the desired coordinate string without additional array wrapping
       const cordString = formattedCord.map(cord => `[${cord.join(',')}]`).join(', '); // Join the valid coordinates
-            
+
       const messageObj = {
         polygon: {
           data: {
@@ -5031,13 +4468,13 @@ document
         }
       };
       const message = JSON.stringify(messageObj);
-      
+
       const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
         topicId,
         message
       );
       console.log('Receipt:', receipt);
-      
+
       // Clear inputs after successful submission
       document.getElementById("input-field-3-0").value = '';
       document.getElementById("input-field-3-1").value = '';
@@ -5046,7 +4483,7 @@ document
       document.getElementById("input-field-3-4").value = '';
       document.getElementById("input-field-3-5").value = '';
       document.getElementById("input-field-3-6").value = '';
-      
+
     } catch (error) {
       console.error('Error submitting message:', error);
     }
@@ -5224,10 +4661,10 @@ function createLowQualityImage(imageUrl, size = 32) {
       canvas.width = size;
       canvas.height = size;
       const ctx = canvas.getContext('2d');
-      
+
       // Draw image at lower resolution
       ctx.drawImage(img, 0, 0, size, size);
-      
+
       // Convert to low quality JPEG-like format
       resolve(canvas.toDataURL('image/jpeg', 0.5));
     };
@@ -5348,12 +4785,12 @@ function createResizedImage(imageUrl, maxWidth = 256, maxHeight = 256) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "Anonymous";
-    
+
     img.onload = () => {
       const canvas = document.createElement('canvas');
       let width = img.width;
       let height = img.height;
-      
+
       // Calculate new dimensions while maintaining aspect ratio
       if (width > height) {
         if (width > maxWidth) {
@@ -5366,19 +4803,19 @@ function createResizedImage(imageUrl, maxWidth = 256, maxHeight = 256) {
           height = maxHeight;
         }
       }
-      
+
       canvas.width = width;
       canvas.height = height;
-      
+
       const ctx = canvas.getContext('2d');
       // Use better image smoothing
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
-      
+
       ctx.drawImage(img, 0, 0, width, height);
       resolve(canvas.toDataURL('image/jpeg', 1)); // Adjust quality here (0-1)
     };
-    
+
     img.onerror = reject;
     img.src = imageUrl;
   });
@@ -5540,7 +4977,7 @@ popup.on('close', () => {
 
       function setupButton(buttonElement, action) {
         let intervalId;
-        
+
         const startAction = (event) => {
           event.preventDefault();
           if (!intervalId) {
@@ -5560,7 +4997,7 @@ popup.on('close', () => {
         buttonElement.addEventListener("mousedown", startAction);
         buttonElement.addEventListener("mouseup", stopAction);
         buttonElement.addEventListener("mouseleave", stopAction);
-        
+
         buttonElement.addEventListener("touchstart", startAction);
         buttonElement.addEventListener("touchend", stopAction);
         buttonElement.addEventListener("touchcancel", stopAction);
@@ -5601,7 +5038,7 @@ popup.on('close', () => {
       document.getElementById("button1").addEventListener("click", async (event) => {
         event.stopPropagation();
         const inputValue = document.getElementById("toolbar-input").value;
-        
+
         try {
           const topicId = "0.0.9609881";
           const cleanUrl = inputValue.replace(/\?network=mainnet$/, "");
@@ -5618,9 +5055,9 @@ popup.on('close', () => {
             message
           );
           console.log("Profile picture updated successfully:", receipt);
-          
+
           document.getElementById("toolbar-input").value = "";
-          
+
         } catch (error) {
           console.error("Error updating profile picture:", error);
           // Removed alert
@@ -5660,7 +5097,7 @@ popup.on('close', () => {
       document.getElementById("button_for_click_url").addEventListener("click", async (event) => {
         event.stopPropagation();
         const inputValue = document.getElementById("toolbar-input").value;
-        
+
         try {
           const topicId = "0.0.9752486";
           const cleanUrl = inputValue.replace(/\?network=mainnet$/, "");
@@ -5677,9 +5114,9 @@ popup.on('close', () => {
             message
           );
           console.log("Profile CLICK2URL updated successfully:", receipt);
-          
+
           document.getElementById("toolbar-input").value = "";
-          
+
         } catch (error) {
           console.error("Error updating profile CLICK2URL:", error);
           // Removed alert
@@ -5696,7 +5133,7 @@ popup.on('close', () => {
     console.error("Input must be less than 20 characters");
     return; // Exit the function if the input is too long
   }
-        
+
         try {
           const topicId = "0.0.9759201";
 
@@ -5713,9 +5150,9 @@ popup.on('close', () => {
             message
           );
           console.log("Profile TOPIC2PIC updated successfully:", receipt);
-          
+
           document.getElementById("edit-profile-topic-id").value = "";
-          
+
         } catch (error) {
           console.error("Error updating profile TOPIC2PIC:", error);
           // Removed alert
@@ -5737,7 +5174,7 @@ popup.on('close', () => {
         }
         lastTouchEnd = now;
       }, { passive: false });
-      
+
       // Prevent zoom on input focus for iOS
       document.addEventListener('gesturestart', (event) => {
         event.preventDefault();
@@ -5783,9 +5220,12 @@ function closeOptions() {
     "model-column",
     "visibility-controls",
     "crosshair-column",
-    "crosshair-column-container"
+    "crosshair-column-container",
+    "popup-column",
+    "popup-column-container"
+
   ];
-  
+
   inputToolbars.forEach(toolbarId => {
     const inputToolbar = document.getElementById(toolbarId);
     if (inputToolbar) {
@@ -5809,6 +5249,8 @@ function closeOptionsWithoutChat() {
   const topicChatContainer = document.getElementById("topic-chat-container");
   const crosshairColumn = document.getElementById("crosshair-column");
   const crosshairColumnContainer = document.getElementById("crosshair-column-container");
+  const popupColumn = document.getElementById("popup-column");
+  const popupColumnContainer = document.getElementById("popup-column-container");
 
 
   toggleControlsBtn.style.display = "none";
@@ -5834,9 +5276,11 @@ function closeOptionsWithoutChat() {
     "model-column",
     "visibility-controls",
     "crosshair-column",
-    "crosshair-column-container"
+    "crosshair-column-container",
+    "popup-column",
+    "popup-column-container"
   ];
-  
+
   inputToolbars.forEach(toolbarId => {
     const inputToolbar = document.getElementById(toolbarId);
     if (inputToolbar) {
@@ -5853,7 +5297,7 @@ function closeOptionsWithoutChat() {
 
 document.getElementById("main-toggle-btn").addEventListener("click", function(e) {
   e.stopPropagation();
-  
+
   closeOptions();
 
   // Reset the toolbar state
@@ -5915,7 +5359,7 @@ controlButtons.forEach(buttonId => {
   document.getElementById(buttonId).addEventListener("click", function(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     // Hide the control buttons and show the main toggle button
     controlButtons.forEach(id => {
       document.getElementById(id).style.display = "none"; // Hide all control buttons
@@ -5935,7 +5379,7 @@ document.getElementById("toggle-rotation-controls-btn").addEventListener("click"
   isToolbarOpen = true;
   // Toggle the display of the rotation controls
   const rotationControls = document.getElementById("rotation-controls");
-  rotationControls.style.display = 
+  rotationControls.style.display =
     rotationControls.style.display === "block" ? "none" : "block"; // Toggle rotation controls
 });
 
@@ -5969,21 +5413,21 @@ document.getElementById("toggle-controls-btn").addEventListener("click", functio
 document.getElementById("toggle-controls-btn").addEventListener("click", function(e) {
   e.preventDefault();
   e.stopPropagation();
-  
+
   // Get the control elements
   const zoomControls = document.getElementById("zoom-controls");
   const leftDpad = document.getElementById("left-dpad");
   const rightDpad = document.getElementById("right-dpad");
-  
+
   // Check if they exist
   if (!zoomControls || !leftDpad || !rightDpad) {
     console.error("Control elements not found:", {zoomControls, leftDpad, rightDpad});
     return false;
   }
-  
+
   // Log current visibility state
   const isVisible = getComputedStyle(zoomControls).display !== "none";
-  
+
   // Toggle visibility with !important to override other styles
   if (isVisible) {
     // Hide controls
@@ -5995,7 +5439,7 @@ document.getElementById("toggle-controls-btn").addEventListener("click", functio
     zoomControls.setAttribute("style", "display: flex !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
     leftDpad.setAttribute("style", "display: grid !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
     rightDpad.setAttribute("style", "display: grid !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
-    
+
     // Also make sure any parent containers are visible
     let parent = zoomControls.parentElement;
     while (parent && parent !== document.body) {
@@ -6005,12 +5449,12 @@ document.getElementById("toggle-controls-btn").addEventListener("click", functio
       parent = parent.parentElement;
     }
   }
-  
+
   // Hide both toggle buttons and show the main button
   document.getElementById("toggle-controls-btn").style.display = "none";
   newToggleBtn.style.display = "none";
   document.getElementById("main-toggle-btn").style.display = "block";
-  
+
   return false;
 });
 
@@ -6018,14 +5462,14 @@ document.getElementById("toggle-controls-btn").addEventListener("click", functio
 document.getElementById("toggle-controls-btn").addEventListener("click", function(e) {
   e.preventDefault();
   e.stopPropagation();
-  
+
   // Do its primary function (toggle controls)
   const zoomControls = document.getElementById("zoom-controls");
   const leftDpad = document.getElementById("left-dpad");
   const rightDpad = document.getElementById("right-dpad");
-  
+
   const isVisible = zoomControls.style.display === "flex";
-  
+
   // Toggle visibility state
   if (isVisible) {
     zoomControls.style.display = "none";
@@ -6036,12 +5480,12 @@ document.getElementById("toggle-controls-btn").addEventListener("click", functio
     leftDpad.style.display = "grid";
     rightDpad.style.display = "grid";
   }
-  
+
   // Hide both toggle buttons and show the main button
   document.getElementById("toggle-controls-btn").style.display = "none";
   newToggleBtn.style.display = "none";
   document.getElementById("main-toggle-btn").style.display = "block";
-  
+
   return false;
 });
 
@@ -6080,21 +5524,21 @@ if (originalToggleBtn && originalToggleBtn.parentNode) {
 newToggleBtn.addEventListener("click", function(e) {
   e.preventDefault();
   e.stopPropagation();
-  
+
   // Toggle state
   isToolbarOpen = !isToolbarOpen;
-  
+
   // Force display style after a slight delay (to avoid race conditions)
   setTimeout(() => {
     toolbar.style.display = isToolbarOpen ? "flex" : "none";
     console.log("Toolbar visibility forcibly set to:", isToolbarOpen);
   }, 10);
-  
+
   // Hide the toggle buttons and show the main button
   document.getElementById("toggle-controls-btn").style.display = "none";
   newToggleBtn.style.display = "none";
   document.getElementById("main-toggle-btn").style.display = "block";
-  
+
   return false; // Prevent any other handlers
 });
 
@@ -6232,8 +5676,8 @@ document.addEventListener("click", (event) => {
           }
       });
       // Update the button state text
-      document.getElementById("marker-visibility-value").textContent = markersVisible ? "On" : "Off"; 
-      
+      document.getElementById("marker-visibility-value").textContent = markersVisible ? "On" : "Off";
+
       // Prevent updating clusters if markers are not visible
       if (!markersVisible) {
           map.off("moveend", debouncedUpdateClusters); // Unsubscribe from moveend event
@@ -6404,7 +5848,7 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
                 message
             );
             console.log("Profile settings updated successfully:", receipt);
-            
+
         } catch (error) {
             console.error("Error updating settings picture:", error);
             // Removed alert
@@ -6477,7 +5921,7 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
             document.getElementById("buttonforobject").addEventListener("click", async (event) => {
         event.stopPropagation();
         const inputValue = document.getElementById("object-input").value;
-        
+
         try {
           const topicId = "0.0.9609898";
           const cleanUrl = inputValue.replace(/\?network=mainnet$/, "");
@@ -6495,9 +5939,9 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
             message
           );
           console.log("Profile picture updated successfully:", receipt);
-          
+
           document.getElementById("object-input").value = "";
-          
+
         } catch (error) {
           console.error("Error updating profile picture:", error);
           // Removed alert
@@ -6554,7 +5998,7 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
                 message
             );
             console.log("Profile settings updated successfully:", receipt);
-            
+
         } catch (error) {
             console.error("Error updating settings picture:", error);
             // Removed alert
@@ -6562,7 +6006,7 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
       });
 
       async function loadProfileObject() {
-        
+
         const topicId = "0.0.9609898";
         const accountObjectUrl = []; // Initialize an empty array to store account URLs
         try {
@@ -6594,7 +6038,7 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
         }
       }
 
-    
+
 
       async function loadProfileSettings() {
         const topicId = "0.0.9609898";
@@ -6615,7 +6059,7 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
 
             // Check if the last message has valid data
             if (lastMessage && lastMessage.data) {
-              
+
               // Check if settings are empty
               if (Array.isArray(lastMessage.data.settings) && lastMessage.data.settings.length === 0) {
                 const urls = lastMessage.data.urls; // This will give you the entire array
@@ -6697,7 +6141,7 @@ async function loadUfoModel(modelUrl) {
                 reject(error);
             });
         });
-        
+
         currentUfoModel = gltf.scene; // Get the loaded model
 
         // Step 1: Calculate the model's bounding box
@@ -7065,7 +6509,7 @@ async function processTopicMessages(topicId) {
         const profilePics = await loadProfilePicture();
         const usernames = await loadUsername();
         const click2url = await loadCLICK2URL();
-      
+
         try {
           const response = await window.HashinalsWalletConnectSDK.getMessages(topicId);
 
@@ -7087,21 +6531,21 @@ async function processTopicMessages(topicId) {
             }
           });
 
-          
-      
+
+
           // Check if messages exist and is an array
           if (!response.messages || !Array.isArray(response.messages)) {
             console.error(`No messages found for topic ${topicId}.`, response);
             return { topicGeojsonFeatures, topicPolygons }; // Return empty arrays
           }
-      
+
           const messages = response.messages; // Extract messages
-      
+
           const loadedTopicRulesForMarker = [];
           const loadedTopicRulesForPolygon = [];
-  
 
-      
+
+
           // Read rules from messages
           for (let index = messages.length - 1; index >= 0; index--) {
             const message = messages[index];
@@ -7144,10 +6588,10 @@ async function processTopicMessages(topicId) {
             } catch (messageError) {
               console.error(`Error processing message ${index}:`, messageError);
             }
-          }      
+          }
           const uniquePayerIdsForMarker = new Set();
           const uniquePayerIdsForPolygon = new Set();
-      
+
           // Extract payer IDs from messages
       for (const message of messages) {
         try {
@@ -7155,12 +6599,12 @@ async function processTopicMessages(topicId) {
           if (typeof message === 'string') {
             parsedMessage = JSON.parse(message);
           }
-      
+
           // Add payer IDs for markers
           if (parsedMessage.marker && parsedMessage.marker.data) {
             uniquePayerIdsForMarker.add(parsedMessage.payer);
           }
-      
+
           // Add payer IDs for polygons
           if (parsedMessage.polygon && parsedMessage.polygon.data) {
             uniquePayerIdsForPolygon.add(parsedMessage.payer);
@@ -7204,18 +6648,18 @@ async function processTopicMessages(topicId) {
           console.error("Error extracting payer ID:", error);
         }
       }
-      
+
           // Ownership logic
           const markerOwnershipArray = [];
           const polygonOwnershipArray = [];
 
-      
+
           if (hasRulesForMarker) {
             // Iterate over each unique payer ID for markers
             for (const payerId of uniquePayerIdsForMarker) {
               const tokenIdForMarker = loadedTopicRulesForMarker[0].markerTopicId;
               const filteredNftsForMarker = await sdk.getAccountNFTs(payerId, tokenIdForMarker);
-      
+
               // Check if the user owns NFTs and push to an array
               if (filteredNftsForMarker.length > 0) {
                 const numberOfMessages = filteredNftsForMarker.length * loadedTopicRulesForMarker[0].markerMessagesPerNft;
@@ -7224,14 +6668,14 @@ async function processTopicMessages(topicId) {
               }
             }
           }
-          
+
           if (hasRulesForPolygon) {
-      
+
             // Iterate over each unique payer ID for polygons
             for (const payerId of uniquePayerIdsForPolygon) {
               const tokenIdForPoly = loadedTopicRulesForPolygon[0].polygonTopicId;
               const filteredNftsForPoly = await sdk.getAccountNFTs(payerId, tokenIdForPoly);
-      
+
               // Check if the user owns NFTs and push to an array
               if (filteredNftsForPoly.length > 0) {
                 const numberOfMessages = filteredNftsForPoly.length * loadedTopicRulesForPolygon[0].polygonMessagesPerNft;
@@ -7261,25 +6705,25 @@ async function processTopicMessages(topicId) {
               if (typeof message === 'string') {
                 parsedMessage = JSON.parse(message);
               }
-      
+
               const defaultProfilePic = "https://kiloscribe.com/api/inscription-cdn/0.0.4819119";
-              const profileUrl = isValidUrl(message.payer && profilePics[message.payer] ? 
-                profilePics[message.payer].url : 
-                defaultProfilePic) ? 
-                (message.payer && profilePics[message.payer] ? profilePics[message.payer].url : defaultProfilePic) : 
+              const profileUrl = isValidUrl(message.payer && profilePics[message.payer] ?
+                profilePics[message.payer].url :
+                defaultProfilePic) ?
+                (message.payer && profilePics[message.payer] ? profilePics[message.payer].url : defaultProfilePic) :
                 defaultProfilePic;
-              
+
               const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
-              const username = message.payer && usernames[message.payer] ? 
-                ` ${usernames[message.payer].username}` : 
+              const username = message.payer && usernames[message.payer] ?
+                ` ${usernames[message.payer].username}` :
                 '';
-                const click2link= message.payer && click2url[message.payer] ? 
-                ` ${click2url[message.payer].click2url}` : 
+                const click2link= message.payer && click2url[message.payer] ?
+                ` ${click2url[message.payer].click2url}` :
                 '';
-              
+
               // Combine username and payerInfo with h2 tags
               const displayHeader = `<h2><a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
-                <br>${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}</h2>`;                                  
+                <br>${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}</h2>`;
               // Handle marker type messages
               if (parsedMessage.marker && parsedMessage.marker.data) {
                 const markerOwner = markerOwnershipArray.find(owner => owner.payerId === message.payer);
@@ -7297,16 +6741,16 @@ async function processTopicMessages(topicId) {
 
                 if (!hasRulesForMarker || (markerOwner && markerOwner.numberOfMessages > 0)) {
 
-                  
-                  
+
+
                   if (hasRulesForMarker) {
                     markerOwner.numberOfMessages -= 1;
                   }
-                  
+
                   let coords;
                   try {
                     const cordData = parsedMessage.marker.data.cord;
-                    
+
                     if (typeof cordData === 'string') {
                       coords = cordData.split(',').map(num => parseFloat(num.trim()));
                     } else if (Array.isArray(cordData)) {
@@ -7314,33 +6758,33 @@ async function processTopicMessages(topicId) {
                     } else {
                       throw new Error('Unsupported coordinate format');
                     }
-                    
+
                     if (!Array.isArray(coords) || coords.length !== 2 || coords.some(isNaN)) {
                       throw new Error('Invalid coordinate format');
                     }
 
-                    
-      
+
+
                     topicGeojsonFeatures.push({
                       type: "Feature",
                       payer: message.payer,
                       properties: {
-                        message: 
+                        message:
     `
       <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.marker.data.numberOfMarker}</div> <!-- Display number of markers -->
       <div style="display: flex; align-items: center;">
-<img src="${profileUrl}" alt="Profile photo" 
-      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;" 
+<img src="${profileUrl}" alt="Profile photo"
+      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;"
       onclick="loadTOPIC4PIC('${message.payer}');">
         <div>${displayHeader}</div>
       </div>
-      <div style="text-align: center;"> <!-- Center the title -->
+      <div style="text-align: center;"> r the title -->
         <div style='margin-bottom: 1vh;'>
             <strong>${parsedMessage.marker.data.title}</strong>
         </div>
         <div>
-          ${isValidUrl(parsedMessage.marker.data.image) ? `<img src="${parsedMessage.marker.data.image}" style="width: 20vh; height: 20vh; display: block; margin: 0 auto;" />` : ''} <!-- Center the image -->
-        </div> 
+          ${isValidUrl(parsedMessage.marker.data.image) ? `<img src="${parsedMessage.marker.data.image}" style="width: 20vh; height: 20vh; display: block; margin: 0 auto;" />` : ''} 
+        </div>
         <div>
           <p>${parsedMessage.marker.data.msg}</p>
         </div>
@@ -7359,7 +6803,7 @@ async function processTopicMessages(topicId) {
                 }
               }
             }
-      
+
               // Handle polygon type messages
               if (parsedMessage.polygon && parsedMessage.polygon.data) {
                 const polygonOwner = polygonOwnershipArray.find(owner => owner.payerId === message.payer) ;
@@ -7370,51 +6814,51 @@ async function processTopicMessages(topicId) {
                 }
 
                 if (!polygonOwner.numberOfMessagesForPolygon.includes(polygonnumber)) {
-                  polygonOwner.numberOfMessagesForPolygon.push(polygonnumber);  
+                  polygonOwner.numberOfMessagesForPolygon.push(polygonnumber);
 
 
                 if (!hasRulesForPolygon || (polygonOwner && polygonOwner.numberOfMessages > 0)) {
                   if (hasRulesForPolygon) {
                     polygonOwner.numberOfMessages -= 1;
                   }
-      
+
                   try {
                     const cordStr = parsedMessage.polygon.data.cord;
-      
+
                     // Validate the coordinate string format
                     const validCoordPattern = /^\[-?\d+\.?\d*,\s*-?\d+\.?\d*\](,\s*\[-?\d+\.?\d*,\s*-?\d+\.?\d*\])*$/;
                     if (!validCoordPattern.test(cordStr)) {
                       continue; // Skip processing this message
                     }
-      
+
                     // Parse the coordinates
                     const coordinates = JSON.parse(`[${cordStr}]`); // Wrap in brackets for valid JSON
-      
-                    if (Array.isArray(coordinates) && coordinates.length > 2) {
-                      const polygonSize = hasRulesForPolygon ? loadedTopicRulesForPolygon[0].polygonSize : 1;      
 
-      
-    
-      
+                    if (Array.isArray(coordinates) && coordinates.length > 2) {
+                      const polygonSize = hasRulesForPolygon ? loadedTopicRulesForPolygon[0].polygonSize : 1;
+
+
+
+
                         topicPolygons.push({
                           id: `
                           polygon-${index}`,
                           payer: message.payer,
                           coordinates: [coordinates],
                           description: `
-          <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.polygon.data.numberOfPolygon}</div> 
+          <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.polygon.data.numberOfPolygon}</div>
           <div style="display: flex; align-items: center;">
-<img src="${profileUrl}" alt="Profile photo" 
-      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;" 
+<img src="${profileUrl}" alt="Profile photo"
+      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;"
       onclick="loadTOPIC4PIC('${message.payer}');">
             <div>${displayHeader}</div>
           </div>
-          <div style="text-align: center;"> <!-- Center the title and image -->
+          <div style="text-align: center;">
             <div style='margin-bottom: 1vh;'>
                 <strong>${parsedMessage.polygon.data.title}</strong>
             </div>
             <div>
-                    ${isValidUrl(parsedMessage.polygon.data.image) ? `<img src="${parsedMessage.polygon.data.image}" style="width: 20vh; height: 20vh; display: block; margin: 0 auto;" />` : ''} <!-- Center the image -->
+                    ${isValidUrl(parsedMessage.polygon.data.image) ? `<img src="${parsedMessage.polygon.data.image}" style="width: 20vh; height: 20vh; display: block; margin: 0 auto;" />` : ''}
             </div>
             <div>
               <p>${parsedMessage.polygon.data.msg}</p>
@@ -7423,9 +6867,9 @@ async function processTopicMessages(topicId) {
                           `,
                           imageUrl: isValidUrl(parsedMessage.polygon.data.coverimage) ? parsedMessage.polygon.data.coverimage : profileUrl
                         });
-      
-                      
-                    } 
+
+
+                    }
                   } catch (polygonError) {
                     console.error("Error parsing polygon data:", polygonError);
                   }
@@ -7436,14 +6880,14 @@ async function processTopicMessages(topicId) {
               console.error(`Error processing message ${index}:`, messageError);
             }
           }
-          
-      
+
+
         // At the end of the function, push the collected features to the parent arrays
         geojson.features.push(...topicGeojsonFeatures); // Push topic features to parent geojson array
         polygons.push(...topicPolygons); // Push topic polygons to parent polygons array
         return { topicGeojsonFeatures, topicPolygons, loadedTopicName };
-      
-      
+
+
         } catch (error) {
           console.error(`Error loading messages for topic ${topicId}:`, error);
           return { topicGeojsonFeatures: [], topicPolygons: [] }; // Return empty arrays on error
@@ -7452,7 +6896,7 @@ async function processTopicMessages(topicId) {
 
     // Array of models with their respective URLs, origins, and altitudes
     const models = [];
-   
+
 async function load3dModels() {
 const customLayer = {
   id: "3d-model",
@@ -7491,9 +6935,9 @@ const customLayer = {
     });
 
     this.renderer.autoClear = false;
-    
 
-    const loader = new THREE.GLTFLoader(); 
+
+    const loader = new THREE.GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
 
@@ -7725,18 +7169,18 @@ async function someFunction(accountId, topicId) {
         const xInput = longitude; // Set x from current longitude
         const yInput = latitude;  // Set y from current latitude
         const zInput = height;
-    
+
         const x = parseFloat(xInput);
         const y = parseFloat(yInput);
         const z = parseFloat(zInput);
-    
+
         // Validate input
         if (isNaN(x) || isNaN(y) || isNaN(z)) {
             console.error('Invalid coordinates: X, Y, Z must be numbers');
             alert('Please enter valid numbers for X, Y, Z');
             return;
         }
-    
+
         coordinates = { x, y, z };
     }
         // Add this code to set up the interval for updating coordinates
@@ -7976,7 +7420,7 @@ async function handleOffer(senderPeerId, offer) {
             console.error(`Failed to handle answer from ${senderPeerId}:`, error);
         }
     }
-    
+
 
     async function handleCandidate(peerId, candidate) {
     const pc = knownPeers.get(peerId);
@@ -8024,14 +7468,14 @@ function retryWebRTCConnection(peerId) {
     async function handleGossipMessage(senderPeerId, data) {
         const message = JSON.parse(data);
         const { peer_id, coordinates, ttl, timestamp, messageId, metadata, scaleFactorNFT } = message;
-    
+
         // Check for duplicates
         if (seenMessages.has(messageId)) {
             return;
         }
         seenMessages.add(messageId);
-    
-    
+
+
         const existing = receivedCoords.get(peer_id);
         if (!existing || new Date(timestamp) > new Date(existing.timestamp)) {
             receivedCoords.set(peer_id, { ...coordinates, timestamp });
