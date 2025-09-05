@@ -518,7 +518,7 @@ display: none;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 1vh;
-  border-radius: 1vh;
+  border-radius: 0.8vh;
   font-size: 2vh;
   box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.3);
   text-align: left;
@@ -805,6 +805,8 @@ button[type="submit"],
   </div>
   <div class="toolbar-column" id="set-rules">Set Rules
   </div>
+  <div class="toolbar-column" id="NFT-utility">NFT Utility
+  </div>
   <div class="toolbar-column" id="change-memo">Update Topic
   </div>
   <div class="toolbar-column" id="stack-topic-ids-column">Stack topic IDs
@@ -1075,6 +1077,7 @@ button[type="submit"],
 
 <div id="rules-column" style="display: none; position: absolute; z-index: 1002;">
   <div id="rules-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+
     <textarea class="toolbar-column" type="text" id="input-field-topic-id-for-rules" placeholder="Domain/Topic ID"
     onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
@@ -1119,6 +1122,22 @@ button[type="submit"],
       </button>
       <div style="margin-bottom: 10px;"></div>
     </div>
+
+  </div>
+</div>
+
+<div id="utility-column" style="display: none; position: absolute; z-index: 1002;">
+  <div id="utility-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+    
+    <textarea class="toolbar-column" type="text" id="input-field-topic-id-for-utility" placeholder="Domain/Topic ID"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Logic:
+    </label>
+    <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-utility" placeholder="Loaded Topic Rules"
+    onclick="event.stopPropagation();" readonly></textarea>
+    <button id="load-topic-rules-for-utility" class="toolbar-column-btns">Load Topic Rules
+    </button>
 
     <label for="input-field-add-remove-NFT-for-model" style=" font-size: 2vh;padding: 0px;"> Model sharing:
     </label>
@@ -1531,6 +1550,22 @@ scrollbar-width: thin; /* Firefox */ scrollbar-color: #888 #f1f1f1; /* Firefox *
       <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
       <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
       <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Number:
+      </label>
+      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Close:
+      </label>
+      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
@@ -2123,7 +2158,7 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
   <img src="${validPayerImage}" alt="Profile photo"
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
   onclick="loadTOPIC4PIC('${message.payer}');">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
@@ -2270,7 +2305,7 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
   <img src="${validPayerImage}" alt="Profile photo"
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
   onclick="loadTOPIC4PIC('${message.payer}');">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
@@ -2387,7 +2422,7 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
       if (payer !== previousPayer) {
         allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
   <img src="${validPayerImage}" alt="Profile photo"
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em;"
+  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
   onclick="loadTOPIC4PIC('${message.payer}');">
                           <div style="display: flex; flex-direction: column; justify-content: center;">
                             <div>${displayHeader}</div>
@@ -3361,7 +3396,8 @@ function checkToolbarStatus() {
     document.getElementById("rotation-controls"),
     document.getElementById("visibility-controls"),
     document.getElementById("popup-column"),
-    document.getElementById("topic-chat-container")
+    document.getElementById("topic-chat-container"),
+    document.getElementById("utility-column")
 
   ];
 
@@ -3598,7 +3634,8 @@ function closeAllColumns() {
     "rotation-controls",
     "edit-profile-column",
     "topic-chat-container",
-    "visibility-controls"
+    "visibility-controls",
+    "utility-column"
   ];
 
   columns.forEach(columnId => {
@@ -3763,6 +3800,17 @@ document.getElementById("set-rules").addEventListener("click", (event) => {
   checkToolbarStatus();
 });
 
+document.getElementById("NFT-utility").addEventListener("click", (event) => {
+  closeAllColumns();
+  const inputToolbarSetRules = document.getElementById("utility-column");
+  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
+  inputToolbarSetRules.style.display = "block";
+  inputToolbarSetRules.style.left = `${toolbarRect.right + 0}px`;
+  inputToolbarSetRules.style.top = `${toolbarRect.top}px`;
+  checkToolbarStatus();
+});
+
+
 
 document.getElementById("column2").addEventListener("click", (event) => {
   const inputToolbarColumn2 = document.getElementById("marker-column");
@@ -3915,6 +3963,70 @@ document
                 console.error(`Error processing message ${index}:`, messageError);
             }
         }
+
+              let formattedRules = '';
+              if (lastRule) {
+                if (lastRule.forpolygon) {
+                  const polygonSize = lastRule.forpolygon.polygonSize;
+                  const maxLongitudeSize = 360 / polygonSize;
+                  const maxLatitudeSize = 180 / polygonSize;
+
+                  formattedRules +=
+                    `Polygon Topic ID: ${lastRule.forpolygon.polygonTopicId}\n` +
+                    `Polygon Messages Per NFT: ${lastRule.forpolygon.polygonMessagesPerNft}\n` +
+                    `Polygon Size: ${polygonSize}\n` +
+                    `Maximum distance between points is:\n360/${polygonSize}=${maxLongitudeSize} for longitude\n180/${polygonSize}=${maxLatitudeSize} for latitude.\n`;
+                }
+                if (lastRule.formarker ) {
+                  formattedRules +=
+                    `Marker Topic ID: ${lastRule.formarker.markerTopicId}\n` +
+                    `Marker Messages Per NFT: ${lastRule.formarker.markerMessagesPerNft}\n`;
+                }
+              }
+
+                      // Log the formatted rules onto the textarea
+                      document.getElementById("loaded-topic-rules-for-topic").textContent = formattedRules;
+                      adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-topic"));
+
+                  } catch (error) {
+                      console.error("Error creating topic:", error);
+                  }
+              });
+
+document.getElementById("load-topic-rules-for-utility").addEventListener("click", async () => {
+    try {
+        let userInput = document.getElementById("input-field-topic-id-for-utility").value.toLowerCase();
+        let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+        let topicId;
+
+        if (domainEntry && domainEntry.lastMessage) {
+            topicId = domainEntry.lastMessage.topic;
+        } else {
+            topicId = userInput;
+        }
+        const response = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+        const topicInfo = await sdk.getTopicInfo(topicId);
+        const topicAdmin = [];
+        const memo = topicInfo.memo;
+
+        // Split the memo by commas
+        const parts = memo.split(',');
+
+        // Iterate over each part
+        parts.forEach(part => {
+            // Check if the part starts with "0.0."
+            if (part.startsWith("0.0.")) {
+                // Add it to the topicAdmin array
+                topicAdmin.push(part);
+            }
+        });
+
+        // Check if messages exist and is an array
+        if (!response.messages || !Array.isArray(response.messages)) {
+            console.error(`No messages found for topic ${topicId}.`, response);
+        }
+
+ 
 const loadedNFTsForModel = [];
 const loadedNFTScaleForModel = [];
 const loadedNFTsForTopicChat = [];
@@ -3985,23 +4097,7 @@ catch (messageError) {
 }
 
 let formattedRules = '';
-if (lastRule) {
-  if (lastRule.forpolygon) {
-    const polygonSize = lastRule.forpolygon.polygonSize;
-    const maxLongitudeSize = 360 / polygonSize;
-    const maxLatitudeSize = 180 / polygonSize;
 
-    formattedRules +=
-      `Polygon Topic ID: ${lastRule.forpolygon.polygonTopicId}\n` +
-      `Polygon Messages Per NFT: ${lastRule.forpolygon.polygonMessagesPerNft}\n` +
-      `Polygon Size: ${polygonSize}\n` +
-      `Maximum distance between points is:\n360/${polygonSize}=${maxLongitudeSize} for longitude\n180/${polygonSize}=${maxLatitudeSize} for latitude.\n`;
-  }
-  if (lastRule.formarker ) {
-    formattedRules +=
-      `Marker Topic ID: ${lastRule.formarker.markerTopicId}\n` +
-      `Marker Messages Per NFT: ${lastRule.formarker.markerMessagesPerNft}\n`;
-  }
   if (loadedNFTsForModel.length > 0) {
     formattedRules += `NFTs for model: ${loadedNFTsForModel.join(', ')}\n`;
   }
@@ -4011,11 +4107,11 @@ if (lastRule) {
   if (loadedNFTsForTopicChat.length > 0) {
     formattedRules += `NFTs for topic chat: ${loadedNFTsForTopicChat.join(', ')}\n`;
   }
-}
+
 
         // Log the formatted rules onto the textarea
-        document.getElementById("loaded-topic-rules-for-topic").textContent = formattedRules;
-        adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-topic"));
+        document.getElementById("loaded-topic-rules-for-utility").textContent = formattedRules;
+        adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-utility"));
 
     } catch (error) {
         console.error("Error creating topic:", error);
@@ -4517,6 +4613,17 @@ document.addEventListener("click", (event) => {
   }
 });
 
+document.addEventListener("click", (event) => {
+  const inputToolbarSetRules = document.getElementById("utility-column");
+  if (
+    event.target.id !== "utility-column" &&
+    !inputToolbarSetRules.contains(event.target)
+  ) {
+    inputToolbarSetRules.style.display = "none";
+  }
+});
+
+
 
 function adjustButtonSize() {
     const coordinatesDisplay = document.getElementById('coordinates-display');
@@ -4739,6 +4846,10 @@ function updateClusters() {
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
         // Open the marker popup
+        map.easeTo({
+    center: cluster.geometry.coordinates,
+    zoom: map.getZoom(), // Maintain current zoom level
+  });
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
         if (currentUfoModel) {
@@ -4907,6 +5018,10 @@ function addPolygonWithImageFill(map, polygon) {
               .setLngLat(e.lngLat)
               .setHTML(polygon.description)
               .addTo(map);
+              map.easeTo({
+              center: e.lngLat,
+              zoom: map.getZoom(), // Maintain current zoom level
+            });
               activePolygonPopups.forEach((popup) => popup.remove());
               activeMarkerPopups.forEach((popup) => popup.remove());
               activePolygonPopups.push(popup);
@@ -5205,8 +5320,8 @@ function closeOptions() {
     "crosshair-column",
     "crosshair-column-container",
     "popup-column",
-    "popup-column-container"
-
+    "popup-column-container",
+    "utility-column"
   ];
 
   inputToolbars.forEach(toolbarId => {
@@ -5261,7 +5376,8 @@ function closeOptionsWithoutChat() {
     "crosshair-column",
     "crosshair-column-container",
     "popup-column",
-    "popup-column-container"
+    "popup-column-container",
+    "utility-column"
   ];
 
   inputToolbars.forEach(toolbarId => {
@@ -5540,7 +5656,8 @@ const inputToolbars = [
   "memo-column",
   "rules-column",
   "stack-topic-ids",
-  "edit-profile-column"
+  "edit-profile-column",
+  "utility-column"
 ];
 
 inputToolbars.forEach(toolbarId => {
@@ -5759,6 +5876,18 @@ document.getElementById("color-green-border").addEventListener("input", (event) 
 
 document.getElementById("color-blue-border").addEventListener("input", (event) => {updatePopupBorder();});
 
+document.getElementById("color-red-number").addEventListener("input", (event) => {updatePopupNumber();});
+
+document.getElementById("color-green-number").addEventListener("input", (event) => {updatePopupNumber();});
+
+document.getElementById("color-blue-number").addEventListener("input", (event) => {updatePopupNumber();});
+
+document.getElementById("color-red-close").addEventListener("input", (event) => {updatePopupClose();});
+
+document.getElementById("color-green-close").addEventListener("input", (event) => {updatePopupClose();});
+
+document.getElementById("color-blue-close").addEventListener("input", (event) => {updatePopupClose();});
+
 document.getElementById("color-red-accid").addEventListener("input", (event) => {updatePopupAccid();});
 
 document.getElementById("color-green-accid").addEventListener("input", (event) => {updatePopupAccid();});
@@ -5793,6 +5922,34 @@ function updatePopupBorder() {
 
     popupContents.forEach(popup => {
         popup.style.borderColor = color_border;
+    });
+}
+
+function updatePopupNumber() {
+
+    const red_number = document.getElementById("color-red-number").value;
+    const green_number = document.getElementById("color-green-number").value;
+    const blue_number = document.getElementById("color-blue-number").value;
+    const color_number = `rgb(${red_number}, ${green_number}, ${blue_number})`;
+
+    const popupNumbers = document.querySelectorAll('.maplibregl-popup .number');
+
+    popupNumbers.forEach(number => {
+        number.style.color = color_number;
+    });
+}
+
+function updatePopupClose() {
+
+    const red_close = document.getElementById("color-red-close").value;
+    const green_close = document.getElementById("color-green-close").value;
+    const blue_close = document.getElementById("color-blue-close").value;
+    const color_close = `rgb(${red_close}, ${green_close}, ${blue_close})`;
+
+    const popupCloses = document.querySelectorAll('.maplibregl-popup-close-button');
+
+    popupCloses.forEach(close => {
+        close.style.color = color_close;
     });
 }
 
@@ -5893,6 +6050,8 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
 function applyAllStyles() {
     console.log("applyAllStyles");
     updatePopupBorder();
+    updatePopupNumber();
+    updatePopupClose();
     updatePopupAccid();
     updatePopupUsername();
     updatePopupTitles();
@@ -5910,6 +6069,14 @@ event.stopPropagation();
     const colorRedBorder = Math.min(parseInt(document.getElementById("color-red-border").value) || 0, 255);
     const colorGreenBorder = Math.min(parseInt(document.getElementById("color-green-border").value) || 0, 255);
     const colorBlueBorder = Math.min(parseInt(document.getElementById("color-blue-border").value) || 0, 255);
+
+    const colorRedNumber = Math.min(parseInt(document.getElementById("color-red-number").value) || 0, 255);
+    const colorGreenNumber = Math.min(parseInt(document.getElementById("color-green-number").value) || 0, 255);
+    const colorBlueNumber = Math.min(parseInt(document.getElementById("color-blue-number").value) || 0, 255);
+
+    const colorRedClose = Math.min(parseInt(document.getElementById("color-red-close").value) || 0, 255);
+    const colorGreenClose = Math.min(parseInt(document.getElementById("color-green-close").value) || 0, 255);
+    const colorBlueClose = Math.min(parseInt(document.getElementById("color-blue-close").value) || 0, 255);
 
     const colorRedUsername = Math.min(parseInt(document.getElementById("color-red-username").value) || 0, 255);
     const colorGreenUsername = Math.min(parseInt(document.getElementById("color-green-username").value) || 0, 255);
@@ -5933,6 +6100,16 @@ event.stopPropagation();
                         redBorder: colorRedBorder,
                         greenBorder: colorGreenBorder,
                         blueBorder: colorBlueBorder
+                    },
+                    colorNumber: {
+                        redNumber: colorRedNumber,
+                        greenNumber: colorGreenNumber,
+                        blueNumber: colorBlueNumber
+                    },
+                    colorClose: {
+                        redClose: colorRedClose,
+                        greenClose: colorGreenClose,
+                        blueClose: colorBlueClose
                     },
                     colorUsername: {
                         redUsername: colorRedUsername,
@@ -5990,13 +6167,23 @@ event.stopPropagation();
         // Check if the last message has valid data
         if (lastMessage && lastMessage.data) {
             // Extract relevant data and clamp to max 255
-            const { colorBorder, colorUsername, colorAccid, colorText, colorTitles } = lastMessage.data;
+            const { colorBorder, colorNumber, colorClose, colorUsername, colorAccid, colorText, colorTitles } = lastMessage.data;
 
             // Clamp values to max 255
             const clampedColorBorder = {
                 redBorder: Math.min(parseInt(colorBorder.redBorder) || 0, 255),
                 greenBorder: Math.min(parseInt(colorBorder.greenBorder) || 0, 255),
                 blueBorder: Math.min(parseInt(colorBorder.blueBorder) || 0, 255)
+            };
+            const clampedColorNumber = {
+                redNumber: Math.min(parseInt(colorNumber.redNumber) || 0, 255),
+                greenNumber: Math.min(parseInt(colorNumber.greenNumber) || 0, 255),
+                blueNumber: Math.min(parseInt(colorNumber.blueNumber) || 0, 255)
+            };
+            const clampedColorClose = {
+                redClose: Math.min(parseInt(colorClose.redClose) || 0, 255),
+                greenClose: Math.min(parseInt(colorClose.greenClose) || 0, 255),
+                blueClose: Math.min(parseInt(colorClose.blueClose) || 0, 255)
             };
             const clampedColorUsername = {
                 redUsername: Math.min(parseInt(colorUsername.redUsername) || 0, 255),
@@ -6033,6 +6220,14 @@ event.stopPropagation();
             document.getElementById("color-green-border").value = clampedColorBorder.greenBorder;
             document.getElementById("color-blue-border").value = clampedColorBorder.blueBorder;
 
+            document.getElementById("color-red-number").value = clampedColorNumber.redNumber;
+            document.getElementById("color-green-number").value = clampedColorNumber.greenNumber;
+            document.getElementById("color-blue-number").value = clampedColorNumber.blueNumber;
+
+            document.getElementById("color-red-close").value = clampedColorClose.redClose;
+            document.getElementById("color-green-close").value = clampedColorClose.greenClose;
+            document.getElementById("color-blue-close").value = clampedColorClose.blueClose;
+
             document.getElementById("color-red-username").value = clampedColorUsername.redUsername;
             document.getElementById("color-green-username").value = clampedColorUsername.greenUsername;
             document.getElementById("color-blue-username").value = clampedColorUsername.blueUsername;
@@ -6051,6 +6246,8 @@ event.stopPropagation();
 
             // Call update functions to apply the loaded values
             updatePopupBorder();
+            updatePopupNumber();
+            updatePopupClose();
             updatePopupAccid();
             updatePopupUsername();
             updatePopupTitles();
@@ -7032,10 +7229,10 @@ async function processTopicMessages(topicId) {
                       properties: {
                         message:
     `
-      <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.marker.data.numberOfMarker}</div> <!-- Display number of markers -->
+      <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;" class="number">${parsedMessage.marker.data.numberOfMarker}</div> <!-- Display number of markers -->
       <div style="display: flex; align-items: center;">
 <img src="${profileUrl}" alt="Profile photo"
-      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;"
+      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;"
       onclick="loadTOPIC4PIC('${message.payer}');">
         <div>${displayHeader}</div>
       </div>
@@ -7107,10 +7304,10 @@ async function processTopicMessages(topicId) {
                           payer: message.payer,
                           coordinates: [coordinates],
                           description: `
-          <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;">${parsedMessage.polygon.data.numberOfPolygon}</div>
+          <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;" class="number">${parsedMessage.polygon.data.numberOfPolygon}</div>
           <div style="display: flex; align-items: center;">
 <img src="${profileUrl}" alt="Profile photo"
-      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%;"
+      style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;"
       onclick="loadTOPIC4PIC('${message.payer}');">
             <div>${displayHeader}</div>
           </div>
