@@ -4150,7 +4150,7 @@ let formattedRules = '';
 .getElementById("submit-button-add-scale-for-model")
 .addEventListener("click", async () => {
             try {
-              let userInput = document.getElementById("input-field-topic-id-for-rules").value.toLowerCase();
+              let userInput = document.getElementById("input-field-topic-id-for-utility").value.toLowerCase();
               let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
               let topicId;
 
@@ -4184,7 +4184,7 @@ let formattedRules = '';
 .getElementById("submit-button-remove-scale-for-model")
 .addEventListener("click", async () => {
             try {
-              let userInput = document.getElementById("input-field-topic-id-for-rules").value.toLowerCase();
+              let userInput = document.getElementById("input-field-topic-id-for-utility").value.toLowerCase();
               let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
               let topicId;
 
@@ -4215,7 +4215,7 @@ let formattedRules = '';
 .getElementById("submit-button-add-NFT-for-model")
 .addEventListener("click", async () => {
             try {
-              let userInput = document.getElementById("input-field-topic-id-for-rules").value.toLowerCase();
+                let userInput = document.getElementById("input-field-topic-id-for-utility").value.toLowerCase();
               let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
               let topicId;
 
@@ -4245,7 +4245,7 @@ let formattedRules = '';
 .getElementById("submit-button-remove-NFT-for-model")
 .addEventListener("click", async () => {
             try {
-              let userInput = document.getElementById("input-field-topic-id-for-rules").value.toLowerCase();
+              let userInput = document.getElementById("input-field-topic-id-for-utility").value.toLowerCase();
               let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
               let topicId;
 
@@ -4275,7 +4275,7 @@ let formattedRules = '';
 .getElementById("submit-button-add-topic-chat")
 .addEventListener("click", async () => {
             try {
-              let userInput = document.getElementById("input-field-topic-id-for-rules").value.toLowerCase();
+              let userInput = document.getElementById("input-field-topic-id-for-utility").value.toLowerCase();
               let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
               let topicId;
 
@@ -4305,7 +4305,7 @@ let formattedRules = '';
 .getElementById("submit-button-remove-topic-chat")
 .addEventListener("click", async () => {
             try {
-              let userInput = document.getElementById("input-field-topic-id-for-rules").value.toLowerCase();
+              let userInput = document.getElementById("input-field-topic-id-for-utility").value.toLowerCase();
               let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
               let topicId;
 
@@ -4847,9 +4847,9 @@ function updateClusters() {
         activeMarkerPopups.forEach((popup) => popup.remove());
         // Open the marker popup
         map.easeTo({
-    center: cluster.geometry.coordinates,
-    zoom: map.getZoom(), // Maintain current zoom level
-  });
+          center: cluster.geometry.coordinates,
+          zoom: map.getZoom(), // Maintain current zoom level
+        });
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
         if (currentUfoModel) {
