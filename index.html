@@ -413,11 +413,10 @@ display: none;
   font-size: 2vh;
   width: 6vh;
   height: 6vh;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(2px);
-  visibility: hidden;
 }
 
 .touch-button:hover {
@@ -439,16 +438,39 @@ display: none;
 
 #left-dpad {
   left: 0.5vw;
+  display: none;
 }
 
 #right-dpad {
   right: 0.5vw;
-}
-
-#left-dpad,
-#right-dpad {
   display: none;
 }
+
+/* Explicitly position and show defined buttons */
+#left-up, #right-up {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  display: flex;
+}
+
+#left-left, #right-left {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  display: flex;
+}
+
+#left-right, #right-right {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+  display: flex;
+}
+
+#left-down, #right-down {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  display: flex;
+}
+
 
 #zoom-controls {
   position: fixed;
@@ -5120,18 +5142,6 @@ popup.on('close', () => {
         activeIntervals.clear();
       });
 
-      document.getElementById("toggle-controls-btn").addEventListener("click", () => {
-        const zoomControls = document.getElementById("zoom-controls");
-        const leftDpad = document.getElementById("left-dpad");
-        const rightDpad = document.getElementById("right-dpad");
-
-        const isVisible = zoomControls.style.display === "flex";
-
-        zoomControls.style.display = isVisible ? "none" : "flex";
-        leftDpad.style.display = isVisible ? "none" : "grid";
-        rightDpad.style.display = isVisible ? "none" : "grid";
-      });
-
       // Add event listeners for the new buttons
       document.getElementById("button1").addEventListener("click", async (event) => {
         event.stopPropagation();
@@ -5502,12 +5512,6 @@ document.addEventListener("click", function(event) {
   }
 });
 
-// Modify the existing toggle buttons to also hide themselves and show the main button
-document.getElementById("toggle-controls-btn").addEventListener("click", function(event) {
-    event.stopPropagation();
-    closeOptions(); // Close options after toggling
-});
-
 // Fix the toggle-controls-btn click handler with more aggressive visibility controls
 document.getElementById("toggle-controls-btn").addEventListener("click", function(e) {
   e.preventDefault();
@@ -5517,12 +5521,6 @@ document.getElementById("toggle-controls-btn").addEventListener("click", functio
   const zoomControls = document.getElementById("zoom-controls");
   const leftDpad = document.getElementById("left-dpad");
   const rightDpad = document.getElementById("right-dpad");
-
-  // Check if they exist
-  if (!zoomControls || !leftDpad || !rightDpad) {
-    console.error("Control elements not found:", {zoomControls, leftDpad, rightDpad});
-    return false;
-  }
 
   // Log current visibility state
   const isVisible = getComputedStyle(zoomControls).display !== "none";
@@ -5538,107 +5536,13 @@ document.getElementById("toggle-controls-btn").addEventListener("click", functio
     zoomControls.setAttribute("style", "display: flex !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
     leftDpad.setAttribute("style", "display: grid !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
     rightDpad.setAttribute("style", "display: grid !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
-
-    // Also make sure any parent containers are visible
-    let parent = zoomControls.parentElement;
-    while (parent && parent !== document.body) {
-      if (getComputedStyle(parent).display === "none") {
-        parent.style.display = "block";
-      }
-      parent = parent.parentElement;
-    }
   }
 
   // Hide both toggle buttons and show the main button
   document.getElementById("toggle-controls-btn").style.display = "none";
-  newToggleBtn.style.display = "none";
   document.getElementById("main-toggle-btn").style.display = "block";
 
   return false;
-});
-
-// Make sure each toggle button correctly hides itself and shows the main button when clicked
-document.getElementById("toggle-controls-btn").addEventListener("click", function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  // Do its primary function (toggle controls)
-  const zoomControls = document.getElementById("zoom-controls");
-  const leftDpad = document.getElementById("left-dpad");
-  const rightDpad = document.getElementById("right-dpad");
-
-  const isVisible = zoomControls.style.display === "flex";
-
-  // Toggle visibility state
-  if (isVisible) {
-    zoomControls.style.display = "none";
-    leftDpad.style.display = "none";
-    rightDpad.style.display = "none";
-  } else {
-    zoomControls.style.display = "flex";
-    leftDpad.style.display = "grid";
-    rightDpad.style.display = "grid";
-  }
-
-  // Hide both toggle buttons and show the main button
-  document.getElementById("toggle-controls-btn").style.display = "none";
-  newToggleBtn.style.display = "none";
-  document.getElementById("main-toggle-btn").style.display = "block";
-
-  return false;
-});
-
-// Replace any existing toolbar toggle functionality
-const toolbar = document.getElementById("toolbar");
-
-// Store the original display style
-const originalToolbarStyle = toolbar.style.display;
-
-// Create and inject a completely new button
-const newToggleBtn = document.createElement("button");
-newToggleBtn.textContent = "Toggle Toolbar";
-newToggleBtn.style.cssText = `
-  position: fixed;
-  top: 11vh;
-  left: 0;
-  z-index: 1010; /* Higher z-index to ensure visibility */
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.8vh 1vw;
-  border-radius: 0.8vh;
-  cursor: pointer;
-  font-size: 1.5vh;
-  display: none;
-`;
-
-// Insert it after the original button
-const originalToggleBtn = document.getElementById("toggle-toolbar-btn");
-if (originalToggleBtn && originalToggleBtn.parentNode) {
-  originalToggleBtn.parentNode.insertBefore(newToggleBtn, originalToggleBtn.nextSibling);
-  originalToggleBtn.style.display = "none"; // Hide the original button
-}
-
-// Add a clean click handler to the new button
-newToggleBtn.addEventListener("click", function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  // Toggle state
-  isToolbarOpen = !isToolbarOpen;
-
-  // Force display style after a slight delay (to avoid race conditions)
-  setTimeout(() => {
-    toolbar.style.display = isToolbarOpen ? "flex" : "none";
-    console.log("Toolbar visibility forcibly set to:", isToolbarOpen);
-  }, 10);
-
-  // Hide the toggle buttons and show the main button
-  document.getElementById("toggle-controls-btn").style.display = "none";
-  newToggleBtn.style.display = "none";
-  document.getElementById("main-toggle-btn").style.display = "block";
-
-  return false; // Prevent any other handlers
 });
 
 // Make sure the toolbar starts hidden
