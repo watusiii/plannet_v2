@@ -149,6 +149,7 @@ display: none;
   top: 10vh;
   left: 0;
   transform: none;
+  width: 100vw;
 }
 
 .toolbar-containers {
@@ -161,9 +162,9 @@ display: none;
   overflow-y: auto; /* Enable vertical scrolling */
   max-height: 80vh; /* Limit the height to 80% of the viewport */
   touch-action: auto; /* Enable touch interactions */
-  width: 73.5vw;
   padding-right: 2vw;
   resize: none; /* Prevent manual resizing */
+  width: 100vw;
 }
 
 .topic-chat-container {
@@ -814,7 +815,7 @@ button[type="submit"],
 <button id="toggle-toolbar-btn" class="menu_buttons" style="top: 20vh;">TOOLBAR
 </button>
 
-<div id="toolbar" class="toolbar" style="display: none; flex-direction: column; width: 25vw; ">
+<div id="toolbar" class="toolbar" style="display: none; flex-direction: column; width: 98vw; ">
   <div class="toolbar-column" id="edit-profile">Edit
   </div>
   <div class="toolbar-column" id="column1">Load
@@ -835,7 +836,7 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="edit-profile-column" style="display: none; position: absolute; z-index: 1002;">
+<div id="edit-profile-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="edit-profile-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
     <textarea type="text" id="toolbar-input" placeholder="URL/name/domain"
@@ -883,7 +884,7 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="load-column" style="display: none; position: absolute; z-index: 1002;">
+<div id="load-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="load-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
     <textarea class="toolbar-column" type="text" id="input-field" placeholder="Domain/Topic ID" onclick="event.stopPropagation();"
@@ -909,7 +910,7 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="create-column" style="display: none; position: absolute; z-index: 1002;">
+<div id="create-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="create-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
     <div class="toolbar-group">
       <textarea class="toolbar-column" type="text" id="input-field-5-1" placeholder="Admins 0.0.1,0.0.2.."
@@ -1001,7 +1002,7 @@ button[type="submit"],
 </div>
 
 
-<div id="marker-column" style="display: none; position: absolute; z-index: 1002;">
+<div id="marker-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="marker-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
     <div class="toolbar-group">
       <textarea class="toolbar-column" type="text" id="input-field-2-0" placeholder="Domain/Topic ID"
@@ -1049,7 +1050,7 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="polygon-column" style="display: none; position: absolute; z-index: 1002;">
+<div id="polygon-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="polygon-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
     <div class="toolbar-group">
       <textarea class="toolbar-column" type="text" id="input-field-3-0" placeholder="Domain/Topic ID"
@@ -1097,7 +1098,7 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="rules-column" style="display: none; position: absolute; z-index: 1002;">
+<div id="rules-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="rules-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
     <textarea class="toolbar-column" type="text" id="input-field-topic-id-for-rules" placeholder="Domain/Topic ID"
@@ -1148,7 +1149,7 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="utility-column" style="display: none; position: absolute; z-index: 1002;">
+<div id="utility-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="utility-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
     
     <textarea class="toolbar-column" type="text" id="input-field-topic-id-for-utility" placeholder="Domain/Topic ID"
@@ -1204,7 +1205,7 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="memo-column" style="display: none; position: absolute; z-index: 1002;">
+<div id="memo-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="memo-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
     <div class="toolbar-group">
@@ -1240,7 +1241,7 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="stack-topic-ids" style="display: none; position: absolute; z-index: 1002;">
+<div id="stack-topic-ids" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="stack-topic-ids-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
     <textarea class="toolbar-column" type="text" id="stack-topic-ids-topic" placeholder="Domain/Topic ID"
@@ -3010,14 +3011,8 @@ window.loadTOPIC4PIC = async function(payer) {
 
 
   closeAllColumns();
-  const inputToolbar = document.getElementById("load-column");
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "block";
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbar.style.display = "block";
-  inputToolbar.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbar.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
+  const loadColumn = document.getElementById("load-column");
+  loadColumn.style.display = "block";
   const loaded_text_area = document.getElementById("loaded-topics");
   loaded_text_area.value = ''; // Clear the current value
   loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
@@ -3402,31 +3397,6 @@ function getSpeedMultiplier() {
   return parseFloat(speedSlider.value);
 }
 
-function checkToolbarStatus() {
-  const toolbars = [
-    document.getElementById("load-column"),
-    document.getElementById("marker-column"),
-    document.getElementById("polygon-column"),
-    document.getElementById("create-column"),
-    document.getElementById("toolbar"),
-    document.getElementById("memo-column"),
-    document.getElementById("rules-column"),
-    document.getElementById("stack-topic-ids"),
-    document.getElementById("edit-profile-column"),
-    document.getElementById("model-column"),
-    document.getElementById("crosshair-column"),
-    document.getElementById("rotation-controls"),
-    document.getElementById("visibility-controls"),
-    document.getElementById("popup-column"),
-    document.getElementById("topic-chat-container"),
-    document.getElementById("utility-column")
-
-  ];
-
-  isToolbarOpen = toolbars.some(toolbar =>
-    toolbar.style.display === "block" || toolbar.style.display === "flex"
-  );
-}
 loader.updateProgress();
 
 
@@ -3668,38 +3638,88 @@ function closeAllColumns() {
   });
 }
 
+document.getElementById("edit-profile").addEventListener("click", (event) => {
+  closeAllColumns();
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
+  const inputToolbar = document.getElementById("edit-profile-column");
+  inputToolbar.style.display = "block";
+  checkToolbarStatus();
+});
+
 document.getElementById("column1").addEventListener("click", (event) => {
   closeAllColumns();
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";
   const inputToolbar = document.getElementById("load-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
   inputToolbar.style.display = "block";
-  inputToolbar.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbar.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
   const loaded_text_area = document.getElementById("loaded-topics");
   loaded_text_area.value = ''; // Clear the current value
   loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
   adjustTextareaHeight(loaded_text_area); // Adjust height after loading
 });
 
-document.getElementById("edit-profile").addEventListener("click", (event) => {
+document.getElementById("column2").addEventListener("click", (event) => {
   closeAllColumns();
-  const inputToolbar = document.getElementById("edit-profile-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbar.style.display = "block";
-  inputToolbar.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbar.style.top = `${toolbarRect.top}px`;
+  const inputToolbarColumn2 = document.getElementById("marker-column");
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";
+  inputToolbarColumn2.style.display = "block";
+  checkToolbarStatus();
+});
+
+document.getElementById("column3").addEventListener("click", (event) => {
+  closeAllColumns();
+  const inputToolbarColumn3 = document.getElementById("polygon-column");
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";
+  inputToolbarColumn3.style.display = "block";
   checkToolbarStatus();
 });
 
 
+document.getElementById("column5").addEventListener("click", (event) => {
+  closeAllColumns();
+  const inputToolbarColumn5 = document.getElementById("create-column");
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";
+  inputToolbarColumn5.style.display = "block";
+  checkToolbarStatus();
+});
+
+document.getElementById("set-rules").addEventListener("click", (event) => {
+  closeAllColumns();
+  const inputToolbarSetRules = document.getElementById("rules-column");
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";
+  inputToolbarSetRules.style.display = "block";
+  checkToolbarStatus();
+});
+
+document.getElementById("NFT-utility").addEventListener("click", (event) => {
+  closeAllColumns();
+  const inputToolbarSetRules = document.getElementById("utility-column");
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";
+  inputToolbarSetRules.style.display = "block";
+  checkToolbarStatus();
+});
+
+document.getElementById("change-memo").addEventListener("click", (event) => {
+  closeAllColumns();
+  const inputToolbarSetRules = document.getElementById("memo-column");
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";
+  inputToolbarSetRules.style.display = "block";
+  checkToolbarStatus();
+});
+
 document.getElementById("stack-topic-ids-column").addEventListener("click", (event) => {
   closeAllColumns();
   const inputToolbar = document.getElementById("stack-topic-ids");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
+  const toolbar = document.getElementById("toolbar");
+  toolbar.style.display = "none";
   inputToolbar.style.display = "block";
-  inputToolbar.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbar.style.top = `${toolbarRect.top}px`;
   checkToolbarStatus();
 });
 
@@ -3769,79 +3789,6 @@ document.addEventListener("click", (event) => {
 });
 
 
-
-
-document.getElementById("column2").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarColumn2 = document.getElementById("marker-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbarColumn2.style.display = "block";
-  inputToolbarColumn2.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbarColumn2.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
-});
-
-document.getElementById("column3").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarColumn3 = document.getElementById("polygon-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbarColumn3.style.display = "block";
-  inputToolbarColumn3.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbarColumn3.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
-});
-
-
-document.getElementById("column5").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarColumn5 = document.getElementById("create-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbarColumn5.style.display = "block";
-  inputToolbarColumn5.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbarColumn5.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
-});
-
-document.getElementById("change-memo").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarSetRules = document.getElementById("memo-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbarSetRules.style.display = "block";
-  inputToolbarSetRules.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbarSetRules.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
-});
-
-document.getElementById("set-rules").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarSetRules = document.getElementById("rules-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbarSetRules.style.display = "block";
-  inputToolbarSetRules.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbarSetRules.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
-});
-
-document.getElementById("NFT-utility").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarSetRules = document.getElementById("utility-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbarSetRules.style.display = "block";
-  inputToolbarSetRules.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbarSetRules.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
-});
-
-
-
-document.getElementById("column2").addEventListener("click", (event) => {
-  const inputToolbarColumn2 = document.getElementById("marker-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbarColumn2.style.display = "block";
-  inputToolbarColumn2.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbarColumn2.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
-});
 
 document.getElementById("button3").addEventListener("click", async () => {
 try {
@@ -4482,15 +4429,6 @@ document.addEventListener("click", (event) => {
   ) {
     inputToolbarColumn2.style.display = "none";
   }
-});
-
-document.getElementById("column3").addEventListener("click", (event) => {
-  const inputToolbarColumn3 = document.getElementById("polygon-column");
-  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  inputToolbarColumn3.style.display = "block";
-  inputToolbarColumn3.style.left = `${toolbarRect.right + 0}px`;
-  inputToolbarColumn3.style.top = `${toolbarRect.top}px`;
-  checkToolbarStatus();
 });
 
 document
