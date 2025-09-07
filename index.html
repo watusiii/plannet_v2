@@ -86,7 +86,7 @@ html, body {
 }
 
 .rotation-controls {
-  position: fixed;
+position: fixed;
 display: flex;
 flex-direction: column;
 background-color: rgba(0, 0, 0, 0.8);
@@ -95,7 +95,7 @@ padding: 1vh 1vw;
 border-radius: 1vh;
 z-index: 1001;
 justify-content: space-around;
-width: 98%;
+width: 98vw;
 top: 10vh;
 left: 0;
 transform: none;
@@ -131,7 +131,6 @@ display: none;
 .container {
   background-color: rgba(0, 0, 0, 0);
   color: white;
-  padding: 1vh 1vw;
   box-sizing: border-box;
   border-radius: 1vh;
 }
@@ -142,50 +141,83 @@ display: none;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 1vh 1vw;
   border-radius: 1vh;
   z-index: 1001;
   justify-content: space-around;
   top: 10vh;
   left: 0;
   transform: none;
-  width: 100vw;
+  width: 98vw;
+  padding-top: 1vh;
+  padding-bottom: 0.5vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
+
 }
 
 .toolbar-containers {
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 1vh 1vw;
   border-radius: 4px;
   box-sizing: border-box;
   border-radius: 1vh;
   overflow-y: auto; /* Enable vertical scrolling */
   max-height: 80vh; /* Limit the height to 80% of the viewport */
   touch-action: auto; /* Enable touch interactions */
-  padding-right: 2vw;
   resize: none; /* Prevent manual resizing */
   width: 100vw;
+  padding-top: 1vh;
+  padding-bottom: 0.5vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
 }
 
-.topic-chat-container {
-  background-color: rgba(0, 0, 0, 0.9);
+.toolbar-group {
+  width: 100%;
   color: white;
-  padding: 1vh 1vw;
-  border-radius: 4px;
-  box-sizing: border-box;
+  padding-top: 1vh;
+  padding-bottom: 0vh !important;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border: 0.1vh solid white;
   border-radius: 1vh;
-  overflow-y: auto; /* Enable vertical scrolling */
-  max-height: 80vh; /* Limit the height to 80% of the viewport */
-  touch-action: auto; /* Enable touch interactions */
-  width: 73.5vw;
-  padding-right: 2vw;
+  box-sizing: border-box;
+  margin-bottom: 0.5vh;
+  border: 0.1vh solid #ffc107;
+  overflow: hidden; /* Hide scrollbars */
   resize: none; /* Prevent manual resizing */
+  background-color: transparent;
+  touch-action: auto; /* Enable touch interactions */
 }
 
+.toolbar-column-btns {
+  display: block;
+  width: 100%;
+  color: white !important;
+  border: 0.1vh solid white;
+  border-radius: 1vh;
+  font-size: 2vh;
+  box-sizing: border-box;
+  margin-bottom: 0.5vh;
+  height: 5vh;
+  background-color: transparent;
+  border: 0.1vh solid rgb(0, 123, 255);
+}
+
+.toolbar-column-btns:hover,
+.toolbar-column-btns:active {
+  background-color: rgb(0, 123, 255) !important;
+  color: white !important;
+}
+
+.toolbar-column:hover,
+.toolbar-column.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
 
 .toolbar-column {
   display: block;
-  width: 100% !important;
+  width: 100%;
   color: white;
   padding-left: 1vw;
   border: 0.1vh solid white;
@@ -199,6 +231,20 @@ display: none;
   resize: none; /* Prevent manual resizing */
   background-color: transparent;
   touch-action: auto; /* Enable touch interactions */
+}
+
+.topic-chat-container {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-radius: 1vh;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 80vh; /* Limit the height to 80% of the viewport */
+  touch-action: auto; /* Enable touch interactions */
+  resize: none; /* Prevent manual resizing */
+  padding: 1vh 1vw;
+  width: 100%;
 }
 
 .chat-container {
@@ -218,9 +264,8 @@ display: none;
   max-height: 50vh; /* Set maximum height */
   overflow-y: scroll; /* Explicitly enable vertical scrolling */
   user-select: text; /* Allow text selection */
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #888 #f1f1f1; /* Firefox */
   -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
+  scrollbar-width: none; /* Firefox */
 }
 
 .model_sliders {
@@ -264,51 +309,6 @@ display: none;
   background-color: transparent;
   text-align: left; /* Center-align the text */
   text-shadow: 0 0 0.5vh black;
-}
-
-
-.toolbar-group {
-  width: 100% !important;
-  color: white;
-  padding-top: 1vh;
-  padding-bottom: 0vh !important;
-  padding-left: 1vw;
-  padding-right: 1vw;
-  border: 0.1vh solid white;
-  border-radius: 1vh;
-  box-sizing: border-box;
-  margin-bottom: 0.5vh;
-  border: 0.1vh solid #ffc107;
-  overflow: hidden; /* Hide scrollbars */
-  resize: none; /* Prevent manual resizing */
-  background-color: transparent;
-  touch-action: auto; /* Enable touch interactions */
-}
-
-.toolbar-column-btns {
-  display: block;
-  width: 100% !important;
-  color: white !important;
-  border: 0.1vh solid white;
-  border-radius: 1vh;
-  font-size: 2vh;
-  box-sizing: border-box;
-  margin-bottom: 0.5vh;
-  height: 5vh;
-  background-color: transparent;
-  border: 0.1vh solid rgb(0, 123, 255);
-  margin-bottom: 1vh;
-}
-
-.toolbar-column-btns:hover,
-.toolbar-column-btns:active {
-  background-color: rgb(0, 123, 255) !important;
-  color: white !important;
-}
-
-.toolbar-column:hover,
-.toolbar-column.active {
-  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .flex-container {
@@ -815,7 +815,7 @@ button[type="submit"],
 <button id="toggle-toolbar-btn" class="menu_buttons" style="top: 20vh;">TOOLBAR
 </button>
 
-<div id="toolbar" class="toolbar" style="display: none; flex-direction: column; width: 98vw; ">
+<div id="toolbar" class="toolbar" style="display: none; flex-direction: column;">
   <div class="toolbar-column" id="edit-profile">Edit
   </div>
   <div class="toolbar-column" id="column1">Load
@@ -845,11 +845,11 @@ button[type="submit"],
     ></textarea>
 
     <div style="display: flex; flex-direction: row; width: 100%;">
-      <button class="toolbar-column-btns" id="button1" style="display: block; width: 24vw;">Picture
+      <button class="toolbar-column-btns" id="button1" style="display: block;">Picture
       </button>
-      <button class="toolbar-column-btns" id="button2" style="display: block; width: 24vw; margin-left: 1vw;">Username
+      <button class="toolbar-column-btns" id="button2" style="display: block; margin-left: 1vw;">Username
       </button>
-      <button class="toolbar-column-btns" id="button_for_click_url" style="display: block; width: 24vw; margin-left: 1vw;">CLICK2LINK
+      <button class="toolbar-column-btns" id="button_for_click_url" style="display: block; margin-left: 1vw;">CLICK2LINK
       </button>
     </div>
 
@@ -968,7 +968,7 @@ button[type="submit"],
       oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea> -->
 
-      <button id="submit-button-column5" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Create
+      <button id="submit-button-column5" class="toolbar-column-btns" style="color: black; display: block;">Create
       </button>
     </div>
     <!--
@@ -995,7 +995,7 @@ button[type="submit"],
     onclick="event.stopPropagation();" readonly
     ></textarea>
 
-    <button id="generate-private-and-public-key" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Generate
+    <button id="generate-private-and-public-key" class="toolbar-column-btns" style="color: black; display: block;">Generate
     </button>
 
   </div>
@@ -1141,7 +1141,7 @@ button[type="submit"],
       <textarea class="toolbar-column" type="text" id="input-field-messages-per-nft-for-markers" placeholder="how many markers per NFT"
       onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea>
-      <button id="submit-button-set-rules" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Submit
+      <button id="submit-button-set-rules" class="toolbar-column-btns" style="color: black; display: block;">Submit
       </button>
       <div style="margin-bottom: 10px;"></div>
     </div>
@@ -1169,9 +1169,9 @@ button[type="submit"],
     ></textarea>
 
     <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
-      <button id="submit-button-add-NFT-for-model" class="toolbar-column-btns" style="color: black; width: 20vw;">Add
+      <button id="submit-button-add-NFT-for-model" class="toolbar-column-btns" style="color: black;">Add
       </button>
-      <button id="submit-button-remove-NFT-for-model" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove
+      <button id="submit-button-remove-NFT-for-model" class="toolbar-column-btns" style="color: black; margin-left: 8vw;">Remove
       </button>
     </div>
 
@@ -1182,9 +1182,9 @@ button[type="submit"],
     ></textarea>
 
     <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
-      <button id="submit-button-add-scale-for-model" class="toolbar-column-btns" style="color: black; width: 20vw;">Add
+      <button id="submit-button-add-scale-for-model" class="toolbar-column-btns" style="color: black;">Add
       </button>
-      <button id="submit-button-remove-scale-for-model" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove
+      <button id="submit-button-remove-scale-for-model" class="toolbar-column-btns" style="color: black; margin-left: 8vw;">Remove
       </button>
     </div>
 
@@ -1196,9 +1196,9 @@ button[type="submit"],
     ></textarea>
 
     <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
-      <button id="submit-button-add-topic-chat" class="toolbar-column-btns" style="color: black; width: 20vw;">Add
+      <button id="submit-button-add-topic-chat" class="toolbar-column-btns" style="color: black;">Add
       </button>
-      <button id="submit-button-remove-topic-chat" class="toolbar-column-btns" style="color: black; width: 20vw; margin-left: 8vw;">Remove
+      <button id="submit-button-remove-topic-chat" class="toolbar-column-btns" style="color: black; margin-left: 8vw;">Remove
       </button>
     </div>
 
@@ -1235,7 +1235,7 @@ button[type="submit"],
       ></textarea>
     </div>
 
-    <button id="submit-button-change-memo" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Submit
+    <button id="submit-button-change-memo" class="toolbar-column-btns" style="color: black; display: block;">Submit
     </button>
 
   </div>
@@ -1250,12 +1250,12 @@ button[type="submit"],
     <textarea class="toolbar-column" type="text" id="stack-topic-add-topic" placeholder="0.0.1,0.0.2.."
     onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
-    <button id="add-topic-id" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Stack
+    <button id="add-topic-id" class="toolbar-column-btns" style="color: black; display: block;">Stack
     </button>
     <textarea class="toolbar-column" type="text" id="stack-topic-remove-topic" placeholder="0.0.1,0.0.2.."
     onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
-    <button id="remove-topic-id" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Remove
+    <button id="remove-topic-id" class="toolbar-column-btns" style="color: black; display: block;">Remove
     </button>
 
   </div>
@@ -1305,8 +1305,7 @@ button[type="submit"],
 <input type="range" id="speed-slider" min="0.1" max="5" step="0.01" value="1" style="display: none;" />
 
 
-<div id="topic-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;
-scrollbar-width: thin; /* Firefox */ scrollbar-color: #888 #f1f1f1; /* Firefox */">
+<div id="topic-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh;">
   <div class="container"  onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
@@ -1365,9 +1364,9 @@ scrollbar-width: thin; /* Firefox */ scrollbar-color: #888 #f1f1f1; /* Firefox *
     </div>
 
     <div style="display: flex; align-items: center; margin-top: 1.5vh;">
-      <button id="go-to-top-msgs" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; ">Go to the top
+      <button id="go-to-top-msgs" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black; ">Go to the top
       </button>
-      <button id="post-msg" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw ">Submit Message
+      <button id="post-msg" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw ">Submit Message
       </button>
     </div>
 
@@ -1380,9 +1379,9 @@ scrollbar-width: thin; /* Firefox */ scrollbar-color: #888 #f1f1f1; /* Firefox *
 <div id="rotation-controls" class='rotation-controls' onclick="event.stopPropagation();">
   <div class="toolbar-column" id="change-model-settings">Change model settings
   </div>
-  <div class="toolbar-column" id="change-crosshair-settings" style="width: 98vw;">Change crosshair settings
+  <div class="toolbar-column" id="change-crosshair-settings">Change crosshair settings
   </div>
-  <div class="toolbar-column" id="change-popup-settings" style="width: 98vw;">Change popup colors
+  <div class="toolbar-column" id="change-popup-settings">Change popup colors
   </div>
 </div>
 
@@ -1841,8 +1840,7 @@ async function extractTopicId() {
         const ufoLoader = new THREE.GLTFLoader();
         ufoLoader.setDRACOLoader(dracoLoader);
 
-// Function to load the UFO model
-let currentUfoModel = null; // Declare outside the function to persist across calls
+        let currentUfoModel = null;
 
         async function updateAccountInfo(accountId, balance) {
           if (!accountId) {
@@ -1909,80 +1907,74 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
         loader.updateProgress();
 
 
-        document.getElementById("load-msgs-from-ids-button").addEventListener("click", async () => {
-    const ids = document.getElementById("load-msgs-from-ids").value.toLowerCase();
-    const idsArray = ids.split(",").map(id => id.trim()).filter(id => id.length > 0); // Trim whitespace and filter out empty strings
+document.getElementById("load-msgs-from-ids-button").addEventListener("click", async () => {
+  const ids = document.getElementById("load-msgs-from-ids").value.toLowerCase();
+  const idsArray = ids.split(",").map(id => id.trim()).filter(id => id.length > 0); // Trim whitespace and filter out empty strings
 
-        // New logic to process idsArray
-    idsArray.forEach(id => {
-        if (!id.startsWith("0.0.")) {
-            const domainEntry = loadedDomains.find(domain => domain.domain === id); // Assuming loadedDomains is an array of objects with an 'id' property
-            idsArray.splice(idsArray.indexOf(id), 1); // Remove the id from idsArray
-            if (domainEntry) {
-                idsArray.push(domainEntry.lastMessage.topic); // Add the domain entry to idsArray
-            }
-        }
-    });
+  idsArray.forEach(id => {
+    if (!id.startsWith("0.0.")) {
+      const domainEntry = loadedDomains.find(domain => domain.domain === id); // Assuming loadedDomains is an array of objects with an 'id' property
+      idsArray.splice(idsArray.indexOf(id), 1); // Remove the id from idsArray
+      if (domainEntry) {
+      idsArray.push(domainEntry.lastMessage.topic); // Add the domain entry to idsArray
+      }
+    }
+  });
 
-    await handleAllMessages();
+  await handleAllMessages();
 
-    // Filter geojson.features based on the specified payers
-    const filteredFeatures = geojson.features.filter(feature => {
-        const match = idsArray.includes(feature.payer);
-        return match;
-    });
+      // Filter geojson.features based on the specified payers
+  const filteredFeatures = geojson.features.filter(feature => {
+    const match = idsArray.includes(feature.payer);
+    return match;
+  });
 
-    const filteredPolygons = polygons.filter(polygon => {
-        const match = idsArray.includes(polygon.payer);
-        return match;
-    });
-
-
-
-        // Clear existing features and polygons
-        geojson.features = filteredFeatures;
-        polygons.length = 0; // Clear existing polygons
-        polygons.push(...filteredPolygons); // Add filtered polygons
+  const filteredPolygons = polygons.filter(polygon => {
+    const match = idsArray.includes(polygon.payer);
+    return match;
+  });
 
 
 
-        setTimeout(() => {
-        existingMarkers.forEach(marker => marker.remove());
-        existingMarkers = [];
-      }, 250);
-
-        // Remove existing polygon layers
-        map.getStyle().layers.forEach(layer => {
-          if (layer.id.includes('-layer')) {
-            map.removeLayer(layer.id);
-          }
-        });
-
-        // Remove existing polygon sources
-        const sourceIds = Object.keys(map.getStyle().sources);
-        sourceIds.forEach(sourceId => {
-          if (sourceId.includes('-source')) {
-            map.removeSource(sourceId);
-          }
-        });
+  geojson.features = filteredFeatures;
+  polygons.length = 0; // Clear existing polygons
+  polygons.push(...filteredPolygons); // Add filtered polygons
 
 
-        // Only load features if there are any
-        if (geojson.features.length > 0) {
-            index.load(geojson.features);
-            updateClusters(); // Assuming you have a function to update clusters
-        }
-        if (polygons.length > 0) {
-            // Add new polygons
-            polygons.forEach(polygon => {
-                addPolygonWithImageFill(map, polygon);
-            });
-        }
+
+  setTimeout(() => {
+    existingMarkers.forEach(marker => marker.remove());
+    existingMarkers = [];
+  }, 250);
+
+  map.getStyle().layers.forEach(layer => {
+    if (layer.id.includes('-layer')) {
+    map.removeLayer(layer.id);
+  }
+  });
+
+  const sourceIds = Object.keys(map.getStyle().sources);
+      sourceIds.forEach(sourceId => {
+      if (sourceId.includes('-source')) {
+      map.removeSource(sourceId);
+    }
+  });
+
+
+  if (geojson.features.length > 0) {
+      index.load(geojson.features);
+      updateClusters(); // Assuming you have a function to update clusters
+    }
+      if (polygons.length > 0) {
+      polygons.forEach(polygon => {
+      addPolygonWithImageFill(map, polygon);
       });
-      loader.updateProgress();
+    }
+});
 
-        document.getElementById("button4").addEventListener("click", async () => {
+loader.updateProgress();
 
+document.getElementById("button4").addEventListener("click", async () => {
 
   const domain = document.getElementById("toolbar-input").value.toLowerCase();
   const domainObject = loadedDomains.find(d => d.domain === domain);
@@ -2008,10 +2000,8 @@ let currentUfoModel = null; // Declare outside the function to persist across ca
 });
 
 document.getElementById('go-to-top-msgs').addEventListener('click', function() {
-    // Get the container element
-    const container = document.getElementById('topic-chat-container');
 
-    // Scroll to the top of the container
+    const container = document.getElementById('topic-chat-container');
     container.scrollTop = 0;
   });
 
@@ -2471,8 +2461,7 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
 
 
 
-        let loadedDomains = [
-        ];
+let loadedDomains = [];
 
 
 async function loadDomains() {
@@ -2574,19 +2563,18 @@ loadDomains().then(domains => {
 });
 
 
-        document.getElementById("copy-coordinates").addEventListener("click", () => {
-          event.stopPropagation();
-    // Get the current center of the map
-    const center = map.getCenter();
-    const coordinates = `${center.lng.toFixed(5)},${center.lat.toFixed(5)}`;
+document.getElementById("copy-coordinates").addEventListener("click", () => {
+  event.stopPropagation();
+  const center = map.getCenter();
+  const coordinates = `${center.lng.toFixed(5)},${center.lat.toFixed(5)}`;
 
-    // Copy the coordinates to the clipboard
-    navigator.clipboard.writeText(coordinates).then(() => {
+  navigator.clipboard.writeText(coordinates).then(() => {
     }).catch(err => {
-      console.error("Failed to copy coordinates:", err);
-    });
+    console.error("Failed to copy coordinates:", err);
   });
-  loader.updateProgress();
+});
+
+loader.updateProgress();
 
 // Define a default model URL
 const defaultModelUrl = 'https://kiloscribe.com/api/inscription-cdn/0.0.9742046'; // Replace with your actual default model URL
@@ -2634,58 +2622,54 @@ let BetaNFTScaleFactor = 1;
         }
 
 
-        initAccount()
-        updateAccountInfo();
+initAccount()
+updateAccountInfo();
 
-        document
-          .getElementById("connect-wallet-btn")
-          .addEventListener("click", connectWallet);
-        document
-          .getElementById("disconnect-wallet-btn")
-          .addEventListener("click", disconnectWallet);
+document.getElementById("connect-wallet-btn").addEventListener("click", connectWallet);
+document.getElementById("disconnect-wallet-btn").addEventListener("click", disconnectWallet);
 
 
-          async function extractAccountId() {
-            const thisAccountId = globalAccountId;
-            console.log("globalAccountId is", thisAccountId)
-            return thisAccountId;
-          }
+async function extractAccountId() {
+  const thisAccountId = globalAccountId;
+  console.log("globalAccountId is", thisAccountId)
+  return thisAccountId;
+}
 
 
                 // Create a new topic
                 document
   .getElementById("submit-button-column5")
   .addEventListener("click", async () => {
-    try {
-      const memo = document.getElementById("input-field-5-1").value || '';
-      const adminKey = document.getElementById("input-field-5-2").value;
-      // const fee = document.getElementById("input-field-5-3").value;
-      // const tokenId = document.getElementById("input-field-5-4").value;
-      // const royaltyAccount = document.getElementById("input-field-5-5").value;
+            try {
+              const memo = document.getElementById("input-field-5-1").value || '';
+              const adminKey = document.getElementById("input-field-5-2").value;
+              // const fee = document.getElementById("input-field-5-3").value;
+              // const tokenId = document.getElementById("input-field-5-4").value;
+              // const royaltyAccount = document.getElementById("input-field-5-5").value;
 
-      if ((memo && !adminKey) || (!memo && adminKey)) {
-        console.error("Both memo and adminKey must be provided together.");
-        return;
-      }
+              if ((memo && !adminKey) || (!memo && adminKey)) {
+                console.error("Both memo and adminKey must be provided together.");
+                return;
+              }
 
-      let createdTopicId;
-      if (memo && adminKey) {
-        createdTopicId = await window.HashinalsWalletConnectSDK.createTopic(memo, adminKey);
-      } else {
-        createdTopicId = await window.HashinalsWalletConnectSDK.createTopic();
-      }
+              let createdTopicId;
+              if (memo && adminKey) {
+                createdTopicId = await window.HashinalsWalletConnectSDK.createTopic(memo, adminKey);
+              } else {
+                createdTopicId = await window.HashinalsWalletConnectSDK.createTopic();
+              }
 
-      console.log("createdTopicId is", createdTopicId);
+              console.log("createdTopicId is", createdTopicId);
 
 
-      document.getElementById("input-field-5").value = createdTopicId;
-      document.getElementById("input-field-2-0").value = createdTopicId;
-      document.getElementById("input-field-3-0").value = createdTopicId;
-      document.getElementById("input-field").value = createdTopicId;
-    } catch (error) {
-      console.error("Error creating topic:", error);
-    }
-  });
+              document.getElementById("input-field-5").value = createdTopicId;
+              document.getElementById("input-field-2-0").value = createdTopicId;
+              document.getElementById("input-field-3-0").value = createdTopicId;
+              document.getElementById("input-field").value = createdTopicId;
+            } catch (error) {
+              console.error("Error creating topic:", error);
+            }
+          });
 
           function adjustTextareaHeight(textarea)
           {
@@ -2729,36 +2713,36 @@ document.getElementById("submit-button-change-memo").addEventListener("click", a
               let adminKey = document.getElementById("input-field-admin-key").value;
 
               const realfee = document.getElementById("input-field-fee").value;
-      const tokenId = document.getElementById("input-field-fee-token").value;
-      const royaltyAccount = document.getElementById("input-field-royal-acc").value;
-      const feeScheduleKey = document.getElementById("input-field-admin-key").value;
+              const tokenId = document.getElementById("input-field-fee-token").value;
+              const royaltyAccount = document.getElementById("input-field-royal-acc").value;
+              const feeScheduleKey = document.getElementById("input-field-admin-key").value;
 
-      const fee = realfee * 1000000
+              const fee = realfee * 1000000
 
-      let customFees = [];
+              let customFees = [];
 
-      let createdTopicId;
+              let createdTopicId;
 
-      if (fee && tokenId && royaltyAccount) {
-        // If all fields are provided, use all parameters
-        customFees.push({
-          denominatingTokenId: tokenId,
-          amount: fee,
-          collectorAccountId: royaltyAccount
-        });
-        const topic = topicId;
-        const changeMemo =
-        await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey, customFees, feeScheduleKey);
-      } else {
-        const topic = topicId;
-        const changeMemo =
-        await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey);
-      }
+              if (fee && tokenId && royaltyAccount) {
+                // If all fields are provided, use all parameters
+                customFees.push({
+                  denominatingTokenId: tokenId,
+                  amount: fee,
+                  collectorAccountId: royaltyAccount
+                });
+                const topic = topicId;
+                const changeMemo =
+                await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey, customFees, feeScheduleKey);
+              } else {
+                const topic = topicId;
+                const changeMemo =
+                await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey);
+              }
 
 
-  } catch (error) {
-    console.error("Error creating topic:", error);
-  }
+          } catch (error) {
+            console.error("Error creating topic:", error);
+          }
 });
 
 
@@ -2766,44 +2750,45 @@ document.getElementById("submit-button-change-memo").addEventListener("click", a
 
 
 
-          async function loadProfilePicture() {
-            const topicId = "0.0.9609881";
-            const accountUrls = {}; // Dictionary to store account IDs and their URLs
+async function loadProfilePicture() {
+const topicId = "0.0.9609881";
+const accountUrls = {}; // Dictionary to store account IDs and their URLs
 
-            try {
-              const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+  try {
+    const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
 
-              // Check if result exists and has messages
-              if (!result || !Array.isArray(result.messages)) {
-                console.log("No profile pictures found, using defaults");
-                return {};
-              }
+    // Check if result exists and has messages
+    if (!result || !Array.isArray(result.messages)) {
+      console.log("No profile pictures found, using defaults");
+      return {};
+    }
 
-              // Process all messages to build the accountUrls dictionary
-              result.messages.forEach(message => {
-                if (message.payer && message.data && message.data.urls && message.data.urls.length > 0) {
-                  // Store or update the URL for this account
-                  accountUrls[message.payer] = {
-                    url: message.data.urls[0],
-                    timestamp: message.timestamp
-                  };
-                }
-              });
+    // Process all messages to build the accountUrls dictionary
+    result.messages.forEach(message => {
+      if (message.payer && message.data && message.data.urls && message.data.urls.length > 0) {
+        // Store or update the URL for this account
+        accountUrls[message.payer] = {
+        url: message.data.urls[0],
+        timestamp: message.timestamp
+        };
+      }
+    });
 
 
-              return accountUrls;
+    return accountUrls;
 
-            } catch (error) {
-              console.log("Error in loadProfilePicture:", error);
-              return {}; // Return empty object instead of throwing error
-            }
-          }
-          loadProfilePicture();
-          loader.updateProgress();
+    } catch (error) {
+      console.log("Error in loadProfilePicture:", error);
+      return {}; // Return empty object instead of throwing error
+    }
+}
 
-          async function loadUsername() {
+loadProfilePicture();
+loader.updateProgress();
+
+async function loadUsername() {
   const topicId = "0.0.9609904";
-  const accountUsernames = {}; // Dictionary to store account IDs and their usernames
+  const accountUsernames = {};
 
   try {
     const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
@@ -2837,7 +2822,7 @@ document.getElementById("submit-button-change-memo").addEventListener("click", a
 
 async function loadCLICK2URL() {
   const topicId = "0.0.9752486";
-  const accountCLICK2URL = {}; // Dictionary to store account IDs and their usernames
+  const accountCLICK2URL = {};
 
   try {
     const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
@@ -3014,7 +2999,7 @@ window.loadTOPIC4PIC = async function(payer) {
   const loadColumn = document.getElementById("load-column");
   loadColumn.style.display = "block";
   const loaded_text_area = document.getElementById("loaded-topics");
-  loaded_text_area.value = ''; // Clear the current value
+  loaded_text_area.value = '';
   loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
   adjustTextareaHeight(loaded_text_area); // Adjust height after loading
 
@@ -3028,18 +3013,18 @@ window.loadTOPIC4PIC = async function(payer) {
   }
 }
 
-          const geojson = {
-                type: "FeatureCollection",
-                features: []
-                };
+const geojson = {
+  type: "FeatureCollection",
+  features: []
+};
 
-          const polygons = [];
+const polygons = [];
 
-          const loadedNFTsForModel = [];
-          const loadedNFTScaleForModel = [];
-          let hasRulesForModelNFT = false;
+const loadedNFTsForModel = [];
+const loadedNFTScaleForModel = [];
+let hasRulesForModelNFT = false;
 
-          function updateRulesForModelNFTState() {
+function updateRulesForModelNFTState() {
   if (loadedNFTsForModel.length > 0) {
     hasRulesForModelNFT = true;
   } else {
@@ -3049,21 +3034,20 @@ window.loadTOPIC4PIC = async function(payer) {
 
 let globalLoadedTopicIdsWithNames = [];
 
-  async function handleAllMessages() {
+async function handleAllMessages() {
   try {
     const profilePics = await loadProfilePicture();
     const usernames = await loadUsername();
     const click2url = await loadCLICK2URL();
-// Get the user input
-let userInput = document.getElementById("input-field").value.toLowerCase();
-let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
-let topicId;
+    let userInput = document.getElementById("input-field").value.toLowerCase();
+    let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+    let topicId;
 
-if (domainEntry && domainEntry.lastMessage) {
-  topicId = domainEntry.lastMessage.topic;
-} else {
-  topicId = userInput || initialTopicId;
-}
+    if (domainEntry && domainEntry.lastMessage) {
+      topicId = domainEntry.lastMessage.topic;
+    } else {
+      topicId = userInput || initialTopicId;
+    }
 
     const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
 
@@ -3073,7 +3057,7 @@ if (domainEntry && domainEntry.lastMessage) {
     let loadedTopicsIds = [];
 
     const loaded_text_area = document.getElementById("loaded-topics");
-  loaded_text_area.value = ''; // Clear the current value
+    loaded_text_area.value = '';
 
     let hasMoreThanOneTopic = false;
 
@@ -3116,7 +3100,6 @@ if (domainEntry && domainEntry.lastMessage) {
             }
           });
 
-    // Initialize a map to track the latest action for each topic
     const topicActions = new Map();
 
     for (let index = 0; index < result.messages.length; index++) {
@@ -3160,57 +3143,48 @@ if (domainEntry && domainEntry.lastMessage) {
       const loadedTopicIdsWithNames = [];
 
 
-// Load and process messages from each topic in loadedTopicsIds
-for (const topicId of loadedTopicsIds) {
-  const { topicGeojsonFeatures, topicPolygons, loadedTopicName } = await processTopicMessages(topicId); // Ensure this is awaited if it's async
+    // Load and process messages from each topic in loadedTopicsIds
+    for (const topicId of loadedTopicsIds) {
+      const { topicGeojsonFeatures, topicPolygons, loadedTopicName } = await processTopicMessages(topicId); // Ensure this is awaited if it's async
 
-  // Update markers/clusters
-  if (geojson.features.length > 0) {
-    index.load(geojson.features);
-    updateClusters();
-  }
-  // Add new polygons
-  polygons.forEach(polygon => {
-    addPolygonWithImageFill(map, polygon);
-  });
+      // Update markers/clusters
+      if (geojson.features.length > 0) {
+        index.load(geojson.features);
+        updateClusters();
+      }
+      // Add new polygons
+      polygons.forEach(polygon => {
+        addPolygonWithImageFill(map, polygon);
+      });
 
 
     if (loadedTopicName !== undefined) { // Only skip if loadedTopicName is undefined
       const topicNamePart = loadedTopicName ? `-${loadedTopicName}` : '';
       loadedTopicIdsWithNames.push(`${topicId}${topicNamePart}`);
+     }
     }
-}
 
-globalLoadedTopicIdsWithNames = loadedTopicIdsWithNames;
-
-
-globalLoadedTopicIdsWithNames.sort((a, b) => {
-  const idA = parseFloat(a.split('-')[0].replace('0.0.', ''));
-  const idB = parseFloat(b.split('-')[0].replace('0.0.', ''));
-  return idA - idB;
-});
-
-  loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
-  adjustTextareaHeight(loaded_text_area); // Adjust height after loading
-
-return loadedTopicIdsWithNames; // Return the loadedTopicsIds array
+    globalLoadedTopicIdsWithNames = loadedTopicIdsWithNames;
 
 
+    globalLoadedTopicIdsWithNames.sort((a, b) => {
+      const idA = parseFloat(a.split('-')[0].replace('0.0.', ''));
+      const idB = parseFloat(b.split('-')[0].replace('0.0.', ''));
+      return idA - idB;
+    });
 
+    loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
+    adjustTextareaHeight(loaded_text_area); // Adjust height after loading
 
+    return loadedTopicIdsWithNames; // Return the loadedTopicsIds array
 
-
-  } catch (error) {
-    console.error("Error processing topic messages:", error);
-  }
+      } catch (error) {
+        console.error("Error processing topic messages:", error);
+      }
 };
+
 loader.updateProgress();
 
-
-
-
-
-// Sort the array by scale in descending order
 loadedNFTScaleForModel.sort((a, b) => b.scale - a.scale);
 let scaleForModel = 1;
 let finalScaleForModel = 1;
@@ -3221,19 +3195,18 @@ async function confirmNFTFunction(accountId) {
   let tokenIdForModel = "0.0.9605689";
   let tokenIDForBeta = "0.0.9606654";
   let userInput = document.getElementById("input-field").value.toLowerCase();
-let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
-let topicId;
+  let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+  let topicId;
 
-if (domainEntry && domainEntry.lastMessage) {
-  topicId = domainEntry.lastMessage.topic;
-} else {
-  topicId = userInput || initialTopicId;
-}
+  if (domainEntry && domainEntry.lastMessage) {
+    topicId = domainEntry.lastMessage.topic;
+  } else {
+    topicId = userInput || initialTopicId;
+  }
   await handleAllMessages();
 
-  // Reset any stateful variables
-  loadedNFTsForModel.length = 0; // Clear the array if it's used to store data
-  hasRulesForModelNFT = false; // Reset the flag if it's used to track state
+  loadedNFTsForModel.length = 0;
+  hasRulesForModelNFT = false;
 
 
   const NFTForModel = await sdk.getAccountNFTs(accountId, tokenIdForModel);
@@ -3286,13 +3259,6 @@ if (domainEntry && domainEntry.lastMessage) {
     return false;
   }
 }
-
-
-
-
-
-
-
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -3654,7 +3620,7 @@ document.getElementById("column1").addEventListener("click", (event) => {
   const inputToolbar = document.getElementById("load-column");
   inputToolbar.style.display = "block";
   const loaded_text_area = document.getElementById("loaded-topics");
-  loaded_text_area.value = ''; // Clear the current value
+  loaded_text_area.value = '';
   loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
   adjustTextareaHeight(loaded_text_area); // Adjust height after loading
 });
@@ -3723,40 +3689,38 @@ document.getElementById("stack-topic-ids-column").addEventListener("click", (eve
   checkToolbarStatus();
 });
 
-      // Add event listeners for the buttons
-      document.getElementById("change-model-settings").addEventListener("click", (event) => {
-        event.stopPropagation(); // Prevent event bubbling
-        closeAllColumns(); // Close any open columns
-        document.getElementById("model-column").style.display = "block"; // Show model column
-        isToolbarOpen = true;
-      });
+document.getElementById("change-model-settings").addEventListener("click", (event) => {
+  event.stopPropagation();
+  closeAllColumns();
+  document.getElementById("model-column").style.display = "block";
+  isToolbarOpen = true;
+});
 
-      document.getElementById("change-crosshair-settings").addEventListener("click", (event) => {
-        event.stopPropagation(); // Prevent event bubbling
-        closeAllColumns(); // Close any open columns
-        document.getElementById("crosshair-column").style.display = "block"; // Show crosshair column
-        document.getElementById("crosshair-column-container").style.display = "block"; // Show crosshair column container
-        isToolbarOpen = true;
-      });
+document.getElementById("change-crosshair-settings").addEventListener("click", (event) => {
+  event.stopPropagation();
+  closeAllColumns();
+  document.getElementById("crosshair-column").style.display = "block";
+  document.getElementById("crosshair-column-container").style.display = "block";
+  isToolbarOpen = true;
+});
 
-      document.getElementById("change-popup-settings").addEventListener("click", (event) => {
-        event.stopPropagation(); // Prevent event bubbling
-        closeAllColumns(); // Close any open columns
-        document.getElementById("popup-column").style.display = "block"; // Show popup column
-        document.getElementById("popup-column-container").style.display = "block"; // Show popup column container
-        isToolbarOpen = true;
-      });
-            // Close columns when clicking elsewhere on the screen
-            document.addEventListener("click", (event) => {
-        const modelColumn = document.getElementById("model-column");
-        const crosshairColumn = document.getElementById("crosshair-column");
-        if (!modelColumn.contains(event.target) && !crosshairColumn.contains(event.target)) {
-          closeAllColumns(); // Close both columns if clicked outside
-        }
-      });
+document.getElementById("change-popup-settings").addEventListener("click", (event) => {
+  event.stopPropagation();
+  closeAllColumns();
+  document.getElementById("popup-column").style.display = "block";
+  document.getElementById("popup-column-container").style.display = "block";
+  isToolbarOpen = true;
+});
+
+document.addEventListener("click", (event) => {
+  const modelColumn = document.getElementById("model-column");
+  const crosshairColumn = document.getElementById("crosshair-column");
+  if (!modelColumn.contains(event.target) && !crosshairColumn.contains(event.target)) {
+  closeAllColumns();
+  }
+});
 
 
-// Add this event listener to close column1 when clicking outside
 document.addEventListener("click", (event) => {
   const inputToolbarColumn1 = document.getElementById("load-column");
   if (
@@ -5347,26 +5311,22 @@ document.getElementById("main-toggle-btn").addEventListener("click", function(e)
 
   closeOptions();
 
-  // Reset the toolbar state
-  isToolbarOpen = false; // Ensure the toolbar state is reset
+  isToolbarOpen = false; 
 
-  // Show the toggle buttons and hide the main button
   document.getElementById("toggle-controls-btn").style.display = "block";
   document.getElementById("toggle-toolbar-btn").style.display = "block";
   document.getElementById("toggle-rotation-controls-btn").style.display = "block";
   document.getElementById("toggle-visibility-controls-btn").style.display = "block";
 
-  this.style.display = "none"; // Hide the main button
+  this.style.display = "none";
 
   document.getElementById("topic-chat-btn").style.display = "none";
 
-  // Open the visibility controls
-
-  return false; // Prevent any other handlers
+  return false;
 });
 
 document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
-  event.stopPropagation(); // Prevent event bubbling
+  event.stopPropagation();
 
   closeOptionsWithoutChat();
 
@@ -5375,13 +5335,7 @@ document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
   } else {
     document.getElementById("topic-chat-container").style.display = "block";
   }
-
-
-
-
-
-    // Reset the toolbar state
-    isToolbarOpen = true; // Ensure the toolbar state is reset
+    isToolbarOpen = true; 
 
     document.getElementById("toggle-controls-btn").style.display = "none";
     document.getElementById("toggle-toolbar-btn").style.display = "none";
@@ -5389,7 +5343,7 @@ document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
     document.getElementById("main-toggle-btn").style.display = "block";
     document.getElementById("toggle-visibility-controls-btn").style.display = "none";
     document.getElementById("visibility-controls").style.display = "none";
-    return false; // Prevent any other handlers
+    return false;
 
 });
 
@@ -5502,24 +5456,6 @@ const inputToolbars = [
   "utility-column"
 ];
 
-inputToolbars.forEach(toolbarId => {
-  const toolbar = document.getElementById(toolbarId);
-  const mainToolbar = document.getElementById("toolbar");
-  if (toolbar && mainToolbar) {
-    toolbar.style.width = "52vw";
-    toolbar.style.height = `${mainToolbar.offsetHeight}px`; // Match height to the toolbar
-    toolbar.style.padding = "0"; // Remove padding
-
-    // Make input boxes inside the toolbar bigger
-    const inputs = toolbar.querySelectorAll('input, textarea');
-    inputs.forEach(input => {
-      input.style.width = "48vw"; // Increase width to fill the toolbar
-      input.style.height = "5vh"; // Increase height for better visibility
-      input.style.fontSize = "2vh"; // Increase font size for readability
-      input.style.marginBottom = "1vh"; // Add some space between inputs
-    });
-  }
-});
 
 document.addEventListener("click", (event) => {
   const toggleControlsBtn = document.getElementById("toggle-controls-btn");
