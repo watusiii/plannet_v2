@@ -86,20 +86,23 @@ html, body {
 }
 
 .rotation-controls {
-position: fixed;
-display: flex;
-flex-direction: column;
-background-color: rgba(0, 0, 0, 0.8);
-color: white;
-padding: 1vh 1vw;
-border-radius: 1vh;
-z-index: 1001;
-justify-content: space-around;
-width: 98vw;
-top: 10vh;
-left: 0;
-transform: none;
-display: none;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding-top: 1vh;
+  padding-bottom: 0.5vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-radius: 1vh;
+  z-index: 1001;
+  justify-content: space-around;
+  width: 98vw;
+  top: 10vh;
+  left: 0;
+  transform: none;
+  display: none;
 }
 
 .menu_buttons {
@@ -152,7 +155,6 @@ display: none;
   padding-bottom: 0.5vh;
   padding-left: 1vw;
   padding-right: 1vw;
-
 }
 
 .toolbar-containers {
@@ -176,13 +178,13 @@ display: none;
   width: 100%;
   color: white;
   padding-top: 1vh;
-  padding-bottom: 0vh !important;
+  padding-bottom: 0.5vh !important;
   padding-left: 1vw;
   padding-right: 1vw;
   border: 0.1vh solid white;
   border-radius: 1vh;
   box-sizing: border-box;
-  margin-bottom: 0.5vh;
+  margin-bottom: 1vh;
   border: 0.1vh solid #ffc107;
   overflow: hidden; /* Hide scrollbars */
   resize: none; /* Prevent manual resizing */
@@ -243,7 +245,10 @@ display: none;
   max-height: 80vh; /* Limit the height to 80% of the viewport */
   touch-action: auto; /* Enable touch interactions */
   resize: none; /* Prevent manual resizing */
-  padding: 1vh 1vw;
+  padding-top: 1vh;
+  padding-bottom: 0.5vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
   width: 100%;
 }
 
@@ -624,11 +629,11 @@ input, textarea {
 
 button[type="submit"],
   #submit-button,
-  #submit-button-column2,
-  #submit-button-column3,
-  #submit-button-column5,
-  #submit-button-change-memo,
-  #submit-button-set-rules,
+  #submit-button-Create_Marker,
+  #submit-button-Create_Polygon,
+  #submit-button-Create_New_Topic,
+  #submit-button-Change_Memo,
+  #submit-button-Set_Rules,
   #add-topic-id,
   #remove-topic-id {
   height: 5vh; /* Adjust the height as needed */
@@ -806,7 +811,7 @@ button[type="submit"],
 <button id="toggle-controls-btn" class="menu_buttons" style="top: 6.5vh;">CONTROLS
 </button>
 
-<button id="toggle-rotation-controls-btn" class="menu_buttons" style="top: 11vh;">YOUR FOV
+<button id="toggle-your-fov-btn" class="menu_buttons" style="top: 11vh;">YOUR FOV
 </button>
 
 <button id="toggle-visibility-controls-btn" class="menu_buttons" style="top: 15.5vh;">VISIBILITY
@@ -816,28 +821,28 @@ button[type="submit"],
 </button>
 
 <div id="toolbar" class="toolbar" style="display: none; flex-direction: column;">
-  <div class="toolbar-column" id="edit-profile">Edit
+  <div class="toolbar-column" id="Edit_Profile">Edit
   </div>
-  <div class="toolbar-column" id="column1">Load
+  <div class="toolbar-column" id="Load_Everything">Load
   </div>
-  <div class="toolbar-column" id="column5">Create
+  <div class="toolbar-column" id="Create_New_Topic">Create
   </div>
-  <div class="toolbar-column" id="column2">Marker
+  <div class="toolbar-column" id="Create_Marker">Marker
   </div>
-  <div class="toolbar-column" id="column3">Polygon
+  <div class="toolbar-column" id="Create_Polygon">Polygon
   </div>
-  <div class="toolbar-column" id="set-rules">Set Rules
+  <div class="toolbar-column" id="Set_Rules">Set Rules
   </div>
   <div class="toolbar-column" id="NFT-utility">NFT Utility
   </div>
-  <div class="toolbar-column" id="change-memo">Update Topic
+  <div class="toolbar-column" id="Change_Memo">Update Topic
   </div>
-  <div class="toolbar-column" id="stack-topic-ids-column">Stack topic IDs
+  <div class="toolbar-column" id="Stack_topic_IDs">Stack topic IDs
   </div>
 </div>
 
-<div id="edit-profile-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
-  <div id="edit-profile-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+<div id="Edit_Profile-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
+  <div id="Edit_Profile-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
     <textarea type="text" id="toolbar-input" placeholder="URL/name/domain"
     class="toolbar-column" onclick="event.stopPropagation();"
@@ -853,7 +858,7 @@ button[type="submit"],
       </button>
     </div>
 
-    <textarea type="text" id="edit-profile-topic-id" placeholder="Topic ID"
+    <textarea type="text" id="Edit_Profile-topic-id" placeholder="Topic ID"
     class="toolbar-column" onclick="event.stopPropagation();"
     oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
@@ -968,7 +973,7 @@ button[type="submit"],
       oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea> -->
 
-      <button id="submit-button-column5" class="toolbar-column-btns" style="color: black; display: block;">Create
+      <button id="submit-button-Create_New_Topic" class="toolbar-column-btns" style="color: black; display: block;">Create
       </button>
     </div>
     <!--
@@ -1035,7 +1040,7 @@ button[type="submit"],
       </div>
     </div>
 
-    <button id="submit-button-column2" class="toolbar-column-btns">
+    <button id="submit-button-Create_Marker" class="toolbar-column-btns">
     Submit
     </button>
 
@@ -1087,7 +1092,7 @@ button[type="submit"],
     </div>
 
 
-    <button id="submit-button-column3" class="toolbar-column-btns" style="color: black; display: block; width: 48vw">Submit
+    <button id="submit-button-Create_Polygon" class="toolbar-column-btns" style="color: black; display: block;">Submit
     </button>
     <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
     <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-polygon" placeholder="Loaded Topic Rules"
@@ -1141,7 +1146,7 @@ button[type="submit"],
       <textarea class="toolbar-column" type="text" id="input-field-messages-per-nft-for-markers" placeholder="how many markers per NFT"
       onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea>
-      <button id="submit-button-set-rules" class="toolbar-column-btns" style="color: black; display: block;">Submit
+      <button id="submit-button-Set_Rules" class="toolbar-column-btns" style="color: black; display: block;">Submit
       </button>
       <div style="margin-bottom: 10px;"></div>
     </div>
@@ -1235,7 +1240,7 @@ button[type="submit"],
       ></textarea>
     </div>
 
-    <button id="submit-button-change-memo" class="toolbar-column-btns" style="color: black; display: block;">Submit
+    <button id="submit-button-Change_Memo" class="toolbar-column-btns" style="color: black; display: block;">Submit
     </button>
 
   </div>
@@ -1383,6 +1388,16 @@ button[type="submit"],
   </div>
   <div class="toolbar-column" id="change-popup-settings">Change popup colors
   </div>
+  <div class="toolbar-column" id="change-color-of-main-buttons">Change color of main buttons
+  </div>
+  <div class="toolbar-column" id="change-marker-options">Change marker options
+  </div>
+  <div class="toolbar-column" id="change-button-input-settings">Change button/input settings
+  </div>
+  <div class="toolbar-column" id="change-container-settings">Change container settings
+  </div>
+  <div class="toolbar-column" id="change-topic-chat-options">Change topic chat options
+  </div>
 </div>
 
 
@@ -1409,35 +1424,35 @@ button[type="submit"],
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <button id="toggle-polygon-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show polygons:
+      <button id="toggle-polygon-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show polygons:
       </button>
       <span id="polygon-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
       </span>
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <button id="toggle-marker-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show markers
+      <button id="toggle-marker-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show markers
       </button>
       <span id="marker-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
       </span>
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <button id="toggle-3d-model-visibility" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Show 3D models
+      <button id="toggle-3d-model-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show 3D models
       </button>
       <span id="3d-model-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
       </span>
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <button id="toggle-updates" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">model updates
+      <button id="toggle-updates" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">model updates
       </button>
       <span id="updates-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
       </span>
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <button id="update-map-layer-btn" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black;">Update Map
+      <button id="update-map-layer-btn" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Update Map
       </button>
     </div>
 
@@ -1628,6 +1643,298 @@ button[type="submit"],
   </div>
 </div>
 
+<div id="main-button-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div id="main-button-column-container" class="container" onclick="event.stopPropagation();">
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Border:
+      </label>
+      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Number:
+      </label>
+      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Close:
+      </label>
+      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">AccID:
+      </label>
+      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Username:
+      </label>
+      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Title:
+      </label>
+      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Text:
+      </label>
+      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div id="savepopupsettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Popup Settings
+    </div>
+
+  </div>
+</div>
+
+<div id="marker-options-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div id="marker-options-column-container" class="container" onclick="event.stopPropagation();">
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Border:
+      </label>
+      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Number:
+      </label>
+      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Close:
+      </label>
+      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">AccID:
+      </label>
+      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Username:
+      </label>
+      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Title:
+      </label>
+      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Text:
+      </label>
+      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div id="savemarkersettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Marker Settings
+    </div>
+
+  </div>
+</div>
+
+<div id="button-input-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div id="button-input-column-container" class="container" onclick="event.stopPropagation();">
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Border:
+      </label>
+      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Number:
+      </label>
+      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Close:
+      </label>
+      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">AccID:
+      </label>
+      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Username:
+      </label>
+      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Title:
+      </label>
+      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Text:
+      </label>
+      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div id="savebuttoninputsettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Button/Input Settings
+    </div>
+
+  </div>
+</div>
+
+<div id="container-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div id="container-column-container" class="container" onclick="event.stopPropagation();">
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Border:
+      </label>
+      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Number:
+      </label>
+      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Close:
+      </label>
+      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">AccID:
+      </label>
+      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Username:
+      </label>
+      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Title:
+      </label>
+      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Text:
+      </label>
+      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div id="savecontainersettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Container Settings
+    </div>
+
+  </div>
+</div>
+
+<div id="topic-chat-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
+  <div id="topic-chat-column-container" class="container" onclick="event.stopPropagation();">
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">AccID:
+      </label>
+      <input type="number" id="color-red-accid-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-accid-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-accid-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Username:
+      </label>
+      <input type="number" id="color-red-username-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-username-topic-chat" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-username-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Text:
+      </label>
+      <input type="number" id="color-red-text-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-text-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-text-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div id="savetopicchatsettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Settings
+    </div>
+
+  </div>
+</div>
 
   </body>
 
@@ -1643,7 +1950,6 @@ button[type="submit"],
 
       const PROJECT_ID = "fdd65bec25e85908fecf7561fe42b41f";
 
-      let isToolbarOpen = false;
       let globalAccountId; // Declare an external variable to hold the accountId
 
       class Loader {
@@ -2636,113 +2942,109 @@ async function extractAccountId() {
 }
 
 
-                // Create a new topic
-                document
-  .getElementById("submit-button-column5")
-  .addEventListener("click", async () => {
-            try {
-              const memo = document.getElementById("input-field-5-1").value || '';
-              const adminKey = document.getElementById("input-field-5-2").value;
-              // const fee = document.getElementById("input-field-5-3").value;
-              // const tokenId = document.getElementById("input-field-5-4").value;
-              // const royaltyAccount = document.getElementById("input-field-5-5").value;
-
-              if ((memo && !adminKey) || (!memo && adminKey)) {
-                console.error("Both memo and adminKey must be provided together.");
-                return;
-              }
-
-              let createdTopicId;
-              if (memo && adminKey) {
-                createdTopicId = await window.HashinalsWalletConnectSDK.createTopic(memo, adminKey);
-              } else {
-                createdTopicId = await window.HashinalsWalletConnectSDK.createTopic();
-              }
-
-              console.log("createdTopicId is", createdTopicId);
-
-
-              document.getElementById("input-field-5").value = createdTopicId;
-              document.getElementById("input-field-2-0").value = createdTopicId;
-              document.getElementById("input-field-3-0").value = createdTopicId;
-              document.getElementById("input-field").value = createdTopicId;
-            } catch (error) {
-              console.error("Error creating topic:", error);
-            }
-          });
-
-          function adjustTextareaHeight(textarea)
-          {
-          textarea.style.height = ''; // Reset the height
-          textarea.style.height = textarea.scrollHeight + 10 + 'px'; // Set it to the scroll height
-          }
-
-          document.getElementById("generate-private-and-public-key").addEventListener("click", async () => {
-          try {
-            const { privateKey, publicKey } = await sdk.generatePrivateAndPublicKey();
-
-            const privateKeyTextarea = document.getElementById("generated-private-key");
-            const publicKeyTextarea = document.getElementById("generated-public-key");
-
-            privateKeyTextarea.value = privateKey;
-            publicKeyTextarea.value = publicKey;
-
-            // Adjust the height of the textareas
-            adjustTextareaHeight(privateKeyTextarea);
-            adjustTextareaHeight(publicKeyTextarea);
-
-          } catch (error) {
-            console.error("Error creating topic:", error);
-          }
-        });
-
-
-document.getElementById("submit-button-change-memo").addEventListener("click", async () => {
+document.getElementById("submit-button-Create_New_Topic").addEventListener("click", async () => {
   try {
-              let userInput = document.getElementById("input-field-topic-id").value.toLowerCase();
-              let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
-              let topicId;
+    const memo = document.getElementById("input-field-5-1").value || '';
+    const adminKey = document.getElementById("input-field-5-2").value;
+    // const fee = document.getElementById("input-field-5-3").value;
+    // const tokenId = document.getElementById("input-field-5-4").value;
+    // const royaltyAccount = document.getElementById("input-field-5-5").value;
 
-              if (domainEntry && domainEntry.lastMessage) {
-                topicId = domainEntry.lastMessage.topic;
-              } else {
-                topicId = userInput;
-              }
-              const memo =document.getElementById("input-field-memo").value || '';
+    if ((memo && !adminKey) || (!memo && adminKey)) {
+      console.error("Both memo and adminKey must be provided together.");
+      return;
+    }
 
-              let adminKey = document.getElementById("input-field-admin-key").value;
+    let createdTopicId;
 
-              const realfee = document.getElementById("input-field-fee").value;
-              const tokenId = document.getElementById("input-field-fee-token").value;
-              const royaltyAccount = document.getElementById("input-field-royal-acc").value;
-              const feeScheduleKey = document.getElementById("input-field-admin-key").value;
+    if (memo && adminKey) {
+      createdTopicId = await window.HashinalsWalletConnectSDK.createTopic(memo, adminKey);
+      } else {
+      createdTopicId = await window.HashinalsWalletConnectSDK.createTopic();
+    }
 
-              const fee = realfee * 1000000
-
-              let customFees = [];
-
-              let createdTopicId;
-
-              if (fee && tokenId && royaltyAccount) {
-                // If all fields are provided, use all parameters
-                customFees.push({
-                  denominatingTokenId: tokenId,
-                  amount: fee,
-                  collectorAccountId: royaltyAccount
-                });
-                const topic = topicId;
-                const changeMemo =
-                await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey, customFees, feeScheduleKey);
-              } else {
-                const topic = topicId;
-                const changeMemo =
-                await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey);
-              }
+    console.log("createdTopicId is", createdTopicId);
 
 
-          } catch (error) {
-            console.error("Error creating topic:", error);
-          }
+    document.getElementById("input-field-5").value = createdTopicId;
+    document.getElementById("input-field-2-0").value = createdTopicId;
+    document.getElementById("input-field-3-0").value = createdTopicId;
+    document.getElementById("input-field").value = createdTopicId;
+    } catch (error) {
+    console.error("Error creating topic:", error);
+  }
+});
+
+function adjustTextareaHeight(textarea) {
+  textarea.style.height = ''; // Reset the height
+  textarea.style.height = textarea.scrollHeight + 10 + 'px'; // Set it to the scroll height
+}
+
+document.getElementById("generate-private-and-public-key").addEventListener("click", async () => {
+  try {
+    const { privateKey, publicKey } = await sdk.generatePrivateAndPublicKey();
+
+    const privateKeyTextarea = document.getElementById("generated-private-key");
+    const publicKeyTextarea = document.getElementById("generated-public-key");
+
+    privateKeyTextarea.value = privateKey;
+    publicKeyTextarea.value = publicKey;
+
+    // Adjust the height of the textareas
+    adjustTextareaHeight(privateKeyTextarea);
+    adjustTextareaHeight(publicKeyTextarea);
+
+    } catch (error) {
+    console.error("Error creating topic:", error);
+  }
+});
+
+
+document.getElementById("submit-button-Change_Memo").addEventListener("click", async () => {
+  try {
+    let userInput = document.getElementById("input-field-topic-id").value.toLowerCase();
+    let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+    let topicId;
+
+    if (domainEntry && domainEntry.lastMessage) {
+      topicId = domainEntry.lastMessage.topic;
+      } else {
+      topicId = userInput;
+    }
+    const memo =document.getElementById("input-field-memo").value || '';
+
+    let adminKey = document.getElementById("input-field-admin-key").value;
+
+    const realfee = document.getElementById("input-field-fee").value;
+    const tokenId = document.getElementById("input-field-fee-token").value;
+    const royaltyAccount = document.getElementById("input-field-royal-acc").value;
+    const feeScheduleKey = document.getElementById("input-field-admin-key").value;
+
+    const fee = realfee * 1000000
+
+    let customFees = [];
+
+    let createdTopicId;
+
+    if (fee && tokenId && royaltyAccount) {
+      customFees.push({
+        denominatingTokenId: tokenId,
+        amount: fee,
+        collectorAccountId: royaltyAccount
+      });
+      const topic = topicId;
+      const changeMemo =
+      await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey, customFees, feeScheduleKey);
+    } else {
+    const topic = topicId;
+    const changeMemo =
+    await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey);
+    }
+
+
+  } catch (error) {
+  console.error("Error creating topic:", error);
+  }
 });
 
 
@@ -3367,7 +3669,6 @@ loader.updateProgress();
 
 
 function handleMovement() {
-  if (isToolbarOpen) return;
 
   const zoom = map.getZoom();
   const panSpeed = 10 * getSpeedMultiplier();
@@ -3486,277 +3787,257 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-document.addEventListener("click", () => {
-  const toolbar = document.getElementById("toolbar");
-  const toggleButton = document.getElementById("toggle-toolbar-btn");
-  if (!toolbar.contains(event.target) && event.target !== toggleButton) {
-    toolbar.style.display = "none";
-    isToolbarOpen = false;
-  }
-});
+const everythinginsideoptionsbuttons = [
+  "toggle-controls-btn",
+  "toggle-your-fov-btn",
+  "toggle-visibility-controls-btn",
+  "toggle-toolbar-btn"
+];
+
+const firstlayercolumns = [
+  "rotation-controls",
+  "toolbar",
+  "visibility-controls",
+  "topic-chat-container",
+];
 
 
-document.getElementById("toggle-toolbar-btn").addEventListener("click", function(event) {
-  // Stop event propagation to prevent document click handler from firing
-  event.stopPropagation();
+const everythinginsideyourfov = [
+  "model-column",
+  "crosshair-column",
+  "popup-column",
+  "main-button-column",
+  "marker-options-column",
+  "button-input-column",
+  "container-column",
+  "topic-chat-column",
+];
 
-  // Get the toolbar element
-  const toolbar = document.getElementById("toolbar");
+const everythinginsidetoolbar = [
+  "Edit_Profile-column",
+  "load-column",
+  "create-column",
+  "marker-column",
+  "polygon-column",
+  "rules-column",
+  "utility-column",
+  "memo-column",
+  "stack-topic-ids",
+];
 
-  // Toggle isToolbarOpen state
-  isToolbarOpen = !isToolbarOpen;
-
-  // Explicitly set display style based on current state
-  if (isToolbarOpen) {
-    toolbar.style.display = "flex";
-    console.log("Toolbar should be visible now", toolbar);
-  } else {
-    toolbar.style.display = "none";
-    console.log("Toolbar should be hidden now", toolbar);
-  }
-
-  // Hide both toggle buttons and show the main button
-  document.getElementById("toggle-controls-btn").style.display = "none";
-  document.getElementById("toggle-toolbar-btn").style.display = "none";
+function CloseALL() {
+  everythinginsideoptionsbuttons.forEach(buttonId => {
+    document.getElementById(buttonId).style.display = "none";
+  });
+  everythinginsideyourfov.forEach(buttonId => {
+    document.getElementById(buttonId).style.display = "none";
+  });
+  everythinginsidetoolbar.forEach(buttonId => {
+    document.getElementById(buttonId).style.display = "none";
+  });
+  firstlayercolumns.forEach(buttonId => {
+    document.getElementById(buttonId).style.display = "none";
+  });
   document.getElementById("main-toggle-btn").style.display = "block";
   document.getElementById("topic-chat-btn").style.display = "block";
-});
-
-// Add a click handler to the toolbar itself to prevent event bubbling
-document.getElementById("toolbar").addEventListener("click", function(event) {
-  event.stopPropagation();
-});
-
-
-
-let toggleControlsPressCount = 0; // Initialize a counter for button presses
-
-document.getElementById("toggle-controls-btn").addEventListener("click", () => {
-  const speedSlider = document.getElementById("speed-slider");
-
-  toggleControlsPressCount++; // Increment the counter each time the button is pressed
-
-  if (toggleControlsPressCount === 1) {
-    // Show the speed slider on the first press
-    speedSlider.style.display = "block";
-  } else if (toggleControlsPressCount > 3) {
-    // Hide the speed slider after the third additional press
-    speedSlider.style.display = "none";
-    toggleControlsPressCount = 0; // Reset the counter
-  }
-});
-
-// Modify the document click handler to not close the toolbar if it's clicked
-document.addEventListener("click", (event) => {
-  const toggleControlsBtn = document.getElementById("toggle-controls-btn");
-  const toggleToolbarBtn = document.getElementById("toggle-toolbar-btn");
-  const mainToggleBtn = document.getElementById("main-toggle-btn");
-  const toolbar = document.getElementById("toolbar");
-  const toggleVisibilityControlsBtn = document.getElementById("toggle-visibility-controls-btn");
-
-  // Check if the click is outside the toggle buttons and the main button
-  if (
-    !toggleControlsBtn.contains(event.target) &&
-    !toggleToolbarBtn.contains(event.target) &&
-    !mainToggleBtn.contains(event.target) &&
-    !toolbar.contains(event.target) &&
-    !toggleVisibilityControlsBtn.contains(event.target) // Ensure this line is included
-  ) {
-    // Hide the toggle buttons
-    toggleControlsBtn.style.display = "none";
-    toggleToolbarBtn.style.display = "none";
-    toggleVisibilityControlsBtn.style.display = "none"; // Hide the visibility controls button
-    // Show only the main "Options" button
-    mainToggleBtn.style.display = "block";
-  }
-});
-
-// Ensure the toolbar toggle button also toggles the toolbar visibility
-document.getElementById("toggle-toolbar-btn").addEventListener("click", (event) => {
-  event.stopPropagation(); // Prevent the click from reaching the document listener
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = toolbar.style.display === "none" ? "flex" : "none";
-});
-
-function closeAllColumns() {
-  const columns = [
-    "load-column",
-    "marker-column",
-    "polygon-column",
-    "create-column",
-    "memo-column",
-    "rules-column",
-    "stack-topic-ids",
-    "model-column",
-    "crosshair-column",
-    "rotation-controls",
-    "edit-profile-column",
-    "topic-chat-container",
-    "visibility-controls",
-    "utility-column"
-  ];
-
-  columns.forEach(columnId => {
-    const column = document.getElementById(columnId);
-    if (column) {
-      column.style.display = "none";
-    }
-  });
 }
 
-document.getElementById("edit-profile").addEventListener("click", (event) => {
-  closeAllColumns();
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";  const toolbarRect = document.getElementById("toolbar").getBoundingClientRect();
-  const inputToolbar = document.getElementById("edit-profile-column");
-  inputToolbar.style.display = "block";
-  checkToolbarStatus();
+document.addEventListener('click', function(event) {
+  CloseALL();
 });
 
-document.getElementById("column1").addEventListener("click", (event) => {
-  closeAllColumns();
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";
-  const inputToolbar = document.getElementById("load-column");
-  inputToolbar.style.display = "block";
-  const loaded_text_area = document.getElementById("loaded-topics");
-  loaded_text_area.value = '';
-  loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
-  adjustTextareaHeight(loaded_text_area); // Adjust height after loading
+document.getElementById("main-toggle-btn").addEventListener("click", function(event) {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("main-toggle-btn").style.display = "none";
+  document.getElementById("topic-chat-btn").style.display = "none";
+  everythinginsideoptionsbuttons.forEach(buttonId => {
+    document.getElementById(buttonId).style.display = "flex";
+  });
 });
 
-document.getElementById("column2").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarColumn2 = document.getElementById("marker-column");
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";
-  inputToolbarColumn2.style.display = "block";
-  checkToolbarStatus();
+let toggleControlsPressCount = 0;
+
+document.getElementById("toggle-controls-btn").addEventListener("click", () => {
+  event.stopPropagation();
+  CloseALL();
+  const speedSlider = document.getElementById("speed-slider");
+  toggleControlsPressCount++;
+  if (toggleControlsPressCount === 1) {
+    speedSlider.style.display = "block";
+  } else if (toggleControlsPressCount > 3) {
+    speedSlider.style.display = "none";
+    toggleControlsPressCount = 0;
+  }
+  const zoomControls = document.getElementById("zoom-controls");
+  const leftDpad = document.getElementById("left-dpad");
+  const rightDpad = document.getElementById("right-dpad");
+
+  const isVisible = getComputedStyle(zoomControls).display !== "none";
+
+  if (isVisible) {
+    zoomControls.setAttribute("style", "display: none !important");
+    leftDpad.setAttribute("style", "display: none !important");
+    rightDpad.setAttribute("style", "display: none !important");
+  } else {
+    zoomControls.setAttribute("style", "display: flex !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
+    leftDpad.setAttribute("style", "display: grid !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
+    rightDpad.setAttribute("style", "display: grid !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
+  }
 });
 
-document.getElementById("column3").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarColumn3 = document.getElementById("polygon-column");
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";
-  inputToolbarColumn3.style.display = "block";
-  checkToolbarStatus();
+document.getElementById("toggle-visibility-controls-btn").addEventListener("click", function(event) {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("visibility-controls").style.display = "block";
 });
 
-
-document.getElementById("column5").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarColumn5 = document.getElementById("create-column");
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";
-  inputToolbarColumn5.style.display = "block";
-  checkToolbarStatus();
-});
-
-document.getElementById("set-rules").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarSetRules = document.getElementById("rules-column");
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";
-  inputToolbarSetRules.style.display = "block";
-  checkToolbarStatus();
-});
-
-document.getElementById("NFT-utility").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarSetRules = document.getElementById("utility-column");
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";
-  inputToolbarSetRules.style.display = "block";
-  checkToolbarStatus();
-});
-
-document.getElementById("change-memo").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbarSetRules = document.getElementById("memo-column");
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";
-  inputToolbarSetRules.style.display = "block";
-  checkToolbarStatus();
-});
-
-document.getElementById("stack-topic-ids-column").addEventListener("click", (event) => {
-  closeAllColumns();
-  const inputToolbar = document.getElementById("stack-topic-ids");
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = "none";
-  inputToolbar.style.display = "block";
-  checkToolbarStatus();
+document.getElementById("toggle-your-fov-btn").addEventListener("click", function(event) {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("rotation-controls").style.display = "block";
 });
 
 document.getElementById("change-model-settings").addEventListener("click", (event) => {
   event.stopPropagation();
-  closeAllColumns();
+  CloseALL();
   document.getElementById("model-column").style.display = "block";
-  isToolbarOpen = true;
+  document.getElementById("model-column-container").style.display = "block";
 });
 
 document.getElementById("change-crosshair-settings").addEventListener("click", (event) => {
   event.stopPropagation();
-  closeAllColumns();
+  CloseALL();
   document.getElementById("crosshair-column").style.display = "block";
   document.getElementById("crosshair-column-container").style.display = "block";
-  isToolbarOpen = true;
 });
 
 document.getElementById("change-popup-settings").addEventListener("click", (event) => {
   event.stopPropagation();
-  closeAllColumns();
+  CloseALL();
   document.getElementById("popup-column").style.display = "block";
   document.getElementById("popup-column-container").style.display = "block";
-  isToolbarOpen = true;
 });
 
-document.addEventListener("click", (event) => {
-  const modelColumn = document.getElementById("model-column");
-  const crosshairColumn = document.getElementById("crosshair-column");
-  if (!modelColumn.contains(event.target) && !crosshairColumn.contains(event.target)) {
-  closeAllColumns();
-  }
+document.getElementById("change-color-of-main-buttons").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("main-button-column").style.display = "block";
+  document.getElementById("main-button-column-container").style.display = "block";
 });
 
-
-document.addEventListener("click", (event) => {
-  const inputToolbarColumn1 = document.getElementById("load-column");
-  if (
-    event.target.id !== "column1" &&
-    !inputToolbarColumn1.contains(event.target)
-  ) {
-    inputToolbarColumn1.style.display = "none";
-  }
+document.getElementById("change-marker-options").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("marker-options-column").style.display = "block";
+  document.getElementById("marker-options-column-container").style.display = "block";
 });
 
-document.addEventListener("click", (event) => {
-  const inputToolbarEditProfile = document.getElementById("edit-profile-column");
-  if (
-    event.target.id !== "edit-profile" &&
-    !inputToolbarEditProfile.contains(event.target)
-  ) {
-    inputToolbarEditProfile.style.display = "none";
-  }
+document.getElementById("change-button-input-settings").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("button-input-column").style.display = "block";
+  document.getElementById("button-input-column-container").style.display = "block";
 });
 
+document.getElementById("change-container-settings").addEventListener("click", (event) => {
+  event.stopPropagation();  
+  CloseALL();
+  document.getElementById("container-column").style.display = "block";
+  document.getElementById("container-column-container").style.display = "block";
+});
 
-document.addEventListener("click", (event) => {
-  const inputToolbarStackTopicIds = document.getElementById("stack-topic-ids");
-  if (
-    event.target.id !== "stack-topic-ids" &&
-    !inputToolbarStackTopicIds.contains(event.target)
-  ) {
-    inputToolbarStackTopicIds.style.display = "none";
-  }
+document.getElementById("change-topic-chat-options").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("topic-chat-column").style.display = "block";
+  document.getElementById("topic-chat-column-container").style.display = "block";
+});
+
+document.getElementById("toggle-toolbar-btn").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("toolbar").style.display = "block";
+});
+
+document.getElementById("Edit_Profile").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("Edit_Profile-column").style.display = "block";
+  document.getElementById("Edit_Profile-column-container").style.display = "block";
+});
+
+document.getElementById("Load_Everything").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("load-column").style.display = "block";
+  document.getElementById("load-column-container").style.display = "block";
+  const loaded_text_area = document.getElementById("loaded-topics");
+  loaded_text_area.value = '';
+  loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n');
+  adjustTextareaHeight(loaded_text_area);
+});
+
+document.getElementById("Create_Marker").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("marker-column").style.display = "block";
+  document.getElementById("marker-column-container").style.display = "block";
+});
+
+document.getElementById("Create_Polygon").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("polygon-column").style.display = "block";
+  document.getElementById("polygon-column-container").style.display = "block";
+});
+
+document.getElementById("Create_New_Topic").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("create-column").style.display = "block";
+  document.getElementById("create-column-container").style.display = "block";
+});
+
+document.getElementById("Set_Rules").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("rules-column").style.display = "block";
+  document.getElementById("rules-column-container").style.display = "block";
+});
+
+document.getElementById("NFT-utility").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("utility-column").style.display = "block";
+  document.getElementById("utility-column-container").style.display = "block";
+});
+
+document.getElementById("Change_Memo").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("memo-column").style.display = "block";
+  document.getElementById("memo-column-container").style.display = "block";
+});
+
+document.getElementById("Stack_topic_IDs").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("stack-topic-ids").style.display = "block";
+  document.getElementById("stack-topic-ids-container").style.display = "block";
+});
+
+document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("topic-chat-container").style.display = "block";
 });
 
 
 
 document.getElementById("button3").addEventListener("click", async () => {
 try {
-  const topicId = document.getElementById("edit-profile-topic-id").value;
+  const topicId = document.getElementById("Edit_Profile-topic-id").value;
   const newName = document.getElementById("toolbar-input").value;
 
   const meesageobject = {
@@ -3800,7 +4081,7 @@ if (domainEntry && domainEntry.lastMessage) {
 
 
 document
-.getElementById("submit-button-set-rules")
+.getElementById("submit-button-Set_Rules")
 .addEventListener("click", async () => {
             try {
               let userInput = document.getElementById("input-field-topic-id-for-rules").value.toLowerCase();
@@ -4058,7 +4339,7 @@ let formattedRules = '';
 .addEventListener("click", async () => {
             try {
               const topicId = '0.0.9606779';
-              const topic = document.getElementById("edit-profile-topic-id").value;
+              const topic = document.getElementById("Edit_Profile-topic-id").value;
               const domain = document.getElementById("toolbar-input").value.toLowerCase();
 
 
@@ -4331,7 +4612,7 @@ let formattedRules = '';
           });
 
 document
-  .getElementById("submit-button-column2")
+  .getElementById("submit-button-Create_Marker")
   .addEventListener("click", async () => {
     try {
       let userInput = document.getElementById("input-field-2-0").value.toLowerCase();
@@ -4384,19 +4665,19 @@ document
   });
 
 document.addEventListener("click", (event) => {
-  const inputToolbarColumn2 = document.getElementById(
+  const inputToolbarCreate_Marker = document.getElementById(
     "marker-column"
   );
   if (
-    event.target.id !== "column2" &&
-    !inputToolbarColumn2.contains(event.target)
+    event.target.id !== "Create_Marker" &&
+    !inputToolbarCreate_Marker.contains(event.target)
   ) {
-    inputToolbarColumn2.style.display = "none";
+    inputToolbarCreate_Marker.style.display = "none";
   }
 });
 
 document
-  .getElementById("submit-button-column3")
+  .getElementById("submit-button-Create_Polygon")
   .addEventListener("click", async () => {
     try {
       let userInput = document.getElementById("input-field-3-0").value.toLowerCase();
@@ -4493,34 +4774,34 @@ document
 
 
 document.addEventListener("click", (event) => {
-  const inputToolbarColumn3 = document.getElementById(
+  const inputToolbarCreate_Polygon = document.getElementById(
     "polygon-column"
   );
   if (
-    event.target.id !== "column3" &&
-    !inputToolbarColumn3.contains(event.target)
+    event.target.id !== "Create_Polygon" &&
+    !inputToolbarCreate_Polygon.contains(event.target)
   ) {
-    inputToolbarColumn3.style.display = "none";
+    inputToolbarCreate_Polygon.style.display = "none";
   }
 });
 
 
 document.addEventListener("click", (event) => {
-  const inputToolbarColumn5 = document.getElementById(
+  const inputToolbarCreate_New_Topic = document.getElementById(
     "create-column"
   );
   if (
-    event.target.id !== "column5" &&
-    !inputToolbarColumn5.contains(event.target)
+    event.target.id !== "Create_New_Topic" &&
+    !inputToolbarCreate_New_Topic.contains(event.target)
   ) {
-    inputToolbarColumn5.style.display = "none";
+    inputToolbarCreate_New_Topic.style.display = "none";
   }
 });
 
 document.addEventListener("click", (event) => {
   const inputToolbarSetRules = document.getElementById("memo-column");
   if (
-    event.target.id !== "change-memo" &&
+    event.target.id !== "Change_Memo" &&
     !inputToolbarSetRules.contains(event.target)
   ) {
     inputToolbarSetRules.style.display = "none";
@@ -4530,7 +4811,7 @@ document.addEventListener("click", (event) => {
 document.addEventListener("click", (event) => {
   const inputToolbarSetRules = document.getElementById("rules-column");
   if (
-    event.target.id !== "set-rules" &&
+    event.target.id !== "Set_Rules" &&
     !inputToolbarSetRules.contains(event.target)
   ) {
     inputToolbarSetRules.style.display = "none";
@@ -5136,7 +5417,7 @@ popup.on('close', () => {
             // Add event listeners for the new buttons
             document.getElementById("button_for_topic2pic").addEventListener("click", async (event) => {
         event.stopPropagation();
-        const inputValue = document.getElementById("edit-profile-topic-id").value;
+        const inputValue = document.getElementById("Edit_Profile-topic-id").value;
 
           // Check if inputValue has less than 20 characters
   if (inputValue.length >= 20) {
@@ -5161,7 +5442,7 @@ popup.on('close', () => {
           );
           console.log("Profile TOPIC2PIC updated successfully:", receipt);
 
-          document.getElementById("edit-profile-topic-id").value = "";
+          document.getElementById("Edit_Profile-topic-id").value = "";
 
         } catch (error) {
           console.error("Error updating profile TOPIC2PIC:", error);
@@ -5189,349 +5470,6 @@ popup.on('close', () => {
       document.addEventListener('gesturestart', (event) => {
         event.preventDefault();
       }, { passive: false });
-
-
-function closeOptions() {
-  const toggleControlsBtn = document.getElementById("toggle-controls-btn");
-  const toggleToolbarBtn = document.getElementById("toggle-toolbar-btn");
-  const mainToggleBtn = document.getElementById("main-toggle-btn");
-  const toolbar = document.getElementById("toolbar");
-  const toggleRotationControlsBtn = document.getElementById("toggle-rotation-controls-btn");
-  const rotationControls = document.getElementById("rotation-controls");
-  const toggleVisibilityControlsBtn = document.getElementById("toggle-visibility-controls-btn");
-  const visibilityControls = document.getElementById("visibility-controls");
-  const topicChatBtn = document.getElementById("topic-chat-btn");
-  const topicChatContainer = document.getElementById("topic-chat-container");
-  const crosshairColumn = document.getElementById("crosshair-column");
-  const crosshairColumnContainer = document.getElementById("crosshair-column-container");
-
-
-  toggleControlsBtn.style.display = "none";
-  topicChatContainer.style.display = "none";
-  toggleToolbarBtn.style.display = "none";
-  toggleRotationControlsBtn.style.display = "none";
-  rotationControls.style.display = "none";
-  toolbar.style.display = "none";
-  toggleVisibilityControlsBtn.style.display = "none";
-  visibilityControls.style.display = "none";
-  mainToggleBtn.style.display = "block";
-  topicChatBtn.style.display = "block";
-
-  // Close all input toolbars
-  const inputToolbars = [
-    "load-column",
-    "marker-column",
-    "polygon-column",
-    "create-column",
-    "memo-column",
-    "rules-column",
-    "stack-topic-ids",
-    "edit-profile-column",
-    "model-column",
-    "visibility-controls",
-    "crosshair-column",
-    "crosshair-column-container",
-    "popup-column",
-    "popup-column-container",
-    "utility-column"
-  ];
-
-  inputToolbars.forEach(toolbarId => {
-    const inputToolbar = document.getElementById(toolbarId);
-    if (inputToolbar) {
-      inputToolbar.style.display = "none";
-    }
-  });
-
-
-}
-
-function closeOptionsWithoutChat() {
-  const toggleControlsBtn = document.getElementById("toggle-controls-btn");
-  const toggleToolbarBtn = document.getElementById("toggle-toolbar-btn");
-  const mainToggleBtn = document.getElementById("main-toggle-btn");
-  const toolbar = document.getElementById("toolbar");
-  const toggleRotationControlsBtn = document.getElementById("toggle-rotation-controls-btn");
-  const rotationControls = document.getElementById("rotation-controls");
-  const toggleVisibilityControlsBtn = document.getElementById("toggle-visibility-controls-btn");
-  const visibilityControls = document.getElementById("visibility-controls");
-  const topicChatBtn = document.getElementById("topic-chat-btn");
-  const topicChatContainer = document.getElementById("topic-chat-container");
-  const crosshairColumn = document.getElementById("crosshair-column");
-  const crosshairColumnContainer = document.getElementById("crosshair-column-container");
-  const popupColumn = document.getElementById("popup-column");
-  const popupColumnContainer = document.getElementById("popup-column-container");
-
-
-  toggleControlsBtn.style.display = "none";
-  toggleToolbarBtn.style.display = "none";
-  toggleRotationControlsBtn.style.display = "none";
-  rotationControls.style.display = "none";
-  toolbar.style.display = "none";
-  toggleVisibilityControlsBtn.style.display = "none";
-  visibilityControls.style.display = "none";
-  mainToggleBtn.style.display = "block";
-  topicChatBtn.style.display = "block";
-
-  // Close all input toolbars
-  const inputToolbars = [
-    "load-column",
-    "marker-column",
-    "polygon-column",
-    "create-column",
-    "memo-column",
-    "rules-column",
-    "stack-topic-ids",
-    "edit-profile-column",
-    "model-column",
-    "visibility-controls",
-    "crosshair-column",
-    "crosshair-column-container",
-    "popup-column",
-    "popup-column-container",
-    "utility-column"
-  ];
-
-  inputToolbars.forEach(toolbarId => {
-    const inputToolbar = document.getElementById(toolbarId);
-    if (inputToolbar) {
-      inputToolbar.style.display = "none";
-    }
-  });
-
-
-}
-
-
-
-
-
-document.getElementById("main-toggle-btn").addEventListener("click", function(e) {
-  e.stopPropagation();
-
-  closeOptions();
-
-  isToolbarOpen = false; 
-
-  document.getElementById("toggle-controls-btn").style.display = "block";
-  document.getElementById("toggle-toolbar-btn").style.display = "block";
-  document.getElementById("toggle-rotation-controls-btn").style.display = "block";
-  document.getElementById("toggle-visibility-controls-btn").style.display = "block";
-
-  this.style.display = "none";
-
-  document.getElementById("topic-chat-btn").style.display = "none";
-
-  return false;
-});
-
-document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
-  event.stopPropagation();
-
-  closeOptionsWithoutChat();
-
-  if (document.getElementById("topic-chat-container").style.display === "block") {
-    document.getElementById("topic-chat-container").style.display = "none";
-  } else {
-    document.getElementById("topic-chat-container").style.display = "block";
-  }
-    isToolbarOpen = true; 
-
-    document.getElementById("toggle-controls-btn").style.display = "none";
-    document.getElementById("toggle-toolbar-btn").style.display = "none";
-    document.getElementById("toggle-rotation-controls-btn").style.display = "none";
-    document.getElementById("main-toggle-btn").style.display = "block";
-    document.getElementById("toggle-visibility-controls-btn").style.display = "none";
-    document.getElementById("visibility-controls").style.display = "none";
-    return false;
-
-});
-
-
-// Event listener for the control buttons to hide them and show the main toggle button
-const controlButtons = [
-  "toggle-controls-btn",
-  "toggle-toolbar-btn",
-  "toggle-rotation-controls-btn",
-  "toggle-visibility-controls-btn"
-];
-
-controlButtons.forEach(buttonId => {
-  document.getElementById(buttonId).addEventListener("click", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Hide the control buttons and show the main toggle button
-    controlButtons.forEach(id => {
-      document.getElementById(id).style.display = "none"; // Hide all control buttons
-    });
-    document.getElementById("main-toggle-btn").style.display = "block"; // Show the main button
-    document.getElementById("topic-chat-btn").style.display = "block";
-  });
-});
-
-// Ensure the object button is hidden initially
-document.getElementById("toggle-rotation-controls-btn").style.display = "none"; // Hide initially
-
-// Add event listener for the rotation controls toggle button
-document.getElementById("toggle-rotation-controls-btn").addEventListener("click", function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  isToolbarOpen = true;
-  // Toggle the display of the rotation controls
-  const rotationControls = document.getElementById("rotation-controls");
-  rotationControls.style.display =
-    rotationControls.style.display === "block" ? "none" : "block"; // Toggle rotation controls
-});
-
-// Add a document click listener to close options when clicking outside
-document.addEventListener("click", function(event) {
-  const toggleControlsBtn = document.getElementById("toggle-controls-btn");
-  const toggleToolbarBtn = document.getElementById("toggle-toolbar-btn");
-  const mainToggleBtn = document.getElementById("main-toggle-btn");
-  const toolbar = document.getElementById("toolbar");
-  const toggleVisibilityControlsBtn = document.getElementById("toggle-visibility-controls-btn");
-
-  // Check if the click is outside the toggle buttons and the main button
-  if (
-    !toggleControlsBtn.contains(event.target) &&
-    !toggleToolbarBtn.contains(event.target) &&
-    !mainToggleBtn.contains(event.target) &&
-    !toolbar.contains(event.target) &&
-    !toggleVisibilityControlsBtn.contains(event.target)
-  ) {
-    closeOptions();
-  }
-});
-
-// Fix the toggle-controls-btn click handler with more aggressive visibility controls
-document.getElementById("toggle-controls-btn").addEventListener("click", function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  // Get the control elements
-  const zoomControls = document.getElementById("zoom-controls");
-  const leftDpad = document.getElementById("left-dpad");
-  const rightDpad = document.getElementById("right-dpad");
-
-  // Log current visibility state
-  const isVisible = getComputedStyle(zoomControls).display !== "none";
-
-  // Toggle visibility with !important to override other styles
-  if (isVisible) {
-    // Hide controls
-    zoomControls.setAttribute("style", "display: none !important");
-    leftDpad.setAttribute("style", "display: none !important");
-    rightDpad.setAttribute("style", "display: none !important");
-  } else {
-    // Show controls with high z-index and forced visibility
-    zoomControls.setAttribute("style", "display: flex !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
-    leftDpad.setAttribute("style", "display: grid !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
-    rightDpad.setAttribute("style", "display: grid !important; z-index: 2000 !important; opacity: 1 !important; visibility: visible !important;");
-  }
-
-  // Hide both toggle buttons and show the main button
-  document.getElementById("toggle-controls-btn").style.display = "none";
-  document.getElementById("main-toggle-btn").style.display = "block";
-
-  return false;
-});
-
-// Make sure the toolbar starts hidden
-window.addEventListener("load", function() {
-  toolbar.style.display = "none";
-  isToolbarOpen = false;
-});
-
-// Adjust the styles for each input toolbar to make them bigger
-const inputToolbars = [
-  "load-column",
-  "marker-column",
-  "polygon-column",
-  "create-column",
-  "memo-column",
-  "rules-column",
-  "stack-topic-ids",
-  "edit-profile-column",
-  "utility-column"
-];
-
-
-document.addEventListener("click", (event) => {
-  const toggleControlsBtn = document.getElementById("toggle-controls-btn");
-  const toggleToolbarBtn = document.getElementById("toggle-toolbar-btn");
-  const mainToggleBtn = document.getElementById("main-toggle-btn");
-  const toolbar = document.getElementById("toolbar");
-
-  // Check if the click is outside the toggle buttons and the toolbar
-  if (
-    !toggleControlsBtn.contains(event.target) &&
-    !toggleToolbarBtn.contains(event.target) &&
-    !mainToggleBtn.contains(event.target) &&
-    !toolbar.contains(event.target)
-  ) {
-    // Hide the toggle buttons
-    toggleControlsBtn.style.display = "none";
-    toggleToolbarBtn.style.display = "none";
-
-    // Show only the main "Options" button
-    mainToggleBtn.style.display = "block";
-
-    // Hide the toolbar
-    toolbar.style.display = "none";
-  }
-});
-
-// Ensure the toolbar toggle button also toggles the toolbar visibility
-document.getElementById("toggle-toolbar-btn").addEventListener("click", (event) => {
-  event.stopPropagation(); // Prevent the click from reaching the document listener
-  const toolbar = document.getElementById("toolbar");
-  toolbar.style.display = toolbar.style.display === "none" ? "flex" : "none";
-});
-
-// Add a document click listener to close options when clicking outside
-document.addEventListener("click", function(event) {
-  const toggleControlsBtn = document.getElementById("toggle-controls-btn");
-  const toggleToolbarBtn = document.getElementById("toggle-toolbar-btn");
-  const mainToggleBtn = document.getElementById("main-toggle-btn");
-  const toggleVisibilityControlsBtn = document.getElementById("toggle-visibility-controls-btn");
-
-  // Check if the click is outside the toggle buttons and the main button
-  if (
-    !toggleControlsBtn.contains(event.target) &&
-    !toggleToolbarBtn.contains(event.target) &&
-    !mainToggleBtn.contains(event.target) &&
-    !toggleVisibilityControlsBtn.contains(event.target)
-  ) {
-    // Hide the toggle buttons
-    toggleControlsBtn.style.display = "none";
-    toggleToolbarBtn.style.display = "none";
-    toggleVisibilityControlsBtn.style.display = "none"; // Hide the visibility controls button
-    // Show only the main "Options" button
-    mainToggleBtn.style.display = "block";
-  }
-});
-
-document.getElementById("toggle-visibility-controls-btn").addEventListener("click", function(event) {
-  event.stopPropagation(); // Prevent the click from reaching the document listener
-  const visibilityControls = document.getElementById("visibility-controls");
-  // Toggle visibility controls display
-  visibilityControls.style.display = visibilityControls.style.display === "none" ? "block" : "none";
-  isToolbarOpen = true;
-});
-
-// Add a click handler to the visibility controls itself to prevent event bubbling
-document.getElementById("visibility-controls").addEventListener("click", function(event) {
-  event.stopPropagation();
-});
-
-// Modify the document click handler to close visibility controls if clicked outside
-document.addEventListener("click", (event) => {
-  const visibilityControls = document.getElementById("visibility-controls");
-  if (!visibilityControls.contains(event.target) && event.target !== document.getElementById("toggle-visibility-controls-btn")) {
-    visibilityControls.style.display = "none";
-  }
-});
 
 
   // Add these variables to manage visibility states
