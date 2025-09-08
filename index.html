@@ -524,6 +524,32 @@ html, body {
   display: none;
 }
 
+.maplibregl-ctrl.maplibregl-ctrl-group {
+    background: #fff; /* White background, matches default */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin: 6vh 10px 10px 10px; /* 5vh top margin, 10px others */
+}
+
+.maplibregl-ctrl.maplibregl-ctrl-group button.maplibregl-ctrl-zoom-in,
+.maplibregl-ctrl.maplibregl-ctrl-group button.maplibregl-ctrl-zoom-out {
+    display: none;
+}
+
+.maplibregl-ctrl.maplibregl-ctrl-group button.maplibregl-ctrl-compass {
+    width: 2vh; /* Standard button size */
+    height: 2vh; /* Square button */
+    background-color: #fff; /* White background */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor */
+    display: flex; /* Center icon */
+    align-items: center;
+    justify-content: center;
+    background-size: 18px 18px; /* Icon size */
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-color 0.2s; /* Smooth hover transition */
+}
 
 
 .maplibregl-popup {
@@ -3297,13 +3323,13 @@ window.loadTOPIC4PIC = async function(payer) {
     });
 
 
-  closeAllColumns();
-  const loadColumn = document.getElementById("load-column");
-  loadColumn.style.display = "block";
-  const loaded_text_area = document.getElementById("loaded-topics");
-  loaded_text_area.value = '';
-  loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
-  adjustTextareaHeight(loaded_text_area); // Adjust height after loading
+    CloseALL();
+    const loadColumn = document.getElementById("load-column");
+    loadColumn.style.display = "block";
+    const loaded_text_area = document.getElementById("loaded-topics");
+    loaded_text_area.value = '';
+    loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
+    adjustTextareaHeight(loaded_text_area); // Adjust height after loading
 
 
     // Return the processed topic IDs with names
@@ -3633,6 +3659,9 @@ const map = new maplibregl.Map({
     name: "globe",
   },
 });
+
+// Add navigation controls (optional, for testing bearing changes)
+map.addControl(new maplibregl.NavigationControl());
 
 // map.dragPan.disable();
 // map.scrollZoom.disable();
@@ -4837,9 +4866,13 @@ function adjustButtonSize() {
     // Get the computed styles of the input field
     const computedStyle = window.getComputedStyle(coordinatesDisplay);
 
-    // Set the button's width and height to match the input field
-    copyCoordinatesButton.style.width = computedStyle.width;
-    copyCoordinatesButton.style.height = computedStyle.height;
+    // Parse the width and height to numbers (removing 'px')
+    const width = parseFloat(computedStyle.width);
+    const height = parseFloat(computedStyle.height);
+
+    // Add a bit extra (e.g., 10px) and set back as strings with 'px'
+    copyCoordinatesButton.style.width = `${width + 30}px`;
+    copyCoordinatesButton.style.height = `${height + 10}px`;
   }
 
   // Call the function initially to set the size
