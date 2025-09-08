@@ -529,6 +529,8 @@ html, body {
     border-radius: 4px; /* Rounded corners */
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     margin: 6vh 10px 10px 10px; /* 5vh top margin, 10px others */
+    border-radius: 50%;
+    display: none;
 }
 
 .maplibregl-ctrl.maplibregl-ctrl-group button.maplibregl-ctrl-zoom-in,
@@ -549,6 +551,7 @@ html, body {
     background-position: center;
     background-repeat: no-repeat;
     transition: background-color 0.2s; /* Smooth hover transition */
+    border-radius: 50%; /* Circular button */
 }
 
 
@@ -3014,11 +3017,8 @@ document.getElementById("generate-private-and-public-key").addEventListener("cli
     const publicKeyTextarea = document.getElementById("generated-public-key");
 
     privateKeyTextarea.value = privateKey;
-    publicKeyTextarea.value = publicKey;
 
-    // Adjust the height of the textareas
     adjustTextareaHeight(privateKeyTextarea);
-    adjustTextareaHeight(publicKeyTextarea);
 
     } catch (error) {
     console.error("Error creating topic:", error);
@@ -3887,23 +3887,24 @@ document.getElementById("main-toggle-btn").addEventListener("click", function(ev
 
 let toggleControlsPressCount = 0;
 
-document.getElementById("toggle-controls-btn").addEventListener("click", () => {
+document.getElementById("toggle-controls-btn").addEventListener("click", (event) => {
   event.stopPropagation();
   CloseALL();
   const speedSlider = document.getElementById("speed-slider");
+  const maplibreglCtrlGroup = document.querySelector(".maplibregl-ctrl.maplibregl-ctrl-group");
   toggleControlsPressCount++;
   if (toggleControlsPressCount === 1) {
     speedSlider.style.display = "block";
+    if (maplibreglCtrlGroup) maplibreglCtrlGroup.style.display = "block";
   } else if (toggleControlsPressCount > 3) {
     speedSlider.style.display = "none";
+    if (maplibreglCtrlGroup) maplibreglCtrlGroup.style.display = "none";
     toggleControlsPressCount = 0;
   }
   const zoomControls = document.getElementById("zoom-controls");
   const leftDpad = document.getElementById("left-dpad");
   const rightDpad = document.getElementById("right-dpad");
-
   const isVisible = getComputedStyle(zoomControls).display !== "none";
-
   if (isVisible) {
     zoomControls.setAttribute("style", "display: none !important");
     leftDpad.setAttribute("style", "display: none !important");
