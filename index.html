@@ -131,6 +131,23 @@ html, body {
   font-size: 1.5vh;
 }
 
+.yourfovcontainer {
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-radius: 1vh;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 80vh; /* Limit the height to 80% of the viewport */
+  touch-action: auto; /* Enable touch interactions */
+  resize: none; /* Prevent manual resizing */
+  width: 100vw;
+  padding-top: 1vh;
+  padding-bottom: 0.5vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
+}
+
 .container {
   background-color: rgba(0, 0, 0, 0);
   color: white;
@@ -195,7 +212,7 @@ html, body {
 .toolbar-column-btns {
   display: block;
   width: 100%;
-  color: white !important;
+  color: white;
   border: 0.1vh solid white;
   border-radius: 1vh;
   font-size: 2vh;
@@ -208,8 +225,8 @@ html, body {
 
 .toolbar-column-btns:hover,
 .toolbar-column-btns:active {
-  background-color: rgb(0, 123, 255) !important;
-  color: white !important;
+  background-color: rgb(0, 123, 255);
+  color: white;
 }
 
 .toolbar-column:hover,
@@ -276,15 +293,12 @@ html, body {
 .model_sliders {
   display: block;
   width: 100% !important;
-  color: white;
   padding-left: 1vw;
-  border: 0.1vh solid white;
   border-radius: 1vh;
   font-size: 2vh;
   box-sizing: border-box;
   margin-bottom: 0.5vh;
   height: 5vh;
-  border: 0.1vh solid rgb(0, 123, 255);
   overflow: hidden; /* Hide scrollbars */
   resize: none; /* Prevent manual resizing */
   background-color: transparent;
@@ -292,8 +306,6 @@ html, body {
   text-align: center; /* Center-align the text */
   text-shadow: 0 0 0.5vh black;
 }
-
-
 
 .yourfov {
   display: block;
@@ -395,17 +407,6 @@ html, body {
   border: none;
   width: auto;
   pointer-events: none; /* Allow clicks to pass through */
-}
-
-#speed-slider {
-  position: absolute;
-  top: 3vh;
-  right: 0;
-  z-index: 1005;
-  width: 32.5vw;
-  height: 3vh;
-  writing-mode: bt-lr;
-  transform: rotate(0deg);
 }
 
 .touch-button {
@@ -1336,7 +1337,7 @@ button[type="submit"],
   <button id="zoom-out" class="zoom-button">-</button>
 </div>
 
-<input type="range" id="speed-slider" min="0.1" max="5" step="0.01" value="1" style="display: none;" />
+<input type="range" id="speed-slider" class="model_sliders" min="0.1" max="5" step="0.01" value="1" style="display: none;" />
 
 
 <div id="topic-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh;">
@@ -1449,7 +1450,7 @@ button[type="submit"],
     <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
       <label for="raster-opacity-slider" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">Polygon transparency:
       </label>
-      <input type="range" id="raster-opacity-slider" min="0" max="1" step="0.01" value="1" class="yourfov">
+      <input type="range" id="raster-opacity-slider" class="model_sliders" min="0" max="1" step="0.01" value="1">
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
@@ -1489,7 +1490,7 @@ button[type="submit"],
 </div>
 
 <div id="model-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="model-column-container" class="container" onclick="event.stopPropagation();" >
+  <div id="model-column-container" class="yourfovcontainer" onclick="event.stopPropagation();" >
 
     <input type="text" class="toolbar-column" id="object-input" placeholder="Enter URL" style="text-align: center;" onclick="event.stopPropagation();" />
     <button id="buttonforobject" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; margin-top: 1vh;">Change object
@@ -1559,12 +1560,12 @@ button[type="submit"],
 
 
 <div id="crosshair-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="crosshair-column-container" class="container" onclick="event.stopPropagation();">
+  <div id="crosshair-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-red" class="yourfov">Red:
       </label>
-      <input type="range" class="yourfov" id="color-red" min="0" max="255" value="0"/>
+      <input type="range" class="model_sliders" id="color-red" min="0" max="255" value="0"/>
       <input type="number" id="color-red-value"   class="yourfov" value="0"
       onchange="document.getElementById('color-red').value = this.value;" />
     </div>
@@ -1572,7 +1573,7 @@ button[type="submit"],
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">Green:
       </label>
-      <input type="range" class="yourfov" id="color-green" min="0" max="255" value="0"/>
+      <input type="range" class="model_sliders" id="color-green" min="0" max="255" value="0"/>
       <input type="number" id="color-green-value" class="yourfov" value="0"
       onchange="document.getElementById('color-green').value = this.value;" />
     </div>
@@ -1580,7 +1581,7 @@ button[type="submit"],
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-blue" class="yourfov">Blue:
       </label>
-      <input type="range" class="yourfov" id="color-blue" min="0" max="255" value="0"/>
+      <input type="range" class="model_sliders" id="color-blue" min="0" max="255" value="0"/>
       <input type="number" id="color-blue-value" class="yourfov" value="0"
       onchange="document.getElementById('color-blue').value = this.value;" />
     </div>
@@ -1588,7 +1589,7 @@ button[type="submit"],
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="crosshair-before-after" class="yourfov">Length:
       </label>
-      <input type="range" class="yourfov" id="crosshair-before-after" min="0" max="100" value="20"/>
+      <input type="range" class="model_sliders" id="crosshair-before-after" min="0" max="100" value="20"/>
       <input type="number" id="crosshair-before-after-value" class="yourfov" value="20"
       onchange="document.getElementById('crosshair-before-after').value = this.value;" />
     </div>
@@ -1596,7 +1597,7 @@ button[type="submit"],
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="crosshair-after-before" class="yourfov">Thickness:
       </label>
-      <input type="range" class="yourfov" id="crosshair-after-before" min="0" max="10" value="2"/>
+      <input type="range" class="model_sliders" id="crosshair-after-before" min="0" max="10" value="2"/>
       <input type="number" id="crosshair-after-before-value" class="yourfov" value="2"
       onchange="document.getElementById('crosshair-after-before').value = this.value;" />
     </div>
@@ -1608,7 +1609,7 @@ button[type="submit"],
 </div>
 
 <div id="popup-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="popup-column-container" class="container" onclick="event.stopPropagation();">
+  <div id="popup-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">Border:
@@ -1673,267 +1674,131 @@ button[type="submit"],
 </div>
 
 <div id="main-button-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="main-button-column-container" class="container" onclick="event.stopPropagation();">
+  <div id="main-button-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Border:
+      <label for="color-green" class="yourfov">Disconnect:
       </label>
-      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-disconnect-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-disconnect-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-disconnect-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Number:
+      <label for="color-green" class="yourfov">Main Buttons:
       </label>
-      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-main-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-main-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-main-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Close:
-      </label>
-      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">AccID:
-      </label>
-      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Username:
-      </label>
-      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Title:
-      </label>
-      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Text:
-      </label>
-      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div id="savepopupsettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Popup Settings
+    <div id="save-main-button" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save settings
     </div>
 
   </div>
 </div>
 
 <div id="marker-options-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="marker-options-column-container" class="container" onclick="event.stopPropagation();">
+  <div id="marker-options-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Border:
+      <label for="color-green" class="yourfov">Size:
       </label>
-      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="Marker-Size" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Size"/>
     </div>
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Number:
-      </label>
-      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Close:
-      </label>
-      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">AccID:
-      </label>
-      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Username:
-      </label>
-      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Title:
-      </label>
-      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Text:
-      </label>
-      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div id="savemarkersettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Marker Settings
+    <div id="save-marker-settings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Marker Settings
     </div>
 
   </div>
 </div>
 
 <div id="button-input-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="button-input-column-container" class="container" onclick="event.stopPropagation();">
+  <div id="button-input-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Border:
+      <label for="color-green" class="yourfov">Input Border:
       </label>
-      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Number:
+      <label for="color-green" class="yourfov">Input Font Color:
       </label>
-      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-font-color-input-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-font-color-input-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-font-color-input-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Close:
+      <label for="color-green" class="yourfov">Button Border:
       </label>
-      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-button-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-button-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-button-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">AccID:
+      <label for="color-green" class="yourfov">Button Font Color:
       </label>
-      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-font-color-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-font-color-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-font-color-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Username:
+      <label for="color-green" class="yourfov">OnHover:
       </label>
-      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-onhover-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-onhover-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-onhover-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Title:
+      <label for="color-green" class="yourfov">Font Size:
       </label>
-      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="font-for-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Size"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Text:
+      <label for="color-green" class="yourfov">Transparency:
       </label>
-      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-transparency-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Opacity"/>
     </div>
 
-    <div id="savebuttoninputsettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Button/Input Settings
+    <div id="save-button-button-input" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Button/Input Settings
     </div>
 
   </div>
 </div>
 
 <div id="container-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="container-column-container" class="container" onclick="event.stopPropagation();">
+  <div id="container-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">Border:
       </label>
-      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-border-container" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-border-container" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-border-container" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Number:
+      <label for="color-green" class="yourfov">Transparency:
       </label>
-      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+      <input type="number" id="color-red-transparency-container" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Opacity"/>
     </div>
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Close:
-      </label>
-      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">AccID:
-      </label>
-      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Username:
-      </label>
-      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Title:
-      </label>
-      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Text:
-      </label>
-      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div id="savecontainersettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Container Settings
+    <div id="save-container-settings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Container Settings
     </div>
 
   </div>
 </div>
 
 <div id="topic-chat-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="topic-chat-column-container" class="container" onclick="event.stopPropagation();">
+  <div id="topic-chat-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">AccID:
@@ -1959,7 +1824,15 @@ button[type="submit"],
       <input type="number" id="color-blue-text-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
-    <div id="savetopicchatsettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Settings
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Text Container Color:
+      </label>
+      <input type="number" id="color-red-text-container-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
+      <input type="number" id="color-green-text-container-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
+      <input type="number" id="color-blue-text-container-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    </div>
+
+    <div id="save-topic-chat-settings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Settings
     </div>
 
   </div>
@@ -2172,74 +2045,58 @@ async function extractTopicId() {
           dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
         }
 
-        const ufoLoader = new THREE.GLTFLoader();
-        ufoLoader.setDRACOLoader(dracoLoader);
+const ufoLoader = new THREE.GLTFLoader();
+ufoLoader.setDRACOLoader(dracoLoader);
+let currentUfoModel = null;
 
-        let currentUfoModel = null;
-
-        async function updateAccountInfo(accountId, balance) {
-          if (!accountId) {
-            isLoggedIn = false;
-            document.getElementById("connect-wallet-btn").style.display =
-              "block";
-            document.getElementById("disconnect-wallet-btn").style.display =
-              "none";
-            document.getElementById("account-id").textContent = ``;
-            document.getElementById("crosshair").style.display = "none";
-          // Show welcome message
+async function updateAccountInfo(accountId, balance) {
+if (!accountId) {
+isLoggedIn = false;
+  document.getElementById("connect-wallet-btn").style.display ="block";
+  document.getElementById("disconnect-wallet-btn").style.display ="none";
+  document.getElementById("account-id").textContent = ``;
+  document.getElementById("crosshair").style.display = "none";
+  document.getElementById("welcome-msg").style.display = "block";
+  document.getElementById("connect-wallet-btn").addEventListener("click", () => {
+    document.getElementById("welcome-msg").style.display = "none"; // Hide immediately
+    setTimeout(() => {
+        if (!isLoggedIn) { // Only show if not logged in
           document.getElementById("welcome-msg").style.display = "block";
-
-          document.getElementById("connect-wallet-btn").addEventListener("click", () => {
-            document.getElementById("welcome-msg").style.display = "none"; // Hide immediately
-            setTimeout(() => {
-                if (!isLoggedIn) { // Only show if not logged in
-                    document.getElementById("welcome-msg").style.display = "block"; // Show again after 30 seconds
-                }
-            }, 30000);
-        });
-
-            return;
-          }
-
-          isLoggedIn = true;
-                                       // Show welcome message
-  document.getElementById("welcome-msg").style.display = "none";
-
-          document.getElementById(
-            "account-id"
-          ).textContent = `Acc: ${accountId}`;
-          document.getElementById("connect-wallet-btn").style.display = "none";
-          document.getElementById("disconnect-wallet-btn").style.display =
-            "block";
-          document.getElementById("crosshair").style.display = "block";
-          globalAccountId = accountId; // Assign accountId to the external variable
-                      // Call loadProfileObject after globalAccountId is set
-                      const profileObjectUrl = await loadProfileObject();
-
-                      const profileObjectCrosshair = await loadProfileCrosshair();
-
-                      const profileObjectSettings = await loadProfileSettings();
-
-                      const profileObjectPopup = await loadProfilePopup();
-
-                      const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0
-                      ? profileObjectSettings[0].urls[0]
-                      : defaultModelUrl; // Use default model URL if no valid URL is found
-
-
-              extractTopicId();
-
-              await loadUfoModel(modelUrl); // Load the model using the determined URL
-
-              confirmNFTFunction(accountId);
-
-              document.getElementById("submit-button").addEventListener("click", debounce(async () => {
-              await confirmNFTFunction(accountId);
-            }, 1000));
-
-               await extractAccountId();
         }
-        loader.updateProgress();
+    }, 30000);
+  });
+  return;
+}
+
+isLoggedIn = true;
+  document.getElementById("welcome-msg").style.display = "none";
+  document.getElementById("account-id").textContent = `Acc: ${accountId}`;
+  document.getElementById("connect-wallet-btn").style.display = "none";
+  document.getElementById("disconnect-wallet-btn").style.display ="block";
+  document.getElementById("crosshair").style.display = "block";
+  globalAccountId = accountId;
+  const profileObjectUrl = await loadProfileObject();
+  const profileObjectCrosshair = await loadProfileCrosshair();
+  const profileObjectSettings = await loadProfileSettings();
+  const profileObjectPopup = await loadProfilePopup();
+  const profileMainButton = await loadMainButtonSettings();
+  const profileMarker = await loadMarkerSettings();
+  const profileButtonInput = await loadButtonInputSettings();
+  const profileContainer = await loadContainerSettings();
+  const profileTopicChat = await loadTopicChatSettings();
+  const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0
+    ? profileObjectSettings[0].urls[0]
+    : defaultModelUrl;
+  extractTopicId();
+  await loadUfoModel(modelUrl); // Load the model using the determined URL
+  confirmNFTFunction(accountId);
+  document.getElementById("submit-button").addEventListener("click", debounce(async () => {
+    await confirmNFTFunction(accountId);
+  }, 1000));
+  await extractAccountId();
+}
+
+loader.updateProgress();
 
 
 document.getElementById("load-msgs-from-ids-button").addEventListener("click", async () => {
@@ -2342,6 +2199,10 @@ document.getElementById('go-to-top-msgs').addEventListener('click', function() {
 
 
   let storedMessages = []; // Declare an external array to store messages
+
+let colorForAccidTopicChat = 'rgb(128, 0, 128)'; // Default: purple (#800080) for payerInfo
+let colorForUsernameTopicChat = 'rgb(255, 255, 255)'; // Default: white (#FFFFFF) for username
+let colorForTextTopicChat = 'rgb(255, 255, 255)'; // Default: black for message text
 
 document.getElementById("load-msgs-from").addEventListener("click", async () => {
   try {
@@ -2493,32 +2354,29 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
                 ` ${click2url[message.payer].click2url}` :
                 '';
 
-              // Combine username and payerInfo with h2 tags
-              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
-              ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`;
+const displayHeader = 
+`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${colorForAccidTopicChat}; text-decoration: none;">${payerInfo}</a>
+${click2link ? `<a href="${click2link}" target="_blank" style="color: ${colorForUsernameTopicChat};
+text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUsernameTopicChat};">${username}</span>`}`;
 
-      // Store the message in the external array
-      storedMessages.push(parsedMessage);
+storedMessages.push(parsedMessage);
 
-
-
-      // Only show the payer and image if it's different from the previous one
-      if (payer !== previousPayer) {
-        allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-  <img src="${validPayerImage}" alt="Profile photo"
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
-  onclick="loadTOPIC4PIC('${message.payer}');">
-                          <div style="display: flex; flex-direction: column; justify-content: center;">
-                            <div>${displayHeader}</div>
-                            <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
-                            <div>${userMessage}</div>
-                          </div>
-                        </div><br>`;
-      } else {
-        allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
-                          <div>${userMessage}</div>
-                        </div><br>`;
-      }
+if (payer !== previousPayer) {
+  allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
+    <img src="${validPayerImage}" alt="Profile photo"
+    style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
+    onclick="loadTOPIC4PIC('${message.payer}');">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                      <div>${displayHeader}</div>
+                      <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
+                      <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                    </div>
+                  </div><br>`;
+} else {
+  allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
+                    <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                  </div><br>`;
+}
       previousPayer = payer; // Update the previous payer
     } else {
       console.warn(`Message ${index} is missing payer or data.`);
@@ -2640,32 +2498,31 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
                 ` ${click2url[message.payer].click2url}` :
                 '';
 
-              // Combine username and payerInfo with h2 tags
-              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
-               ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`;
+const displayHeader = 
+`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${colorForAccidTopicChat}; text-decoration: none;">${payerInfo}</a>
+${click2link ? `<a href="${click2link}" target="_blank" style="color: ${colorForUsernameTopicChat};
+text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUsernameTopicChat};">${username}</span>`}`;
 
-      // Store the message in the external array
       storedMessages.push(parsedMessage);
 
 
 
-      // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
-        allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-  <img src="${validPayerImage}" alt="Profile photo"
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
-  onclick="loadTOPIC4PIC('${message.payer}');">
-                          <div style="display: flex; flex-direction: column; justify-content: center;">
-                            <div>${displayHeader}</div>
-                            <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
-                            <div>${userMessage}</div>
-                          </div>
-                        </div><br>`;
-      } else {
-        allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
-                          <div>${userMessage}</div>
-                        </div><br>`;
-      }
+  allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em; border-color: ${colorForTextContainerTopicChat};">
+    <img src="${validPayerImage}" alt="Profile photo"
+    style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
+    onclick="loadTOPIC4PIC('${message.payer}');">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                      <div>${displayHeader}</div>
+                      <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
+                      <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                    </div>
+                  </div><br>`;
+} else {
+  allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em; border-color: ${colorForTextContainerTopicChat};">
+                    <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                  </div><br>`;
+}
       previousPayer = payer; // Update the previous payer
   });
 
@@ -2757,32 +2614,32 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
                 ` ${click2url[message.payer].click2url}` :
                 '';
 
-              // Combine username and payerInfo with h2 tags
-              const displayHeader = `<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: #800080; text-decoration: none;">${payerInfo}</a>
-               ${click2link ? `<a href="${click2link}" target="_blank" style="color: #FFFFFF; text-decoration: none;">${username}</a> ` : `${username}`}`;
+                const displayHeader = 
+`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${colorForAccidTopicChat}; text-decoration: none;">${payerInfo}</a>
+${click2link ? `<a href="${click2link}" target="_blank" style="color: ${colorForUsernameTopicChat};
+text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUsernameTopicChat};">${username}</span>`}`;
 
       // Store the message in the external array
       storedMessages.push(parsedMessage);
 
 
 
-      // Only show the payer and image if it's different from the previous one
       if (payer !== previousPayer) {
-        allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
-  <img src="${validPayerImage}" alt="Profile photo"
-  style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
-  onclick="loadTOPIC4PIC('${message.payer}');">
-                          <div style="display: flex; flex-direction: column; justify-content: center;">
-                            <div>${displayHeader}</div>
-                            <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
-                            <div>${userMessage}</div>
-                          </div>
-                        </div><br>`;
-      } else {
-        allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
-                          <div>${userMessage}</div>
-                        </div><br>`;
-      }
+  allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em; border-color: ${colorForTextContainerTopicChat};">
+    <img src="${validPayerImage}" alt="Profile photo"
+    style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
+    onclick="loadTOPIC4PIC('${message.payer}');">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                      <div>${displayHeader}</div>
+                      <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
+                      <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                    </div>
+                  </div><br>`;
+} else {
+  allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em; border-color: ${colorForTextContainerTopicChat};">
+                    <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                  </div><br>`;
+}
       previousPayer = payer; // Update the previous payer
   });
 
@@ -3687,7 +3544,7 @@ loader.updateProgress();
 
 
 function handleMovement() {
-  
+
   const isBlocked = [
     ...everythinginsideyourfov,
     ...everythinginsidetoolbar
@@ -5003,6 +4860,7 @@ let lastBounds = null;
 
 const activeMarkerPopups = [];
 
+let currentMarkerSize = 5;
 
 function updateClusters() {
   if (geojson.features.length === 0) {
@@ -5022,7 +4880,7 @@ function updateClusters() {
   clusters.forEach(async (cluster) => {
     const el = document.createElement("div");
     el.className = cluster.properties.cluster ? "cluster-marker" : "marker";
-    const iconSize = [`${5}vh`, `${5}vh`];
+    const iconSize = [`${currentMarkerSize}vh`, `${currentMarkerSize}vh`];
     el.style.width = iconSize[0];
     el.style.height = iconSize[1];
     el.style.cursor = "pointer";
@@ -5543,14 +5401,365 @@ document.getElementById("button_for_topic2pic").addEventListener("click", async 
       document.getElementById("polygon-visibility-value").textContent = polygonsVisible ? "On" : "Off"; // Update button state
   }
 
-  // Add event listeners for the existing buttons
   document.getElementById("toggle-polygon-visibility").addEventListener("click", togglePolygons);
 
   document.getElementById("toggle-marker-visibility").addEventListener("click", () => {
       toggleMarkers(); // Call the toggle function directly
   });
 
-    // Add this code to your existing script section
+document.getElementById("buttonforobject").addEventListener("click", async (event) => {
+        event.stopPropagation();
+        const inputValue = document.getElementById("object-input").value;
+
+        try {
+          const topicId = "0.0.9609898";
+          const cleanUrl = inputValue.replace(/\?network=mainnet$/, "");
+
+          const messageData = {
+            data: {
+              settings: [],
+              urls: [cleanUrl],
+            },
+          };
+          const message = JSON.stringify(messageData);
+
+          const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+            topicId,
+            message
+          );
+          console.log("Profile picture updated successfully:", receipt);
+
+          document.getElementById("object-input").value = "";
+
+        } catch (error) {
+          console.error("Error updating profile picture:", error);
+          // Removed alert
+        }
+      });
+
+async function loadProfileObject() {
+
+  const topicId = "0.0.9609898";
+  const accountObjectUrl = []; // Initialize an empty array to store account URLs
+  try {
+        const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+
+        // Check if result exists and has messages
+        if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
+            console.log("No profile object found, using defaults");
+            return accountObjectUrl; // Return empty array if no messages
+        }
+
+        // Filter messages to find those from the current user
+        const userMessages = result.messages.filter(message => message.payer === globalAccountId);
+
+        // Get the last message from the filtered user messages
+        const lastMessage = userMessages[userMessages.length - 1];
+
+        // Check if the last message has valid data
+        if (lastMessage && lastMessage.data && lastMessage.data.urls && lastMessage.data.urls.length > 0) {
+            // Store the URL for this account
+            accountObjectUrl.push(lastMessage.data.urls[0]); // Accessing the first URL
+        }
+
+        return accountObjectUrl; // Return the populated array
+
+    } catch (error) {
+        console.log("Error in loadProfileObject:", error);
+        return []; // Return empty array instead of throwing error
+  }
+}
+
+
+document.getElementById("savesettings").addEventListener("click", async (event) => {
+event.stopPropagation();
+
+  try {
+            const topicId = "0.0.9609898";
+            const profileObjectUrl = await loadProfileObject();
+            const cleanUrl = (profileObjectUrl.length > 0 ? profileObjectUrl[0].replace(/\?network=mainnet$/, "") : defaultModelUrl);
+
+            const rotationX = document.getElementById("rotation-x").value;
+            const rotationY = document.getElementById("rotation-y").value;
+            const rotationZ = document.getElementById("rotation-z").value;
+
+            const positionX = document.getElementById("position-x").value;
+            const positionY = document.getElementById("position-y").value;
+            const positionZ = document.getElementById("position-z").value;
+
+            const scaleFactor = document.getElementById("scale-factor").value;
+
+            // Construct the message data
+            const messageData = {
+                data: {
+                    settings : {
+                      rotation: {
+                        x: rotationX,
+                        y: rotationY,
+                        z: rotationZ
+                    },
+                    position: {
+                        x: positionX,
+                        y: positionY,
+                        z: positionZ
+                    },
+                    scale: {
+                      scaleFactor
+                    },
+                },
+                urls: [cleanUrl],
+              },
+            };
+
+            const message = JSON.stringify(messageData);
+
+            const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+                topicId,
+                message
+            );
+            console.log("Profile settings updated successfully:", receipt);
+
+        } catch (error) {
+            console.error("Error updating settings picture:", error);
+            // Removed alert
+        }
+      });
+
+
+
+async function loadProfileSettings() {
+const topicId = "0.0.9609898";
+const accountObjectSettings = []; // Initialize an empty array to store account Settings
+try {
+    const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+
+    // Check if result exists and has messages
+    if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
+        return accountObjectSettings; // Return empty array if no messages
+    }
+
+    // Filter messages to find those from the current user
+    const userMessages = result.messages.filter(message => message.payer === globalAccountId);
+
+    // Get the last message from the filtered user messages
+    const lastMessage = userMessages[userMessages.length - 1];
+
+    // Check if the last message has valid data
+    if (lastMessage && lastMessage.data) {
+
+      // Check if settings are empty
+      if (Array.isArray(lastMessage.data.settings) && lastMessage.data.settings.length === 0) {
+        const urls = lastMessage.data.urls; // This will give you the entire array
+        // Store the settings in accountObjectSettings
+        accountObjectSettings.push({ urls });
+      } else {
+        // Extract relevant data
+        const { rotation, position, scale } = lastMessage.data.settings;
+        const urls = lastMessage.data.urls; // This will give you the entire array
+
+        // Store the settings in accountObjectSettings
+        accountObjectSettings.push({ rotation, position, scale, urls });
+
+        // Update input fields with the extracted data
+        document.getElementById("rotation-x").value = rotation.x; // Set rotation X
+        document.getElementById("rotation-x-value").value = rotation.x; // Set rotation X value
+        document.getElementById("rotation-y").value = rotation.y; // Set rotation Y
+        document.getElementById("rotation-y-value").value = rotation.y; // Set rotation Y value
+        document.getElementById("rotation-z").value = rotation.z; // Set rotation Z
+        document.getElementById("rotation-z-value").value = rotation.z; // Set rotation Z value
+
+        document.getElementById("position-x").value = position.x; // Set position X
+        document.getElementById("position-x-value").value = position.x; // Set position X value
+        document.getElementById("position-y").value = position.y; // Set position Y
+        document.getElementById("position-y-value").value = position.y; // Set position Y value
+        document.getElementById("position-z").value = position.z; // Set position Z
+        document.getElementById("position-z-value").value = position.z; // Set position Z value
+
+        // Add scale factor input update
+        document.getElementById("scale-factor").value = scale.scaleFactor; // Update scale factor input
+        document.getElementById("scale-factor-value").value = scale.scaleFactor; // Update scale factor value
+
+        // Update the object's position and rotation
+        const ufoModel = scene.getObjectByName('gltfModel'); // Assuming the UFO model is named 'ufo'
+        if (ufoModel) {
+            ufoModel.rotation.x = THREE.MathUtils.degToRad(rotation.x);
+            ufoModel.rotation.y = THREE.MathUtils.degToRad(rotation.y);
+            ufoModel.rotation.z = THREE.MathUtils.degToRad(rotation.z);
+            ufoModel.position.set(position.x, position.y, position.z);
+            ufoModel.scale.set(scale.scaleFactor, scale.scaleFactor, scale.scaleFactor); // Scale the model
+        }
+      }
+    } else {
+      console.log("Last message does not have valid data."); // Log invalid data
+    }
+
+              // Check if accountObjectSettings is empty and set default model URL
+              if (accountObjectSettings.length === 0) {
+        await loadUfoModel(defaultModelUrl); // Load the default model
+    }
+
+    return accountObjectSettings; // Return the populated array
+} catch (error) {
+    console.log("Error in loadProfileSettings:", error);
+    return []; // Return empty array instead of throwing error
+}
+}
+
+
+// Add event listeners for the new buttons
+document.getElementById("savecrosshair").addEventListener("click", async (event) => {
+event.stopPropagation();
+
+        try {
+            const topicId = "0.0.9609927";
+
+            const colorRed = document.getElementById("color-red").value;
+            const colorGreen = document.getElementById("color-green").value;
+            const colorBlue = document.getElementById("color-blue").value;
+
+            const crosshairBeforeWidth = document.getElementById("crosshair-before-after").value;
+            const crosshairAfterHeight = document.getElementById("crosshair-after-before").value;
+
+            // Construct the message data
+            const messageData = {
+                data: {
+                    color: {
+                        red: colorRed,
+                        green: colorGreen,
+                        blue: colorBlue
+                    },
+                    crosshair: {
+                        beforeWidth: crosshairBeforeWidth,
+                        afterHeight: crosshairAfterHeight
+                    }
+                },
+            };
+
+            const message = JSON.stringify(messageData);
+
+            const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+                topicId,
+                message
+            );
+            console.log("Profile settings updated successfully:", receipt);
+
+        } catch (error) {
+            console.error("Error updating settings picture:", error);
+            // Removed alert
+        }
+      });
+
+      
+
+async function loadProfileCrosshair() {
+  const topicId = "0.0.9609927";
+  const accountObjectSettings = []; // Initialize an empty array to store account Settings
+  try {
+    const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+
+    // Check if result exists and has messages
+    if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
+        return accountObjectSettings; // Return empty array if no messages
+    }
+
+    // Filter messages to find those from the current user
+    const userMessages = result.messages.filter(message => message.payer === globalAccountId);
+
+    // Get the last message from the filtered user messages
+    const lastMessage = userMessages[userMessages.length - 1];
+
+    // Check if the last message has valid data
+    if (lastMessage && lastMessage.data) {
+
+        // Extract relevant data
+        const { rotation, position, color, scale, crosshair } = lastMessage.data;
+
+        // Store the settings in accountObjectSettings
+        accountObjectSettings.push({
+            color,
+            crosshair
+        });
+
+        document.getElementById("color-red").value = color.red; // Set color red
+        document.getElementById("color-red-value").value = color.red; // Set color red value
+        document.getElementById("color-green").value = color.green; // Set color green
+        document.getElementById("color-green-value").value = color.green; // Set color green value
+        document.getElementById("color-blue").value = color.blue; // Set color blue
+        document.getElementById("color-blue-value").value = color.blue; // Set color blue value
+
+        document.getElementById("crosshair-before-after").value = crosshair.beforeWidth; // Set crosshair before width
+        document.getElementById("crosshair-before-after-value").value = crosshair.beforeWidth; // Set crosshair before width value
+        document.getElementById("crosshair-after-before").value = crosshair.afterHeight; // Set crosshair after height
+        document.getElementById("crosshair-after-before-value").value = crosshair.afterHeight; // Set crosshair after height value
+
+        // Call update functions to apply the loaded values
+        updateColorCrosshair(); // Update crosshair color
+        updateCrosshairBeforeAfter(crosshair.beforeWidth); // Update crosshair before width
+        updateCrosshairAfterBefore(crosshair.afterHeight); // Update crosshair after height
+
+    } else {
+        console.log("Last message does not have valid data."); // Log invalid data
+    }
+
+    return accountObjectSettings; // Return the populated array
+
+} catch (error) {
+    console.log("Error in loadProfileCrosshair:", error);
+    return []; // Return empty array instead of throwing error
+}
+}
+
+function updateCrosshairBeforeAfter(value) {
+    const crosshair = document.getElementById("crosshair");
+    crosshair.style.setProperty('--crosshair-before-width', `${value}px`); // Width of ::before
+    crosshair.style.setProperty('--crosshair-after-height', `${value}px`); // Height of ::after
+}
+
+function updateCrosshairAfterBefore(value) {
+    const crosshair = document.getElementById("crosshair");
+    crosshair.style.setProperty('--crosshair-after-width', `${value}px`); // Width of ::after
+    crosshair.style.setProperty('--crosshair-before-height', `${value}px`); // Height of ::before
+}
+
+// Add event listeners for crosshair size sliders
+document.getElementById("crosshair-before-after").addEventListener("input", (event) => {
+    const value = event.target.value;
+    document.getElementById("crosshair-before-after-value").textContent = value;
+    updateCrosshairBeforeAfter(value);
+    document.getElementById("crosshair-before-after-value").value = value; // Update number input
+});
+
+document.getElementById("crosshair-after-before").addEventListener("input", (event) => {
+    const value = event.target.value;
+    document.getElementById("crosshair-after-before-value").textContent = value;
+    updateCrosshairAfterBefore(value);
+    document.getElementById("crosshair-after-before-value").value = value; // Update number input
+});
+
+// Add event listeners for number inputs to update sliders
+document.getElementById("crosshair-before-after-value").addEventListener("input", (event) => {
+    const value = event.target.value;
+    document.getElementById("crosshair-before-after").value = value; // Update range input
+    updateCrosshairBeforeAfter(value);
+});
+
+document.getElementById("crosshair-after-before-value").addEventListener("input", (event) => {
+    const value = event.target.value;
+    document.getElementById("crosshair-after-before").value = value; // Update range input
+    updateCrosshairAfterBefore(value);
+});
+
+function applyAllStyles() {
+    console.log("applyAllStyles");
+    updatePopupBorder();
+    updatePopupNumber();
+    updatePopupClose();
+    updatePopupAccid();
+    updatePopupUsername();
+    updatePopupTitles();
+    updatePopupText();
+}
+
 document.getElementById("color-red").addEventListener("input", (event) => {
     const value = event.target.value;
     document.getElementById("color-red-value").textContent = value; // Update displayed value
@@ -5572,7 +5781,6 @@ document.getElementById("color-blue").addEventListener("input", (event) => {
     updateColorCrosshair(); // Call function to update color immediately
 });
 
-// Add event listeners for number inputs to update sliders
 document.getElementById("color-red-value").addEventListener("input", (event) => {
     const value = event.target.value;
     document.getElementById("color-red").value = value; // Update range input
@@ -5604,6 +5812,210 @@ function updateColorCrosshair() {
     const crosshair = document.getElementById("crosshair");
     if (crosshair) {
         crosshair.style.setProperty('--crosshair-color', color);
+    }
+}
+
+document.getElementById("savepopup").addEventListener("click", async (event) => {
+event.stopPropagation();
+
+        try {
+            const topicId = "0.0.9771374";
+
+    const colorRedBorder = Math.min(parseInt(document.getElementById("color-red-border").value) || 0, 255);
+    const colorGreenBorder = Math.min(parseInt(document.getElementById("color-green-border").value) || 0, 255);
+    const colorBlueBorder = Math.min(parseInt(document.getElementById("color-blue-border").value) || 0, 255);
+
+    const colorRedNumber = Math.min(parseInt(document.getElementById("color-red-number").value) || 0, 255);
+    const colorGreenNumber = Math.min(parseInt(document.getElementById("color-green-number").value) || 0, 255);
+    const colorBlueNumber = Math.min(parseInt(document.getElementById("color-blue-number").value) || 0, 255);
+
+    const colorRedClose = Math.min(parseInt(document.getElementById("color-red-close").value) || 0, 255);
+    const colorGreenClose = Math.min(parseInt(document.getElementById("color-green-close").value) || 0, 255);
+    const colorBlueClose = Math.min(parseInt(document.getElementById("color-blue-close").value) || 0, 255);
+
+    const colorRedUsername = Math.min(parseInt(document.getElementById("color-red-username").value) || 0, 255);
+    const colorGreenUsername = Math.min(parseInt(document.getElementById("color-green-username").value) || 0, 255);
+    const colorBlueUsername = Math.min(parseInt(document.getElementById("color-blue-username").value) || 0, 255);
+
+    const colorRedAccid = Math.min(parseInt(document.getElementById("color-red-accid").value) || 0, 255);
+    const colorGreenAccid = Math.min(parseInt(document.getElementById("color-green-accid").value) || 0, 255);
+    const colorBlueAccid = Math.min(parseInt(document.getElementById("color-blue-accid").value) || 0, 255);
+
+    const colorRedText = Math.min(parseInt(document.getElementById("color-red-text").value) || 0, 255);
+    const colorGreenText = Math.min(parseInt(document.getElementById("color-green-text").value) || 0, 255);
+    const colorBlueText = Math.min(parseInt(document.getElementById("color-blue-text").value) || 0, 255);
+
+    const colorRedTitles = Math.min(parseInt(document.getElementById("color-red-titles").value) || 0, 255);
+    const colorGreenTitles = Math.min(parseInt(document.getElementById("color-green-titles").value) || 0, 255);
+    const colorBlueTitles = Math.min(parseInt(document.getElementById("color-blue-titles").value) || 0, 255);
+
+            const messageData = {
+                data: {
+                    colorBorder: {
+                        redBorder: colorRedBorder,
+                        greenBorder: colorGreenBorder,
+                        blueBorder: colorBlueBorder
+                    },
+                    colorNumber: {
+                        redNumber: colorRedNumber,
+                        greenNumber: colorGreenNumber,
+                        blueNumber: colorBlueNumber
+                    },
+                    colorClose: {
+                        redClose: colorRedClose,
+                        greenClose: colorGreenClose,
+                        blueClose: colorBlueClose
+                    },
+                    colorUsername: {
+                        redUsername: colorRedUsername,
+                        greenUsername: colorGreenUsername,
+                        blueUsername: colorBlueUsername
+                    },
+                    colorAccid: {
+                        redAccid: colorRedAccid,
+                        greenAccid: colorGreenAccid,
+                        blueAccid: colorBlueAccid
+                    },
+                    colorText: {
+                        redText: colorRedText,
+                        greenText: colorGreenText,
+                        blueText: colorBlueText
+                    },
+                    colorTitles: {
+                        redTitles: colorRedTitles,
+                        greenTitles: colorGreenTitles,
+                        blueTitles: colorBlueTitles
+                    }
+                },
+            };
+
+            const message = JSON.stringify(messageData);
+
+            const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+                topicId,
+                message
+            );
+            console.log("Profile settings updated successfully:", receipt);
+
+        } catch (error) {
+            console.error("Error updating settings picture:", error);
+            // Removed alert
+        }
+      });
+
+async function loadProfilePopup() {
+    const topicId = "0.0.9771374";
+    const accountObjectSettings = []; // Initialize an empty array to store account Settings
+    try {
+        const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+        // Check if result exists and has messages
+        if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
+            return accountObjectSettings; // Return empty array if no messages
+        }
+
+        // Filter messages to find those from the current user
+        const userMessages = result.messages.filter(message => message.payer === globalAccountId);
+
+        // Get the last message from the filtered user messages
+        const lastMessage = userMessages[userMessages.length - 1];
+
+        // Check if the last message has valid data
+        if (lastMessage && lastMessage.data) {
+            // Extract relevant data and clamp to max 255
+            const { colorBorder, colorNumber, colorClose, colorUsername, colorAccid, colorText, colorTitles } = lastMessage.data;
+
+            // Clamp values to max 255
+            const clampedColorBorder = {
+                redBorder: Math.min(parseInt(colorBorder.redBorder) || 0, 255),
+                greenBorder: Math.min(parseInt(colorBorder.greenBorder) || 0, 255),
+                blueBorder: Math.min(parseInt(colorBorder.blueBorder) || 0, 255)
+            };
+            const clampedColorNumber = {
+                redNumber: Math.min(parseInt(colorNumber.redNumber) || 0, 255),
+                greenNumber: Math.min(parseInt(colorNumber.greenNumber) || 0, 255),
+                blueNumber: Math.min(parseInt(colorNumber.blueNumber) || 0, 255)
+            };
+            const clampedColorClose = {
+                redClose: Math.min(parseInt(colorClose.redClose) || 0, 255),
+                greenClose: Math.min(parseInt(colorClose.greenClose) || 0, 255),
+                blueClose: Math.min(parseInt(colorClose.blueClose) || 0, 255)
+            };
+            const clampedColorUsername = {
+                redUsername: Math.min(parseInt(colorUsername.redUsername) || 0, 255),
+                greenUsername: Math.min(parseInt(colorUsername.greenUsername) || 0, 255),
+                blueUsername: Math.min(parseInt(colorUsername.blueUsername) || 0, 255)
+            };
+            const clampedColorAccid = {
+                redAccid: Math.min(parseInt(colorAccid.redAccid) || 0, 255),
+                greenAccid: Math.min(parseInt(colorAccid.greenAccid) || 0, 255),
+                blueAccid: Math.min(parseInt(colorAccid.blueAccid) || 0, 255)
+            };
+            const clampedColorText = {
+                redText: Math.min(parseInt(colorText.redText) || 0, 255),
+                greenText: Math.min(parseInt(colorText.greenText) || 0, 255),
+                blueText: Math.min(parseInt(colorText.blueText) || 0, 255)
+            };
+            const clampedColorTitles = {
+                redTitles: Math.min(parseInt(colorTitles.redTitles) || 0, 255),
+                greenTitles: Math.min(parseInt(colorTitles.greenTitles) || 0, 255),
+                blueTitles: Math.min(parseInt(colorTitles.blueTitles) || 0, 255)
+            };
+
+            // Store the clamped settings in accountObjectSettings
+            accountObjectSettings.push({
+                colorBorder: clampedColorBorder,
+                colorUsername: clampedColorUsername,
+                colorAccid: clampedColorAccid,
+                colorText: clampedColorText,
+                colorTitles: clampedColorTitles
+            });
+
+            document.getElementById("color-red-border").value = clampedColorBorder.redBorder;
+            document.getElementById("color-green-border").value = clampedColorBorder.greenBorder;
+            document.getElementById("color-blue-border").value = clampedColorBorder.blueBorder;
+
+            document.getElementById("color-red-number").value = clampedColorNumber.redNumber;
+            document.getElementById("color-green-number").value = clampedColorNumber.greenNumber;
+            document.getElementById("color-blue-number").value = clampedColorNumber.blueNumber;
+
+            document.getElementById("color-red-close").value = clampedColorClose.redClose;
+            document.getElementById("color-green-close").value = clampedColorClose.greenClose;
+            document.getElementById("color-blue-close").value = clampedColorClose.blueClose;
+
+            document.getElementById("color-red-username").value = clampedColorUsername.redUsername;
+            document.getElementById("color-green-username").value = clampedColorUsername.greenUsername;
+            document.getElementById("color-blue-username").value = clampedColorUsername.blueUsername;
+
+            document.getElementById("color-red-accid").value = clampedColorAccid.redAccid;
+            document.getElementById("color-green-accid").value = clampedColorAccid.greenAccid;
+            document.getElementById("color-blue-accid").value = clampedColorAccid.blueAccid;
+
+            document.getElementById("color-red-text").value = clampedColorText.redText;
+            document.getElementById("color-green-text").value = clampedColorText.greenText;
+            document.getElementById("color-blue-text").value = clampedColorText.blueText;
+
+            document.getElementById("color-red-titles").value = clampedColorTitles.redTitles;
+            document.getElementById("color-green-titles").value = clampedColorTitles.greenTitles;
+            document.getElementById("color-blue-titles").value = clampedColorTitles.blueTitles;
+
+            // Call update functions to apply the loaded values
+            updatePopupBorder();
+            updatePopupNumber();
+            updatePopupClose();
+            updatePopupAccid();
+            updatePopupUsername();
+            updatePopupTitles();
+            updatePopupText();
+
+        } else {
+            console.log("Last message does not have valid data.");
+        }
+
+        return accountObjectSettings;
+
+    } catch (error) {
+        console.log("Error in loadProfilePopup:", error);
+        return [];
     }
 }
 
@@ -5742,151 +6154,50 @@ function updatePopupText() {
     });
 }
 
+document.getElementById("save-main-button").addEventListener("click", async (event) => {
+    event.stopPropagation();
+    
+    try {
+        const topicId = "0.0.9797981";
+        
+        const colorRedDisconnect = Math.min(parseInt(document.getElementById("color-red-disconnect-button").value) || 0, 255);
+        const colorGreenDisconnect = Math.min(parseInt(document.getElementById("color-green-disconnect-button").value) || 0, 255);
+        const colorBlueDisconnect = Math.min(parseInt(document.getElementById("color-blue-disconnect-button").value) || 0, 255);
 
+        const colorRedMainButton = Math.min(parseInt(document.getElementById("color-red-main-button").value) || 0, 255);
+        const colorGreenMainButton = Math.min(parseInt(document.getElementById("color-green-main-button").value) || 0, 255);
+        const colorBlueMainButton = Math.min(parseInt(document.getElementById("color-blue-main-button").value) || 0, 255);
 
-function updateCrosshairBeforeAfter(value) {
-    const crosshair = document.getElementById("crosshair");
-    crosshair.style.setProperty('--crosshair-before-width', `${value}px`); // Width of ::before
-    crosshair.style.setProperty('--crosshair-after-height', `${value}px`); // Height of ::after
-}
-
-function updateCrosshairAfterBefore(value) {
-    const crosshair = document.getElementById("crosshair");
-    crosshair.style.setProperty('--crosshair-after-width', `${value}px`); // Width of ::after
-    crosshair.style.setProperty('--crosshair-before-height', `${value}px`); // Height of ::before
-}
-
-// Add event listeners for crosshair size sliders
-document.getElementById("crosshair-before-after").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("crosshair-before-after-value").textContent = value;
-    updateCrosshairBeforeAfter(value);
-    document.getElementById("crosshair-before-after-value").value = value; // Update number input
-});
-
-document.getElementById("crosshair-after-before").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("crosshair-after-before-value").textContent = value;
-    updateCrosshairAfterBefore(value);
-    document.getElementById("crosshair-after-before-value").value = value; // Update number input
-});
-
-// Add event listeners for number inputs to update sliders
-document.getElementById("crosshair-before-after-value").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("crosshair-before-after").value = value; // Update range input
-    updateCrosshairBeforeAfter(value);
-});
-
-document.getElementById("crosshair-after-before-value").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("crosshair-after-before").value = value; // Update range input
-    updateCrosshairAfterBefore(value);
-});
-
-function applyAllStyles() {
-    console.log("applyAllStyles");
-    updatePopupBorder();
-    updatePopupNumber();
-    updatePopupClose();
-    updatePopupAccid();
-    updatePopupUsername();
-    updatePopupTitles();
-    updatePopupText();
-}
-
-
-                  // Add event listeners for the new buttons
-document.getElementById("savepopup").addEventListener("click", async (event) => {
-event.stopPropagation();
-
-        try {
-            const topicId = "0.0.9771374";
-
-    const colorRedBorder = Math.min(parseInt(document.getElementById("color-red-border").value) || 0, 255);
-    const colorGreenBorder = Math.min(parseInt(document.getElementById("color-green-border").value) || 0, 255);
-    const colorBlueBorder = Math.min(parseInt(document.getElementById("color-blue-border").value) || 0, 255);
-
-    const colorRedNumber = Math.min(parseInt(document.getElementById("color-red-number").value) || 0, 255);
-    const colorGreenNumber = Math.min(parseInt(document.getElementById("color-green-number").value) || 0, 255);
-    const colorBlueNumber = Math.min(parseInt(document.getElementById("color-blue-number").value) || 0, 255);
-
-    const colorRedClose = Math.min(parseInt(document.getElementById("color-red-close").value) || 0, 255);
-    const colorGreenClose = Math.min(parseInt(document.getElementById("color-green-close").value) || 0, 255);
-    const colorBlueClose = Math.min(parseInt(document.getElementById("color-blue-close").value) || 0, 255);
-
-    const colorRedUsername = Math.min(parseInt(document.getElementById("color-red-username").value) || 0, 255);
-    const colorGreenUsername = Math.min(parseInt(document.getElementById("color-green-username").value) || 0, 255);
-    const colorBlueUsername = Math.min(parseInt(document.getElementById("color-blue-username").value) || 0, 255);
-
-    const colorRedAccid = Math.min(parseInt(document.getElementById("color-red-accid").value) || 0, 255);
-    const colorGreenAccid = Math.min(parseInt(document.getElementById("color-green-accid").value) || 0, 255);
-    const colorBlueAccid = Math.min(parseInt(document.getElementById("color-blue-accid").value) || 0, 255);
-
-    const colorRedText = Math.min(parseInt(document.getElementById("color-red-text").value) || 0, 255);
-    const colorGreenText = Math.min(parseInt(document.getElementById("color-green-text").value) || 0, 255);
-    const colorBlueText = Math.min(parseInt(document.getElementById("color-blue-text").value) || 0, 255);
-
-    const colorRedTitles = Math.min(parseInt(document.getElementById("color-red-titles").value) || 0, 255);
-    const colorGreenTitles = Math.min(parseInt(document.getElementById("color-green-titles").value) || 0, 255);
-    const colorBlueTitles = Math.min(parseInt(document.getElementById("color-blue-titles").value) || 0, 255);
-
-            const messageData = {
-                data: {
-                    colorBorder: {
-                        redBorder: colorRedBorder,
-                        greenBorder: colorGreenBorder,
-                        blueBorder: colorBlueBorder
-                    },
-                    colorNumber: {
-                        redNumber: colorRedNumber,
-                        greenNumber: colorGreenNumber,
-                        blueNumber: colorBlueNumber
-                    },
-                    colorClose: {
-                        redClose: colorRedClose,
-                        greenClose: colorGreenClose,
-                        blueClose: colorBlueClose
-                    },
-                    colorUsername: {
-                        redUsername: colorRedUsername,
-                        greenUsername: colorGreenUsername,
-                        blueUsername: colorBlueUsername
-                    },
-                    colorAccid: {
-                        redAccid: colorRedAccid,
-                        greenAccid: colorGreenAccid,
-                        blueAccid: colorBlueAccid
-                    },
-                    colorText: {
-                        redText: colorRedText,
-                        greenText: colorGreenText,
-                        blueText: colorBlueText
-                    },
-                    colorTitles: {
-                        redTitles: colorRedTitles,
-                        greenTitles: colorGreenTitles,
-                        blueTitles: colorBlueTitles
-                    }
+        const messageData = {
+            data: {
+                colorDisconnect: {
+                    redDisconnect: colorRedDisconnect,
+                    greenDisconnect: colorGreenDisconnect,
+                    blueDisconnect: colorBlueDisconnect
                 },
-            };
+                colorMainButton: {
+                    redMainButton: colorRedMainButton,
+                    greenMainButton: colorGreenMainButton,
+                    blueMainButton: colorBlueMainButton
+                }
+            }
+        };
 
-            const message = JSON.stringify(messageData);
+        const message = JSON.stringify(messageData);
 
-            const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
-                topicId,
-                message
-            );
-            console.log("Profile settings updated successfully:", receipt);
+        const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+            topicId,
+            message
+        );
+        console.log("Profile settings updated successfully:", receipt);
 
-        } catch (error) {
-            console.error("Error updating settings picture:", error);
-            // Removed alert
-        }
-      });
+    } catch (error) {
+        console.error("Error updating settings picture:", error);
+    }
+});
 
-      async function loadProfilePopup() {
-    const topicId = "0.0.9771374";
+async function loadMainButtonSettings() {
+    const topicId = "0.0.9797981";
     const accountObjectSettings = []; // Initialize an empty array to store account Settings
     try {
         const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
@@ -5904,340 +6215,112 @@ event.stopPropagation();
         // Check if the last message has valid data
         if (lastMessage && lastMessage.data) {
             // Extract relevant data and clamp to max 255
-            const { colorBorder, colorNumber, colorClose, colorUsername, colorAccid, colorText, colorTitles } = lastMessage.data;
+            const { colorDisconnect, colorMainButton } = lastMessage.data;
 
-            // Clamp values to max 255
-            const clampedColorBorder = {
-                redBorder: Math.min(parseInt(colorBorder.redBorder) || 0, 255),
-                greenBorder: Math.min(parseInt(colorBorder.greenBorder) || 0, 255),
-                blueBorder: Math.min(parseInt(colorBorder.blueBorder) || 0, 255)
+            const clampedColorDisconnect = {
+                redDisconnect: Math.min(parseInt(colorDisconnect.redDisconnect) || 0, 255),
+                greenDisconnect: Math.min(parseInt(colorDisconnect.greenDisconnect) || 0, 255),
+                blueDisconnect: Math.min(parseInt(colorDisconnect.blueDisconnect) || 0, 255)
             };
-            const clampedColorNumber = {
-                redNumber: Math.min(parseInt(colorNumber.redNumber) || 0, 255),
-                greenNumber: Math.min(parseInt(colorNumber.greenNumber) || 0, 255),
-                blueNumber: Math.min(parseInt(colorNumber.blueNumber) || 0, 255)
-            };
-            const clampedColorClose = {
-                redClose: Math.min(parseInt(colorClose.redClose) || 0, 255),
-                greenClose: Math.min(parseInt(colorClose.greenClose) || 0, 255),
-                blueClose: Math.min(parseInt(colorClose.blueClose) || 0, 255)
-            };
-            const clampedColorUsername = {
-                redUsername: Math.min(parseInt(colorUsername.redUsername) || 0, 255),
-                greenUsername: Math.min(parseInt(colorUsername.greenUsername) || 0, 255),
-                blueUsername: Math.min(parseInt(colorUsername.blueUsername) || 0, 255)
-            };
-            const clampedColorAccid = {
-                redAccid: Math.min(parseInt(colorAccid.redAccid) || 0, 255),
-                greenAccid: Math.min(parseInt(colorAccid.greenAccid) || 0, 255),
-                blueAccid: Math.min(parseInt(colorAccid.blueAccid) || 0, 255)
-            };
-            const clampedColorText = {
-                redText: Math.min(parseInt(colorText.redText) || 0, 255),
-                greenText: Math.min(parseInt(colorText.greenText) || 0, 255),
-                blueText: Math.min(parseInt(colorText.blueText) || 0, 255)
-            };
-            const clampedColorTitles = {
-                redTitles: Math.min(parseInt(colorTitles.redTitles) || 0, 255),
-                greenTitles: Math.min(parseInt(colorTitles.greenTitles) || 0, 255),
-                blueTitles: Math.min(parseInt(colorTitles.blueTitles) || 0, 255)
+            const clampedColorMainButton = {
+                redMainButton: Math.min(parseInt(colorMainButton.redMainButton) || 0, 255),
+                greenMainButton: Math.min(parseInt(colorMainButton.greenMainButton) || 0, 255),
+                blueMainButton: Math.min(parseInt(colorMainButton.blueMainButton) || 0, 255)
             };
 
-            // Store the clamped settings in accountObjectSettings
             accountObjectSettings.push({
-                colorBorder: clampedColorBorder,
-                colorUsername: clampedColorUsername,
-                colorAccid: clampedColorAccid,
-                colorText: clampedColorText,
-                colorTitles: clampedColorTitles
+                colorDisconnect: clampedColorDisconnect,
+                colorMainButton: clampedColorMainButton
             });
 
-            // Set clamped values to input fields
-            document.getElementById("color-red-border").value = clampedColorBorder.redBorder;
-            document.getElementById("color-green-border").value = clampedColorBorder.greenBorder;
-            document.getElementById("color-blue-border").value = clampedColorBorder.blueBorder;
+            document.getElementById("color-red-disconnect-button").value = clampedColorDisconnect.redDisconnect;
+            document.getElementById("color-green-disconnect-button").value = clampedColorDisconnect.greenDisconnect;
+            document.getElementById("color-blue-disconnect-button").value = clampedColorDisconnect.blueDisconnect;
+            document.getElementById("color-red-main-button").value = clampedColorMainButton.redMainButton;
+            document.getElementById("color-green-main-button").value = clampedColorMainButton.greenMainButton;
+            document.getElementById("color-blue-main-button").value = clampedColorMainButton.blueMainButton;
 
-            document.getElementById("color-red-number").value = clampedColorNumber.redNumber;
-            document.getElementById("color-green-number").value = clampedColorNumber.greenNumber;
-            document.getElementById("color-blue-number").value = clampedColorNumber.blueNumber;
+            updateMainButtonSettings();
 
-            document.getElementById("color-red-close").value = clampedColorClose.redClose;
-            document.getElementById("color-green-close").value = clampedColorClose.greenClose;
-            document.getElementById("color-blue-close").value = clampedColorClose.blueClose;
-
-            document.getElementById("color-red-username").value = clampedColorUsername.redUsername;
-            document.getElementById("color-green-username").value = clampedColorUsername.greenUsername;
-            document.getElementById("color-blue-username").value = clampedColorUsername.blueUsername;
-
-            document.getElementById("color-red-accid").value = clampedColorAccid.redAccid;
-            document.getElementById("color-green-accid").value = clampedColorAccid.greenAccid;
-            document.getElementById("color-blue-accid").value = clampedColorAccid.blueAccid;
-
-            document.getElementById("color-red-text").value = clampedColorText.redText;
-            document.getElementById("color-green-text").value = clampedColorText.greenText;
-            document.getElementById("color-blue-text").value = clampedColorText.blueText;
-
-            document.getElementById("color-red-titles").value = clampedColorTitles.redTitles;
-            document.getElementById("color-green-titles").value = clampedColorTitles.greenTitles;
-            document.getElementById("color-blue-titles").value = clampedColorTitles.blueTitles;
-
-            // Call update functions to apply the loaded values
-            updatePopupBorder();
-            updatePopupNumber();
-            updatePopupClose();
-            updatePopupAccid();
-            updatePopupUsername();
-            updatePopupTitles();
-            updatePopupText();
-
-        } else {
-            console.log("Last message does not have valid data.");
         }
 
         return accountObjectSettings;
 
     } catch (error) {
-        console.log("Error in loadProfilePopup:", error);
+        console.log("Error in loadMainButtonSettings:", error);
         return [];
     }
-}
+    }
 
+    function updateMainButtonSettings() {
+        const redDisconnect = document.getElementById("color-red-disconnect-button").value;
+        const greenDisconnect = document.getElementById("color-green-disconnect-button").value;
+        const blueDisconnect = document.getElementById("color-blue-disconnect-button").value;
+        const redMainButton = document.getElementById("color-red-main-button").value;
+        const greenMainButton = document.getElementById("color-green-main-button").value;
+        const blueMainButton = document.getElementById("color-blue-main-button").value;
+        const colorDisconnect = `rgb(${redDisconnect}, ${greenDisconnect}, ${blueDisconnect})`;
+        const colorMainButton = `rgb(${redMainButton}, ${greenMainButton}, ${blueMainButton})`;
+        const disconnectButton = document.querySelectorAll('#disconnect-wallet-btn');
+        const mainButton_1 = document.querySelectorAll('.menu_buttons');
+        const mainButton_2 = document.querySelectorAll('.options-and-topic');
 
+        const disconnectButtons = document.querySelectorAll('#disconnect-wallet-btn');
+        disconnectButtons.forEach(button => {
+            button.style.backgroundColor = colorDisconnect;
+        });
 
-                  // Add event listeners for the new buttons
-                  document.getElementById("savecrosshair").addEventListener("click", async (event) => {
-        event.stopPropagation();
+        // Update menu_buttons background color
+        const menuButtons = document.querySelectorAll('.menu_buttons');
+        menuButtons.forEach(button => {
+            button.style.backgroundColor = colorMainButton;
+        });
 
-        try {
-            const topicId = "0.0.9609927";
+        // Update options-and-topic background color
+        const optionsButtons = document.querySelectorAll('.options-and-topic');
+        optionsButtons.forEach(button => {
+            button.style.backgroundColor = colorMainButton;
+        });
+    }
 
-            const colorRed = document.getElementById("color-red").value;
-            const colorGreen = document.getElementById("color-green").value;
-            const colorBlue = document.getElementById("color-blue").value;
+    document.getElementById("color-red-disconnect-button").addEventListener("input", (event) => {updateMainButtonSettings();});
+    document.getElementById("color-green-disconnect-button").addEventListener("input", (event) => {updateMainButtonSettings();});
+    document.getElementById("color-blue-disconnect-button").addEventListener("input", (event) => {updateMainButtonSettings();});
+    document.getElementById("color-red-main-button").addEventListener("input", (event) => {updateMainButtonSettings();});
+    document.getElementById("color-green-main-button").addEventListener("input", (event) => {updateMainButtonSettings();});
+    document.getElementById("color-blue-main-button").addEventListener("input", (event) => {updateMainButtonSettings();});
 
-            const crosshairBeforeWidth = document.getElementById("crosshair-before-after").value;
-            const crosshairAfterHeight = document.getElementById("crosshair-after-before").value;
+document.getElementById("save-marker-settings").addEventListener("click", async (event) => {
+    event.stopPropagation();
+    try {
+        const topicId = "0.0.9796116";
 
-            // Construct the message data
-            const messageData = {
-                data: {
-                    color: {
-                        red: colorRed,
-                        green: colorGreen,
-                        blue: colorBlue
-                    },
-                    crosshair: {
-                        beforeWidth: crosshairBeforeWidth,
-                        afterHeight: crosshairAfterHeight
-                    }
-                },
-            };
-
-            const message = JSON.stringify(messageData);
-
-            const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
-                topicId,
-                message
-            );
-            console.log("Profile settings updated successfully:", receipt);
-
-        } catch (error) {
-            console.error("Error updating settings picture:", error);
-            // Removed alert
-        }
-      });
-
-
-
-      async function loadProfileCrosshair() {
-        const topicId = "0.0.9609927";
-        const accountObjectSettings = []; // Initialize an empty array to store account Settings
-        try {
-            const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
-
-            // Check if result exists and has messages
-            if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
-                return accountObjectSettings; // Return empty array if no messages
-            }
-
-            // Filter messages to find those from the current user
-            const userMessages = result.messages.filter(message => message.payer === globalAccountId);
-
-            // Get the last message from the filtered user messages
-            const lastMessage = userMessages[userMessages.length - 1];
-
-            // Check if the last message has valid data
-            if (lastMessage && lastMessage.data) {
-
-                // Extract relevant data
-                const { rotation, position, color, scale, crosshair } = lastMessage.data;
-
-                // Store the settings in accountObjectSettings
-                accountObjectSettings.push({
-                    color,
-                    crosshair
-                });
-
-                document.getElementById("color-red").value = color.red; // Set color red
-                document.getElementById("color-red-value").value = color.red; // Set color red value
-                document.getElementById("color-green").value = color.green; // Set color green
-                document.getElementById("color-green-value").value = color.green; // Set color green value
-                document.getElementById("color-blue").value = color.blue; // Set color blue
-                document.getElementById("color-blue-value").value = color.blue; // Set color blue value
-
-                document.getElementById("crosshair-before-after").value = crosshair.beforeWidth; // Set crosshair before width
-                document.getElementById("crosshair-before-after-value").value = crosshair.beforeWidth; // Set crosshair before width value
-                document.getElementById("crosshair-after-before").value = crosshair.afterHeight; // Set crosshair after height
-                document.getElementById("crosshair-after-before-value").value = crosshair.afterHeight; // Set crosshair after height value
-
-                // Call update functions to apply the loaded values
-                updateColorCrosshair(); // Update crosshair color
-                updateCrosshairBeforeAfter(crosshair.beforeWidth); // Update crosshair before width
-                updateCrosshairAfterBefore(crosshair.afterHeight); // Update crosshair after height
-
-            } else {
-                console.log("Last message does not have valid data."); // Log invalid data
-            }
-
-            return accountObjectSettings; // Return the populated array
-
-        } catch (error) {
-            console.log("Error in loadProfileCrosshair:", error);
-            return []; // Return empty array instead of throwing error
-        }
-      }
-
-
-
-            // Add event listeners for the new buttons
-            document.getElementById("buttonforobject").addEventListener("click", async (event) => {
-        event.stopPropagation();
-        const inputValue = document.getElementById("object-input").value;
-
-        try {
-          const topicId = "0.0.9609898";
-          const cleanUrl = inputValue.replace(/\?network=mainnet$/, "");
-
-          const messageData = {
+        const sizeMarker = Math.min(parseInt(document.getElementById("Marker-Sizer").value) || 0, 255);
+        const messageData = {
             data: {
-              settings: [],
-              urls: [cleanUrl],
-            },
-          };
-          const message = JSON.stringify(messageData);
+                sizeMarker: sizeMarker
+            }
+        };
 
-          const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+        const message = JSON.stringify(messageData);
+
+        const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
             topicId,
             message
-          );
-          console.log("Profile picture updated successfully:", receipt);
+        );
+        console.log("Profile settings updated successfully:", receipt);
 
-          document.getElementById("object-input").value = "";
+    } catch (error) {
+        console.error("Error updating settings picture:", error);
+    }
+    
+});
 
-        } catch (error) {
-          console.error("Error updating profile picture:", error);
-          // Removed alert
-        }
-      });
-
-
-                        // Add event listeners for the new buttons
-                        document.getElementById("savesettings").addEventListener("click", async (event) => {
-        event.stopPropagation();
-
-        try {
-            const topicId = "0.0.9609898";
-            const profileObjectUrl = await loadProfileObject();
-            const cleanUrl = (profileObjectUrl.length > 0 ? profileObjectUrl[0].replace(/\?network=mainnet$/, "") : defaultModelUrl);
-
-            // Read values from inputs
-            const rotationX = document.getElementById("rotation-x").value;
-            const rotationY = document.getElementById("rotation-y").value;
-            const rotationZ = document.getElementById("rotation-z").value;
-
-            const positionX = document.getElementById("position-x").value;
-            const positionY = document.getElementById("position-y").value;
-            const positionZ = document.getElementById("position-z").value;
-
-            const scaleFactor = document.getElementById("scale-factor").value;
-
-            // Construct the message data
-            const messageData = {
-                data: {
-                    settings : {
-                      rotation: {
-                        x: rotationX,
-                        y: rotationY,
-                        z: rotationZ
-                    },
-                    position: {
-                        x: positionX,
-                        y: positionY,
-                        z: positionZ
-                    },
-                    scale: {
-                      scaleFactor
-                    },
-                },
-                urls: [cleanUrl],
-              },
-            };
-
-            const message = JSON.stringify(messageData);
-
-            const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
-                topicId,
-                message
-            );
-            console.log("Profile settings updated successfully:", receipt);
-
-        } catch (error) {
-            console.error("Error updating settings picture:", error);
-            // Removed alert
-        }
-      });
-
-      async function loadProfileObject() {
-
-        const topicId = "0.0.9609898";
-        const accountObjectUrl = []; // Initialize an empty array to store account URLs
-        try {
-            const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
-
-            // Check if result exists and has messages
-            if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
-                console.log("No profile object found, using defaults");
-                return accountObjectUrl; // Return empty array if no messages
-            }
-
-            // Filter messages to find those from the current user
-            const userMessages = result.messages.filter(message => message.payer === globalAccountId);
-
-            // Get the last message from the filtered user messages
-            const lastMessage = userMessages[userMessages.length - 1];
-
-            // Check if the last message has valid data
-            if (lastMessage && lastMessage.data && lastMessage.data.urls && lastMessage.data.urls.length > 0) {
-                // Store the URL for this account
-                accountObjectUrl.push(lastMessage.data.urls[0]); // Accessing the first URL
-            }
-
-            return accountObjectUrl; // Return the populated array
-
-        } catch (error) {
-            console.log("Error in loadProfileObject:", error);
-            return []; // Return empty array instead of throwing error
-        }
-      }
-
-
-
-      async function loadProfileSettings() {
-        const topicId = "0.0.9609898";
+async function loadMarkerSettings() {
+        const topicId = "0.0.9796116";
         const accountObjectSettings = []; // Initialize an empty array to store account Settings
         try {
             const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
-
             // Check if result exists and has messages
             if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
                 return accountObjectSettings; // Return empty array if no messages
@@ -6251,64 +6334,564 @@ event.stopPropagation();
 
             // Check if the last message has valid data
             if (lastMessage && lastMessage.data) {
+                // Extract relevant data and clamp to max 255
+                const { sizeMarker } = lastMessage.data;
 
-              // Check if settings are empty
-              if (Array.isArray(lastMessage.data.settings) && lastMessage.data.settings.length === 0) {
-                const urls = lastMessage.data.urls; // This will give you the entire array
-                // Store the settings in accountObjectSettings
-                accountObjectSettings.push({ urls });
-              } else {
-                // Extract relevant data
-                const { rotation, position, scale } = lastMessage.data.settings;
-                const urls = lastMessage.data.urls; // This will give you the entire array
+                const clampedSizeMarker = Math.min(parseInt(sizeMarker) || 0, 10);
 
-                // Store the settings in accountObjectSettings
-                accountObjectSettings.push({ rotation, position, scale, urls });
+                accountObjectSettings.push({
+                    sizeMarker: clampedSizeMarker
+                });
 
-                // Update input fields with the extracted data
-                document.getElementById("rotation-x").value = rotation.x; // Set rotation X
-                document.getElementById("rotation-x-value").value = rotation.x; // Set rotation X value
-                document.getElementById("rotation-y").value = rotation.y; // Set rotation Y
-                document.getElementById("rotation-y-value").value = rotation.y; // Set rotation Y value
-                document.getElementById("rotation-z").value = rotation.z; // Set rotation Z
-                document.getElementById("rotation-z-value").value = rotation.z; // Set rotation Z value
+                document.getElementById("Marker-Size").value = clampedSizeMarker;
 
-                document.getElementById("position-x").value = position.x; // Set position X
-                document.getElementById("position-x-value").value = position.x; // Set position X value
-                document.getElementById("position-y").value = position.y; // Set position Y
-                document.getElementById("position-y-value").value = position.y; // Set position Y value
-                document.getElementById("position-z").value = position.z; // Set position Z
-                document.getElementById("position-z-value").value = position.z; // Set position Z value
-
-                // Add scale factor input update
-                document.getElementById("scale-factor").value = scale.scaleFactor; // Update scale factor input
-                document.getElementById("scale-factor-value").value = scale.scaleFactor; // Update scale factor value
-
-                // Update the object's position and rotation
-                const ufoModel = scene.getObjectByName('gltfModel'); // Assuming the UFO model is named 'ufo'
-                if (ufoModel) {
-                    ufoModel.rotation.x = THREE.MathUtils.degToRad(rotation.x);
-                    ufoModel.rotation.y = THREE.MathUtils.degToRad(rotation.y);
-                    ufoModel.rotation.z = THREE.MathUtils.degToRad(rotation.z);
-                    ufoModel.position.set(position.x, position.y, position.z);
-                    ufoModel.scale.set(scale.scaleFactor, scale.scaleFactor, scale.scaleFactor); // Scale the model
-                }
-              }
-            } else {
-              console.log("Last message does not have valid data."); // Log invalid data
+                updateMarkerSettings();
             }
 
-                      // Check if accountObjectSettings is empty and set default model URL
-                      if (accountObjectSettings.length === 0) {
-                await loadUfoModel(defaultModelUrl); // Load the default model
-            }
+            return accountObjectSettings;
 
-            return accountObjectSettings; // Return the populated array
         } catch (error) {
-            console.log("Error in loadProfileSettings:", error);
-            return []; // Return empty array instead of throwing error
+            console.log("Error in loadMarkerSettings:", error);
+            return [];
         }
-      }
+        }
+
+function updateMarkerSettings() {
+  const MarkerSize = document.getElementById("Marker-Size").value;
+  currentMarkerSize = Math.min(parseInt(MarkerSize) || 5, 10);
+  updateClusters();
+}
+
+document.getElementById("Marker-Size").addEventListener("input", (event) => {updateMarkerSettings();});
+
+document.getElementById("save-button-button-input").addEventListener("click", async (event) => {
+    event.stopPropagation();
+
+    try {
+        const topicId = "0.0.9798047";
+
+        const colorRedBorderButtonInput = Math.min(parseInt(document.getElementById("color-red-border-button-input").value) || 0, 255);
+        const colorGreenBorderButtonInput = Math.min(parseInt(document.getElementById("color-green-border-button-input").value) || 0, 255);
+        const colorBlueBorderButtonInput = Math.min(parseInt(document.getElementById("color-blue-border-button-input").value) || 0, 255);
+
+        const colorRedFontColorInput = Math.min(parseInt(document.getElementById("color-red-font-color-input-button-input").value) || 0, 255);
+        const colorGreenFontColorInput = Math.min(parseInt(document.getElementById("color-green-font-color-input-button-input").value) || 0, 255);
+        const colorBlueFontColorInput = Math.min(parseInt(document.getElementById("color-blue-font-color-input-button-input").value) || 0, 255);
+
+        const colorRedButtonBorderButtonInput = Math.min(parseInt(document.getElementById("color-red-button-border-button-input").value) || 0, 255);
+        const colorGreenButtonBorderButtonInput = Math.min(parseInt(document.getElementById("color-green-button-border-button-input").value) || 0, 255);
+        const colorBlueButtonBorderButtonInput = Math.min(parseInt(document.getElementById("color-blue-button-border-button-input").value) || 0, 255);
+
+        const colorRedOnhoverButtonInput = Math.min(parseInt(document.getElementById("color-red-onhover-button-input").value) || 0, 255);
+        const colorGreenOnhoverButtonInput = Math.min(parseInt(document.getElementById("color-green-onhover-button-input").value) || 0, 255);
+        const colorBlueOnhoverButtonInput = Math.min(parseInt(document.getElementById("color-blue-onhover-button-input").value) || 0, 255);
+
+        const fontForButtonInput = Math.min(parseInt(document.getElementById("font-for-button-input").value) || 0, 10);
+        const transparencyButtonInput = Math.min(parseInt(document.getElementById("color-red-transparency-button-input").value) || 0, 1);
+
+        const colorRedFontColorButtonInput = Math.min(parseInt(document.getElementById("color-red-font-color-button-input").value) || 0, 255);
+        const colorGreenFontColorButtonInput = Math.min(parseInt(document.getElementById("color-green-font-color-button-input").value) || 0, 255);
+        const colorBlueFontColorButtonInput = Math.min(parseInt(document.getElementById("color-blue-font-color-button-input").value) || 0, 255);
+
+        const messageData = {
+            data: {
+                colorBorderButtonInput: {
+                    redBorderButtonInput: colorRedBorderButtonInput,
+                    greenBorderButtonInput: colorGreenBorderButtonInput,
+                    blueBorderButtonInput: colorBlueBorderButtonInput
+                },
+                fontForButtonInput: fontForButtonInput,
+                transparencyButtonInput: transparencyButtonInput,
+
+                colorFontColorButtonInput: {
+                    redFontColorButtonInput: colorRedFontColorButtonInput,
+                    greenFontColorButtonInput: colorGreenFontColorButtonInput,
+                    blueFontColorButtonInput: colorBlueFontColorButtonInput
+                },
+                colorOnhoverButtonInput: {
+                    redOnhoverButtonInput: colorRedOnhoverButtonInput,
+                    greenOnhoverButtonInput: colorGreenOnhoverButtonInput,
+                    blueOnhoverButtonInput: colorBlueOnhoverButtonInput
+                },
+                colorButtonBorderButtonInput: {
+                    redButtonBorderButtonInput: colorRedButtonBorderButtonInput,
+                    greenButtonBorderButtonInput: colorGreenButtonBorderButtonInput,
+                    blueButtonBorderButtonInput: colorBlueButtonBorderButtonInput
+                },
+                colorFontColorInputButtonInput: {
+                    redFontColorInputButtonInput: colorRedFontColorInput,
+                    greenFontColorInputButtonInput: colorGreenFontColorInput,
+                    blueFontColorInputButtonInput: colorBlueFontColorInput
+                }
+            }
+        };
+
+        const message = JSON.stringify(messageData);
+
+        const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+            topicId,
+            message
+        );
+        console.log("Profile settings updated successfully:", receipt);
+
+    } catch (error) {
+        console.error("Error updating settings picture:", error);
+    }
+
+});
+
+async function loadButtonInputSettings() {
+            const topicId = "0.0.9798047";
+            const accountObjectSettings = []; // Initialize an empty array to store account Settings
+            try {
+                const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+                // Check if result exists and has messages
+                if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
+                    return accountObjectSettings; // Return empty array if no messages
+                }
+
+                // Filter messages to find those from the current user
+                const userMessages = result.messages.filter(message => message.payer === globalAccountId);
+
+                // Get the last message from the filtered user messages
+                const lastMessage = userMessages[userMessages.length - 1];
+
+                // Check if the last message has valid data
+                if (lastMessage && lastMessage.data) {
+                    // Extract relevant data and clamp to max 255
+                    const { colorBorderButtonInput, fontForButtonInput, transparencyButtonInput,
+                       colorFontColorButtonInput, colorOnhoverButtonInput, colorButtonBorderButtonInput, colorFontColorInputButtonInput } = lastMessage.data;
+
+                    const clampedColorBorderButtonInput = {
+                        redBorderButtonInput: Math.min(parseInt(colorBorderButtonInput.redBorderButtonInput) || 0, 255),
+                        greenBorderButtonInput: Math.min(parseInt(colorBorderButtonInput.greenBorderButtonInput) || 0, 255),
+                        blueBorderButtonInput: Math.min(parseInt(colorBorderButtonInput.blueBorderButtonInput) || 0, 255)
+                    };
+                    const clampedFontForButtonInput = Math.min(parseInt(fontForButtonInput) || 0, 10);
+                    const clampedTransparencyButtonInput = Math.min(parseInt(transparencyButtonInput) || 0, 1);
+
+
+                    const clampedColorFontColorButtonInput = {
+                        redFontColorButtonInput: Math.min(parseInt(colorFontColorButtonInput.redFontColorButtonInput) || 0, 255),
+                        greenFontColorButtonInput: Math.min(parseInt(colorFontColorButtonInput.greenFontColorButtonInput) || 0, 255),
+                        blueFontColorButtonInput: Math.min(parseInt(colorFontColorButtonInput.blueFontColorButtonInput) || 0, 255)
+                    };
+
+                    const clampedColorOnhoverButtonInput = {
+                        redOnhoverButtonInput: Math.min(parseInt(colorOnhoverButtonInput.redOnhoverButtonInput) || 0, 255),
+                        greenOnhoverButtonInput: Math.min(parseInt(colorOnhoverButtonInput.greenOnhoverButtonInput) || 0, 255),
+                        blueOnhoverButtonInput: Math.min(parseInt(colorOnhoverButtonInput.blueOnhoverButtonInput) || 0, 255)
+                    };
+
+                    const clampedColorButtonBorderButtonInput = {
+                        redButtonBorderButtonInput: Math.min(parseInt(colorButtonBorderButtonInput.redButtonBorderButtonInput) || 0, 255),
+                        greenButtonBorderButtonInput: Math.min(parseInt(colorButtonBorderButtonInput.greenButtonBorderButtonInput) || 0, 255),
+                        blueButtonBorderButtonInput: Math.min(parseInt(colorButtonBorderButtonInput.blueButtonBorderButtonInput) || 0, 255)
+                    };
+
+                    const clampedColorFontColorInputButtonInput = {
+                        redFontColorInputButtonInput: Math.min(parseInt(colorFontColorInputButtonInput.redFontColorInputButtonInput) || 0, 255),
+                        greenFontColorInputButtonInput: Math.min(parseInt(colorFontColorInputButtonInput.greenFontColorInputButtonInput) || 0, 255),
+                        blueFontColorInputButtonInput: Math.min(parseInt(colorFontColorInputButtonInput.blueFontColorInputButtonInput) || 0, 255)
+                    };
+
+                    accountObjectSettings.push({
+                        colorBorderButtonInput: clampedColorBorderButtonInput,
+                        fontForButtonInput: clampedFontForButtonInput,
+                        transparencyButtonInput: clampedTransparencyButtonInput,
+                        colorFontColorButtonInput: clampedColorFontColorButtonInput,
+                        colorOnhoverButtonInput: clampedColorOnhoverButtonInput,
+                        colorButtonBorderButtonInput: clampedColorButtonBorderButtonInput,
+                        colorFontColorInputButtonInput: clampedColorFontColorInputButtonInput
+                    });
+
+                    document.getElementById("color-red-border-button-input").value = clampedColorBorderButtonInput.redBorderButtonInput;
+                    document.getElementById("color-green-border-button-input").value = clampedColorBorderButtonInput.greenBorderButtonInput;
+                    document.getElementById("color-blue-border-button-input").value = clampedColorBorderButtonInput.blueBorderButtonInput;
+                    document.getElementById("font-for-button-input").value = clampedFontForButtonInput;
+                    document.getElementById("color-red-transparency-button-input").value = clampedTransparencyButtonInput;
+                    document.getElementById("color-red-font-color-button-input").value = clampedColorFontColorButtonInput.redFontColorButtonInput;
+                    document.getElementById("color-green-font-color-button-input").value = clampedColorFontColorButtonInput.greenFontColorButtonInput;
+                    document.getElementById("color-blue-font-color-button-input").value = clampedColorFontColorButtonInput.blueFontColorButtonInput;
+                    document.getElementById("color-red-onhover-button-input").value = clampedColorOnhoverButtonInput.redOnhoverButtonInput;
+                    document.getElementById("color-green-onhover-button-input").value = clampedColorOnhoverButtonInput.greenOnhoverButtonInput;
+                    document.getElementById("color-blue-onhover-button-input").value = clampedColorOnhoverButtonInput.blueOnhoverButtonInput;
+                    document.getElementById("color-red-button-border-button-input").value = clampedColorButtonBorderButtonInput.redButtonBorderButtonInput;
+                    document.getElementById("color-green-button-border-button-input").value = clampedColorButtonBorderButtonInput.greenButtonBorderButtonInput;
+                    document.getElementById("color-blue-button-border-button-input").value = clampedColorButtonBorderButtonInput.blueButtonBorderButtonInput;
+                    document.getElementById("color-red-font-color-input-button-input").value = clampedColorFontColorInputButtonInput.redFontColorInputButtonInput;
+                    document.getElementById("color-green-font-color-input-button-input").value = clampedColorFontColorInputButtonInput.greenFontColorInputButtonInput;
+                    document.getElementById("color-blue-font-color-input-button-input").value = clampedColorFontColorInputButtonInput.blueFontColorInputButtonInput;
+                    updateButtonInputSettings();
+                }
+
+                return accountObjectSettings;
+
+            } catch (error) {
+                console.log("Error in loadButtonInputSettings:", error);
+                return [];
+            }
+            }
+
+            function updateButtonInputSettings() {
+                const colorRedBorderButtonInput = document.getElementById("color-red-border-button-input").value;
+                const colorGreenBorderButtonInput = document.getElementById("color-green-border-button-input").value;
+                const colorBlueBorderButtonInput = document.getElementById("color-blue-border-button-input").value;
+                const fontForButtonInput = document.getElementById("font-for-button-input").value;
+                const transparencyButtonInput = document.getElementById("color-red-transparency-button-input").value;
+                const colorRedFontColorButtonInput = document.getElementById("color-red-font-color-button-input").value;
+                const colorGreenFontColorButtonInput = document.getElementById("color-green-font-color-button-input").value;
+                const colorBlueFontColorButtonInput = document.getElementById("color-blue-font-color-button-input").value;
+                const colorRedOnhoverButtonInput = document.getElementById("color-red-onhover-button-input").value;
+                const colorGreenOnhoverButtonInput = document.getElementById("color-green-onhover-button-input").value;
+                const colorBlueOnhoverButtonInput = document.getElementById("color-blue-onhover-button-input").value;
+                const colorRedButtonBorderButtonInput = document.getElementById("color-red-button-border-button-input").value;
+                const colorGreenButtonBorderButtonInput = document.getElementById("color-green-button-border-button-input").value;
+                const colorBlueButtonBorderButtonInput = document.getElementById("color-blue-button-border-button-input").value;
+                const colorRedFontColorInputButtonInput = document.getElementById("color-red-font-color-input-button-input").value;
+                const colorGreenFontColorInputButtonInput = document.getElementById("color-green-font-color-input-button-input").value;
+                const colorBlueFontColorInputButtonInput = document.getElementById("color-blue-font-color-input-button-input").value;
+                const inputFontColor = `rgb(${colorRedFontColorInputButtonInput}, ${colorGreenFontColorInputButtonInput}, ${colorBlueFontColorInputButtonInput})`;
+                const colorForInputBorder = `rgb(${colorRedBorderButtonInput}, ${colorGreenBorderButtonInput}, ${colorBlueBorderButtonInput})`;
+                const fontsizewithunits = `${fontForButtonInput}vh`;
+                const colorForButtonFont = `rgb(${colorRedFontColorButtonInput}, ${colorGreenFontColorButtonInput}, ${colorBlueFontColorButtonInput})`;
+                const colorOnhoverButton = `rgb(${colorRedOnhoverButtonInput}, ${colorGreenOnhoverButtonInput}, ${colorBlueOnhoverButtonInput})`;
+                const colorForButtonBorder = `rgb(${colorRedButtonBorderButtonInput}, ${colorGreenButtonBorderButtonInput}, ${colorBlueButtonBorderButtonInput})`;
+
+                const inputButtons = document.querySelectorAll('.toolbar-column, .yourfov');
+                inputButtons.forEach(button => {
+                    button.style.borderColor = colorForInputBorder;
+                    button.style.opacity = transparencyButtonInput;
+                    button.style.fontSize = fontsizewithunits;
+                    button.style.color = inputFontColor;
+                });
+
+                const ButtonInputButtons = document.querySelectorAll('.toolbar-column-btns');
+                ButtonInputButtons.forEach(button => {
+                    button.style.borderColor = colorForButtonBorder;
+                    button.style.opacity = transparencyButtonInput;
+                    button.style.fontSize = fontsizewithunits;
+                    button.style.color = colorForButtonFont;
+                    button.addEventListener('mouseover', () => {
+                        button.style.backgroundColor = colorOnhoverButton;
+                    });
+                    button.addEventListener('mouseout', () => {
+                        button.style.backgroundColor = 'transparent';
+                        button.style.color = colorForButtonFont;
+                    });
+                });
+
+
+            }
+
+            const everythingInsdieButtonInput = [
+              document.getElementById("color-red-border-button-input"),
+              document.getElementById("color-green-border-button-input"),
+              document.getElementById("color-blue-border-button-input"),
+              document.getElementById("color-red-transparency-button-input"),
+              document.getElementById("color-red-font-color-button-input"),
+              document.getElementById("color-green-font-color-button-input"),
+              document.getElementById("color-blue-font-color-button-input"),
+              document.getElementById("color-red-font-color-input-button-input"),
+              document.getElementById("color-green-font-color-input-button-input"),
+              document.getElementById("color-blue-font-color-input-button-input"),
+              document.getElementById("color-red-onhover-button-input"),
+              document.getElementById("color-green-onhover-button-input"),
+              document.getElementById("color-blue-onhover-button-input"),
+              document.getElementById("color-red-button-border-button-input"),
+              document.getElementById("color-green-button-border-button-input"),
+              document.getElementById("color-blue-button-border-button-input"),
+              document.getElementById("font-for-button-input"),
+            ]
+
+            everythingInsdieButtonInput.forEach(element => {
+              element.addEventListener("input", (event) => {updateButtonInputSettings();});
+            });
+
+
+document.getElementById("save-container-settings").addEventListener("click", async (event) => {
+    event.stopPropagation();
+    
+    try {
+        const topicId = "0.0.9798047";
+
+        const colorRedBorderContainer = Math.min(parseInt(document.getElementById("color-red-border-container").value) || 0, 255);
+        const colorGreenBorderContainer = Math.min(parseInt(document.getElementById("color-green-border-container").value) || 0, 255);
+        const colorBlueBorderContainer = Math.min(parseInt(document.getElementById("color-blue-border-container").value) || 0, 255);
+
+        const transparencyContainer = Math.min(parseInt(document.getElementById("color-red-transparency-container").value) || 0, 1);
+
+        const messageData = {
+            data: {
+                colorBorderContainer: {
+                    redBorderContainer: colorRedBorderContainer,
+                    greenBorderContainer: colorGreenBorderContainer,
+                    blueBorderContainer: colorBlueBorderContainer
+                },
+                transparencyContainer: transparencyContainer
+            }
+        };
+
+        const message = JSON.stringify(messageData);
+
+        const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+            topicId,
+            message
+        );
+        console.log("Profile settings updated successfully:", receipt);
+
+    } catch (error) {
+        console.error("Error updating settings picture:", error);
+    }
+});
+
+async function loadContainerSettings() {
+    const topicId = "0.0.9798064";
+    const accountObjectSettings = []; // Initialize an empty array to store account Settings
+    try {
+        const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+        // Check if result exists and has messages
+        if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
+            return accountObjectSettings; // Return empty array if no messages
+        }
+
+        // Filter messages to find those from the current user
+        const userMessages = result.messages.filter(message => message.payer === globalAccountId);
+
+        // Get the last message from the filtered user messages
+        const lastMessage = userMessages[userMessages.length - 1];
+
+        // Check if the last message has valid data
+        if (lastMessage && lastMessage.data) {
+            // Extract relevant data and clamp to max 255
+            const { colorBorderContainer, colorBackgroundContainer, transparencyContainer } = lastMessage.data;
+
+            const clampedColorBorderContainer = {
+                redBorderContainer: Math.min(parseInt(colorBorderContainer.redBorderContainer) || 0, 255),
+                greenBorderContainer: Math.min(parseInt(colorBorderContainer.greenBorderContainer) || 0, 255),
+                blueBorderContainer: Math.min(parseInt(colorBorderContainer.blueBorderContainer) || 0, 255)
+            };
+            const clampedTransparencyContainer = Math.min(parseInt(transparencyContainer) || 0, 1);
+
+            accountObjectSettings.push({
+                colorBorderContainer: clampedColorBorderContainer,
+                transparencyContainer: clampedTransparencyContainer
+            });
+
+            document.getElementById("color-red-border-container").value = clampedColorBorderContainer.redBorderContainer;
+            document.getElementById("color-green-border-container").value = clampedColorBorderContainer.greenBorderContainer;
+            document.getElementById("color-blue-border-container").value = clampedColorBorderContainer.blueBorderContainer;
+            document.getElementById("color-red-transparency-container").value = clampedTransparencyContainer;
+
+            updateContainerSettings();
+          }
+
+return accountObjectSettings;
+
+} catch (error) {
+console.log("Error in loadButtonInputSettings:", error);
+return [];
+}
+}
+
+function updateContainerSettings() {
+  const colorRedBorderContainer = document.getElementById("color-red-border-container").value;
+  const colorGreenBorderContainer = document.getElementById("color-green-border-container").value;
+  const colorBlueBorderContainer = document.getElementById("color-blue-border-container").value;
+  const transparencyContainer = document.getElementById("color-red-transparency-container").value;
+  const colorForBorder = `rgb(${colorRedBorderContainer}, ${colorGreenBorderContainer}, ${colorBlueBorderContainer})`;
+  const containerSettings = document.querySelectorAll('.toolbar-group');
+  containerSettings.forEach(container => {
+    container.style.borderColor = colorForBorder;
+    container.style.opacity = transparencyContainer;
+  });
+}
+
+document.getElementById("color-red-border-container").addEventListener("input", (event) => {updateContainerSettings();});
+document.getElementById("color-green-border-container").addEventListener("input", (event) => {updateContainerSettings();});
+document.getElementById("color-blue-border-container").addEventListener("input", (event) => {updateContainerSettings();});
+document.getElementById("color-red-transparency-container").addEventListener("input", (event) => {updateContainerSettings();});
+
+document.getElementById("save-topic-chat-settings").addEventListener("click", async (event) => {
+    event.stopPropagation();
+
+    try {
+        const topicId = "0.0.9798064";
+        const colorRedAccidTopicChat = Math.min(parseInt(document.getElementById("color-red-accid-topic-chat").value) || 0, 255);
+        const colorGreenAccidTopicChat = Math.min(parseInt(document.getElementById("color-green-accid-topic-chat").value) || 0, 255);
+        const colorBlueAccidTopicChat = Math.min(parseInt(document.getElementById("color-blue-accid-topic-chat").value) || 0, 255);
+
+        const colorRedUsernameTopicChat = Math.min(parseInt(document.getElementById("color-red-username-topic-chat").value) || 0, 255);
+        const colorGreenUsernameTopicChat = Math.min(parseInt(document.getElementById("color-green-username-topic-chat").value) || 0, 255);
+        const colorBlueUsernameTopicChat = Math.min(parseInt(document.getElementById("color-blue-username-topic-chat").value) || 0, 255);
+
+        const colorRedTextContainerTopicChat = Math.min(parseInt(document.getElementById("color-red-text-container-topic-chat").value) || 0, 255);
+        const colorGreenTextContainerTopicChat = Math.min(parseInt(document.getElementById("color-green-text-container-topic-chat").value) || 0, 255);
+        const colorBlueTextContainerTopicChat = Math.min(parseInt(document.getElementById("color-blue-text-container-topic-chat").value) || 0, 255);
+
+        const colorRedTextTopicChat = Math.min(parseInt(document.getElementById("color-red-text-topic-chat").value) || 0, 255);
+        const colorGreenTextTopicChat = Math.min(parseInt(document.getElementById("color-green-text-topic-chat").value) || 0, 255);
+        const colorBlueTextTopicChat = Math.min(parseInt(document.getElementById("color-blue-text-topic-chat").value) || 0, 255);
+
+        const messageData = {
+            data: {
+                colorAccidTopicChat: {
+                    redAccidTopicChat: colorRedAccidTopicChat,
+                    greenAccidTopicChat: colorGreenAccidTopicChat,
+                    blueAccidTopicChat: colorBlueAccidTopicChat
+                },
+                colorUsernameTopicChat: {
+                    redUsernameTopicChat: colorRedUsernameTopicChat,
+                    greenUsernameTopicChat: colorGreenUsernameTopicChat,
+                    blueUsernameTopicChat: colorBlueUsernameTopicChat
+                },
+                colorTextContainerTopicChat: {
+                    redTextContainerTopicChat: colorRedTextContainerTopicChat,
+                    greenTextContainerTopicChat: colorGreenTextContainerTopicChat,
+                    blueTextContainerTopicChat: colorBlueTextContainerTopicChat
+                },
+                colorTextTopicChat: {
+                    redTextTopicChat: colorRedTextTopicChat,
+                    greenTextTopicChat: colorGreenTextTopicChat,
+                    blueTextTopicChat: colorBlueTextTopicChat
+                }
+            }
+        };
+
+        const message = JSON.stringify(messageData);
+
+        const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+            topicId,
+            message
+        );
+        console.log("Profile settings updated successfully:", receipt);
+
+    } catch (error) {
+        console.error("Error updating settings picture:", error);
+    }
+    
+});
+
+
+async function loadTopicChatSettings() {
+    const topicId = "0.0.9798078";
+    const accountObjectSettings = []; // Initialize an empty array to store account Settings
+    try {
+        const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+        // Check if result exists and has messages
+        if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
+            return accountObjectSettings; // Return empty array if no messages
+        }
+
+        // Filter messages to find those from the current user
+        const userMessages = result.messages.filter(message => message.payer === globalAccountId);
+
+        // Get the last message from the filtered user messages
+        const lastMessage = userMessages[userMessages.length - 1];
+
+        // Check if the last message has valid data
+        if (lastMessage && lastMessage.data) {
+            // Extract relevant data and clamp to max 255
+            const { colorAccidTopicChat, colorUsernameTopicChat, colorTextContainerTopicChat, colorTextTopicChat } = lastMessage.data;
+
+            const clampedColorAccidTopicChat = {
+                redAccidTopicChat: Math.min(parseInt(colorAccidTopicChat.redAccidTopicChat) || 0, 255),
+                greenAccidTopicChat: Math.min(parseInt(colorAccidTopicChat.greenAccidTopicChat) || 0, 255),
+                blueAccidTopicChat: Math.min(parseInt(colorAccidTopicChat.blueAccidTopicChat) || 0, 255)
+            };
+            const clampedColorUsernameTopicChat = {
+                redUsernameTopicChat: Math.min(parseInt(colorUsernameTopicChat.redUsernameTopicChat) || 0, 255),
+                greenUsernameTopicChat: Math.min(parseInt(colorUsernameTopicChat.greenUsernameTopicChat) || 0, 255),
+                blueUsernameTopicChat: Math.min(parseInt(colorUsernameTopicChat.blueUsernameTopicChat) || 0, 255)
+            };
+
+            const clampedColorTextContainerTopicChat = {
+                redTextContainerTopicChat: Math.min(parseInt(colorTextContainerTopicChat.redTextContainerTopicChat) || 0, 255),
+                greenTextContainerTopicChat: Math.min(parseInt(colorTextContainerTopicChat.greenTextContainerTopicChat) || 0, 255),
+                blueTextContainerTopicChat: Math.min(parseInt(colorTextContainerTopicChat.blueTextContainerTopicChat) || 0, 255)
+            };
+            const clampedColorTextTopicChat = {
+                redTextTopicChat: Math.min(parseInt(colorTextTopicChat.redTextTopicChat) || 0, 255),
+                greenTextTopicChat: Math.min(parseInt(colorTextTopicChat.greenTextTopicChat) || 0, 255),
+                blueTextTopicChat: Math.min(parseInt(colorTextTopicChat.blueTextTopicChat) || 0, 255)
+            };
+
+            accountObjectSettings.push({
+                colorAccidTopicChat: clampedColorAccidTopicChat,
+                colorUsernameTopicChat: clampedColorUsernameTopicChat,
+                colorTextContainerTopicChat: clampedColorTextContainerTopicChat,
+                colorTextTopicChat: clampedColorTextTopicChat
+            });
+
+            document.getElementById("color-red-accid-topic-chat").value = clampedColorAccidTopicChat.redAccidTopicChat;
+            document.getElementById("color-green-accid-topic-chat").value = clampedColorAccidTopicChat.greenAccidTopicChat;
+            document.getElementById("color-blue-accid-topic-chat").value = clampedColorAccidTopicChat.blueAccidTopicChat;
+            document.getElementById("color-red-username-topic-chat").value = clampedColorUsernameTopicChat.redUsernameTopicChat;
+            document.getElementById("color-green-username-topic-chat").value = clampedColorUsernameTopicChat.greenUsernameTopicChat;
+            document.getElementById("color-blue-username-topic-chat").value = clampedColorUsernameTopicChat.blueUsernameTopicChat;
+            document.getElementById("color-red-text-container-topic-chat").value = clampedColorTextContainerTopicChat.redTextContainerTopicChat;
+            document.getElementById("color-green-text-container-topic-chat").value = clampedColorTextContainerTopicChat.greenTextContainerTopicChat;
+            document.getElementById("color-blue-text-container-topic-chat").value = clampedColorTextContainerTopicChat.blueTextContainerTopicChat;
+            document.getElementById("color-red-text-topic-chat").value = clampedColorTextTopicChat.redTextTopicChat;
+            document.getElementById("color-green-text-topic-chat").value = clampedColorTextTopicChat.greenTextTopicChat;
+            document.getElementById("color-blue-text-topic-chat").value = clampedColorTextTopicChat.blueTextTopicChat;
+
+            updateTopicChatSettings();
+        }
+
+        return accountObjectSettings;
+
+    } catch (error) {
+        console.log("Error in loadTopicChatSettings:", error);
+        return [];
+    }
+    }
+
+    function updateTopicChatSettings() {
+    const colorRedAccidTopicChat = document.getElementById("color-red-accid-topic-chat").value;
+    const colorGreenAccidTopicChat = document.getElementById("color-green-accid-topic-chat").value;
+    const colorBlueAccidTopicChat = document.getElementById("color-blue-accid-topic-chat").value;
+    const colorRedUsernameTopicChat = document.getElementById("color-red-username-topic-chat").value;
+    const colorGreenUsernameTopicChat = document.getElementById("color-green-username-topic-chat").value;
+    const colorBlueUsernameTopicChat = document.getElementById("color-blue-username-topic-chat").value;
+    const colorRedTextContainerTopicChat = document.getElementById("color-red-text-container-topic-chat").value;
+    const colorGreenTextContainerTopicChat = document.getElementById("color-green-text-container-topic-chat").value;
+    const colorBlueTextContainerTopicChat = document.getElementById("color-blue-text-container-topic-chat").value;
+    const colorRedTextTopicChat = document.getElementById("color-red-text-topic-chat").value;
+    const colorGreenTextTopicChat = document.getElementById("color-green-text-topic-chat").value;
+    const colorBlueTextTopicChat = document.getElementById("color-blue-text-topic-chat").value;
+
+    // Update global variables
+    colorForAccidTopicChat = `rgb(${colorRedAccidTopicChat}, ${colorGreenAccidTopicChat}, ${colorBlueAccidTopicChat})`;
+    colorForUsernameTopicChat = `rgb(${colorRedUsernameTopicChat}, ${colorGreenUsernameTopicChat}, ${colorBlueUsernameTopicChat})`;
+    colorForTextTopicChat = `rgb(${colorRedTextTopicChat}, ${colorGreenTextTopicChat}, ${colorBlueTextTopicChat})`;
+
+    const colorForTextContainerTopicChat = `rgb(${colorRedTextContainerTopicChat}, ${colorGreenTextContainerTopicChat}, ${colorBlueTextContainerTopicChat})`;
+
+    const topicChatSettings = document.querySelectorAll('.chat-container');
+    topicChatSettings.forEach(topicChat => {
+        topicChat.style.borderColor = colorForTextContainerTopicChat;
+    });
+
+    return { colorForAccidTopicChat, colorForUsernameTopicChat, colorForTextTopicChat };
+}
+
+    document.getElementById("color-red-accid-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-green-accid-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-blue-accid-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-red-username-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-green-username-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-blue-username-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-red-text-container-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-green-text-container-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-blue-text-container-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-red-text-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-green-text-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+    document.getElementById("color-blue-text-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
+
+
+
+
 
 async function loadUfoModel(modelUrl) {
 
