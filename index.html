@@ -893,7 +893,7 @@ button[type="submit"],
     ></textarea>
 
     <div style="display: flex; flex-direction: row; width: 100%;">
-      <button class="toolbar-column-btns" id="button3">Change topic ID name
+      <button class="toolbar-column-btns" id="button3">TopicID name
       </button>
       <button class="toolbar-column-btns" id="button_for_topic2pic" style="margin-left: 1vw;">TOPIC2PIC
       </button>
@@ -3217,21 +3217,18 @@ async function loadTOPIC2PIC() {
 
 window.loadTOPIC4PIC = async function(payer) {
   try {
-    // Load the accountTOPIC2PIC dictionary
     const accountTOPIC2PIC = await loadTOPIC2PIC();
-    // Check if the payer exists and has a topic2pic
+
     if (!accountTOPIC2PIC[payer] || !accountTOPIC2PIC[payer].topic2pic) {
       return {};
     }
 
-    // Get the topicId (topic2pic) for the payer
     const topicId = accountTOPIC2PIC[payer].topic2pic;
-    const topicIdStr = topicId[0]; // "0.0.9759318"
+    const topicIdStr = topicId[0];
     const topicInfo = await window.HashinalsWalletConnectSDK.getTopicInfo(topicIdStr);
     const topicAdmin = [];
     const memo = topicInfo.memo;
 
-    // Split the memo by commas and collect admin accounts
     const parts = memo.split(',');
     let hasRules = false;
     parts.forEach(part => {
@@ -3241,20 +3238,16 @@ window.loadTOPIC4PIC = async function(payer) {
       }
     });
 
-    // Fetch messages for the topicId
     const result = await window.HashinalsWalletConnectSDK.getMessages(topicIdStr);
 
-    // Check if result exists and has messages
     if (!result || !Array.isArray(result.messages)) {
       console.log(`No messages found for topicId ${topicId}, returning empty object`);
       return {};
     }
 
-    // Initialize variables for processing messages
     let hasMoreThanOneTopic = false;
     const topicActions = new Map();
 
-    // Process messages to track add/remove actions
     for (let index = 0; index < result.messages.length; index++) {
       const message = result.messages[index];
       try {
@@ -3298,41 +3291,37 @@ window.loadTOPIC4PIC = async function(payer) {
       }
     }
 
-    // Determine the final list of topics based on the latest action
     const loadedTopicsIds = Array.from(topicActions.entries())
       .filter(([topic, { action }]) => action === 'add' && topic.startsWith('0.0.'))
       .map(([topic]) => topic);
 
-    // Process messages for each topic and build loadedTopicIdsWithNames
     const loadedTopicIdsWithNames = [];
     for (const topicId of loadedTopicsIds) {
       const { loadedTopicName } = await processTopicMessages(topicId);
 
-      // Add topic ID with name (if available) to the list
       if (loadedTopicName !== undefined) {
         const topicNamePart = loadedTopicName ? `-${loadedTopicName}` : '';
         loadedTopicIdsWithNames.push(`${topicId}${topicNamePart}`);
       }
     }
 
-    // Sort loadedTopicIdsWithNames by numeric topic ID
     globalLoadedTopicIdsWithNames = loadedTopicIdsWithNames.sort((a, b) => {
       const idA = parseFloat(a.split('-')[0].replace('0.0.', ''));
       const idB = parseFloat(b.split('-')[0].replace('0.0.', ''));
       return idA - idB;
     });
 
+    activePolygonPopups.forEach((popup) => popup.remove());
+    activeMarkerPopups.forEach((popup) => popup.remove());
 
     CloseALL();
     const loadColumn = document.getElementById("load-column");
     loadColumn.style.display = "block";
     const loaded_text_area = document.getElementById("loaded-topics");
     loaded_text_area.value = '';
-    loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
-    adjustTextareaHeight(loaded_text_area); // Adjust height after loading
+    loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n');
+    adjustTextareaHeight(loaded_text_area);
 
-
-    // Return the processed topic IDs with names
     return { loadedTopicIdsWithNames };
 
   } catch (error) {
@@ -3698,44 +3687,54 @@ loader.updateProgress();
 
 
 function handleMovement() {
+  
+  const isBlocked = [
+    ...everythinginsideyourfov,
+    ...everythinginsidetoolbar
+  ].some(id => {
+    const element = document.getElementById(id);
+    return element && window.getComputedStyle(element).display === "block";
+  });
 
   const zoom = map.getZoom();
   const panSpeed = 10 * getSpeedMultiplier();
   const zoomSpeed = 0.05 * getSpeedMultiplier();
 
-  if (keys.w) {
-    map.panBy([0, -panSpeed], { animate: false });
-  }
-  if (keys.s) {
-    map.panBy([0, panSpeed], { animate: false });
-  }
+  if (!isBlocked) {
+    if (keys.w) {
+      map.panBy([0, -panSpeed], { animate: false });
+    }
+    if (keys.s) {
+      map.panBy([0, panSpeed], { animate: false });
+    }
 
-  if (keys.a) {
-    map.panBy([-panSpeed, 0], { animate: false });
-  }
-  if (keys.d) {
-    map.panBy([panSpeed, 0], { animate: false });
-  }
+    if (keys.a) {
+      map.panBy([-panSpeed, 0], { animate: false });
+    }
+    if (keys.d) {
+      map.panBy([panSpeed, 0], { animate: false });
+    }
 
-  if (keys.e) {
-    map.setBearing(map.getBearing() + MOVE_SPEED * getSpeedMultiplier());
-  }
-  if (keys.q) {
-    map.setBearing(map.getBearing() - MOVE_SPEED * getSpeedMultiplier());
-  }
+    if (keys.e) {
+      map.setBearing(map.getBearing() + MOVE_SPEED * getSpeedMultiplier());
+    }
+    if (keys.q) {
+      map.setBearing(map.getBearing() - MOVE_SPEED * getSpeedMultiplier());
+    }
 
-  if (keys.space) {
-    map.setZoom(map.getZoom() + zoomSpeed);
-  }
-  if (keys.shift) {
-    map.setZoom(map.getZoom() - zoomSpeed);
-  }
+    if (keys.space) {
+      map.setZoom(map.getZoom() + zoomSpeed);
+    }
+    if (keys.shift) {
+      map.setZoom(map.getZoom() - zoomSpeed);
+    }
 
-  if (keys.r) {
-    map.setPitch(map.getPitch() + 1 * getSpeedMultiplier());
-  }
-  if (keys.f) {
-    map.setPitch(map.getPitch() - 1 * getSpeedMultiplier());
+    if (keys.r) {
+      map.setPitch(map.getPitch() + 1 * getSpeedMultiplier());
+    }
+    if (keys.f) {
+      map.setPitch(map.getPitch() - 1 * getSpeedMultiplier());
+    }
   }
 }
 
@@ -5081,13 +5080,11 @@ function updateClusters() {
 
       el.addEventListener("click", (e) => {
         e.stopPropagation();
-        // Close all polygon popups
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
-        // Open the marker popup
         map.easeTo({
           center: cluster.geometry.coordinates,
-          zoom: map.getZoom(), // Maintain current zoom level
+          zoom: map.getZoom(),
         });
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
@@ -5448,41 +5445,31 @@ popup.on('close', () => {
         }
       });
 
-            // Add event listeners for the new buttons
-            document.getElementById("button_for_topic2pic").addEventListener("click", async (event) => {
-        event.stopPropagation();
-        const inputValue = document.getElementById("Edit_Profile-topic-id").value;
-
-          // Check if inputValue has less than 20 characters
+document.getElementById("button_for_topic2pic").addEventListener("click", async (event) => {
+  event.stopPropagation();
+  const inputValue = document.getElementById("Edit_Profile-topic-id").value;
   if (inputValue.length >= 20) {
     console.error("Input must be less than 20 characters");
-    return; // Exit the function if the input is too long
+    return;
   }
-
-        try {
-          const topicId = "0.0.9759201";
-
-          const messageData = {
-            data: {
-              topic2pic: [inputValue],
-            },
-          };
-
-          const message = JSON.stringify(messageData);
-
-          const receipt = await sdk.submitMessageToTopic(
-            topicId,
-            message
-          );
-          console.log("Profile TOPIC2PIC updated successfully:", receipt);
-
-          document.getElementById("Edit_Profile-topic-id").value = "";
-
-        } catch (error) {
-          console.error("Error updating profile TOPIC2PIC:", error);
-          // Removed alert
-        }
-      });
+  try {
+    const topicId = "0.0.9759201";
+    const messageData = {
+      data: {
+        topic2pic: [inputValue],
+      },
+    };
+    const message = JSON.stringify(messageData);
+    const receipt = await sdk.submitMessageToTopic(
+      topicId,
+      message
+    );
+    console.log("Profile TOPIC2PIC updated successfully:", receipt);
+    document.getElementById("Edit_Profile-topic-id").value = "";
+  } catch (error) {
+    console.error("Error updating profile TOPIC2PIC:", error);
+  }
+});
 
 
       document.addEventListener('touchstart', (event) => {
