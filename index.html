@@ -307,6 +307,17 @@ html, body {
   text-shadow: 0 0 0.5vh black;
 }
 
+#speed-slider {
+        position: absolute;
+        top: 3vh;
+        right: 0;
+        z-index: 1005;
+        width: 32.5vw;
+        height: 3vh;
+        writing-mode: bt-lr;
+        transform: rotate(0deg);
+      }
+
 .yourfov {
   display: block;
   width: 100% !important;
@@ -1003,7 +1014,7 @@ button[type="submit"],
       oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea> -->
 
-      <button id="submit-button-Create_New_Topic" class="toolbar-column-btns" style="color: black; display: block;">Create
+      <button id="submit-button-Create_New_Topic" class="toolbar-column-btns" style="display: block;">Create
       </button>
     </div>
     <!--
@@ -1030,7 +1041,7 @@ button[type="submit"],
     onclick="event.stopPropagation();" readonly
     ></textarea>
 
-    <button id="generate-private-and-public-key" class="toolbar-column-btns" style="color: black; display: block;">Generate
+    <button id="generate-private-and-public-key" class="toolbar-column-btns" style="display: block;">Generate
     </button>
 
   </div>
@@ -1122,7 +1133,7 @@ button[type="submit"],
     </div>
 
 
-    <button id="submit-button-Create_Polygon" class="toolbar-column-btns" style="color: black; display: block;">Submit
+    <button id="submit-button-Create_Polygon" class="toolbar-column-btns" style="display: block;">Submit
     </button>
     <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
     <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-polygon" placeholder="Loaded Topic Rules"
@@ -1176,7 +1187,7 @@ button[type="submit"],
       <textarea class="toolbar-column" type="text" id="input-field-messages-per-nft-for-markers" placeholder="how many markers per NFT"
       onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea>
-      <button id="submit-button-Set_Rules" class="toolbar-column-btns" style="color: black; display: block;">Submit
+      <button id="submit-button-Set_Rules" class="toolbar-column-btns" style="display: block;">Submit
       </button>
       <div style="margin-bottom: 10px;"></div>
     </div>
@@ -1206,7 +1217,7 @@ button[type="submit"],
     <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
       <button id="submit-button-add-NFT-for-model" class="toolbar-column-btns" style="color: black;">Add
       </button>
-      <button id="submit-button-remove-NFT-for-model" class="toolbar-column-btns" style="color: black; margin-left: 8vw;">Remove
+      <button id="submit-button-remove-NFT-for-model" class="toolbar-column-btns" style="margin-left: 8vw;">Remove
       </button>
     </div>
 
@@ -1219,7 +1230,7 @@ button[type="submit"],
     <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
       <button id="submit-button-add-scale-for-model" class="toolbar-column-btns" style="color: black;">Add
       </button>
-      <button id="submit-button-remove-scale-for-model" class="toolbar-column-btns" style="color: black; margin-left: 8vw;">Remove
+      <button id="submit-button-remove-scale-for-model" class="toolbar-column-btns" style="margin-left: 8vw;">Remove
       </button>
     </div>
 
@@ -1233,7 +1244,7 @@ button[type="submit"],
     <div class="button-group" style="display: flex; flex-direction: row; align-items: center;">
       <button id="submit-button-add-topic-chat" class="toolbar-column-btns" style="color: black;">Add
       </button>
-      <button id="submit-button-remove-topic-chat" class="toolbar-column-btns" style="color: black; margin-left: 8vw;">Remove
+      <button id="submit-button-remove-topic-chat" class="toolbar-column-btns" style="margin-left: 8vw;">Remove
       </button>
     </div>
 
@@ -1270,7 +1281,7 @@ button[type="submit"],
       ></textarea>
     </div>
 
-    <button id="submit-button-Change_Memo" class="toolbar-column-btns" style="color: black; display: block;">Submit
+    <button id="submit-button-Change_Memo" class="toolbar-column-btns" style="display: block;">Submit
     </button>
 
   </div>
@@ -1285,12 +1296,12 @@ button[type="submit"],
     <textarea class="toolbar-column" type="text" id="stack-topic-add-topic" placeholder="0.0.1,0.0.2.."
     onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
-    <button id="add-topic-id" class="toolbar-column-btns" style="color: black; display: block;">Stack
+    <button id="add-topic-id" class="toolbar-column-btns" style="display: block;">Stack
     </button>
     <textarea class="toolbar-column" type="text" id="stack-topic-remove-topic" placeholder="0.0.1,0.0.2.."
     onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
-    <button id="remove-topic-id" class="toolbar-column-btns" style="color: black; display: block;">Remove
+    <button id="remove-topic-id" class="toolbar-column-btns" style="display: block;">Remove
     </button>
 
   </div>
@@ -1337,7 +1348,7 @@ button[type="submit"],
   <button id="zoom-out" class="zoom-button">-</button>
 </div>
 
-<input type="range" id="speed-slider" class="model_sliders" min="0.1" max="5" step="0.01" value="1" style="display: none;" />
+<input type="range" id="speed-slider" min="0.1" max="5" step="0.01" value="1" style="display: none;" />
 
 
 <div id="topic-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh;">
@@ -1347,21 +1358,21 @@ button[type="submit"],
       <textarea class="toolbar-column" type="text" id="topic-chat-topic-id" placeholder="Domain/Topic ID"
       onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea>
-      <button id="load-msgs-from" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Use
+      <button id="load-msgs-from" class="toolbar-column-btns" style="margin-left: 1vw;">Use
       </button>
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <input type="number" id="from-mmddyyyy" class="toolbar-column-btns" step="1" placeholder="MMDDYYYY" />
-      <input type="number" id="to-mmddyyyy" class="toolbar-column-btns" step="1" placeholder="MMDDYYYY" style="margin-left: 1vw;" />
-      <button id="topic-msgs-filter" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Filter
+      <input type="number" id="from-mmddyyyy" class="toolbar-column" step="1" placeholder="MMDDYYYY" />
+      <input type="number" id="to-mmddyyyy" class="toolbar-column" step="1" placeholder="MMDDYYYY" style="margin-left: 1vw;" />
+      <button id="topic-msgs-filter" class="toolbar-column-btns" style="width: 50vw; margin-left: 1vw;">Filter
       </button>
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <input type="number" id="from-hhmmss" class="toolbar-column-btns" step="1" placeholder="HHMMSS" />
-      <input type="number" id="to-hhmmss" class="toolbar-column-btns" step="1" placeholder="HHMMSS" style="margin-left: 1vw;" />
-      <button id="topic-msgs-filter-time" class="toolbar-column-btns" style="width: 50vw; color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw;">Filter
+      <input type="number" id="from-hhmmss" class="toolbar-column" step="1" placeholder="HHMMSS" />
+      <input type="number" id="to-hhmmss" class="toolbar-column" step="1" placeholder="HHMMSS" style="margin-left: 1vw;" />
+      <button id="topic-msgs-filter-time" class="toolbar-column-btns" style="width: 50vw; margin-left: 1vw;">Filter
       </button>
     </div>
 
@@ -1399,9 +1410,9 @@ button[type="submit"],
     </div>
 
     <div style="display: flex; align-items: center; margin-top: 1.5vh;">
-      <button id="go-to-top-msgs" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black; ">Go to the top
+      <button id="go-to-top-msgs" class="toolbar-column-btns">Go to the top
       </button>
-      <button id="post-msg" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black; margin-left: 1vw ">Submit Message
+      <button id="post-msg" class="toolbar-column-btns" style="margin-left: 1vw ">Submit Message
       </button>
     </div>
 
@@ -3170,7 +3181,6 @@ window.loadTOPIC4PIC = async function(payer) {
 
     activePolygonPopups.forEach((popup) => popup.remove());
     activeMarkerPopups.forEach((popup) => popup.remove());
-
     CloseALL();
     const loadColumn = document.getElementById("load-column");
     loadColumn.style.display = "block";
@@ -3495,7 +3505,7 @@ const map = new maplibregl.Map({
   container: "map",
   style: "https://tiles.openfreemap.org/styles/liberty",
   center: [randomLongitude, randomLatitude], // Use random coordinates
-  zoom: 1.5,
+  zoom: 0,
   pitch: 0,
   bearing: 0,
   maxPitch: 75,
@@ -3734,6 +3744,8 @@ document.addEventListener('click', function(event) {
 document.getElementById("main-toggle-btn").addEventListener("click", function(event) {
   event.stopPropagation();
   CloseALL();
+  activePolygonPopups.forEach((popup) => popup.remove());
+  activeMarkerPopups.forEach((popup) => popup.remove());
   document.getElementById("main-toggle-btn").style.display = "none";
   document.getElementById("topic-chat-btn").style.display = "none";
   everythinginsideoptionsbuttons.forEach(buttonId => {
@@ -3916,6 +3928,8 @@ document.getElementById("Stack_topic_IDs").addEventListener("click", (event) => 
 document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
   event.stopPropagation();
   CloseALL();
+  activePolygonPopups.forEach((popup) => popup.remove());
+  activeMarkerPopups.forEach((popup) => popup.remove());
   document.getElementById("topic-chat-container").style.display = "block";
 });
 
@@ -4940,6 +4954,7 @@ function updateClusters() {
         e.stopPropagation();
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
+        CloseALL();
         map.easeTo({
           center: cluster.geometry.coordinates,
           zoom: map.getZoom(),
@@ -5118,6 +5133,7 @@ function addPolygonWithImageFill(map, polygon) {
             });
               activePolygonPopups.forEach((popup) => popup.remove());
               activeMarkerPopups.forEach((popup) => popup.remove());
+              CloseALL();
               activePolygonPopups.push(popup);
               applyAllStyles();
           }
@@ -6386,8 +6402,8 @@ document.getElementById("save-button-button-input").addEventListener("click", as
         const colorGreenOnhoverButtonInput = Math.min(parseInt(document.getElementById("color-green-onhover-button-input").value) || 0, 255);
         const colorBlueOnhoverButtonInput = Math.min(parseInt(document.getElementById("color-blue-onhover-button-input").value) || 0, 255);
 
-        const fontForButtonInput = Math.min(parseInt(document.getElementById("font-for-button-input").value) || 0, 10);
-        const transparencyButtonInput = Math.min(parseInt(document.getElementById("color-red-transparency-button-input").value) || 0, 1);
+        const fontForButtonInput = Math.min(parseInt(document.getElementById("font-for-button-input").value) || 1.5, 10);
+        const transparencyButtonInput = Math.min(parseInt(document.getElementById("color-red-transparency-button-input").value) || 0.5, 1);
 
         const colorRedFontColorButtonInput = Math.min(parseInt(document.getElementById("color-red-font-color-button-input").value) || 0, 255);
         const colorGreenFontColorButtonInput = Math.min(parseInt(document.getElementById("color-green-font-color-button-input").value) || 0, 255);
@@ -6467,8 +6483,8 @@ async function loadButtonInputSettings() {
                         greenBorderButtonInput: Math.min(parseInt(colorBorderButtonInput.greenBorderButtonInput) || 0, 255),
                         blueBorderButtonInput: Math.min(parseInt(colorBorderButtonInput.blueBorderButtonInput) || 0, 255)
                     };
-                    const clampedFontForButtonInput = Math.min(parseInt(fontForButtonInput) || 0, 10);
-                    const clampedTransparencyButtonInput = Math.min(parseInt(transparencyButtonInput) || 0, 1);
+                    const clampedFontForButtonInput = Math.min(parseInt(fontForButtonInput) || 1.5, 10);
+                    const clampedTransparencyButtonInput = Math.min(parseInt(transparencyButtonInput) || 0.5, 1);
 
 
                     const clampedColorFontColorButtonInput = {
@@ -6619,7 +6635,7 @@ document.getElementById("save-container-settings").addEventListener("click", asy
         const colorGreenBorderContainer = Math.min(parseInt(document.getElementById("color-green-border-container").value) || 0, 255);
         const colorBlueBorderContainer = Math.min(parseInt(document.getElementById("color-blue-border-container").value) || 0, 255);
 
-        const transparencyContainer = Math.min(parseInt(document.getElementById("color-red-transparency-container").value) || 0, 1);
+        const transparencyContainer = Math.min(parseInt(document.getElementById("color-red-transparency-container").value) || 0.1, 1);
 
         const messageData = {
             data: {
@@ -6671,7 +6687,7 @@ async function loadContainerSettings() {
                 greenBorderContainer: Math.min(parseInt(colorBorderContainer.greenBorderContainer) || 0, 255),
                 blueBorderContainer: Math.min(parseInt(colorBorderContainer.blueBorderContainer) || 0, 255)
             };
-            const clampedTransparencyContainer = Math.min(parseInt(transparencyContainer) || 0, 1);
+            const clampedTransparencyContainer = Math.min(parseInt(transparencyContainer) || 0.1, 1);
 
             accountObjectSettings.push({
                 colorBorderContainer: clampedColorBorderContainer,
