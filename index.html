@@ -1093,6 +1093,16 @@ button[type="submit"],
     <button id="load-topic-rules-for-marker" class="toolbar-column-btns">
     Load Topic Rules
     </button>
+
+    <div style="display: flex; flex-direction: row; width: 100%;">
+      <textarea class="toolbar-column" type="text" id="input-field-delete-marker-number" placeholder="Number of marker"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <button id="delete-marker-number" class="toolbar-column-btns">
+      Delete marker number
+      </button>
+    </div>
+
   </div>
 </div>
 
@@ -1141,6 +1151,16 @@ button[type="submit"],
     ></textarea>
     <button id="load-topic-rules-for-polygon" class="toolbar-column-btns">Load Topic Rules
     </button>
+
+    <div style="display: flex; flex-direction: row; width: 100%;">
+      <textarea class="toolbar-column" type="text" id="input-field-delete-polygon-number" placeholder="Number of polygon"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <button id="delete-polygon-number" class="toolbar-column-btns">
+      Delete polygon number
+      </button>
+    </div>
+      
   </div>
 </div>
 
@@ -1776,7 +1796,7 @@ button[type="submit"],
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">Transparency:
       </label>
-      <input type="number" id="color-red-transparency-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Opacity"/>
+      <input type="number" id="color-red-transparency-button-input" class="yourfov" style="margin-left: 1vw;" min='0.5' step="0.01" max="1" placeholder="Opacity"/>
     </div>
 
     <div id="save-button-button-input" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Button/Input Settings
@@ -4511,7 +4531,9 @@ let formattedRules = '';
             }
           });
 
-document
+
+
+  document
   .getElementById("submit-button-Create_Marker")
   .addEventListener("click", async () => {
     try {
@@ -4533,27 +4555,25 @@ document
       const cord = document.getElementById("input-field-2-3").value;
       const numberOfMarker = document.getElementById("input-field-number-of-marker").value;
 
-            // Check if the input is a whole number
             if (numberOfMarker === "" || !Number.isInteger(Number(numberOfMarker))) {
           alert("Please enter a valid whole number for the Number of Marker.");
-          return; // Stop the submission if the input is not a whole number
+          return;
       }
 
       if (!numberOfMarker || !topicId || !cord) {
             alert("Please fill in all required fields: Number of Marker, Topic ID, and Coordinates.");
-            return; // Stop the submission if any field is empty
+            return;
           }
 
       const messageObj = {marker: {data: {title: title, image: [cleanUrl], coverimage: [cleanCoverimage], msg: msg, cord: cord, numberOfMarker: numberOfMarker }}};
-      const message = JSON.stringify(messageObj); // Convert to string
+      const message = JSON.stringify(messageObj);
 
       const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
         topicId,
-        message // Send stringified message
+        message
       );
       console.log('Receipt:', receipt);
 
-      // Clear inputs after successful submission
       document.getElementById("input-field-2-0").value = '';
       document.getElementById("input-field-2-1").value = '';
       document.getElementById("input-field-2-2").value = '';
@@ -4563,6 +4583,47 @@ document
       console.error('Error submitting message:', error);
     }
   });
+
+  document.getElementById("delete-marker-number").addEventListener("click", async () => {
+    try {
+
+      let userInput = document.getElementById("input-field-2-0").value.toLowerCase();
+      let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+      let topicId;
+
+      if (domainEntry && domainEntry.lastMessage) {
+        topicId = domainEntry.lastMessage.topic;
+      } else {
+        topicId = userInput;
+      }
+      const oldMarkerNumber = document.getElementById("input-field-delete-marker-number").value;
+
+            if (oldMarkerNumber === "" || !Number.isInteger(Number(oldMarkerNumber))) {
+          alert("Please enter a valid whole number for the Number of Marker.");
+          return;
+      }
+
+      if (!oldMarkerNumber || !topicId) {
+            alert("Please fill in all required fields: Number of Marker, Topic ID");
+            return;
+          }
+
+      const messageObj = {marker: {data: {deleteMarkerNumber: oldMarkerNumber}}};
+      const message = JSON.stringify(messageObj);
+
+      const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+        topicId,
+        message
+      );
+      console.log('Receipt:', receipt);
+
+      document.getElementById("input-field-delete-marker-number").value = '';
+
+    } catch (error) {
+      console.error('Error submitting message:', error);
+    }
+  });
+
 
 document.addEventListener("click", (event) => {
   const inputToolbarCreate_Marker = document.getElementById(
@@ -4599,10 +4660,9 @@ document
       const cleanUrl = imageurl.replace(/\?network=mainnet$/, "");
       const cleanCoverimage = coverimage.replace(/\?network=mainnet$/, "");
 
-            // Check if the input is a whole number
             if (numberOfPolygon === "" || !Number.isInteger(Number(numberOfPolygon))) {
           alert("Please enter a valid whole number for the Number of Polygon.");
-          return; // Stop the submission if the input is not a whole number
+          return;
       }
 
       if (!numberOfPolygon || !topicId || !cord1 || !cord3) {
@@ -4665,6 +4725,46 @@ document
       document.getElementById("input-field-3-4").value = '';
       document.getElementById("input-field-3-5").value = '';
       document.getElementById("input-field-3-6").value = '';
+
+    } catch (error) {
+      console.error('Error submitting message:', error);
+    }
+  });
+
+  document.getElementById("delete-polygon-number").addEventListener("click", async () => {
+    try {
+      let userInput = document.getElementById("input-field-2-0").value.toLowerCase();
+      let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+      let topicId;
+
+      if (domainEntry && domainEntry.lastMessage) {
+        topicId = domainEntry.lastMessage.topic;
+      } else {
+        topicId = userInput;
+      }
+      const oldPolygonNumber = document.getElementById("input-field-delete-polygon-number").value;
+
+            if (oldPolygonNumber === "" || !Number.isInteger(Number(oldPolygonNumber))) {
+          alert("Please enter a valid whole number for the Number of Polygon.");
+          return;
+      }
+
+      if (!oldPolygonNumber || !topicId) {
+            alert("Please fill in all required fields: Number of Polygon, Topic ID");
+            return;
+          }
+
+      const messageObj = {polygon: {data: {deletePolygonNumber: oldPolygonNumber}}};
+      const message = JSON.stringify(messageObj);
+
+      const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
+        topicId,
+        message
+      );
+      console.log('Receipt:', receipt);
+
+      document.getElementById("input-field-old-polygon-number").value = '';
+      document.getElementById("input-field-new-polygon-number").value = '';
 
     } catch (error) {
       console.error('Error submitting message:', error);
@@ -4912,9 +5012,8 @@ function updateClusters() {
         const expansionZoom = await index.getClusterExpansionZoom(cluster.id);
         map.easeTo({
           center: cluster.geometry.coordinates,
-          zoom: expansionZoom,
+          zoom: expansionZoom + 0.1,
         });
-        // Close all polygon popups when zooming to a cluster
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
       });
@@ -5766,7 +5865,6 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
 });
 
 function applyAllStyles() {
-    console.log("applyAllStyles");
     updatePopupBorder();
     updatePopupNumber();
     updatePopupClose();
@@ -6554,7 +6652,9 @@ async function loadButtonInputSettings() {
                 const colorGreenBorderButtonInput = document.getElementById("color-green-border-button-input").value;
                 const colorBlueBorderButtonInput = document.getElementById("color-blue-border-button-input").value;
                 const fontForButtonInput = document.getElementById("font-for-button-input").value;
-                const transparencyButtonInput = document.getElementById("color-red-transparency-button-input").value;
+                let transparencyButtonInput = document.getElementById("color-red-transparency-button-input").value;
+                // Enforce minimum value of 0.5 for transparency
+                transparencyButtonInput = Math.max(parseFloat(transparencyButtonInput), 0.5);
                 const colorRedFontColorButtonInput = document.getElementById("color-red-font-color-button-input").value;
                 const colorGreenFontColorButtonInput = document.getElementById("color-green-font-color-button-input").value;
                 const colorBlueFontColorButtonInput = document.getElementById("color-blue-font-color-button-input").value;
@@ -6567,6 +6667,7 @@ async function loadButtonInputSettings() {
                 const colorRedFontColorInputButtonInput = document.getElementById("color-red-font-color-input-button-input").value;
                 const colorGreenFontColorInputButtonInput = document.getElementById("color-green-font-color-input-button-input").value;
                 const colorBlueFontColorInputButtonInput = document.getElementById("color-blue-font-color-input-button-input").value;
+
                 const inputFontColor = `rgb(${colorRedFontColorInputButtonInput}, ${colorGreenFontColorInputButtonInput}, ${colorBlueFontColorInputButtonInput})`;
                 const colorForInputBorder = `rgb(${colorRedBorderButtonInput}, ${colorGreenBorderButtonInput}, ${colorBlueBorderButtonInput})`;
                 const fontsizewithunits = `${fontForButtonInput}vh`;
@@ -7443,6 +7544,7 @@ async function processTopicMessages(topicId) {
           // Ownership logic
           const markerOwnershipArray = [];
           const polygonOwnershipArray = [];
+          const markerNumberChanges = [];
 
 
           if (hasRulesForMarker) {
@@ -7454,8 +7556,8 @@ async function processTopicMessages(topicId) {
               // Check if the user owns NFTs and push to an array
               if (filteredNftsForMarker.length > 0) {
                 const numberOfMessages = filteredNftsForMarker.length * loadedTopicRulesForMarker[0].markerMessagesPerNft;
-                const numberOfMessagesForMarker = [];
-                markerOwnershipArray.push({ payerId, numberOfMessages, numberOfMessagesForMarker });
+                const numberOfMarker = [];
+                markerOwnershipArray.push({ payerId, numberOfMessages, numberOfMarker });
               }
             }
           }
@@ -7470,22 +7572,22 @@ async function processTopicMessages(topicId) {
               // Check if the user owns NFTs and push to an array
               if (filteredNftsForPoly.length > 0) {
                 const numberOfMessages = filteredNftsForPoly.length * loadedTopicRulesForPolygon[0].polygonMessagesPerNft;
-                const numberOfMessagesForPolygon = [];
-                polygonOwnershipArray.push({ payerId, numberOfMessages, numberOfMessagesForPolygon });
+                const numberOfPolygon = [];
+                polygonOwnershipArray.push({ payerId, numberOfMessages, numberOfPolygon });
               }
             }
           }
 
           if (!hasRulesForMarker) {
           for (const payerId of uniquePayerIdsForMarker) {
-            const numberOfMessagesForMarker = [];
-            markerOwnershipArray.push({ payerId, numberOfMessagesForMarker });
+            const numberOfMarker = [];
+            markerOwnershipArray.push({ payerId, numberOfMarker });
           }
         }
         if (!hasRulesForPolygon) {
           for (const payerId of uniquePayerIdsForPolygon) {
-            const numberOfMessagesForPolygon = [];
-            polygonOwnershipArray.push({ payerId, numberOfMessagesForPolygon });
+            const numberOfPolygon = [];
+            polygonOwnershipArray.push({ payerId, numberOfPolygon });
           }
         }
           // Process each message
@@ -7520,22 +7622,22 @@ async function processTopicMessages(topicId) {
               </h2>`;
 
               if (parsedMessage.marker && parsedMessage.marker.data) {
-                const markerOwner = markerOwnershipArray.find(owner => owner.payerId === message.payer);
                 const markernumber = parsedMessage.marker.data.numberOfMarker;
+                const markerOwner = markerOwnershipArray.find(owner => owner.payerId === message.payer);
+                
+                if (parsedMessage.marker.data.deleteMarkerNumber) {
+                  const deleteMarkerNumber = parsedMessage.marker.data.deleteMarkerNumber;
+                  markerOwner.numberOfMarker.push(deleteMarkerNumber);
+                }
 
                 if (markernumber === undefined || markernumber === null || !Number.isInteger(Number(markernumber))) {
-                continue;
-              }
-
-                if (!markerOwner.numberOfMessagesForMarker.includes(markernumber)) {
-                  markerOwner.numberOfMessagesForMarker.push(markernumber);
-
-
-
-
+                  continue;
+                }
+                  
+                if (!markerOwner.numberOfMarker.includes(markernumber)) {
+                  markerOwner.numberOfMarker.push(markernumber);
+                
                 if (!hasRulesForMarker || (markerOwner && markerOwner.numberOfMessages > 0)) {
-
-
 
                   if (hasRulesForMarker) {
                     markerOwner.numberOfMessages -= 1;
@@ -7557,17 +7659,15 @@ async function processTopicMessages(topicId) {
                       throw new Error('Invalid coordinate format');
                     }
 
-
-
                     topicGeojsonFeatures.push({
                       type: "Feature",
                       payer: message.payer,
                       properties: {
                         message:
     `
-      <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;" class="number">${parsedMessage.marker.data.numberOfMarker}</div> <!-- Display number of markers -->
+      <div style="position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;" class="number">${markernumber}</div>
       <div style="display: flex; align-items: center;">
-<img src="${profileUrl}" alt="Profile photo"
+      <img src="${profileUrl}" alt="Profile photo"
       style="width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;"
       onclick="loadTOPIC4PIC('${message.payer}');">
         <div>${displayHeader}</div>
@@ -7606,9 +7706,13 @@ async function processTopicMessages(topicId) {
                 if (polygonnumber === undefined || polygonnumber === null || !Number.isInteger(Number(polygonnumber))) {
                   continue;
                 }
+                if (parsedMessage.polygon.data.deletePolygonNumber) {
+                  const deletePolygonNumber = parsedMessage.polygon.data.deletePolygonNumber;
+                  polygonOwner.numberOfPolygon.push(deletePolygonNumber);
+                }
 
-                if (!polygonOwner.numberOfMessagesForPolygon.includes(polygonnumber)) {
-                  polygonOwner.numberOfMessagesForPolygon.push(polygonnumber);
+                if (!polygonOwner.numberOfPolygon.includes(polygonnumber)) {
+                  polygonOwner.numberOfPolygon.push(polygonnumber);
 
 
                 if (!hasRulesForPolygon || (polygonOwner && polygonOwner.numberOfMessages > 0)) {
@@ -7652,7 +7756,8 @@ async function processTopicMessages(topicId) {
                 <strong class="title_color">${parsedMessage.polygon.data.title}</strong>
             </div>
             <div>
-                    ${isValidUrl(parsedMessage.polygon.data.image) ? `<img src="${parsedMessage.polygon.data.image}" style="width: 20vh; height: 20vh; display: block; margin: 0 auto;" />` : ''}
+              ${isValidUrl(parsedMessage.polygon.data.image) ? `<img src="${parsedMessage.polygon.data.image}" 
+              style="width: 20vh; height: 20vh; display: block; margin: 0 auto;" />` : ''}
             </div>
             <div>
               <p class="text_color">${parsedMessage.polygon.data.msg}</p>
