@@ -41,6 +41,8 @@
 
 <script data-src="hcs://1/0.0.9705945" data-script-id="dracoBase64"></script>
 
+<script data-src="hcs://1/0.0.9872320" data-script-id="ipfs-core"></script>
+
 <style>
 
 html, body {
@@ -716,66 +718,6 @@ button[type="submit"],
   transform: translate(-50%, -50%); /* Adjust to center */
 }
 
-.popup-welcome-msg {
-  position: fixed;
-  top: 50vh; /* Use vh for vertical positioning */
-  left: 50vw; /* Use vw for horizontal positioning */
-  transform: translate(-50%, -50%);
-  background-color: white;
-  border: 0.5vh solid #ccc; /* Use vh for border thickness */
-  padding: 0.1em; /* Use em for padding */
-  z-index: 1003000;
-  box-shadow: 0 0 1vh rgba(0, 0, 0, 0.1); /* Use vh for shadow */
-  border-radius: 3em; /* Use em for border radius */
-  width: 80vw; /* Increase width */
-  max-width: 95vw; /* Ensure it doesn't exceed viewport width */
-  height: auto; /* Allow height to adjust based on content */
-  max-height: 80vh; /* Limit the height to ensure it fits on screen */
-  line-height: 1.5em; /* Improve line spacing */
-}
-
-.popup-content-welcome {
-  text-align: center;
-  border-radius: 1em; /* Use em for border radius */
-  font-size: 2em; /* Base font size */
-  line-height: 1em;
-}
-
-#close-welcome-msg {
-  margin-top: 1em; /* Use em for margin */
-  padding: 0.5em 1em; /* Use em for padding */
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 1em; /* Use em for border radius */
-  cursor: pointer;
-  font-size: 1em; /* Use em for button font size */
-}
-
-@media (min-aspect-ratio: 11/10) {
-
-.popup-welcome-msg {
-  padding: 2vh; /* Use vh for padding */
-  font-size: 3vh; /* Use vh for font size */
-  line-height: 1.5vh; /* Use vh for line spacing */
-  top: 50vh;
-  width: 50vw;
-}
-
-.popup-content-welcome {
-  border-radius: 1vh; /* Use vh for border radius */
-  font-size: 3vh; /* Use vh for button font size */
-}
-
-#close-welcome-msg {
-  margin-top: 1vh; /* Use vh for margin */
-  padding: 0.5vh 1vh; /* Use vh for padding */
-  border-radius: 1vh; /* Use vh for border radius */
-  font-size: 3vh; /* Use vh for button font size */
-}
-
-}
-
 .loader-container {
   text-align: center;
   position: fixed;
@@ -822,24 +764,6 @@ button[type="submit"],
 </head>
 
 <body>
-
-<div class="popup-welcome-msg" id="welcome-msg">
-  <div class="popup-content-welcome">
-    <p>Welcome to Hedera Network
-    </p>
-    <p>U must be connected via wallet to start communicating with Hedera Network.
-    </p>
-    </p>
-    <p>If u dont have wallet, go to <a href="https://wallet.hashpack.app" target="_blank">hashpack.app</a> and create one.
-    </p>
-    </p>
-    <p>Its free and its takes 60 seconds. No ID needed.
-    </p>
-    </p>
-    <p>Same goes if u are scared, u can create new wallet in under a minute.
-    </p>
-  </div>
-</div>
 
 <div id="map"></div>
 
@@ -1932,6 +1856,8 @@ button[type="submit"],
         const Supercluster = window.Supercluster;
         const THREE = window.THREE;
         const scene = new THREE.Scene();
+        const IPFS = window.IPFS;
+
 
         async function ensureDracoLoaderReady() {
           for (let attempt = 1; attempt <= 5; attempt++) {
@@ -2096,20 +2022,10 @@ isLoggedIn = false;
   document.getElementById("disconnect-wallet-btn").style.display ="none";
   document.getElementById("account-id").textContent = ``;
   document.getElementById("crosshair").style.display = "none";
-  document.getElementById("welcome-msg").style.display = "block";
-  document.getElementById("connect-wallet-btn").addEventListener("click", () => {
-    document.getElementById("welcome-msg").style.display = "none"; // Hide immediately
-    setTimeout(() => {
-        if (!isLoggedIn) { // Only show if not logged in
-          document.getElementById("welcome-msg").style.display = "block";
-        }
-    }, 30000);
-  });
   return;
 }
 
 isLoggedIn = true;
-  document.getElementById("welcome-msg").style.display = "none";
   document.getElementById("account-id").textContent = `Acc: ${accountId}`;
   document.getElementById("connect-wallet-btn").style.display = "none";
   document.getElementById("disconnect-wallet-btn").style.display ="block";
@@ -2155,6 +2071,7 @@ document.getElementById("load-msgs-from-ids-button").addEventListener("click", a
 
   await handleAllMessages();
 
+  geojson.features = [];
       // Filter geojson.features based on the specified payers
   const filteredFeatures = geojson.features.filter(feature => {
     const match = idsArray.includes(feature.payer);
@@ -2193,13 +2110,14 @@ document.getElementById("load-msgs-from-ids-button").addEventListener("click", a
   });
 
 
-  if (geojson.features.length > 0) {
-      index.load(geojson.features);
-      updateClusters(); // Assuming you have a function to update clusters
-    }
+      if (geojson.features.length > 0) {
+          index.load(geojson.features);
+          updateClusters(); // Assuming you have a function to update clusters
+        }
+        
       if (polygons.length > 0) {
-      polygons.forEach(polygon => {
-      addPolygonWithImageFill(map, polygon);
+          polygons.forEach(polygon => {
+          addPolygonWithImageFill(map, polygon);
       });
     }
 });
@@ -2214,7 +2132,7 @@ document.getElementById("button4").addEventListener("click", async () => {
   if (domainObject) {
     const currentTime = Date.now() / 1000; // Get current time in seconds
 
-    const timeLeftInSeconds = domainObject.addedTime - currentTime;
+    const timeLeftInSeconds = domainObject.timeleft;
 
     // Calculate days, hours, minutes, and seconds
     const days = Math.floor(timeLeftInSeconds / (24 * 3600));
@@ -2729,58 +2647,93 @@ async function loadDomains() {
             timestamp: parsedMessage.consensus_timestamp // or parsedMessage.timestamp
           });
         } else {
-          console.warn(`Message ${index} is missing payer or data.`);
+          console.warn(`Message ${index} is missing payer or domain.`);
         }
       } catch (messageError) {
         console.error(`Error processing message ${index}:`, messageError);
       }
     }
 
-    const SECONDS_TO_ADD = 2419200; // 2,419,200 seconds
-    const currentTime = Date.now() / 1000; // Current time in seconds
-    let timeleft = 0;
-    let firstValidLastMessage = null;
-    let addedTime = null;
+    const SECONDS_TO_ADD = 2419200;
+    const currentTime = Date.now() / 1000;
 
+    let domainsArray = Array.from(domainsMap.entries()).map(([domain, messages]) => {
+      // Sort all messages for the domain by timestamp
+      messages.sort((a, b) => parseFloat(a.timestamp) - parseFloat(b.timestamp));
 
-    const domainsArray = Array.from(domainsMap.entries()).map(([domain, messages]) => {
-
-  // Sort all messages for the domain by timestamp
-  messages.sort((a, b) => parseFloat(a.timestamp) - parseFloat(b.timestamp));
-
-  let addedTime = parseFloat(messages[0].timestamp);
-  let firstValidPayer = null;
-
-  // Find the first valid payer
-  for (let i = 0; i < messages.length; i++) {
-    if (parseFloat(messages[i].timestamp) <= addedTime) {
-      firstValidPayer = messages[i].payer;
-      break;
-    }
-  }
-
-  // Extend addedTime for the first valid payer
-  if (firstValidPayer) {
-    for (let i = 0; i < messages.length; i++) {
-      if (messages[i].payer === firstValidPayer && parseFloat(messages[i].timestamp) <= addedTime) {
-        addedTime += SECONDS_TO_ADD;
+      if (messages.length === 0) {
+        return { domain, lastMessage: null, addedTime: 0, timeleft: 0 };
       }
-    }
-  }
 
-  // Filter messages to only include those from the first valid payer
-  const validPayerMessages = messages.filter(message => message.payer === firstValidPayer);
+      const firstPayer = messages[0].payer;
+      const firstTimestamp = parseFloat(messages[0].timestamp);
+      const initialWindowEnd = firstTimestamp + SECONDS_TO_ADD;
 
-  // Get the last message from the valid payer
-  const lastMessage = validPayerMessages[validPayerMessages.length - 1];
+      // Check if firstPayer has any renewal (subsequent message) within the initial window
+      const hasRenewal = messages.some((msg, idx) => idx > 0 && msg.payer === firstPayer && parseFloat(msg.timestamp) <= initialWindowEnd);
 
+      let validPayerMessages = [];
+      let startTimestamp;
 
-  return {
-    domain,
-    lastMessage,
-    addedTime
-  };
-});
+      if (hasRenewal) {
+        // Use firstPayer and all their messages
+        validPayerMessages = messages.filter(message => message.payer === firstPayer);
+        startTimestamp = firstTimestamp;
+      } else {
+        // Find the first takeover message from a different payer AFTER the initial window end
+        let takeoverIndex = -1;
+        for (let i = 1; i < messages.length; i++) {
+          const msgTimestamp = parseFloat(messages[i].timestamp);
+          if (messages[i].payer !== firstPayer && msgTimestamp > initialWindowEnd) {
+            takeoverIndex = i;
+            break;
+          }
+        }
+
+        if (takeoverIndex === -1) {
+          // No takeover, fall back to firstPayer with no renewal (initial period only)
+          validPayerMessages = messages.filter(message => message.payer === firstPayer);
+          startTimestamp = firstTimestamp;
+        } else {
+          // Switch to takeover payer and their messages from takeover onwards
+          const takeoverPayer = messages[takeoverIndex].payer;
+          startTimestamp = parseFloat(messages[takeoverIndex].timestamp);
+          validPayerMessages = messages.slice(takeoverIndex).filter(message => message.payer === takeoverPayer);
+        }
+      }
+
+      if (validPayerMessages.length === 0) {
+        return { domain, lastMessage: null, addedTime: 0, timeleft: 0 };
+      }
+
+      // Compute addedTime starting from the startTimestamp
+      let addedTime = startTimestamp + SECONDS_TO_ADD;
+
+      // Handle sequential renewals: iterate through subsequent messages
+      for (let i = 1; i < validPayerMessages.length; i++) {
+        const renewalTime = parseFloat(validPayerMessages[i].timestamp);
+        if (renewalTime < addedTime) {
+          // Extend expiry if renewal is within current window
+          addedTime = Math.max(addedTime, renewalTime + SECONDS_TO_ADD);
+        }
+      }
+
+      // Get the last message from the valid payer
+      const lastMessage = validPayerMessages[validPayerMessages.length - 1];
+
+      // Compute remaining time
+      const timeleft = Math.max(0, addedTime - currentTime);
+
+      return {
+        domain,
+        lastMessage,
+        addedTime,
+        timeleft
+      };
+    });
+
+    // Filter out expired domains (keep only active ones where addedTime > currentTime)
+    domainsArray = domainsArray.filter(item => item.addedTime > currentTime);
 
     return domainsArray;
 
@@ -3228,10 +3181,72 @@ window.loadTOPIC4PIC = async function(payer) {
 
 const geojson = {
   type: "FeatureCollection",
-  features: []
+  features: [  {
+    "type": "Feature",
+    "payer": "0.0.7352714",
+    "properties": {
+      "message": "\n      <div style=\"position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;\" class=\"number\">15</div>\n      <div style=\"display: flex; align-items: center;\">\n      <img src=\"https://kiloscribe.com/api/inscription-cdn/0.0.4819119\" alt=\"Profile photo\"\n      style=\"width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;\"\n      onclick=\"loadTOPIC4PIC('0.0.7352714');\">\n        <div>\n              <h2>\n                <a href=\"https://explore.hashpack.app/0.0.7352714\" target=\"_blank\" class=\"payer-info\" style=\"color: #800080; text-decoration: none;\">0.0.7352714</a>\n                <br>\n                <a href=\" clicablelink/username\" target=\"_blank\" class=\"username\" style=\"color: #FFFFFF; text-decoration: none;\"> clicklink/username</a>\n              </h2></div>\n      </div>\n      <div style=\"text-align: center;\">\n        <div style='margin-bottom: 1vh;'>\n            <strong class=\"title_color\">a</strong>\n        </div>\n        <div>\n           \n        </div>\n        <div>\n          <p class=\"text_color\">a</p>\n        </div>\n      </div>\n    ",
+      "imageUrl": "https://kiloscribe.com/api/inscription-cdn/0.0.4819119"
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -100.83389,
+        -8.13504
+      ]
+    }
+  },
+  {
+    "type": "Feature",
+    "payer": "0.0.7352714",
+    "properties": {
+      "message": "\n      <div style=\"position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;\" class=\"number\">16</div>\n      <div style=\"display: flex; align-items: center;\">\n      <img src=\"https://kiloscribe.com/api/inscription-cdn/0.0.4819119\" alt=\"Profile photo\"\n      style=\"width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;\"\n      onclick=\"loadTOPIC4PIC('0.0.7352714');\">\n        <div>\n              <h2>\n                <a href=\"https://explore.hashpack.app/0.0.7352714\" target=\"_blank\" class=\"payer-info\" style=\"color: #800080; text-decoration: none;\">0.0.7352714</a>\n                <br>\n                <a href=\" clicablelink/username\" target=\"_blank\" class=\"username\" style=\"color: #FFFFFF; text-decoration: none;\"> clicklink/username</a>\n              </h2></div>\n      </div>\n      <div style=\"text-align: center;\">\n        <div style='margin-bottom: 1vh;'>\n            <strong class=\"title_color\">a</strong>\n        </div>\n        <div>\n           \n        </div>\n        <div>\n          <p class=\"text_color\">a</p>\n        </div>\n      </div>\n    ",
+      "imageUrl": "https://kiloscribe.com/api/inscription-cdn/0.0.4819119"
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -73.44193,
+        12.04625
+      ]
+    }
+  }]
 };
 
-const polygons = [];
+const polygons = [
+   {
+    "id": "polygon-11",
+    "payer": "0.0.7352714",
+    "coordinates": [
+      [
+        [-60,0],
+        [-60,-85],
+        [0,-85],
+        [0,0]
+      ]
+    ],
+    "description": "<div style=\"position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;\" class=\"number\">6</div>\n<div style=\"display: flex; align-items: center;\">\n<img src=\"https://kiloscribe.com/api/inscription-cdn/0.0.4819119\" alt=\"Profile photo\"\n      style=\"width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;\"\n      onclick=\"loadTOPIC4PIC('0.0.7352714');\">\n            <div>\n              <h2>\n                <a href=\"https://explore.hashpack.app/0.0.7352714\" target=\"_blank\" class=\"payer-info\" style=\"color: #800080; text-decoration: none;\">0.0.7352714</a>\n                <br>\n                <a href=\" clicablelink/username\" target=\"_blank\" class=\"username\" style=\"color: #FFFFFF; text-decoration: none;\"> clicklink/username</a>\n              </h2></div>\n          </div>\n          <div style=\"text-align: center;\">\n            <div style='margin-bottom: 1vh;'>\n                <strong class=\"title_color\"></strong>\n            </div>\n            <div>\n              \n            </div>\n            <div>\n              <p class=\"text_color\"></p>\n            </div>\n          </div>\n                          ",
+    "imageUrl": [
+      "https://kiloscribe.com/api/inscription-cdn/0.0.4840719"
+    ]
+  },
+  {
+    "id": "polygon-22",
+    "payer": "0.0.7352714",
+    "coordinates": [
+      [
+        [112.5,85],
+        [112.5,0],
+        [180,0],
+        [180,85]
+      ]
+    ],
+    "description": "\n<div style=\"position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;\" class=\"number\">5</div>\n<div style=\"display: flex; align-items: center;\">\n<img src=\"https://kiloscribe.com/api/inscription-cdn/0.0.4819119\" alt=\"Profile photo\"\n      style=\"width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;\"\n      onclick=\"loadTOPIC4PIC('0.0.7352714');\">\n            <div>\n              <h2>\n                <a href=\"https://explore.hashpack.app/0.0.7352714\" target=\"_blank\" class=\"payer-info\" style=\"color: #800080; text-decoration: none;\">0.0.7352714</a>\n                <br>\n                <a href=\" clicablelink/username\" target=\"_blank\" class=\"username\" style=\"color: #FFFFFF; text-decoration: none;\"> clicklink/username</a>\n              </h2></div>\n          </div>\n          <div style=\"text-align: center;\">\n            <div style='margin-bottom: 1vh;'>\n                <strong class=\"title_color\"></strong>\n            </div>\n            <div>\n              \n            </div>\n            <div>\n              <p class=\"text_color\"></p>\n            </div>\n          </div>\n                          ",
+    "imageUrl": [
+      "https://kiloscribe.com/api/inscription-cdn/0.0.4819899"
+    ]
+  }
+];
 
 const loadedNFTsForModel = [];
 const loadedNFTScaleForModel = [];
@@ -5091,7 +5106,7 @@ window.addEventListener("beforeunload", () => {
   renderer.dispose();
 });
 
-function createResizedImage(imageUrl, maxWidth = 256, maxHeight = 256) {
+async function createResizedImage(imageUrl, maxWidth = 256, maxHeight = 256) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "Anonymous";
@@ -5135,148 +5150,160 @@ function createResizedImage(imageUrl, maxWidth = 256, maxHeight = 256) {
 const addedLayers = new Set();
 const activePolygonPopups = [];
 
-function addPolygonWithImageFill(map, polygon) {
+async function addPolygonWithImageFill(map, polygon) {
   const sourceId = `${polygon.id}-source`;
   const layerId = `${polygon.id}-image-layer`;
   const maskLayerId = `${polygon.id}-mask-layer`;
 
-    // Check if the source already exists
-    if (map.getSource(sourceId)) {
+  // Check if the source already exists
+  if (map.getSource(sourceId)) {
     return; // Skip adding this polygon if the source already exists
   }
-  // Calculate the bounding box of the polygon
-  const coordinates = polygon.coordinates[0];
-  const bounds = coordinates.reduce((bounds, coord) => {
-    return {
-      minLng: Math.min(bounds.minLng, coord[0]),
-      maxLng: Math.max(bounds.maxLng, coord[0]),
-      minLat: Math.min(bounds.minLat, coord[1]),
-      maxLat: Math.max(bounds.maxLat, coord[1])
-    };
-  }, {
-    minLng: Infinity,
-    maxLng: -Infinity,
-    minLat: Infinity,
-    maxLat: -Infinity
-  });
 
-  // Create and add the resized image
-  createResizedImage(polygon.imageUrl, 512, 512)
-    .then(resizedImageUrl => {
-      map.addSource(sourceId, {
-        type: 'image',
-        url: resizedImageUrl,
-        coordinates: [
-          [bounds.minLng, bounds.maxLat],
-          [bounds.maxLng, bounds.maxLat],
-          [bounds.maxLng, bounds.minLat],
-          [bounds.minLng, bounds.minLat]
-        ]
-      });
+  // Wait for the map style to load if not already loaded
+  if (!map.isStyleLoaded()) {
+    await new Promise((resolve) => {
+      map.once('load', () => resolve());
+    });
+  }
 
-      map.addLayer({
-  id: layerId,
-  type: 'raster',
-  source: sourceId,
-  paint: {
-    'raster-opacity': 1,
-    'raster-fade-duration': 0,
-    'raster-resampling': 'linear',
-    'raster-brightness-min': 0,
-    'raster-brightness-max': 1,
-    'raster-contrast': 0,
-    'raster-saturation': 0
-  },
-  layout: {
-    'visibility': 'visible'
-  },
-  interactive: false // Disable click interactions
-});
+  try {
+    // Calculate the bounding box of the polygon
+    const coordinates = polygon.coordinates[0];
+    const bounds = coordinates.reduce((bounds, coord) => {
+      return {
+        minLng: Math.min(bounds.minLng, coord[0]),
+        maxLng: Math.max(bounds.maxLng, coord[0]),
+        minLat: Math.min(bounds.minLat, coord[1]),
+        maxLat: Math.max(bounds.maxLat, coord[1])
+      };
+    }, {
+      minLng: Infinity,
+      maxLng: -Infinity,
+      minLat: Infinity,
+      maxLat: -Infinity
+    });
 
-        document.getElementById("raster-opacity-slider").addEventListener("input", (event) => {
-        const opacityValue = event.target.value; // Get the current value of the slider
+    // Create and add the resized image (now awaited)
+    const resizedImageUrl = await createResizedImage(polygon.imageUrl, 512, 512);
+
+    // Now safe to add source and layers since style is loaded
+    map.addSource(sourceId, {
+      type: 'image',
+      url: resizedImageUrl,
+      coordinates: [
+        [bounds.minLng, bounds.maxLat],
+        [bounds.maxLng, bounds.maxLat],
+        [bounds.maxLng, bounds.minLat],
+        [bounds.minLng, bounds.minLat]
+      ]
+    });
+
+    map.addLayer({
+      id: layerId,
+      type: 'raster',
+      source: sourceId,
+      paint: {
+        'raster-opacity': 1,
+        'raster-fade-duration': 0,
+        'raster-resampling': 'linear',
+        'raster-brightness-min': 0,
+        'raster-brightness-max': 1,
+        'raster-contrast': 0,
+        'raster-saturation': 0
+      },
+      layout: {
+        'visibility': 'visible'
+      },
+      interactive: false // Disable click interactions
+    });
+
+    // Opacity slider listener (only add once per layer, but since it's per-layer, it's fine here)
+    document.getElementById("raster-opacity-slider").addEventListener("input", (event) => {
+      const opacityValue = event.target.value; // Get the current value of the slider
+      if (map.getLayer(layerId)) { // Safety check
         map.setPaintProperty(layerId, 'raster-opacity', parseFloat(opacityValue)); // Update the layer's opacity
+      }
+    });
+
+    // Add mask for the polygon
+    const maskSourceId = `${polygon.id}-mask-source`;
+
+    map.addSource(maskSourceId, {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: polygon.coordinates
+        }
+      }
+    });
+
+    map.addLayer({
+      id: maskLayerId,
+      type: 'fill',
+      source: maskSourceId,
+      paint: {
+        'fill-opacity': 0, // Set back to 0 for invisibility after debugging
+        'fill-outline-color': '#000'
+      }
+    }, layerId); // Ensure mask layer is above raster layer
+
+    // Add interactivity (only if not already added)
+    if (!addedLayers.has(maskLayerId)) {
+      const popup = new maplibregl.Popup();
+
+      map.on('click', maskLayerId, (e) => {
+        if (polygon.description) {
+          popup
+            .setLngLat(e.lngLat)
+            .setHTML(polygon.description)
+            .addTo(map);
+          map.easeTo({
+            center: e.lngLat,
+            zoom: map.getZoom(), // Maintain current zoom level
+          });
+          activePolygonPopups.forEach((p) => p.remove());
+          activeMarkerPopups.forEach((p) => p.remove());
+          CloseALL();
+          activePolygonPopups.push(popup);
+          applyAllStyles();
+        }
+        if (currentUfoModel) {
+          scene.remove(currentUfoModel);
+          crosshair.style.display = "none";
+        }
       });
 
-      // Add mask for the polygon
-      const maskSourceId = `${polygon.id}-mask-source`;
-
-
-      map.addSource(maskSourceId, {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'Polygon',
-            coordinates: polygon.coordinates
+      // Add a listener for the popup's close event
+      popup.on('close', () => {
+        if (currentUfoModel) {
+          scene.add(currentUfoModel);
+          crosshair.style.display = "block";
+          // Remove popup from tracking array when closed
+          const index = activePolygonPopups.indexOf(popup);
+          if (index > -1) {
+            activePolygonPopups.splice(index, 1);
           }
         }
       });
 
-      map.addLayer({
-  id: maskLayerId,
-  type: 'fill',
-  source: maskSourceId,
-  paint: {
-    'fill-opacity': 0, // Set back to 0 for invisibility after debugging
-    'fill-outline-color': '#000'
-  }
-}, layerId); // Ensure mask layer is above raster layer
+      map.on('mouseenter', maskLayerId, () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
 
-      // Add interactivity
-      const popup = new maplibregl.Popup();
+      map.on('mouseleave', maskLayerId, () => {
+        map.getCanvas().style.cursor = '';
+      });
 
-      // Check if the layer has already been added
-      if (!addedLayers.has(maskLayerId)) {
-        map.on('click', maskLayerId, (e) => {
-          if (polygon.description) {
-            popup
-              .setLngLat(e.lngLat)
-              .setHTML(polygon.description)
-              .addTo(map);
-              map.easeTo({
-              center: e.lngLat,
-              zoom: map.getZoom(), // Maintain current zoom level
-            });
-              activePolygonPopups.forEach((popup) => popup.remove());
-              activeMarkerPopups.forEach((popup) => popup.remove());
-              CloseALL();
-              activePolygonPopups.push(popup);
-              applyAllStyles();
-          }
-          if (currentUfoModel) {
-            scene.remove(currentUfoModel);
-            crosshair.style.display = "none";
-          }
-        });
-// Add a listener for the popup's close event
-popup.on('close', () => {
-  if (currentUfoModel) {
-    scene.add(currentUfoModel);
-    crosshair.style.display = "block";
-        // Remove popup from tracking array when closed
-        const index = activePolygonPopups.indexOf(popup);
-    if (index > -1) {
-      activePolygonPopups.splice(index, 1);
+      // Mark this layer as added
+      addedLayers.add(maskLayerId);
     }
+  } catch (error) {
+    console.error('Error loading or resizing image:', error);
   }
-});
-        map.on('mouseenter', maskLayerId, () => {
-          map.getCanvas().style.cursor = 'pointer';
-        });
-
-        map.on('mouseleave', maskLayerId, () => {
-          map.getCanvas().style.cursor = '';
-        });
-
-        // Mark this layer as added
-        addedLayers.add(maskLayerId);
-      }
-    })
-    .catch(error => {
-      console.error('Error loading or resizing image:', error);
-    });
 }
 
       const leftUpButton = document.getElementById("left-up");
@@ -7800,6 +7827,16 @@ async function processTopicMessages(topicId) {
           return { topicGeojsonFeatures: [], topicPolygons: [] }; // Return empty arrays on error
         }
       }
+      async function loadForStart(){
+      updateClusters();
+      // Add new polygons
+await
+          polygons.forEach(async polygon => {
+          addPolygonWithImageFill(map, polygon);
+      });
+        
+      }
+      await loadForStart();
 
     // Array of models with their respective URLs, origins, and altitudes
     const models = [];
