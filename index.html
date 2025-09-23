@@ -7707,13 +7707,14 @@ async function processTopicMessages(topicId) {
               if (parsedMessage.polygon && parsedMessage.polygon.data) {
                 const polygonOwner = polygonOwnershipArray.find(owner => owner.payerId === message.payer) ;
                 const polygonnumber = parsedMessage.polygon.data.numberOfPolygon;
-
-                if (polygonnumber === undefined || polygonnumber === null || !Number.isInteger(Number(polygonnumber))) {
-                  continue;
-                }
+                
                 if (parsedMessage.polygon.data.deletePolygonNumber) {
                   const deletePolygonNumber = parsedMessage.polygon.data.deletePolygonNumber;
                   polygonOwner.numberOfPolygon.push(deletePolygonNumber);
+                }
+
+                if (polygonnumber === undefined || polygonnumber === null || !Number.isInteger(Number(polygonnumber))) {
+                  continue;
                 }
 
                 if (!polygonOwner.numberOfPolygon.includes(polygonnumber)) {
