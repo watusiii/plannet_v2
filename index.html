@@ -671,7 +671,7 @@ input, textarea {
 }
 
 button[type="submit"],
-  #submit-button,
+  #toolbar-load,
   #submit-button-Create_Marker,
   #submit-button-Create_Polygon,
   #submit-button-Create_New_Topic,
@@ -870,7 +870,7 @@ button[type="submit"],
     oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
 
-    <button id="submit-button" class="toolbar-column-btns">Load Data
+    <button id="toolbar-load" class="toolbar-column-btns">Load Data
     </button>
 
     <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topics with names not domains:
@@ -2014,6 +2014,7 @@ async function extractTopicId() {
 const ufoLoader = new THREE.GLTFLoader();
 ufoLoader.setDRACOLoader(dracoLoader);
 let currentUfoModel = null;
+let timeoutForToolbarLoad = true;
 
 async function updateAccountInfo(accountId, balance) {
 if (!accountId) {
@@ -2022,11 +2023,21 @@ isLoggedIn = false;
   document.getElementById("disconnect-wallet-btn").style.display ="none";
   document.getElementById("account-id").textContent = ``;
   document.getElementById("crosshair").style.display = "block";
+  if (isLoggedIn === false) {
   extractTopicId();
   handleAllMessages();
-  document.getElementById("submit-button").addEventListener("click", debounce(async () => {
-    await handleAllMessages();
-  }, 1000));
+  }
+  document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
+  if (isLoggedIn === false) {
+    if (timeoutForToolbarLoad === true) {
+      timeoutForToolbarLoad = false;
+    if (isLoggedIn === false) {
+      await handleAllMessages();
+    }}}
+    setTimeout(() => {
+      timeoutForToolbarLoad = true;
+    }, 2000);
+  }, 500));
   return;
 }
 
@@ -2048,12 +2059,24 @@ isLoggedIn = true;
   const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0
     ? profileObjectSettings[0].urls[0]
     : defaultModelUrl;
+  if (isLoggedIn === true) {
+    debounce(async () => {
   extractTopicId();
   await loadUfoModel(modelUrl); // Load the model using the determined URL
   confirmNFTFunction(accountId);
-  document.getElementById("submit-button").addEventListener("click", debounce(async () => {
-    await confirmNFTFunction(accountId);
-  }, 1000));
+  }, 1000);
+  }
+  document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
+    if (isLoggedIn === true) {
+    if (timeoutForToolbarLoad === true) {
+      timeoutForToolbarLoad = false;
+    if (isLoggedIn === true) {
+      await confirmNFTFunction(accountId);
+    }}}
+    setTimeout(() => {
+      timeoutForToolbarLoad = true;
+    }, 2000);
+  }, 500));
   await extractAccountId();
 }
 
@@ -3188,7 +3211,8 @@ const geojson = {
   features: []
 };
 
-const polygons = [];
+const polygons = [
+];
 
 const loadedNFTsForModel = [];
 const loadedNFTScaleForModel = [];
@@ -7770,14 +7794,6 @@ async function processTopicMessages(topicId) {
         }
       }
 
-      async function loadForStart(){
-
-        debouncedUpdateClusters();
-        await polygons.forEach(async polygon => {addPolygonWithImageFill(map, polygon);});   
-
-      }
-
-      await loadForStart();
 
     // Array of models with their respective URLs, origins, and altitudes
     const models = [];
