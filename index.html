@@ -2022,6 +2022,7 @@ isLoggedIn = false;
   document.getElementById("disconnect-wallet-btn").style.display ="none";
   document.getElementById("account-id").textContent = ``;
   document.getElementById("crosshair").style.display = "block";
+  extractTopicId();
   document.getElementById("submit-button").addEventListener("click", debounce(async () => {
     await handleAllMessages();
   }, 1000));
