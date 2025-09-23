@@ -2023,6 +2023,12 @@ isLoggedIn = false;
   document.getElementById("disconnect-wallet-btn").style.display ="none";
   document.getElementById("account-id").textContent = ``;
   document.getElementById("crosshair").style.display = "block";
+  document.getElementById("connect-wallet-btn").addEventListener("click", () => {
+    document.getElementById("crosshair").style.display = "none";
+    setTimeout(() => {
+        document.getElementById("crosshair").style.display = "block";
+    }, 15000);
+  });
   if (isLoggedIn === false) {
   extractTopicId();
   handleAllMessages();
@@ -2031,9 +2037,8 @@ isLoggedIn = false;
   if (isLoggedIn === false) {
     if (timeoutForToolbarLoad === true) {
       timeoutForToolbarLoad = false;
-    if (isLoggedIn === false) {
       await handleAllMessages();
-    }}}
+    }}
     setTimeout(() => {
       timeoutForToolbarLoad = true;
     }, 2000);
@@ -2070,9 +2075,8 @@ isLoggedIn = true;
     if (isLoggedIn === true) {
     if (timeoutForToolbarLoad === true) {
       timeoutForToolbarLoad = false;
-    if (isLoggedIn === true) {
       await confirmNFTFunction(accountId);
-    }}}
+    }}
     setTimeout(() => {
       timeoutForToolbarLoad = true;
     }, 2000);
