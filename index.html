@@ -2023,6 +2023,7 @@ isLoggedIn = false;
   document.getElementById("account-id").textContent = ``;
   document.getElementById("crosshair").style.display = "block";
   extractTopicId();
+  handleAllMessages();
   document.getElementById("submit-button").addEventListener("click", debounce(async () => {
     await handleAllMessages();
   }, 1000));
@@ -3184,72 +3185,10 @@ window.loadTOPIC4PIC = async function(payer) {
 
 const geojson = {
   type: "FeatureCollection",
-  features: [  {
-    "type": "Feature",
-    "payer": "0.0.7352714",
-    "properties": {
-      "message": "\n      <div style=\"position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;\" class=\"number\">15</div>\n      <div style=\"display: flex; align-items: center;\">\n      <img src=\"https://kiloscribe.com/api/inscription-cdn/0.0.4819119\" alt=\"Profile photo\"\n      style=\"width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;\"\n      onclick=\"loadTOPIC4PIC('0.0.7352714');\">\n        <div>\n              <h2>\n                <a href=\"https://explore.hashpack.app/0.0.7352714\" target=\"_blank\" class=\"payer-info\" style=\"color: #800080; text-decoration: none;\">0.0.7352714</a>\n                <br>\n                <a href=\" clicablelink/username\" target=\"_blank\" class=\"username\" style=\"color: #FFFFFF; text-decoration: none;\"> clicklink/username</a>\n              </h2></div>\n      </div>\n      <div style=\"text-align: center;\">\n        <div style='margin-bottom: 1vh;'>\n            <strong class=\"title_color\">a</strong>\n        </div>\n        <div>\n           \n        </div>\n        <div>\n          <p class=\"text_color\">a</p>\n        </div>\n      </div>\n    ",
-      "imageUrl": "https://kiloscribe.com/api/inscription-cdn/0.0.4819119"
-    },
-    "geometry": {
-      "type": "Point",
-      "coordinates": [
-        -100.83389,
-        -8.13504
-      ]
-    }
-  },
-  {
-    "type": "Feature",
-    "payer": "0.0.7352714",
-    "properties": {
-      "message": "\n      <div style=\"position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;\" class=\"number\">16</div>\n      <div style=\"display: flex; align-items: center;\">\n      <img src=\"https://kiloscribe.com/api/inscription-cdn/0.0.4819119\" alt=\"Profile photo\"\n      style=\"width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;\"\n      onclick=\"loadTOPIC4PIC('0.0.7352714');\">\n        <div>\n              <h2>\n                <a href=\"https://explore.hashpack.app/0.0.7352714\" target=\"_blank\" class=\"payer-info\" style=\"color: #800080; text-decoration: none;\">0.0.7352714</a>\n                <br>\n                <a href=\" clicablelink/username\" target=\"_blank\" class=\"username\" style=\"color: #FFFFFF; text-decoration: none;\"> clicklink/username</a>\n              </h2></div>\n      </div>\n      <div style=\"text-align: center;\">\n        <div style='margin-bottom: 1vh;'>\n            <strong class=\"title_color\">a</strong>\n        </div>\n        <div>\n           \n        </div>\n        <div>\n          <p class=\"text_color\">a</p>\n        </div>\n      </div>\n    ",
-      "imageUrl": "https://kiloscribe.com/api/inscription-cdn/0.0.4819119"
-    },
-    "geometry": {
-      "type": "Point",
-      "coordinates": [
-        -73.44193,
-        12.04625
-      ]
-    }
-  }]
+  features: []
 };
 
-const polygons = [
-   {
-    "id": "polygon-11",
-    "payer": "0.0.7352714",
-    "coordinates": [
-      [
-        [-60,0],
-        [-60,-85],
-        [0,-85],
-        [0,0]
-      ]
-    ],
-    "description": "<div style=\"position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;\" class=\"number\">6</div>\n<div style=\"display: flex; align-items: center;\">\n<img src=\"https://kiloscribe.com/api/inscription-cdn/0.0.4819119\" alt=\"Profile photo\"\n      style=\"width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;\"\n      onclick=\"loadTOPIC4PIC('0.0.7352714');\">\n            <div>\n              <h2>\n                <a href=\"https://explore.hashpack.app/0.0.7352714\" target=\"_blank\" class=\"payer-info\" style=\"color: #800080; text-decoration: none;\">0.0.7352714</a>\n                <br>\n                <a href=\" clicablelink/username\" target=\"_blank\" class=\"username\" style=\"color: #FFFFFF; text-decoration: none;\"> clicklink/username</a>\n              </h2></div>\n          </div>\n          <div style=\"text-align: center;\">\n            <div style='margin-bottom: 1vh;'>\n                <strong class=\"title_color\"></strong>\n            </div>\n            <div>\n              \n            </div>\n            <div>\n              <p class=\"text_color\"></p>\n            </div>\n          </div>\n                          ",
-    "imageUrl": [
-      "https://kiloscribe.com/api/inscription-cdn/0.0.4840719"
-    ]
-  },
-  {
-    "id": "polygon-22",
-    "payer": "0.0.7352714",
-    "coordinates": [
-      [
-        [112.5,85],
-        [112.5,0],
-        [180,0],
-        [180,85]
-      ]
-    ],
-    "description": "\n<div style=\"position: absolute; top: -0.1em; left: 0.1em; font-weight: bold;\" class=\"number\">5</div>\n<div style=\"display: flex; align-items: center;\">\n<img src=\"https://kiloscribe.com/api/inscription-cdn/0.0.4819119\" alt=\"Profile photo\"\n      style=\"width: 7vh; height: 7vh; margin-right: 1em; border-radius: 50%; cursor: pointer;\"\n      onclick=\"loadTOPIC4PIC('0.0.7352714');\">\n            <div>\n              <h2>\n                <a href=\"https://explore.hashpack.app/0.0.7352714\" target=\"_blank\" class=\"payer-info\" style=\"color: #800080; text-decoration: none;\">0.0.7352714</a>\n                <br>\n                <a href=\" clicablelink/username\" target=\"_blank\" class=\"username\" style=\"color: #FFFFFF; text-decoration: none;\"> clicklink/username</a>\n              </h2></div>\n          </div>\n          <div style=\"text-align: center;\">\n            <div style='margin-bottom: 1vh;'>\n                <strong class=\"title_color\"></strong>\n            </div>\n            <div>\n              \n            </div>\n            <div>\n              <p class=\"text_color\"></p>\n            </div>\n          </div>\n                          ",
-    "imageUrl": [
-      "https://kiloscribe.com/api/inscription-cdn/0.0.4819899"
-    ]
-  }
-];
+const polygons = [];
 
 const loadedNFTsForModel = [];
 const loadedNFTScaleForModel = [];
