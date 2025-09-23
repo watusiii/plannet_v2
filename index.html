@@ -2130,9 +2130,11 @@ document.getElementById("button4").addEventListener("click", async () => {
   const domainObject = loadedDomains.find(d => d.domain === domain);
 
   if (domainObject) {
+
+    console.log("domainObject", domainObject);
     const currentTime = Date.now() / 1000; // Get current time in seconds
 
-    const timeLeftInSeconds = domainObject.timeleft;
+    const timeLeftInSeconds = domainObject.addedTime - currentTime;
 
     // Calculate days, hours, minutes, and seconds
     const days = Math.floor(timeLeftInSeconds / (24 * 3600));
@@ -2662,7 +2664,7 @@ async function loadDomains() {
       messages.sort((a, b) => parseFloat(a.timestamp) - parseFloat(b.timestamp));
 
       if (messages.length === 0) {
-        return { domain, lastMessage: null, addedTime: 0, timeleft: 0 };
+        return { domain, lastMessage: null, addedTime: 0 };
       }
 
       const firstPayer = messages[0].payer;
@@ -2703,7 +2705,7 @@ async function loadDomains() {
       }
 
       if (validPayerMessages.length === 0) {
-        return { domain, lastMessage: null, addedTime: 0, timeleft: 0 };
+        return { domain, lastMessage: null, addedTime: 0 };
       }
 
       // Compute addedTime starting from the startTimestamp
@@ -2714,21 +2716,17 @@ async function loadDomains() {
         const renewalTime = parseFloat(validPayerMessages[i].timestamp);
         if (renewalTime < addedTime) {
           // Extend expiry if renewal is within current window
-          addedTime = Math.max(addedTime, renewalTime + SECONDS_TO_ADD);
+          addedTime = addedTime + SECONDS_TO_ADD;
         }
       }
 
       // Get the last message from the valid payer
       const lastMessage = validPayerMessages[validPayerMessages.length - 1];
 
-      // Compute remaining time
-      const timeleft = Math.max(0, addedTime - currentTime);
-
       return {
         domain,
         lastMessage,
-        addedTime,
-        timeleft
+        addedTime
       };
     });
 
@@ -7827,15 +7825,14 @@ async function processTopicMessages(topicId) {
           return { topicGeojsonFeatures: [], topicPolygons: [] }; // Return empty arrays on error
         }
       }
+
       async function loadForStart(){
-      updateClusters();
-      // Add new polygons
-await
-          polygons.forEach(async polygon => {
-          addPolygonWithImageFill(map, polygon);
-      });
-        
+
+        debouncedUpdateClusters();
+        await polygons.forEach(async polygon => {addPolygonWithImageFill(map, polygon);});   
+
       }
+
       await loadForStart();
 
     // Array of models with their respective URLs, origins, and altitudes
