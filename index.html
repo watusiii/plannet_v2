@@ -2022,6 +2022,9 @@ isLoggedIn = false;
   document.getElementById("disconnect-wallet-btn").style.display ="none";
   document.getElementById("account-id").textContent = ``;
   document.getElementById("crosshair").style.display = "block";
+  document.getElementById("submit-button").addEventListener("click", debounce(async () => {
+    await handleAllMessages();
+  }, 1000));
   return;
 }
 
@@ -2054,6 +2057,7 @@ isLoggedIn = true;
 
 loader.updateProgress();
 
+connectWallet();
 
 document.getElementById("load-msgs-from-ids-button").addEventListener("click", async () => {
   const ids = document.getElementById("load-msgs-from-ids").value.toLowerCase();
@@ -3275,7 +3279,7 @@ async function handleAllMessages() {
       topicId = userInput || initialTopicId;
     }
 
-    const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+    const result = await sdk.getMessages(topicId);
 
     globalLoadedTopicIdsWithNames = [];
     let addedTopics = [];
