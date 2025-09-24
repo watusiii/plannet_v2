@@ -43,6 +43,12 @@
 
 <script data-src="hcs://1/0.0.9872320" data-script-id="ipfs-core"></script>
 
+<script data-src="hcs://1/0.0.9961904" data-script-id="helia@5.5.1"></script>
+
+<script data-src="hcs://1/0.0.9961944" data-script-id="unixfs@5.1.0"></script>
+
+<script data-src="hcs://1/0.0.9962207" data-script-id="webrtc@6.0.1"></script>
+
 <style>
 
 html, body {
@@ -799,6 +805,8 @@ button[type="submit"],
   </div>
   <div class="toolbar-column" id="Load_Everything">Load
   </div>
+  <div class="toolbar-column" id="Upload_To_IPFS">Upload
+  </div>
   <div class="toolbar-column" id="Create_New_Topic">Create
   </div>
   <div class="toolbar-column" id="Create_Marker">Marker
@@ -885,6 +893,16 @@ button[type="submit"],
 
     <button id="load-msgs-from-ids-button" class="toolbar-column-btns">Load Messages From
     </button>
+
+  </div>
+</div>
+
+<div id="upload-to-ipfs-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
+  <div id="upload-to-ipfs-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
+
+    <input type="file" class="toolbar-column" id="fileInput" />
+    <button id="upload-to-ipfs-button" class="toolbar-column-btns">Upload to IPFS</button>
+    <textarea class="toolbar-column" id="cid-output" placeholder="CID" readonly></textarea>
 
   </div>
 </div>
@@ -1849,6 +1867,11 @@ button[type="submit"],
                         // Simulate your code with checkpoints
         window.onload = () => {
           loader.updateProgress();
+
+
+
+
+
       window.HCSReady = async function () {
 
         const sdk = window.HashinalsWalletConnectSDK;
@@ -1856,7 +1879,6 @@ button[type="submit"],
         const Supercluster = window.Supercluster;
         const THREE = window.THREE;
         const scene = new THREE.Scene();
-        const IPFS = window.IPFS;
 
 
         async function ensureDracoLoaderReady() {
@@ -2086,6 +2108,57 @@ isLoggedIn = true;
 }
 
 loader.updateProgress();
+
+
+document.getElementById('upload-to-ipfs-button').disabled = true;
+
+let helia = null;
+let fs = null;
+
+async function initHelia() {
+  try {
+    if (!window.Helia || !window.HeliaUnixfs) {
+      throw new Error('Helia or HeliaUnixfs not loaded. Check script imports.');
+    }
+    helia = await window.Helia.createHelia();
+    fs = window.HeliaUnixfs.unixfs(helia);
+    console.log('Helia and UnixFS initialized');
+    document.getElementById('upload-to-ipfs-button').disabled = false;
+  } catch (error) {
+    console.error('Initialization failed:', error);
+    document.getElementById('cid-output').textContent = `Initialization failed: ${error.message}`;
+  }
+}
+
+initHelia();
+
+document.getElementById("upload-to-ipfs-button").addEventListener("click", async () => {
+  await upload();
+});
+
+async function upload() {
+  const fileInput = document.getElementById('fileInput');
+  const file = fileInput.files[0];
+  if (!file) {
+    alert('No file selected');
+    return;
+  }
+  if (!fs) {
+    document.getElementById('cid-output').textContent = 'Helia not initialized. Please wait or refresh.';
+    return;
+  }
+
+  try {
+    const fileArrayBuffer = await file.arrayBuffer();
+    const fileBytes = new Uint8Array(fileArrayBuffer);
+    const cid = await fs.addBytes(fileBytes);
+    console.log('Uploaded, CID:', cid.toString());
+    document.getElementById('cid-output').textContent = `Uploaded, CID: ${cid.toString()}`;
+  } catch (error) {
+    console.error('Upload failed:', error);
+    document.getElementById('cid-output').textContent = `Upload failed: ${error.message}`;
+  }
+}
 
 document.getElementById("load-msgs-from-ids-button").addEventListener("click", async () => {
   const ids = document.getElementById("load-msgs-from-ids").value.toLowerCase();
@@ -3725,6 +3798,7 @@ const everythinginsidetoolbar = [
   "Edit_Profile-column",
   "load-column",
   "create-column",
+  "upload-to-ipfs-column",
   "marker-column",
   "polygon-column",
   "rules-column",
@@ -3889,6 +3963,20 @@ document.getElementById("Load_Everything").addEventListener("click", (event) => 
   adjustTextareaHeight(loaded_text_area);
 });
 
+document.getElementById("Upload_To_IPFS").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("upload-to-ipfs-column").style.display = "block";
+  document.getElementById("upload-to-ipfs-column-container").style.display = "block";
+});
+
+document.getElementById("Create_New_Topic").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("create-column").style.display = "block";
+  document.getElementById("create-column-container").style.display = "block";
+});
+
 document.getElementById("Create_Marker").addEventListener("click", (event) => {
   event.stopPropagation();
   CloseALL();
@@ -3901,13 +3989,6 @@ document.getElementById("Create_Polygon").addEventListener("click", (event) => {
   CloseALL();
   document.getElementById("polygon-column").style.display = "block";
   document.getElementById("polygon-column-container").style.display = "block";
-});
-
-document.getElementById("Create_New_Topic").addEventListener("click", (event) => {
-  event.stopPropagation();
-  CloseALL();
-  document.getElementById("create-column").style.display = "block";
-  document.getElementById("create-column-container").style.display = "block";
 });
 
 document.getElementById("Set_Rules").addEventListener("click", (event) => {
@@ -4611,18 +4692,6 @@ let formattedRules = '';
   });
 
 
-document.addEventListener("click", (event) => {
-  const inputToolbarCreate_Marker = document.getElementById(
-    "marker-column"
-  );
-  if (
-    event.target.id !== "Create_Marker" &&
-    !inputToolbarCreate_Marker.contains(event.target)
-  ) {
-    inputToolbarCreate_Marker.style.display = "none";
-  }
-});
-
 document
   .getElementById("submit-button-Create_Polygon")
   .addEventListener("click", async () => {
@@ -4745,64 +4814,6 @@ document
       console.error('Error submitting message:', error);
     }
   });
-
-
-
-document.addEventListener("click", (event) => {
-  const inputToolbarCreate_Polygon = document.getElementById(
-    "polygon-column"
-  );
-  if (
-    event.target.id !== "Create_Polygon" &&
-    !inputToolbarCreate_Polygon.contains(event.target)
-  ) {
-    inputToolbarCreate_Polygon.style.display = "none";
-  }
-});
-
-
-document.addEventListener("click", (event) => {
-  const inputToolbarCreate_New_Topic = document.getElementById(
-    "create-column"
-  );
-  if (
-    event.target.id !== "Create_New_Topic" &&
-    !inputToolbarCreate_New_Topic.contains(event.target)
-  ) {
-    inputToolbarCreate_New_Topic.style.display = "none";
-  }
-});
-
-document.addEventListener("click", (event) => {
-  const inputToolbarSetRules = document.getElementById("memo-column");
-  if (
-    event.target.id !== "Change_Memo" &&
-    !inputToolbarSetRules.contains(event.target)
-  ) {
-    inputToolbarSetRules.style.display = "none";
-  }
-});
-
-document.addEventListener("click", (event) => {
-  const inputToolbarSetRules = document.getElementById("rules-column");
-  if (
-    event.target.id !== "Set_Rules" &&
-    !inputToolbarSetRules.contains(event.target)
-  ) {
-    inputToolbarSetRules.style.display = "none";
-  }
-});
-
-document.addEventListener("click", (event) => {
-  const inputToolbarSetRules = document.getElementById("utility-column");
-  if (
-    event.target.id !== "utility-column" &&
-    !inputToolbarSetRules.contains(event.target)
-  ) {
-    inputToolbarSetRules.style.display = "none";
-  }
-});
-
 
 
 function adjustButtonSize() {
