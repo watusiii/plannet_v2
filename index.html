@@ -2032,6 +2032,7 @@ isLoggedIn = false;
   if (isLoggedIn === false) {
   extractTopicId();
   handleAllMessages();
+  connectWallet();
   }
   document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
   if (isLoggedIn === false) {
@@ -2085,8 +2086,6 @@ isLoggedIn = true;
 }
 
 loader.updateProgress();
-
-connectWallet();
 
 document.getElementById("load-msgs-from-ids-button").addEventListener("click", async () => {
   const ids = document.getElementById("load-msgs-from-ids").value.toLowerCase();
@@ -4567,12 +4566,6 @@ let formattedRules = '';
         message
       );
       console.log('Receipt:', receipt);
-
-      document.getElementById("input-field-2-0").value = '';
-      document.getElementById("input-field-2-1").value = '';
-      document.getElementById("input-field-2-2").value = '';
-      document.getElementById("input-field-2-3").value = '';
-
     } catch (error) {
       console.error('Error submitting message:', error);
     }
@@ -4611,7 +4604,6 @@ let formattedRules = '';
       );
       console.log('Receipt:', receipt);
 
-      document.getElementById("input-field-delete-marker-number").value = '';
 
     } catch (error) {
       console.error('Error submitting message:', error);
@@ -4711,15 +4703,6 @@ document
       );
       console.log('Receipt:', receipt);
 
-      // Clear inputs after successful submission
-      document.getElementById("input-field-3-0").value = '';
-      document.getElementById("input-field-3-1").value = '';
-      document.getElementById("input-field-3-2").value = '';
-      document.getElementById("input-field-3-3").value = '';
-      document.getElementById("input-field-3-4").value = '';
-      document.getElementById("input-field-3-5").value = '';
-      document.getElementById("input-field-3-6").value = '';
-
     } catch (error) {
       console.error('Error submitting message:', error);
     }
@@ -4757,8 +4740,6 @@ document
       );
       console.log('Receipt:', receipt);
 
-      document.getElementById("input-field-old-polygon-number").value = '';
-      document.getElementById("input-field-new-polygon-number").value = '';
 
     } catch (error) {
       console.error('Error submitting message:', error);
