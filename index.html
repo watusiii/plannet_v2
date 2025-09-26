@@ -1910,8 +1910,29 @@ const defaultTopicId = '0.0.9609912';
 // Async function to extract topic ID from URL
 async function extractTopicId() {
   const path = window.location.pathname;
-  const topicid = path && path !== '/' ? path.slice(1) : '';
-  initialTopicId = topicid.startsWith('0.0.') ? topicid : defaultTopicId; // Set global variable
+  const userInput = path && path !== '/' ? path.slice(1) : '';
+  
+  let topicId;
+  if (userInput.startsWith('0.0.')) {
+    topicId = userInput; // Use the URL path directly if it starts with '0.0.'
+  } else {
+    // Search for userInput in loadedDomains
+    let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+    if (domainEntry && domainEntry.lastMessage) {
+      topicId = domainEntry.lastMessage.topic; // Use topic from lastMessage
+    } else {
+      topicId = defaultTopicId; // Fallback to defaultTopicId if no match
+    }
+  }
+
+  const loadColumn = document.getElementById("load-column");
+    loadColumn.style.display = "block";
+    const inputarea = document.getElementById("input-field");
+    inputarea.value = '';
+    inputarea.value = topicId;
+    adjustTextareaHeight(inputarea);
+
+  initialTopicId = topicId; // Set global variable
   console.log('Topic ID:', initialTopicId);
   return initialTopicId; // Return for use in async flows
 }
@@ -3419,6 +3440,8 @@ window.loadTOPIC4PIC = async function(payer) {
     CloseALL();
     const loadColumn = document.getElementById("load-column");
     loadColumn.style.display = "block";
+    const inputarea = document.getElementById("input-field");
+    inputarea.value = '';
     const loaded_text_area = document.getElementById("loaded-topics");
     loaded_text_area.value = '';
     loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n');
