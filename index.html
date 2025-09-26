@@ -3719,15 +3719,24 @@ const camera = new THREE.PerspectiveCamera(
 
 function createStars() {
   const starsGeometry = new THREE.BufferGeometry();
-  const starCount = 25000;
+  const starCount = 10000;
   const positions = new Float32Array(starCount * 3);
-  const spawnRadius = 10;
+  const innerRadius = 100;
+  const outerRadius = 200;
 
   for (let i = 0; i < starCount; i++) {
     const i3 = i * 3;
-    positions[i3] = (Math.random() - 0.5) * 2000 + spawnRadius;
-    positions[i3 + 1] = (Math.random() - 0.5) * 2000 + spawnRadius;
-    positions[i3 + 2] = (Math.random() - 0.5) * 2000 + spawnRadius;
+
+    // Generate random spherical coordinates
+    const theta = Math.random() * 2 * Math.PI; // Azimuthal angle
+    const phi = Math.acos(2 * Math.random() - 1); // Polar angle
+    // Random radius between innerRadius and outerRadius
+    const radius = Math.cbrt(Math.random()) * (outerRadius - innerRadius) + innerRadius;
+
+    // Convert to Cartesian coordinates
+    positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+    positions[i3 + 2] = radius * Math.cos(phi);
   }
 
   starsGeometry.setAttribute(
@@ -3736,7 +3745,7 @@ function createStars() {
   );
   const starsMaterial = new THREE.PointsMaterial({
     color: 0xffffff,
-    size: 0.5,
+    size: 0.25,
     sizeAttenuation: true,
   });
 
@@ -4305,6 +4314,7 @@ document
         const topicInfo = await sdk.getTopicInfo(topicId);
         const topicAdmin = [];
         const memo = topicInfo.memo;
+        let hasRules = false;
 
         // Split the memo by commas
         const parts = memo.split(',');
@@ -4315,16 +4325,13 @@ document
             if (part.startsWith("0.0.")) {
                 // Add it to the topicAdmin array
                 topicAdmin.push(part);
+                hasRules = true;
             }
         });
 
-        // Check if messages exist and is an array
-        if (!response.messages || !Array.isArray(response.messages)) {
-            console.error(`No messages found for topic ${topicId}.`, response);
-        }
-
         const messages = response.messages; // Extract messages
         let lastRule = null;
+
 
 
         // Read rules from messages in reverse order
@@ -4357,13 +4364,23 @@ document
                     `Polygon Messages Per NFT: ${lastRule.forpolygon.polygonMessagesPerNft}\n` +
                     `Polygon Size: ${polygonSize}\n` +
                     `Maximum distance between points is:\n360/${polygonSize}=${maxLongitudeSize} for longitude\n180/${polygonSize}=${maxLatitudeSize} for latitude.\n`;
-                }
+                  hasRules = true;
+                  }
                 if (lastRule.formarker ) {
                   formattedRules +=
                     `Marker Topic ID: ${lastRule.formarker.markerTopicId}\n` +
                     `Marker Messages Per NFT: ${lastRule.formarker.markerMessagesPerNft}\n`;
+                  hasRules = true;
                 }
               }
+
+                      // Check if messages exist and is an array
+        if (hasRules===false) {
+            const markerRulesMessage = `No rules for this topic.`;
+            document.getElementById("loaded-topic-rules-for-topic").textContent = markerRulesMessage;
+            adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-topic"));
+            return;
+        }
 
                       // Log the formatted rules onto the textarea
                       document.getElementById("loaded-topic-rules-for-topic").textContent = formattedRules;
@@ -4389,6 +4406,7 @@ document.getElementById("load-topic-rules-for-utility").addEventListener("click"
         const topicInfo = await sdk.getTopicInfo(topicId);
         const topicAdmin = [];
         const memo = topicInfo.memo;
+        let hasRules = false;
 
         // Split the memo by commas
         const parts = memo.split(',');
@@ -4399,15 +4417,13 @@ document.getElementById("load-topic-rules-for-utility").addEventListener("click"
             if (part.startsWith("0.0.")) {
                 // Add it to the topicAdmin array
                 topicAdmin.push(part);
+                hasRules = true;
             }
         });
 
-        // Check if messages exist and is an array
-        if (!response.messages || !Array.isArray(response.messages)) {
-            console.error(`No messages found for topic ${topicId}.`, response);
-        }
+        const messages = response.messages; // Extract messages
 
- 
+
 const loadedNFTsForModel = [];
 const loadedNFTScaleForModel = [];
 const loadedNFTsForTopicChat = [];
@@ -4481,14 +4497,24 @@ let formattedRules = '';
 
   if (loadedNFTsForModel.length > 0) {
     formattedRules += `NFTs for model: ${loadedNFTsForModel.join(', ')}\n`;
+    hasRules = true;
   }
   if (loadedNFTScaleForModel.length > 0) {
     formattedRules += `Scales for model: ${loadedNFTScaleForModel.map(item => `${item.NFT} = ${item.scale}`).join(', ')}\n`;
+    hasRules = true;
   }
   if (loadedNFTsForTopicChat.length > 0) {
     formattedRules += `NFTs for topic chat: ${loadedNFTsForTopicChat.join(', ')}\n`;
+    hasRules = true;
   }
 
+          // Check if messages exist and is an array
+          if (hasRules===false) {
+            const utilityRulesMessage = `No rules for this topic.`;
+            document.getElementById("loaded-topic-rules-for-utility").textContent = utilityRulesMessage;
+            adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-utility"));
+            return;
+        }
 
         // Log the formatted rules onto the textarea
         document.getElementById("loaded-topic-rules-for-utility").textContent = formattedRules;
@@ -7428,11 +7454,6 @@ document.getElementById("load-topic-rules-for-marker").addEventListener("click",
         }
       });
 
-      // Check if messages exist and is an array
-      if (!response.messages || !Array.isArray(response.messages)) {
-        console.error(`No messages found for topic ${topicId}.`, response);
-      }
-
       const messages = response.messages; // Extract messages
 
       const loadedTopicRulesForMarker = [];
@@ -7454,7 +7475,13 @@ document.getElementById("load-topic-rules-for-marker").addEventListener("click",
           console.error(`Error processing message ${index}:`, messageError);
         }
       }
-      console.log(loadedTopicRulesForMarker);
+
+        if (hasRules===false) {
+        const markerRulesMessage = `No rules for this topic.`;
+        document.getElementById("loaded-topic-rules-for-marker").textContent = markerRulesMessage;
+        adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-marker"));
+        return;
+      }
 
 
 
@@ -7501,12 +7528,6 @@ document.getElementById("load-topic-rules-for-polygon").addEventListener("click"
           hasRules = true;
         }
       });
-
-      // Check if messages exist and is an array
-      if (!response.messages || !Array.isArray(response.messages)) {
-        console.error(`No messages found for topic ${topicId}.`, response);
-      }
-
       const messages = response.messages; // Extract messages
 
       const loadedTopicRulesForPolygon = [];
@@ -7528,7 +7549,13 @@ document.getElementById("load-topic-rules-for-polygon").addEventListener("click"
           console.error(`Error processing message ${index}:`, messageError);
         }
       }
-      console.log(loadedTopicRulesForPolygon);
+
+        if (hasRules===false) {
+        const polygonRulesMessage = `No rules for this topic.`;
+        document.getElementById("loaded-topic-rules-for-polygon").textContent = polygonRulesMessage;
+        adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-polygon"));
+        return;
+      }
 
 
 
