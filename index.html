@@ -49,6 +49,8 @@
 
 <script data-src="hcs://1/0.0.9962207" data-script-id="webrtc@6.0.1"></script>
 
+<script data-src="hcs://1/0.0.9966383" data-script-id="libp2p.bundle"></script>
+
 <style>
 
 html, body {
@@ -768,7 +770,7 @@ button[type="submit"],
 
 </style>
 </head>
-
+ 
 <body>
 
 <div id="map"></div>
@@ -903,6 +905,11 @@ button[type="submit"],
     <input type="file" class="toolbar-column" id="fileInput" />
     <button id="upload-to-ipfs-button" class="toolbar-column-btns">Upload to IPFS</button>
     <textarea class="toolbar-column" id="cid-output" placeholder="CID" readonly></textarea>
+
+    <textarea class="toolbar-column" id="cid-input" type="text" placeholder="Enter CID"></textarea>
+    <button class="toolbar-column-btns" id="fetch-from-ipfs-button">Fetch from IPFS</button>
+    <div id="cid-output"></div>
+    <div id="image-container"></div>
 
   </div>
 </div>
@@ -2110,6 +2117,7 @@ isLoggedIn = true;
 loader.updateProgress();
 
 
+
 document.getElementById('upload-to-ipfs-button').disabled = true;
 
 let helia = null;
@@ -2117,12 +2125,72 @@ let fs = null;
 
 async function initHelia() {
   try {
-    if (!window.Helia || !window.HeliaUnixfs) {
-      throw new Error('Helia or HeliaUnixfs not loaded. Check script imports.');
+    if (!window.Helia || !window.HeliaUnixfs || !window.Libp2p) {
+      throw new Error('Helia, HeliaUnixfs, or libp2p not loaded.');
     }
-    helia = await window.Helia.createHelia();
+
+    const bootstrapList = [
+      '/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN',
+      '/dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa',
+      '/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ',
+      '/dns4/nyc-1.bootstrap.libp2p.io/tcp/443/wss/p2p/QmSoLMeWqB7YGVLJN3pNLQpmmEk35vGrvXL8kT3uNoHbeG',
+      '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/p2p/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
+    ];
+
+    const libp2pOptions = {
+      addresses: {
+        listen: ['/webrtc', '/p2p-circuit'],
+        announce: ['/dns4/relay.libp2p.io/tcp/443/wss/p2p/QmRelay'],
+      },
+      transports: [
+        window.Libp2p.webRTC(),
+        window.Libp2p.webSockets(),
+        window.Libp2p.circuitRelayTransport({ discoverRelays: 10, reservationConcurrency: 5 }),
+      ],
+      connectionManager: { minConnections: 2, maxConnections: 100 },
+      peerDiscovery: [
+        window.Libp2p.bootstrap({ list: bootstrapList, interval: 1000 }),
+      ],
+      services: {
+        identify: window.Libp2p.identify(),
+        dht: window.Libp2p.kadDHT({ clientMode: false }),
+        ping: window.Libp2p.ping()
+      },
+    };
+
+    helia = await window.Helia.createHelia({ ibp2p: libp2pOptions });
     fs = window.HeliaUnixfs.unixfs(helia);
     console.log('Helia and UnixFS initialized');
+
+    // Proactive peer connection to bootstrap nodes
+    console.log('Attempting to connect to bootstrap nodes...');
+    for (const peer of bootstrapList) {
+      try {
+        await helia.libp2p.dial(peer); // Use full multiaddr
+        console.log(`Successfully connected to bootstrap node: ${peer}`);
+      } catch (error) {
+        console.error(`Failed to connect to bootstrap node ${peer}:`, error);
+      }
+    }
+
+    helia.libp2p.addEventListener('peer:connect', (event) => {
+      console.log('Connected to peer:', event.detail.toString());
+    });
+    helia.libp2p.addEventListener('peer:disconnect', (event) => {
+      console.log('Disconnected from peer:', event.detail.toString());
+    });
+    helia.libp2p.addEventListener('connection:open', (event) => {
+      console.log('Connection opened:', event.detail.remotePeer.toString());
+    });
+    helia.libp2p.addEventListener('connection:close', (event) => {
+      console.log('Connection closed:', event.detail.remotePeer.toString());
+    });
+
+    setInterval(() => {
+      const peers = helia.libp2p.getPeers();
+      console.log('Connected peers:', peers.length, peers.map(p => p.toString()));
+    }, 5000);
+
     document.getElementById('upload-to-ipfs-button').disabled = false;
   } catch (error) {
     console.error('Initialization failed:', error);
@@ -2132,7 +2200,8 @@ async function initHelia() {
 
 initHelia();
 
-document.getElementById("upload-to-ipfs-button").addEventListener("click", async () => {
+
+document.getElementById('upload-to-ipfs-button').addEventListener('click', async () => {
   await upload();
 });
 
@@ -2143,20 +2212,101 @@ async function upload() {
     alert('No file selected');
     return;
   }
-  if (!fs) {
-    document.getElementById('cid-output').textContent = 'Helia not initialized. Please wait or refresh.';
+  if (!fs || !helia) {
+    document.getElementById('cid-output').textContent = 'Helia not initialized.';
     return;
   }
 
   try {
     const fileArrayBuffer = await file.arrayBuffer();
     const fileBytes = new Uint8Array(fileArrayBuffer);
+    console.log('File size:', fileBytes.length);
     const cid = await fs.addBytes(fileBytes);
-    console.log('Uploaded, CID:', cid.toString());
-    document.getElementById('cid-output').textContent = `Uploaded, CID: ${cid.toString()}`;
+    console.log('Uploaded locally, CID:', cid.toString());
+    document.getElementById('cid-output').textContent = `Uploaded locally, CID: ${cid.toString()}`;
+
+    // Store in blockstore if available
+    if (helia.blockstore && typeof helia.blockstore.put === 'function') {
+      await helia.blockstore.put(cid, fileBytes);
+      console.log('Stored CID in blockstore:', cid.toString());
+      document.getElementById('cid-output').textContent += `\nStored in blockstore`;
+    } else {
+      console.warn('Blockstore.put not available on helia');
+      document.getElementById('cid-output').textContent += `\nWarning: Blockstore.put not available`;
+    }
+
+    // Test local retrieval
+    const chunks = [];
+    for await (const chunk of fs.cat(cid)) {
+      chunks.push(chunk);
+    }
+    const data = new Uint8Array(chunks.reduce((acc, chunk) => acc.concat([...chunk]), []));
+    console.log('Retrieved file size:', data.length);
+    document.getElementById('cid-output').textContent += `\nRetrieved locally, size: ${data.length} bytes`;
+
+    // Announce to DHT
+    console.log('DHT status:', helia.libp2p.services.dht.isStarted());
+    try {
+      await helia.routing.provide(cid);
+      console.log('Announced CID to DHT');
+      document.getElementById('cid-output').textContent += `\nAnnounced to DHT, Gateway: https://ipfs.io/ipfs/${cid.toString()}`;
+    } catch (error) {
+      console.error('DHT announcement failed:', error);
+      document.getElementById('cid-output').textContent += `\nDHT announcement failed: ${error.message}`;
+    }
   } catch (error) {
-    console.error('Upload failed:', error);
-    document.getElementById('cid-output').textContent = `Upload failed: ${error.message}`;
+    console.error('Error:', error);
+    document.getElementById('cid-output').textContent = `Failed: ${error.message}`;
+  }
+}
+
+document.getElementById('fetch-from-ipfs-button').addEventListener('click', async () => {
+  await fetchContent();
+});
+
+async function fetchContent() {
+  const cidInput = document.getElementById('cid-input').value.trim();
+  if (!cidInput) {
+    alert('No CID provided');
+    return;
+  }
+  if (!fs || !helia) {
+    document.getElementById('cid-output').textContent = 'Helia not initialized.';
+    return;
+  }
+
+  try {
+    const chunks = [];
+    for await (const chunk of fs.cat(cidInput)) {
+      chunks.push(chunk);
+    }
+    const data = new Uint8Array(chunks.reduce((acc, chunk) => acc.concat([...chunk]), []));
+    console.log('Fetched file size:', data.length);
+    document.getElementById('cid-output').textContent = `Fetched CID: ${cidInput}, size: ${data.length} bytes`;
+
+    // Display the image
+    const blob = new Blob([data], { type: 'image/*' }); // Adjust MIME type if known (e.g., 'image/png')
+    const url = URL.createObjectURL(blob);
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = 'IPFS Image';
+    img.style.maxWidth = '100%'; // Optional: Responsive styling
+    const imageContainer = document.getElementById('image-container') || document.body; // Use a specific container if available
+    imageContainer.appendChild(img);
+    document.getElementById('cid-output').textContent += `\nImage displayed`;
+
+    // Future seeder feature: Announce as provider
+    if (helia.libp2p.services.dht.isStarted()) {
+      await helia.routing.provide(cidInput);
+      console.log('Announced as provider for CID:', cidInput);
+      document.getElementById('cid-output').textContent += `\nNow seeding CID: ${cidInput}`;
+    } else {
+      console.warn('DHT not started, cannot announce as provider');
+      document.getElementById('cid-output').textContent += `\nWarning: Could not seed due to DHT issue`;
+    }
+  } catch (error) {
+    console.error('Fetch error:', error);
+    document.getElementById('cid-output').textContent = `Fetch failed: ${error.message}`;
   }
 }
 
