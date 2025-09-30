@@ -3722,10 +3722,10 @@ const camera = new THREE.PerspectiveCamera(
 
 function createStars() {
   const starsGeometry = new THREE.BufferGeometry();
-  const starCount = 5000;
+  const starCount = 10000;
   const positions = new Float32Array(starCount * 3);
-  const innerRadius = 40;
-  const outerRadius = 50;
+  const innerRadius = 400;
+  const outerRadius = 500;
 
   for (let i = 0; i < starCount; i++) {
     const i3 = i * 3;
@@ -3748,7 +3748,7 @@ function createStars() {
   );
   const starsMaterial = new THREE.PointsMaterial({
     color: 0xffffff,
-    size: 0.1,
+    size: 0.5,
     sizeAttenuation: true,
   });
 
@@ -5042,7 +5042,7 @@ function adjustButtonSize() {
 
 
 
-  let targetRotationX = 0;
+let targetRotationX = 0;
 let targetRotationY = 0;
 let prevLng = 0;
 let prevLat = 0;
