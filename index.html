@@ -3725,8 +3725,8 @@ function createStars() {
   const starsGeometry = new THREE.BufferGeometry();
   const starCount = 10000;
   const positions = new Float32Array(starCount * 3);
-  const innerRadius = 800;
-  const outerRadius = 900;
+  const innerRadius = 900;
+  const outerRadius = 950;
 
   for (let i = 0; i < starCount; i++) {
     const i3 = i * 3;
@@ -5047,7 +5047,7 @@ let targetRotationX = 0;
 let targetRotationY = 0;
 let prevLng = 0;
 let prevLat = 0;
-const lerpFactor = 0.1; // Controls smoothness
+const lerpFactor = 0.05; // Controls smoothness
 
 function animate() {
   requestAnimationFrame(animate);
