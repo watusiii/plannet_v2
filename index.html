@@ -51,6 +51,8 @@
 
 <script data-src="hcs://1/0.0.9966383" data-script-id="libp2p.bundle"></script>
 
+<script data-src="hcs://1/0.0.9976097" data-script-id="multiaddr@13.0.0"></script>
+
 <style>
 
 html, body {
@@ -318,15 +320,15 @@ html, body {
 }
 
 #speed-slider {
-        position: absolute;
-        top: 3vh;
-        right: 0;
-        z-index: 1005;
-        width: 32.5vw;
-        height: 3vh;
-        writing-mode: bt-lr;
-        transform: rotate(0deg);
-      }
+  position: absolute;
+  top: 3vh;
+  right: 0;
+  z-index: 1005;
+  width: 32.5vw;
+  height: 3vh;
+  writing-mode: bt-lr;
+  transform: rotate(0deg);
+}
 
 .yourfov {
   display: block;
@@ -1405,7 +1407,7 @@ button[type="submit"],
   </div>
   <div class="toolbar-column" id="change-crosshair-settings">Change crosshair settings
   </div>
-  <div class="toolbar-column" id="change-popup-settings">Change popup colors
+  <div class="toolbar-column" id="change-popup-settings">Change popup settings
   </div>
   <div class="toolbar-column" id="change-color-of-main-buttons">Change color of main buttons
   </div>
@@ -1656,6 +1658,12 @@ button[type="submit"],
       <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
     </div>
 
+    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
+      <label for="color-green" class="yourfov">Font Size:
+      </label>
+      <input type="number" id="popup-font-size" class="yourfov" style="margin-left: 1vw;" value='2' max="255" placeholder="Default Size = 2"/>
+    </div>
+
     <div id="savepopup" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save popup
     </div>
 
@@ -1693,7 +1701,7 @@ button[type="submit"],
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">Size:
       </label>
-      <input type="number" id="Marker-Size" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Size"/>
+      <input type="number" id="Marker-Size" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Default Size = 5"/>
     </div>
 
     <div id="save-marker-settings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Marker Settings
@@ -2179,33 +2187,11 @@ async function initHelia() {
       },
     };
 
-    helia = await window.Helia.createHelia({ ibp2p: libp2pOptions });
+    helia = await window.Helia.createHelia({ Libp2p: libp2pOptions });
     fs = window.HeliaUnixfs.unixfs(helia);
-    console.log('Helia and UnixFS initialized');
 
-    // Proactive peer connection to bootstrap nodes
-    console.log('Attempting to connect to bootstrap nodes...');
-    for (const peer of bootstrapList) {
-      try {
-        await helia.libp2p.dial(peer); // Use full multiaddr
-        console.log(`Successfully connected to bootstrap node: ${peer}`);
-      } catch (error) {
-        console.error(`Failed to connect to bootstrap node ${peer}:`, error);
-      }
-    }
+    console.log(helia.libp2p.peerId)
 
-    helia.libp2p.addEventListener('peer:connect', (event) => {
-      console.log('Connected to peer:', event.detail.toString());
-    });
-    helia.libp2p.addEventListener('peer:disconnect', (event) => {
-      console.log('Disconnected from peer:', event.detail.toString());
-    });
-    helia.libp2p.addEventListener('connection:open', (event) => {
-      console.log('Connection opened:', event.detail.remotePeer.toString());
-    });
-    helia.libp2p.addEventListener('connection:close', (event) => {
-      console.log('Connection closed:', event.detail.remotePeer.toString());
-    });
 
     setInterval(() => {
       const peers = helia.libp2p.getPeers();
@@ -2264,14 +2250,25 @@ async function upload() {
     const data = new Uint8Array(chunks.reduce((acc, chunk) => acc.concat([...chunk]), []));
     console.log('Retrieved file size:', data.length);
     document.getElementById('cid-output').textContent += `\nRetrieved locally, size: ${data.length} bytes`;
-
-    // Announce to DHT
     console.log('DHT status:', helia.libp2p.services.dht.isStarted());
+    adjustTextareaHeight(document.getElementById('cid-output'));
+    console.log('Connected peers:', helia.libp2p.getPeers().length);
+
     try {
+      console.log('Announcing CID to DHT');
       await helia.routing.provide(cid);
       console.log('Announced CID to DHT');
       document.getElementById('cid-output').textContent += `\nAnnounced to DHT, Gateway: https://ipfs.io/ipfs/${cid.toString()}`;
-    } catch (error) {
+      setInterval(async () => {
+        try {
+          await helia.routing.provide(cid);
+          console.log('Re-announced CID to DHT:', cid.toString());
+        } catch (error) {
+          console.error('Re-announcement failed:', error);
+        }
+      }, 60000); // Re-announce every 60 seconds
+    }
+     catch (error) {
       console.error('DHT announcement failed:', error);
       document.getElementById('cid-output').textContent += `\nDHT announcement failed: ${error.message}`;
     }
@@ -2279,6 +2276,12 @@ async function upload() {
     console.error('Error:', error);
     document.getElementById('cid-output').textContent = `Failed: ${error.message}`;
   }
+}
+
+function createFormData(fileBytes, cid) {
+  const formData = new FormData();
+  formData.append('file', new Blob([fileBytes]), cid);
+  return formData;
 }
 
 document.getElementById('fetch-from-ipfs-button').addEventListener('click', async () => {
@@ -5039,11 +5042,11 @@ function adjustButtonSize() {
 
 
 
-// Declare cumulative variables outside animate to persist state
-let cumulativeLng = 0; // Initialize with 0 or initial lng
-let prevLng = 0; // Previous longitude
-let cumulativeLat = 0; // Initialize with 0 or initial lat
-let prevLat = 0; // Previous latitude
+  let targetRotationX = 0;
+let targetRotationY = 0;
+let prevLng = 0;
+let prevLat = 0;
+const lerpFactor = 0.1; // Controls smoothness
 
 function animate() {
   requestAnimationFrame(animate);
@@ -5055,39 +5058,43 @@ function animate() {
   const lat = center.lat.toFixed(5);
   const lng = center.lng.toFixed(5);
 
+  // Update coordinates display only if changed
   const coordinatesDisplay = document.getElementById("coordinates-display");
-  coordinatesDisplay.value = `lng,lat = ${lng},${lat}`;
+  const newCoords = `lng,lat = ${lng},${lat}`;
+  if (coordinatesDisplay.value !== newCoords) {
+    coordinatesDisplay.value = newCoords;
 
-  // Create a temporary span to measure the text width
-  const tempSpan = document.createElement("span");
-  tempSpan.style.visibility = "hidden";
-  tempSpan.style.position = "absolute";
-  tempSpan.style.whiteSpace = "nowrap";
-  tempSpan.style.font = window.getComputedStyle(coordinatesDisplay).font;
-  tempSpan.textContent = coordinatesDisplay.value;
-  document.body.appendChild(tempSpan);
+    const tempSpan = document.createElement("span");
+    tempSpan.style.visibility = "hidden";
+    tempSpan.style.position = "absolute";
+    tempSpan.style.whiteSpace = "nowrap";
+    tempSpan.style.font = window.getComputedStyle(coordinatesDisplay).font;
+    tempSpan.textContent = newCoords;
+    document.body.appendChild(tempSpan);
 
-  // Set the input width based on the span width
-  coordinatesDisplay.style.width = `${tempSpan.offsetWidth}px`; // Add some padding
-  document.body.removeChild(tempSpan);
+    coordinatesDisplay.style.width = `${tempSpan.offsetWidth + 10}px`;
+    document.body.removeChild(tempSpan);
+  }
 
   // Smooth longitude transition
   let deltaLng = lng - prevLng;
-  if (deltaLng > 180) deltaLng -= 360; // Shortest path for longitude
+  if (deltaLng > 180) deltaLng -= 360;
   else if (deltaLng < -180) deltaLng += 360;
-  cumulativeLng += deltaLng;
   prevLng = lng;
 
   // Smooth latitude transition
   let deltaLat = lat - prevLat;
-  if (deltaLat > 90) deltaLat -= 180; // Shortest path for latitude
+  if (deltaLat > 90) deltaLat -= 180;
   else if (deltaLat < -90) deltaLat += 180;
-  cumulativeLat += deltaLat;
   prevLat = lat;
 
-  // Apply rotations: Map 360 degrees of lng to 2π radians (full circle)
-  stars.rotation.y = -(cumulativeLng * Math.PI) / 180; // Convert degrees to radians
-  stars.rotation.x = (cumulativeLat * Math.PI) / 180; // Convert degrees to radians for latitude
+  // Update target rotations (removed 0.5 factor)
+  targetRotationY -= (deltaLng * Math.PI) / 180; // Full rotation mapping
+  targetRotationX += (deltaLat * Math.PI) / 180;
+
+  // Apply lerp for smooth rotation
+  stars.rotation.y += (targetRotationY - stars.rotation.y) * lerpFactor;
+  stars.rotation.x += (targetRotationX - stars.rotation.x) * lerpFactor;
 
   renderer.render(scene, camera);
 }
@@ -6069,6 +6076,7 @@ function applyAllStyles() {
     updatePopupUsername();
     updatePopupTitles();
     updatePopupText();
+    updatePopupFontSize();
 }
 
 document.getElementById("color-red").addEventListener("input", (event) => {
@@ -6160,6 +6168,8 @@ event.stopPropagation();
     const colorGreenTitles = Math.min(parseInt(document.getElementById("color-green-titles").value) || 0, 255);
     const colorBlueTitles = Math.min(parseInt(document.getElementById("color-blue-titles").value) || 0, 255);
 
+    const popupFontSize = Math.min(parseInt(document.getElementById("popup-font-size").value) || 0.5, 10);
+
             const messageData = {
                 data: {
                     colorBorder: {
@@ -6196,6 +6206,9 @@ event.stopPropagation();
                         redTitles: colorRedTitles,
                         greenTitles: colorGreenTitles,
                         blueTitles: colorBlueTitles
+                    },
+                    popupFontSize: {
+                        popupFontSize: popupFontSize
                     }
                 },
             };
@@ -6233,7 +6246,7 @@ async function loadProfilePopup() {
         // Check if the last message has valid data
         if (lastMessage && lastMessage.data) {
             // Extract relevant data and clamp to max 255
-            const { colorBorder, colorNumber, colorClose, colorUsername, colorAccid, colorText, colorTitles } = lastMessage.data;
+            const { colorBorder, colorNumber, colorClose, colorUsername, colorAccid, colorText, colorTitles, popupFontSize } = lastMessage.data;
 
             // Clamp values to max 255
             const clampedColorBorder = {
@@ -6271,14 +6284,15 @@ async function loadProfilePopup() {
                 greenTitles: Math.min(parseInt(colorTitles.greenTitles) || 0, 255),
                 blueTitles: Math.min(parseInt(colorTitles.blueTitles) || 0, 255)
             };
-
+            const clampedPopupFontSize = Math.min(parseInt(popupFontSize.popupFontSize) || 0.5, 10);
             // Store the clamped settings in accountObjectSettings
             accountObjectSettings.push({
                 colorBorder: clampedColorBorder,
                 colorUsername: clampedColorUsername,
                 colorAccid: clampedColorAccid,
                 colorText: clampedColorText,
-                colorTitles: clampedColorTitles
+                colorTitles: clampedColorTitles,
+                popupFontSize: clampedPopupFontSize
             });
 
             document.getElementById("color-red-border").value = clampedColorBorder.redBorder;
@@ -6309,6 +6323,8 @@ async function loadProfilePopup() {
             document.getElementById("color-green-titles").value = clampedColorTitles.greenTitles;
             document.getElementById("color-blue-titles").value = clampedColorTitles.blueTitles;
 
+            document.getElementById("popup-font-size").value = clampedPopupFontSize;
+
             // Call update functions to apply the loaded values
             updatePopupBorder();
             updatePopupNumber();
@@ -6317,6 +6333,7 @@ async function loadProfilePopup() {
             updatePopupUsername();
             updatePopupTitles();
             updatePopupText();
+            updatePopupFontSize();
 
         } else {
             console.log("Last message does not have valid data.");
@@ -6371,6 +6388,8 @@ document.getElementById("color-red-text").addEventListener("input", (event) => {
 document.getElementById("color-green-text").addEventListener("input", (event) => {updatePopupText();});
 
 document.getElementById("color-blue-text").addEventListener("input", (event) => {updatePopupText();});
+
+document.getElementById("popup-font-size").addEventListener("input", (event) => {updatePopupFontSize();});
 
 function updatePopupBorder() {
     const red_border = document.getElementById("color-red-border").value;
@@ -6462,6 +6481,15 @@ function updatePopupText() {
 
     popupTexts.forEach(text => {
         text.style.color = color_text;
+    });
+}
+
+function updatePopupFontSize() {
+    const popupFontSize = document.getElementById("popup-font-size").value;
+    const popupFontSizeValue = Math.min(parseInt(popupFontSize) || 0.5, 10);
+    const popupTexts = document.querySelectorAll('.maplibregl-popup-content');
+    popupTexts.forEach(text => {
+        text.style.fontSize = `${popupFontSizeValue}vh`;
     });
 }
 
