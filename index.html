@@ -51,8 +51,6 @@
 
 <script data-src="hcs://1/0.0.9966383" data-script-id="libp2p.bundle"></script>
 
-<script data-src="hcs://1/0.0.9976097" data-script-id="multiaddr@13.0.0"></script>
-
 <script data-src="hcs://1/0.0.10013779" data-script-id="multiformats@13.4.1"></script>
 
 <script data-src="hcs://1/0.0.10013806" data-script-id="delegated-peer-routing@4.0.14"></script>
@@ -60,6 +58,8 @@
 <script data-src="hcs://1/0.0.10013810" data-script-id="kubo-rpc-client@latest"></script>
 
 <script data-src="hcs://1/0.0.10013813" data-script-id="libp2p-noise@17.0.0"></script>
+
+<script data-src="hcs://1/0.0.10013941" data-script-id="multiaddr@10.0.1"></script>
 
 <style>
 
@@ -2169,6 +2169,7 @@ document.getElementById('upload-to-ipfs-button').disabled = true;
 let helia = null;
 let fs = null;
 
+console.log('window.Multiaddr', window.Multiaddr);
 
 
 async function initHelia() {
