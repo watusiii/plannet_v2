@@ -61,6 +61,10 @@
 
 <script data-src="hcs://1/0.0.10013941" data-script-id="multiaddr@10.0.1"></script>
 
+<script data-src="hcs://1/0.0.10014184" data-script-id="libp2ppeer-id"></script>
+
+<script data-src="hcs://1/0.0.10015601" data-script-id="helia-verified-fetch@3.2.3"></script>
+
 <style>
 
 html, body {
@@ -2162,15 +2166,10 @@ isLoggedIn = true;
 
 loader.updateProgress();
 
-
-
 document.getElementById('upload-to-ipfs-button').disabled = true;
 
 let helia = null;
 let fs = null;
-
-console.log('window.Multiaddr', window.Multiaddr);
-
 
 async function initHelia() {
 
@@ -2187,7 +2186,7 @@ async function initHelia() {
       '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/p2p/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
     ];
 
-    const noise = window.ChainsafeLibp2pNoise?.noise?.() || window.Libp2p?.noise?.();
+    const noise = window.ChainsafeLibp2PNoise?.noise?.() || window.Libp2p?.noise?.();
 
     const kuboClient = window.KuboRpcClient.create({
       url: 'https://delegated-ipfs.dev/api/v0'
@@ -2197,23 +2196,21 @@ async function initHelia() {
       addresses: {
         listen: ['/webrtc', '/p2p-circuit'],
         announce: [
-          '/p2p-circuit/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ',
-          '/dns4/relay.libp2p.io/tcp/443/wss/p2p/QmRelay'
+          '/p2p-circuit/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ'
         ],
       },
       transports: [
-        window.Libp2p.webRTC(),
+        window.Libp2p.webRTC({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }),
         window.Libp2p.webSockets(),
-        window.Libp2p.circuitRelayTransport({ discoverRelays: 20 }),
+        window.Libp2p.circuitRelayTransport({ discoverRelays: 3, reservationConcurrency: 5, hop: { enabled: true } })
       ],
-      connectionEncryption: [noise],
+      connectionEncryption: noise ? [noise] : [],
       connectionManager: { minConnections: 2, maxConnections: 100 },
       peerDiscovery: [
         window.Libp2p.bootstrap({ list: bootstrapList, interval: 1000 }),
       ],
       services: {
         identify: window.Libp2p.identify(),
-        // Delegated DHT: Offloads to public RPC—no hangs!
         dht: window.Libp2p.kadDHT({
           clientMode: true,
           kBucketSize: 20,
@@ -2233,16 +2230,13 @@ async function initHelia() {
 
     setInterval(() => {
       const peers = helia.libp2p.getPeers();
-      console.log('Connected peers:', peers.length, peers.map(p => p.toString().slice(0, 10) + '...'));
+      console.groupCollapsed('Number of connected peers:', peers.length);
+      console.log('Peers:', peers);
+      console.groupEnd();
       console.log('DHT routing table size:', helia.libp2p.services.dht.routingTable?.size || 'N/A');
     }, 5000);
 
     document.getElementById('upload-to-ipfs-button').disabled = false;
-
-    window.helia = helia;
-    window.fs = fs;  // For cat()
-    console.log('Exposed helia and fs to window for debugging');
-
   } catch (error) {
     console.error('Initialization failed:', error);
     document.getElementById('cid-output').textContent = `Initialization failed: ${error.message}`;
@@ -2250,7 +2244,6 @@ async function initHelia() {
 }
 
 initHelia();
-
 
 document.getElementById('upload-to-ipfs-button').addEventListener('click', async () => {
   await upload();
@@ -2272,19 +2265,10 @@ async function upload() {
     const fileArrayBuffer = await file.arrayBuffer();
     const fileBytes = new Uint8Array(fileArrayBuffer);
     console.log('File size:', fileBytes.length);
-    const cid = await fs.addBytes(fileBytes);
-    console.log('Uploaded locally, CID:', cid.toString());
-    document.getElementById('cid-output').textContent = `Uploaded locally, CID: ${cid.toString()}`;
 
-    // Store in blockstore if available
-    if (helia.blockstore && typeof helia.blockstore.put === 'function') {
-      await helia.blockstore.put(cid, fileBytes);
-      console.log('Stored CID in blockstore:', cid.toString());
-      document.getElementById('cid-output').textContent += `\nStored in blockstore`;
-    } else {
-      console.warn('Blockstore.put not available on helia');
-      document.getElementById('cid-output').textContent += `\nWarning: Blockstore.put not available`;
-    }
+    const cid = await fs.addBytes(fileBytes);
+    console.log('Uploaded and pinned locally, CID:', cid.toString());
+    document.getElementById('cid-output').textContent = `Uploaded and pinned locally, CID: ${cid.toString()}`;
 
     // Test local retrieval
     const chunks = [];
@@ -2294,55 +2278,47 @@ async function upload() {
     const data = new Uint8Array(chunks.reduce((acc, chunk) => acc.concat([...chunk]), []));
     console.log('Retrieved file size:', data.length);
     document.getElementById('cid-output').textContent += `\nRetrieved locally, size: ${data.length} bytes`;
-    console.log('DHT status:', helia.libp2p.services.dht.isStarted());
-    adjustTextareaHeight(document.getElementById('cid-output'));
-    console.log('Connected peers:', helia.libp2p.getPeers().length);
 
-    try {
-      console.log('Announcing CID to DHT');
-      
-      // NEW: Native provide with optional long timeout (no retry loop—delegated is reliable)
-      const announcePromise = helia.routing.provide(cid);
-      const globalTimeout = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('DHT provide timed out after 120s')), 120000)  // 2min safety net
-      );
-      await Promise.race([announcePromise, globalTimeout]);
-      console.log('Announced CID to DHT (success)');
-      
-      // NEW: Verify providers immediately
-      const providers = await helia.routing.findProviders(cid, { maxNumProviders: 5 });
-      console.log('Providers found after announce:', providers.map(p => p.id.toString()));
-      if (providers.some(p => p.id.toString() === helia.libp2p.peerId.toString())) {
-        console.log('Confirmed: Self listed as provider');
+    // Log network status
+    const dhtStatus = helia.libp2p.services.dht.isStarted();
+    const peerCount = helia.libp2p.getPeers().length;
+    console.log('DHT status:', dhtStatus);
+    console.log('Connected peers:', peerCount);
+    document.getElementById('cid-output').textContent += `\nDHT: ${dhtStatus ? 'Active' : 'Inactive'}, Peers: ${peerCount}`;
+    adjustTextareaHeight(document.getElementById('cid-output'));
+
+    // Announce CID to DHT with retries
+    let announced = false;
+    const maxRetries = 10;
+    let retryCount = 0;
+    const baseTimeout = 150000; // 150s
+
+    while (!announced && retryCount < maxRetries) {
+      try {
+        console.log(`Announcing CID to DHT (attempt ${retryCount + 1}/${maxRetries})`);
+        const announcePromise = helia.routing.provide(cid);
+        const globalTimeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error(`DHT provide timed out after ${baseTimeout/1000}s`)), baseTimeout)
+        );
+        await Promise.race([announcePromise, globalTimeout]);
+        console.log('Announced CID to DHT successfully');
+        document.getElementById('cid-output').textContent += `\nAnnounced to DHT (attempt ${retryCount + 1})`;
+        announced = true;
+      } catch (error) {
+        console.error(`DHT announcement failed (attempt ${retryCount + 1}):`, error);
+        retryCount++;
+        if (retryCount < maxRetries) {
+          const backoff = Math.pow(2, retryCount) * 5000; // 5s, 10s, 20s
+          console.log(`Retrying after ${backoff/1000}s...`);
+          await new Promise(resolve => setTimeout(resolve, backoff));
+        }
       }
-      
+    }
+
+    if (announced) {
       const shareUrl = `https://ipfs.io/ipfs/${cid.toString()}`;
       console.log('Global access link:', shareUrl);
-      document.getElementById('cid-output').textContent += `\nAnnounced to DHT, Gateway: ${shareUrl}`;
-      
-      // Re-announce more aggressively at first
-      let reAnnounceCount = 0;
-      const intervalId = setInterval(async () => {
-        try {
-          console.log('Re-announcing CID to DHT...');
-          await helia.routing.provide(cid);
-          console.log('Re-announced successfully');
-          reAnnounceCount++;
-          if (reAnnounceCount >= 4) {  // After 4x (2min), slow to 60s
-            clearInterval(intervalId);
-            setInterval(async () => {
-              await helia.routing.provide(cid);
-              console.log('Maintenance re-announce');
-            }, 60000);
-          }
-        } catch (error) {
-          console.error('Re-announcement failed:', error);
-        }
-      }, 30000);  // 30s bursts for quick propagation
-      
-    } catch (error) {
-      console.error('DHT announcement failed:', error);
-      document.getElementById('cid-output').textContent += `\nDHT announcement failed: ${error.message}. Share CID directly with peers for P2P fetch.`;
+      document.getElementById('cid-output').textContent += `\nGateway: ${shareUrl}`;
     }
   } catch (error) {
     console.error('Error:', error);
@@ -2353,6 +2329,8 @@ async function upload() {
 document.getElementById('fetch-from-ipfs-button').addEventListener('click', async () => {
   await fetchContent();
 });
+
+console.log("fetchContent", window.HeliaVerifiedFetch);
 
 async function fetchContent() {
   const cidInput = document.getElementById('cid-input').value.trim();
@@ -2365,35 +2343,32 @@ async function fetchContent() {
     return;
   }
 
-  // Parse string to CID (fails if invalid)
   let cid;
   try {
     cid = window.Multiformats.CID.parse(cidInput);
   } catch (error) {
-    console.error('Invalid CID:', error);
     document.getElementById('cid-output').textContent = `Invalid CID: ${error.message}`;
     return;
   }
 
-  // Get user-selected type (or default to 'image')
   const contentType = document.getElementById('content-type')?.value || 'image';
 
   try {
     const chunks = [];
-    for await (const chunk of fs.cat(cidInput)) {
+    for await (const chunk of fs.cat(cidInput)) {  // Bitswap P2P fetch (from dialed peer or swarm)
       chunks.push(chunk);
     }
     const data = new Uint8Array(chunks.reduce((acc, chunk) => acc.concat([...chunk]), []));
     console.log('Fetched file size:', data.length);
     document.getElementById('cid-output').textContent = `Fetched CID: ${cidInput}, size: ${data.length} bytes`;
 
-    // Set MIME type and display element based on content type
+    // Display logic (unchanged)
     let mimeType;
     let displayElement;
     if (contentType === 'video') {
-      mimeType = 'video/*'; // Or more specific like 'video/mp4' if known
+      mimeType = 'video/*';
       displayElement = document.createElement('video');
-      displayElement.controls = true; // Enable play/pause/scrub
+      displayElement.controls = true;
       displayElement.style.maxWidth = '100%';
     } else {
       mimeType = 'image/*';
@@ -2404,28 +2379,20 @@ async function fetchContent() {
     const blob = new Blob([data], { type: mimeType });
     const url = URL.createObjectURL(blob);
     displayElement.src = url;
-    displayElement.alt = `${contentType.charAt(0).toUpperCase() + contentType.slice(1)} from IPFS`;
+    displayElement.alt = `${contentType} from IPFS`;
 
-    // Clear previous content and append
     const container = document.getElementById('image-container') || document.body;
-    container.innerHTML = ''; // Clear old media
+    container.innerHTML = '';
     container.appendChild(displayElement);
 
-    document.getElementById('cid-output').textContent += `\n${contentType.charAt(0).toUpperCase() + contentType.slice(1)} displayed`;
+    document.getElementById('cid-output').textContent += `\n${contentType} displayed`;
 
-    // Announce as provider (now with proper CID)
+    // Auto-seed (already there, makes fetcher a provider)
     if (helia.libp2p.services.dht.isStarted()) {
       await helia.routing.provide(cid);
       console.log('Announced as provider for CID:', cidInput);
       document.getElementById('cid-output').textContent += `\nNow seeding CID: ${cidInput}`;
-    } else {
-      console.warn('DHT not started, cannot announce as provider');
-      document.getElementById('cid-output').textContent += `\nWarning: Could not seed due to DHT issue`;
     }
-
-    // Optional: Clean up URL after display (e.g., on page unload)
-    // window.addEventListener('beforeunload', () => URL.revokeObjectURL(url));
-
   } catch (error) {
     console.error('Fetch error:', error);
     document.getElementById('cid-output').textContent = `Fetch failed: ${error.message}`;
