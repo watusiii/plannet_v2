@@ -650,6 +650,7 @@ html, body {
   border: 0.3vh solid;
   border-color: #ffffff;
   border-radius: 1vh;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 .maplibregl-popup-content {
@@ -5397,6 +5398,7 @@ function updateClusters() {
         map.easeTo({
           center: cluster.geometry.coordinates,
           zoom: expansionZoom + 0.1,
+          duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
         });
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
@@ -5441,6 +5443,7 @@ function updateClusters() {
         map.easeTo({
           center: cluster.geometry.coordinates,
           zoom: map.getZoom(),
+          duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
         });
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
@@ -5624,6 +5627,7 @@ async function addPolygonWithImageFill(map, polygon) {
           map.easeTo({
             center: e.lngLat,
             zoom: map.getZoom(), // Maintain current zoom level
+            duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
           });
           activePolygonPopups.forEach((p) => p.remove());
           activeMarkerPopups.forEach((p) => p.remove());
