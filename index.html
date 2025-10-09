@@ -958,7 +958,9 @@ button[type="submit"],
     <button id="upload-to-ipfs-button" class="toolbar-column-btns">Upload to IPFS</button>
     <textarea class="toolbar-column" id="cid-output" placeholder="CID" readonly></textarea>
 
-    <textarea class="toolbar-column" id="cid-input" type="text" placeholder="Enter CID" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"></textarea>
+    <textarea class="toolbar-column" id="cid-input" type="text" placeholder="Enter CID"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
     
     <!-- ADD THIS: Content type selector for fetch -->
     <select class="toolbar-column" id="content-type">
@@ -2209,19 +2211,9 @@ document.getElementById('upload-to-ipfs-button').disabled = true;
 let helia = null;
 let fs = null;
 
-console.log('Helia:', window.HeliaDelegatedRoutingV1HttpApiClient);
 async function initHelia() {
 
   try {
-
-    const ipniUrl = 'https://cid.contact';
-try {
-  new URL(ipniUrl);
-  console.log('IPNI URL is valid:', ipniUrl);
-} catch (urlError) {
-  console.error('Invalid IPNI URL:', urlError);
-  throw urlError;
-}
 
     const bootstrapList = [
       '/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN',
@@ -2364,6 +2356,12 @@ async function upload() {
       document.getElementById('cid-output').textContent = `successfully uploaded to the network CID: ${cid.toString()}`;
       adjustTextareaHeight(document.getElementById('cid-output'));
     }
+
+    if (maxretries === retryCount) {
+      document.getElementById('cid-output').textContent = `Failed to upload to the network`;
+      adjustTextareaHeight(document.getElementById('cid-output'));
+    }
+
   } catch (error) {
     console.error('Error:', error);
     document.getElementById('cid-output').textContent = `Failed: ${error.message}`;
@@ -2373,6 +2371,7 @@ async function upload() {
 document.getElementById('fetch-from-ipfs-button').addEventListener('click', async () => {
   await fetchContent();
 });
+
 
 async function fetchContent() {
   const cidInput = document.getElementById('cid-input').value.trim();
@@ -2396,60 +2395,52 @@ async function fetchContent() {
   const contentType = document.getElementById('content-type')?.value || 'image';
 
   try {
-    // Step 1: Try local fetch first (fast path)
     let chunks = [];
+
     try {
-      for await (const chunk of fs.cat(cid)) {
-        chunks.push(chunk);
-      }
-    } catch (localError) {
-      console.warn('Local fetch failed, searching for providers:', localError.message);
+
+      const gateways = [
+  'https://dweb.link/ipfs/',
+  'https://ipfs.io/ipfs/',
+  'https://cloudflare-ipfs.com/ipfs/',
+];
+for (const gateway of gateways) {
+  try {
+    const gatewayUrl = `${gateway}${cid.toString()}`;
+    console.log(`Attempting to fetch from: ${gatewayUrl}`);
+    const response = await window.HeliaVerifiedFetch.verifiedFetch(gatewayUrl, {
+      timeout: 30000,
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
+    const data = new Uint8Array(await response.arrayBuffer());
+    chunks = [data];
+    console.log(`Successfully fetched from ${gateway}`);
+    break;
+  } catch (gatewayError) {
+    console.warn(`Gateway ${gateway} failed: ${gatewayError.message}`);
+    if (gateway === gateways[gateways.length - 1]) {
+      throw new Error(`All gateways failed: ${gateways.join(', ')}`);
+    }
+  }
+}
 
-    // Step 2: If local fetch fails, search for providers via DHT
-    if (chunks.length === 0) {
-      console.log(`Searching for providers of CID: ${cid.toString()}`);
-      const providers = [];
-      for await (const provider of helia.libp2p.services.dht.findProviders(cid)) {
-        if (provider.id.toString() !== helia.libp2p.peerId.toString()) { // Skip self
-          providers.push(provider);
-          console.log(`Found provider: ${provider.id.toString()}, Multiaddrs: ${provider.multiaddrs.map(ma => ma.toString()).join(', ')}`);
-        }
-      }
-
-      if (providers.length === 0) {
-        throw new Error('No providers found for CID');
-      }
-
-      console.log(`Found ${providers.length} providers, attempting to connect...`);
-
-      // Step 3: Attempt to connect and fetch from providers
-      for (const provider of providers) {
-        for (const multiaddr of provider.multiaddrs) {
-          try {
-            console.log(`Attempting to dial ${multiaddr.toString()}...`);
-            const conn = await helia.libp2p.dial(multiaddr);
-            console.log(`Connected to ${provider.id.toString()} via ${multiaddr.toString()}`);
-
-            chunks = [];
-            for await (const chunk of fs.cat(cid)) {
-              chunks.push(chunk);
-            }
-            break; // Success, exit multiaddr loop
-          } catch (dialError) {
-            console.error(`Failed to connect to ${multiaddr.toString()}: ${dialError.message}`);
-            continue; // Try next multiaddr
-          }
-        }
-        if (chunks.length > 0) break; // Success, exit provider loop
-      }
 
       if (chunks.length === 0) {
-        throw new Error('Failed to fetch CID from any provider');
+        throw new Error('Failed to fetch CID from any provider or gateway');
       }
+
+    } catch (error) {
+      console.error('Fetch error:', error);
+      document.getElementById('cid-output').textContent = `Fetch failed: ${error.message}`;
+      adjustTextareaHeight(document.getElementById('cid-output'));
     }
 
-    // Step 4: Process and display the fetched content
+    console.log('chunks', chunks);
+
+
+    // Step 2: Process and display the fetched content
     const data = new Uint8Array(chunks.reduce((acc, chunk) => acc.concat([...chunk]), []));
     console.log('Fetched file size:', data.length);
     document.getElementById('cid-output').textContent = `Fetched: ${cidInput}`;
@@ -2477,17 +2468,45 @@ async function fetchContent() {
     container.innerHTML = '';
     container.appendChild(displayElement);
 
-    document.getElementById('cid-output').textContent += `\n${contentType} displayed`;
+    // Step 3: Pin the content and announce as provider
+    try {
+        await helia.pins.add(cid);
 
-    // Step 5: Announce as provider if DHT is active
-    if (helia.libp2p.services.dht.isStarted()) {
-      await helia.libp2p.services.dht.provide(cid); // Use correct DHT service
-      console.log('Announced as provider for CID:', cidInput);
-      document.getElementById('cid-output').textContent += `\nNow seeding CID: ${cidInput}`;
+        let announced = false;
+        const maxRetries = 10;
+        let retryCount = 0;
+
+        while (!announced && retryCount < maxRetries) {
+          try {
+            console.log(`Announcing CID to DHT (attempt ${retryCount + 1}/${maxRetries})`);
+            const announcePromise = helia.libp2p.services.dht.provide(cid);
+            const baseTimeout = retryCount === 0 ? 30000 : (retryCount === 1 || retryCount === 2) ? 150000 : Math.pow(2, retryCount - 1) * 5000;
+            const globalTimeout = new Promise((_, reject) =>
+              setTimeout(() => reject(new Error(`DHT provide timed out after ${baseTimeout/1000}s`)), baseTimeout)
+            );
+            await Promise.race([announcePromise, globalTimeout]);
+            console.log('Announced CID to DHT successfully');
+            announced = true;
+          } catch (error) {
+            console.error(`DHT announcement failed (attempt ${retryCount + 1}):`, error);
+            retryCount++;
+            if (retryCount < maxRetries) {
+              const backoff = retryCount === 1 ? 30000 : (retryCount === 2 || retryCount === 3) ? 150000 : Math.pow(2, retryCount - 1) * 5000;
+              console.log(`Retrying after ${backoff/1000}s...`);
+              await new Promise(resolve => setTimeout(resolve, backoff));
+            }
+          }
+        }
+      
+    } catch (pinError) {
+      console.error('Pinning failed:', pinError);
+      document.getElementById('cid-output').textContent += `\nPinning failed: ${pinError.message}`;
+      adjustTextareaHeight(document.getElementById('cid-output'));
     }
   } catch (error) {
     console.error('Fetch error:', error);
     document.getElementById('cid-output').textContent = `Fetch failed: ${error.message}`;
+    adjustTextareaHeight(document.getElementById('cid-output'));
   }
 }
 
