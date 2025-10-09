@@ -156,6 +156,7 @@ html, body {
   left: 0;
   transform: none;
   display: none;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 .menu_buttons {
@@ -199,13 +200,15 @@ html, body {
   padding-bottom: 0.5vh;
   padding-left: 1vw;
   padding-right: 1vw;
+  animation: slideIn 0.5s ease-in-out;
 }
 
-.container {
+.chat-topic-chat-container {
   background-color: rgba(0, 0, 0, 0);
   color: white;
   box-sizing: border-box;
   border-radius: 1vh;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 .toolbar {
@@ -225,6 +228,7 @@ html, body {
   padding-bottom: 0.5vh;
   padding-left: 1vw;
   padding-right: 1vw;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 .toolbar-containers {
@@ -242,7 +246,19 @@ html, body {
   padding-bottom: 0.5vh;
   padding-left: 1vw;
   padding-right: 1vw;
+  animation: slideIn 0.5s ease-in-out;
 }
+
+@keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-200px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
 .toolbar-group {
   width: 100%;
@@ -804,7 +820,6 @@ button[type="submit"],
   display: none;
 }
 
-/* New spinning loader styles */
 .spinner {
   width: 40px;
   height: 40px;
@@ -1393,7 +1408,7 @@ button[type="submit"],
 
 
 <div id="topic-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh;">
-  <div class="container"  onclick="event.stopPropagation();">
+  <div class="chat-topic-chat-container"  onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
       <textarea class="toolbar-column" type="text" id="topic-chat-topic-id" placeholder="Domain/Topic ID"
@@ -1486,7 +1501,7 @@ button[type="submit"],
 
 
 <div id="visibility-controls" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div class="container" onclick="event.stopPropagation();">
+  <div class="chat-topic-chat-container" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
       <label for="time-input" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">Enter a time of update in milliseconds:
