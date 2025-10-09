@@ -5444,11 +5444,13 @@ function handleMarkerClick(e) {
   activePolygonPopups.forEach((popup) => popup.remove());
   activeMarkerPopups.forEach((popup) => popup.remove());
   CloseALL();
-  map.easeTo({
-    center: cluster.geometry.coordinates,
-    zoom: map.getZoom(),
-    duration: 1000
-  });
+  setTimeout(() => {
+    map.easeTo({
+      center: cluster.geometry.coordinates,
+      zoom: map.getZoom(),
+      duration: 1000
+    });
+  }, 100); // Small delay to avoid conflicts
   popup.setLngLat(cluster.geometry.coordinates).addTo(map);
   applyAllStyles();
   if (currentUfoModel) {
