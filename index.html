@@ -3899,7 +3899,7 @@ const camera = new THREE.PerspectiveCamera(
 
 function createStars() {
   const starsGeometry = new THREE.BufferGeometry();
-  const starCount = 10000;
+  const starCount = 2000;
   const positions = new Float32Array(starCount * 3);
   const innerRadius = 900;
   const outerRadius = 950;
@@ -3925,7 +3925,7 @@ function createStars() {
   );
   const starsMaterial = new THREE.PointsMaterial({
     color: 0xffffff,
-    size: 1,
+    size: 1.5,
     sizeAttenuation: true,
   });
 
