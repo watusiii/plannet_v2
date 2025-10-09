@@ -2326,7 +2326,8 @@ async function upload() {
 
     const cid = await fs.addBytes(fileBytes);
     console.log('Uploaded and pinned locally, CID:', cid.toString());
-    document.getElementById('cid-output').textContent = `CID: ${cid.toString()}`;
+    document.getElementById('cid-output').textContent = `w8 for it to upload to the network`;
+
     adjustTextareaHeight(document.getElementById('cid-output'));
 
     await helia.pins.add(cid);
@@ -2359,6 +2360,8 @@ async function upload() {
     if (announced) {
       const multiaddrs = helia.libp2p.getMultiaddrs();
       console.log('Node multiaddresses:', multiaddrs.map(addr => addr.toString()));
+      document.getElementById('cid-output').textContent = ``;
+      document.getElementById('cid-output').textContent = `successfully uploaded to the network CID: ${cid.toString()}`;
       adjustTextareaHeight(document.getElementById('cid-output'));
     }
   } catch (error) {
