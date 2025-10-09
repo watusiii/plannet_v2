@@ -7,12 +7,13 @@
 
 
 <div class="loader-container" id="loaderContainer">
-<div>
-<div class="loader">
-<div class="progress" id="progressBar"></div>
-</div>
-<div class="percentage" id="percentageText">0%</div>
-</div>
+  <div>
+      <div class="spinner"></div>
+      <div class="loader">
+          <div class="progress" id="progressBar"></div>
+      </div>
+      <div class="percentage" id="percentageText">0%</div>
+  </div>
 </div>
 
 <script
@@ -47,8 +48,6 @@
 
 <script data-src="hcs://1/0.0.9961944" data-script-id="unixfs@5.1.0"></script>
 
-<script data-src="hcs://1/0.0.9962207" data-script-id="webrtc@6.0.1"></script>
-
 <script data-src="hcs://1/0.0.9966383" data-script-id="libp2p.bundle"></script>
 
 <script data-src="hcs://1/0.0.10013779" data-script-id="multiformats@13.4.1"></script>
@@ -59,11 +58,41 @@
 
 <script data-src="hcs://1/0.0.10013813" data-script-id="libp2p-noise@17.0.0"></script>
 
-<script data-src="hcs://1/0.0.10013941" data-script-id="multiaddr@10.0.1"></script>
-
 <script data-src="hcs://1/0.0.10014184" data-script-id="libp2ppeer-id"></script>
 
 <script data-src="hcs://1/0.0.10015601" data-script-id="helia-verified-fetch@3.2.3"></script>
+
+<script data-src="hcs://1/0.0.10017359" data-script-id="blockstore-idb@3.0.1"></script>
+
+<script data-src="hcs://1/0.0.10017498" data-script-id="helia-bitswap@3.0.3"></script>
+
+<script data-src="hcs://1/0.0.10017540" data-script-id="libp2p/logger@6.0.5"></script>
+
+<script data-src="hcs://1/0.0.10021978" data-script-id="chainsafe-libp2p-yamux@8.0.0"></script>
+
+<script data-src="hcs://1/0.0.10022000" data-script-id="helia-routers@3.1.3"></script>
+
+<script data-src="hcs://1/0.0.10022010" data-script-id="libp2p-autonat@3.0.5"></script>
+
+<script data-src="hcs://1/0.0.10022013" data-script-id="libp2p-circuit-relay-v2@4.0.5"></script>
+
+<script data-src="hcs://1/0.0.10022017" data-script-id="libp2p-dcutr@3.0.5"></script>
+
+<script data-src="hcs://1/0.0.10022020" data-script-id="ibp2p-identify@4.0.5"></script>
+
+<script data-src="hcs://1/0.0.10022025" data-script-id="libp2p-keychain@6.0.5"></script>
+
+<script data-src="hcs://1/0.0.10022034" data-script-id="libp2p-mplex@12.0.6"></script>
+
+<script data-src="hcs://1/0.0.10022054" data-script-id="libp2p-webrtc@6.0.6"></script>
+
+<script data-src="hcs://1/0.0.10022056" data-script-id="helia-delegated-routing-v1-http-api-client@4.2.5"></script>
+
+<script data-src="hcs://1/0.0.10022058" data-script-id="helia-http@2.2.1"></script>
+
+<script data-src="hcs://1/0.0.10022060" data-script-id="ipns@10.1.2"></script>
+
+<script data-src="hcs://1/0.0.10022637" data-script-id="multiformats-multiaddr@12.2.3"></script>
 
 <style>
 
@@ -741,45 +770,54 @@ button[type="submit"],
 }
 
 .loader-container {
-  text-align: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.9);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  z-index: 6000;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f0f0;
 }
 
 .loader {
-  width: 200px;
+  width: 300px;
   height: 20px;
   background-color: #e0e0e0;
   border-radius: 10px;
   overflow: hidden;
-  position: relative;
-  margin-top: 50vh;
 }
 
 .progress {
-  width: 0%;
   height: 100%;
-  background-color: #4CAF50;
-  transition: width 0.3s ease;
+  background-color: #4caf50;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
 }
 
 .percentage {
   margin-top: 10px;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 1.5em;
+  font-family: Arial, sans-serif;
   color: #333;
 }
 
 .hidden {
   display: none;
+}
+
+/* New spinning loader styles */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #4caf50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 </style>
@@ -2171,12 +2209,19 @@ document.getElementById('upload-to-ipfs-button').disabled = true;
 let helia = null;
 let fs = null;
 
+console.log('Helia:', window.HeliaDelegatedRoutingV1HttpApiClient);
 async function initHelia() {
 
   try {
-    if (!window.Helia || !window.HeliaUnixfs || !window.Libp2p || !window.KuboRpcClient || !window.Libp2PDelegatedPeerRouting || !window.ChainsafeLibp2PNoise) {
-      throw new Error('Helia, HeliaUnixfs, libp2p, kubo-rpc-client, delegated-peer-routing, or chainsafe-libp2p-noise not loaded.');
-    }
+
+    const ipniUrl = 'https://cid.contact';
+try {
+  new URL(ipniUrl);
+  console.log('IPNI URL is valid:', ipniUrl);
+} catch (urlError) {
+  console.error('Invalid IPNI URL:', urlError);
+  throw urlError;
+}
 
     const bootstrapList = [
       '/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN',
@@ -2194,15 +2239,28 @@ async function initHelia() {
 
     const libp2pOptions = {
       addresses: {
-        listen: ['/webrtc', '/p2p-circuit'],
+        listen: [
+      '/ip4/0.0.0.0/tcp/0',
+      '/ip4/0.0.0.0/tcp/0/ws',
+      '/ip4/0.0.0.0/udp/0/webrtc-direct',
+      '/ip6/::/tcp/0',
+      '/ip6/::/tcp/0/ws',
+      '/ip6/::/udp/0/webrtc-direct',
+      '/p2p-circuit'
+      ],
         announce: [
           '/p2p-circuit/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ'
         ],
       },
       transports: [
-        window.Libp2p.webRTC({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }),
+        window.Libp2p.webRTC(
+          { iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' }
+                          ]
+      }),
         window.Libp2p.webSockets(),
-        window.Libp2p.circuitRelayTransport({ discoverRelays: 3, reservationConcurrency: 5, hop: { enabled: true } })
+        window.Libp2p.circuitRelayTransport({ discoverRelays: 10, reservationConcurrency: 5, hop: { enabled: true } })
       ],
       connectionEncryption: noise ? [noise] : [],
       connectionManager: { minConnections: 2, maxConnections: 100 },
@@ -2223,10 +2281,10 @@ async function initHelia() {
     helia = await window.Helia.createHelia({ Libp2p: libp2pOptions });
     fs = window.HeliaUnixfs.unixfs(helia);
 
-    console.log('Helia Peer ID:', helia.libp2p.peerId.toString());
 
     await helia.libp2p.services.dht.start();
-    console.log('DHT started (delegated):', helia.libp2p.services.dht.isStarted());
+
+    console.log('Helia Peer ID:', helia.libp2p.peerId.toString());
 
     setInterval(() => {
       const peers = helia.libp2p.getPeers();
@@ -2268,26 +2326,10 @@ async function upload() {
 
     const cid = await fs.addBytes(fileBytes);
     console.log('Uploaded and pinned locally, CID:', cid.toString());
-    document.getElementById('cid-output').textContent = `Uploaded and pinned locally, CID: ${cid.toString()}`;
-
-    // Test local retrieval
-    const chunks = [];
-    for await (const chunk of fs.cat(cid)) {
-      chunks.push(chunk);
-    }
-    const data = new Uint8Array(chunks.reduce((acc, chunk) => acc.concat([...chunk]), []));
-    console.log('Retrieved file size:', data.length);
-    document.getElementById('cid-output').textContent += `\nRetrieved locally, size: ${data.length} bytes`;
-
-    // Log network status
-    const dhtStatus = helia.libp2p.services.dht.isStarted();
-    const peerCount = helia.libp2p.getPeers().length;
-    console.log('DHT status:', dhtStatus);
-    console.log('Connected peers:', peerCount);
-    document.getElementById('cid-output').textContent += `\nDHT: ${dhtStatus ? 'Active' : 'Inactive'}, Peers: ${peerCount}`;
+    document.getElementById('cid-output').textContent = `CID: ${cid.toString()}`;
     adjustTextareaHeight(document.getElementById('cid-output'));
 
-    // Announce CID to DHT with retries
+    await helia.pins.add(cid);
     let announced = false;
     const maxRetries = 10;
     let retryCount = 0;
@@ -2302,7 +2344,6 @@ async function upload() {
         );
         await Promise.race([announcePromise, globalTimeout]);
         console.log('Announced CID to DHT successfully');
-        document.getElementById('cid-output').textContent += `\nAnnounced to DHT (attempt ${retryCount + 1})`;
         announced = true;
       } catch (error) {
         console.error(`DHT announcement failed (attempt ${retryCount + 1}):`, error);
@@ -2316,9 +2357,9 @@ async function upload() {
     }
 
     if (announced) {
-      const shareUrl = `https://ipfs.io/ipfs/${cid.toString()}`;
-      console.log('Global access link:', shareUrl);
-      document.getElementById('cid-output').textContent += `\nGateway: ${shareUrl}`;
+      const multiaddrs = helia.libp2p.getMultiaddrs();
+      console.log('Node multiaddresses:', multiaddrs.map(addr => addr.toString()));
+      adjustTextareaHeight(document.getElementById('cid-output'));
     }
   } catch (error) {
     console.error('Error:', error);
@@ -2329,8 +2370,6 @@ async function upload() {
 document.getElementById('fetch-from-ipfs-button').addEventListener('click', async () => {
   await fetchContent();
 });
-
-console.log("fetchContent", window.HeliaVerifiedFetch);
 
 async function fetchContent() {
   const cidInput = document.getElementById('cid-input').value.trim();
@@ -2354,15 +2393,65 @@ async function fetchContent() {
   const contentType = document.getElementById('content-type')?.value || 'image';
 
   try {
-    const chunks = [];
-    for await (const chunk of fs.cat(cidInput)) {  // Bitswap P2P fetch (from dialed peer or swarm)
-      chunks.push(chunk);
+    // Step 1: Try local fetch first (fast path)
+    let chunks = [];
+    try {
+      for await (const chunk of fs.cat(cid)) {
+        chunks.push(chunk);
+      }
+    } catch (localError) {
+      console.warn('Local fetch failed, searching for providers:', localError.message);
     }
+
+    // Step 2: If local fetch fails, search for providers via DHT
+    if (chunks.length === 0) {
+      console.log(`Searching for providers of CID: ${cid.toString()}`);
+      const providers = [];
+      for await (const provider of helia.libp2p.services.dht.findProviders(cid)) {
+        if (provider.id.toString() !== helia.libp2p.peerId.toString()) { // Skip self
+          providers.push(provider);
+          console.log(`Found provider: ${provider.id.toString()}, Multiaddrs: ${provider.multiaddrs.map(ma => ma.toString()).join(', ')}`);
+        }
+      }
+
+      if (providers.length === 0) {
+        throw new Error('No providers found for CID');
+      }
+
+      console.log(`Found ${providers.length} providers, attempting to connect...`);
+
+      // Step 3: Attempt to connect and fetch from providers
+      for (const provider of providers) {
+        for (const multiaddr of provider.multiaddrs) {
+          try {
+            console.log(`Attempting to dial ${multiaddr.toString()}...`);
+            const conn = await helia.libp2p.dial(multiaddr);
+            console.log(`Connected to ${provider.id.toString()} via ${multiaddr.toString()}`);
+
+            chunks = [];
+            for await (const chunk of fs.cat(cid)) {
+              chunks.push(chunk);
+            }
+            break; // Success, exit multiaddr loop
+          } catch (dialError) {
+            console.error(`Failed to connect to ${multiaddr.toString()}: ${dialError.message}`);
+            continue; // Try next multiaddr
+          }
+        }
+        if (chunks.length > 0) break; // Success, exit provider loop
+      }
+
+      if (chunks.length === 0) {
+        throw new Error('Failed to fetch CID from any provider');
+      }
+    }
+
+    // Step 4: Process and display the fetched content
     const data = new Uint8Array(chunks.reduce((acc, chunk) => acc.concat([...chunk]), []));
     console.log('Fetched file size:', data.length);
-    document.getElementById('cid-output').textContent = `Fetched CID: ${cidInput}, size: ${data.length} bytes`;
+    document.getElementById('cid-output').textContent = `Fetched: ${cidInput}`;
+    adjustTextareaHeight(document.getElementById('cid-output'));
 
-    // Display logic (unchanged)
     let mimeType;
     let displayElement;
     if (contentType === 'video') {
@@ -2387,9 +2476,9 @@ async function fetchContent() {
 
     document.getElementById('cid-output').textContent += `\n${contentType} displayed`;
 
-    // Auto-seed (already there, makes fetcher a provider)
+    // Step 5: Announce as provider if DHT is active
     if (helia.libp2p.services.dht.isStarted()) {
-      await helia.routing.provide(cid);
+      await helia.libp2p.services.dht.provide(cid); // Use correct DHT service
       console.log('Announced as provider for CID:', cidInput);
       document.getElementById('cid-output').textContent += `\nNow seeding CID: ${cidInput}`;
     }
