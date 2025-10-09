@@ -5435,23 +5435,27 @@ function updateClusters() {
         }
       });
 
-      el.addEventListener("click", (e) => {
-        e.stopPropagation();
-        activePolygonPopups.forEach((popup) => popup.remove());
-        activeMarkerPopups.forEach((popup) => popup.remove());
-        CloseALL();
-        map.easeTo({
-          center: cluster.geometry.coordinates,
-          zoom: map.getZoom(),
-          duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
-        });
-        popup.setLngLat(cluster.geometry.coordinates).addTo(map);
-        applyAllStyles();
-        if (currentUfoModel) {
-          scene.remove(currentUfoModel);
-          crosshair.style.display = "none";
-        }
-      });
+      el.addEventListener("click", handleMarkerClick);
+el.addEventListener("touchend", handleMarkerClick);
+
+function handleMarkerClick(e) {
+  e.stopPropagation();
+  e.preventDefault(); // Prevent default touch behaviors like scrolling
+  activePolygonPopups.forEach((popup) => popup.remove());
+  activeMarkerPopups.forEach((popup) => popup.remove());
+  CloseALL();
+  map.easeTo({
+    center: cluster.geometry.coordinates,
+    zoom: map.getZoom(),
+    duration: 1000
+  });
+  popup.setLngLat(cluster.geometry.coordinates).addTo(map);
+  applyAllStyles();
+  if (currentUfoModel) {
+    scene.remove(currentUfoModel);
+    crosshair.style.display = "none";
+  }
+}
     }
     existingMarkers.push(marker);
   });
