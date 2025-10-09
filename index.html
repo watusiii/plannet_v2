@@ -5435,29 +5435,23 @@ function updateClusters() {
         }
       });
 
-      el.addEventListener("click", handleMarkerClick);
-el.addEventListener("touchend", handleMarkerClick);
-
-function handleMarkerClick(e) {
-  e.stopPropagation();
-  e.preventDefault(); // Prevent default touch behaviors like scrolling
-  activePolygonPopups.forEach((popup) => popup.remove());
-  activeMarkerPopups.forEach((popup) => popup.remove());
-  CloseALL();
-  setTimeout(() => {
-    map.easeTo({
-      center: cluster.geometry.coordinates,
-      zoom: map.getZoom(),
-      duration: 1000
-    });
-  }, 100); // Small delay to avoid conflicts
-  popup.setLngLat(cluster.geometry.coordinates).addTo(map);
-  applyAllStyles();
-  if (currentUfoModel) {
-    scene.remove(currentUfoModel);
-    crosshair.style.display = "none";
-  }
-}
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        activePolygonPopups.forEach((popup) => popup.remove());
+        activeMarkerPopups.forEach((popup) => popup.remove());
+        CloseALL();
+        map.easeTo({
+          center: cluster.geometry.coordinates,
+          zoom: map.getZoom(),
+          duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
+        });
+        popup.setLngLat(cluster.geometry.coordinates).addTo(map);
+        applyAllStyles();
+        if (currentUfoModel) {
+          scene.remove(currentUfoModel);
+          crosshair.style.display = "none";
+        }
+      });
     }
     existingMarkers.push(marker);
   });
@@ -5849,6 +5843,7 @@ document.getElementById("button_for_topic2pic").addEventListener("click", async 
     console.error("Error updating profile TOPIC2PIC:", error);
   }
 });
+
 
 
   // Add these variables to manage visibility states
