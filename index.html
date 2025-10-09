@@ -5392,7 +5392,11 @@ function updateClusters() {
       el.style.lineHeight = iconSize[0];
       el.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
 
-      el.addEventListener("click", async (e) => {
+      el.addEventListener("click", handleMarkerClick);
+      el.addEventListener("touchstart", handleMarkerClick);
+
+      async function handleMarkerClick(e) {
+        e.preventDefault(); // Prevent default touch behavior
         e.stopPropagation();
         const expansionZoom = await index.getClusterExpansionZoom(cluster.id);
         map.easeTo({
@@ -5402,7 +5406,7 @@ function updateClusters() {
         });
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
-      });
+      };
     } else {
       try {
         const lowQualityUrl = await createLowQualityImage(cluster.properties.imageUrl);
@@ -5435,7 +5439,8 @@ function updateClusters() {
         }
       });
 
-      el.addEventListener("click", (e) => {
+      async function handleMarkerClick(e) {
+        e.preventDefault(); // Prevent default touch behavior
         e.stopPropagation();
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
@@ -5451,7 +5456,7 @@ function updateClusters() {
           scene.remove(currentUfoModel);
           crosshair.style.display = "none";
         }
-      });
+      };
     }
     existingMarkers.push(marker);
   });
@@ -5843,28 +5848,6 @@ document.getElementById("button_for_topic2pic").addEventListener("click", async 
     console.error("Error updating profile TOPIC2PIC:", error);
   }
 });
-
-
-      document.addEventListener('touchstart', (event) => {
-        if (event.touches.length > 1) {
-          event.preventDefault();
-        }
-      }, { passive: false });
-
-      let lastTouchEnd = 0;
-      document.addEventListener('touchend', (event) => {
-        const now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-          event.preventDefault();
-        }
-        lastTouchEnd = now;
-      }, { passive: false });
-
-      // Prevent zoom on input focus for iOS
-      document.addEventListener('gesturestart', (event) => {
-        event.preventDefault();
-      }, { passive: false });
-
 
   // Add these variables to manage visibility states
   let markersVisible = false;
