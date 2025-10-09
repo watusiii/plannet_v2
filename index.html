@@ -5361,7 +5361,7 @@ const activeMarkerPopups = [];
 
 let currentMarkerSize = 5;
 
-function updateClusters() {
+async function updateClusters() {
   if (geojson.features.length === 0) {
     console.log("No features to update clusters.");
     return;
@@ -5376,7 +5376,7 @@ function updateClusters() {
   existingMarkers.forEach((marker) => marker.remove());
   existingMarkers = [];
 
-  clusters.forEach(async (cluster) => {
+  for (const cluster of clusters) {
     const el = document.createElement("div");
     el.className = cluster.properties.cluster ? "cluster-marker" : "marker";
     const iconSize = [`${currentMarkerSize}vh`, `${currentMarkerSize}vh`];
@@ -5384,6 +5384,7 @@ function updateClusters() {
     el.style.height = iconSize[1];
     el.style.cursor = "pointer";
     el.style.borderRadius = "50%";
+    el.style.touchAction = "none"; // Prevent default touch behaviors
 
     if (cluster.properties.cluster) {
       el.textContent = cluster.properties.point_count_abbreviated;
@@ -5392,17 +5393,35 @@ function updateClusters() {
       el.style.lineHeight = iconSize[0];
       el.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
 
-      el.addEventListener("click", async (e) => {
+      // Add both click and touchend listeners with a shared handler
+      const handleClusterInteraction = async (e) => {
         e.stopPropagation();
+        if (e.type === "touchend") {
+          e.preventDefault(); // Prevent default touch behaviors like scrolling
+        }
+        if (!map.isStyleLoaded()) {
+          await new Promise((resolve) => map.once("idle", resolve));
+        }
+        map.setPitch(0);
+        map.dragPan.disable();
+        map.scrollZoom.disable();
         const expansionZoom = await index.getClusterExpansionZoom(cluster.id);
         map.easeTo({
           center: cluster.geometry.coordinates,
           zoom: expansionZoom + 0.1,
-          duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
+          duration: 1000
+        });
+        console.log("map.easeTo called for cluster:", cluster.geometry.coordinates);
+        map.once("moveend", () => {
+          map.dragPan.enable();
+          map.scrollZoom.enable();
         });
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
-      });
+      };
+
+      el.addEventListener("click", handleClusterInteraction);
+      el.addEventListener("touchend", handleClusterInteraction);
     } else {
       try {
         const lowQualityUrl = await createLowQualityImage(cluster.properties.imageUrl);
@@ -5435,26 +5454,62 @@ function updateClusters() {
         }
       });
 
-      el.addEventListener("click", (e) => {
+      // Add both click and touchend listeners with a shared handler
+      const handleMarkerInteraction = (e) => {
         e.stopPropagation();
-        activePolygonPopups.forEach((popup) => popup.remove());
-        activeMarkerPopups.forEach((popup) => popup.remove());
-        CloseALL();
+        if (e.type === "touchend") {
+          e.preventDefault(); // Prevent default touch behaviors
+        }
+        if (!map.isStyleLoaded()) {
+          map.once("idle", () => {
+            map.setPitch(0);
+            map.dragPan.disable();
+            map.scrollZoom.disable();
+            map.easeTo({
+              center: cluster.geometry.coordinates,
+              zoom: map.getZoom(),
+              duration: 1000
+            });
+            console.log("map.easeTo called for marker:", cluster.geometry.coordinates);
+            popup.setLngLat(cluster.geometry.coordinates).addTo(map);
+            applyAllStyles();
+            if (currentUfoModel) {
+              scene.remove(currentUfoModel);
+              crosshair.style.display = "none";
+            }
+            map.once("moveend", () => {
+              map.dragPan.enable();
+              map.scrollZoom.enable();
+            });
+          });
+          return;
+        }
+        map.setPitch(0);
+        map.dragPan.disable();
+        map.scrollZoom.disable();
         map.easeTo({
           center: cluster.geometry.coordinates,
           zoom: map.getZoom(),
-          duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
+          duration: 1000
         });
+        console.log("map.easeTo called for marker:", cluster.geometry.coordinates);
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
         if (currentUfoModel) {
           scene.remove(currentUfoModel);
           crosshair.style.display = "none";
         }
-      });
+        map.once("moveend", () => {
+          map.dragPan.enable();
+          map.scrollZoom.enable();
+        });
+      };
+
+      el.addEventListener("click", handleMarkerInteraction);
+      el.addEventListener("touchend", handleMarkerInteraction);
     }
     existingMarkers.push(marker);
-  });
+  }
 }
 
 
