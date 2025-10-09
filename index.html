@@ -5398,7 +5398,7 @@ function updateClusters() {
         map.easeTo({
           center: cluster.geometry.coordinates,
           zoom: expansionZoom + 0.1,
-          duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
+          duration: 500
         });
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
@@ -5443,7 +5443,7 @@ function updateClusters() {
         map.easeTo({
           center: cluster.geometry.coordinates,
           zoom: map.getZoom(),
-          duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
+          duration: 2000
         });
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
