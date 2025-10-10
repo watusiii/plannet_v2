@@ -100,7 +100,6 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  min-height: 100vh; /* Fallback, but may still resize slightly */
   overflow: hidden;
   position: fixed;
 }
@@ -1930,6 +1929,21 @@ button[type="submit"],
   </body>
 
     <script>
+
+      // Capture the initial viewport height
+    let initialHeight = window.innerHeight;
+
+// Set the html and body height to the initial viewport height
+window.addEventListener('load', () => {
+  document.documentElement.style.height = `${initialHeight}px`;
+  document.body.style.height = `${initialHeight}px`;
+});
+
+// Prevent resizing when the keyboard opens
+window.addEventListener('resize', () => {
+  document.documentElement.style.height = `${initialHeight}px`;
+  document.body.style.height = `${initialHeight}px`;
+});
 
 
       const APP_METADATA = {
