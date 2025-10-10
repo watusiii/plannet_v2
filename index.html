@@ -1937,9 +1937,11 @@ window.addEventListener('load', () => {
   document.documentElement.style.height = `${initialHeight}px`;
   document.body.style.width = `${initialWidth}px`;
   document.body.style.height = `${initialHeight}px`;
+  return { initialWidth, initialHeight };
 });
 
 window.addEventListener('resize', () => {  
+  const { initialWidth, initialHeight } = window.onload();
   document.documentElement.style.width = `${initialWidth}px`;
   document.documentElement.style.height = `${initialHeight}px`;
   document.body.style.width = `${initialWidth}px`;
