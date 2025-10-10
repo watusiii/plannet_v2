@@ -5361,12 +5361,14 @@ const activeMarkerPopups = [];
 
 let currentMarkerSize = 5;
 
-function animateMapTo(map, targetLngLat, duration = 1000) {
+function animateMapTo(map, targetLngLat, targetZoom = null, duration = 1000) {
   const start = map.getCenter(); // Current map center
   let startLng = start.lng;
   let startLat = start.lat;
   let targetLng = targetLngLat[0];
   const targetLat = targetLngLat[1];
+  const startZoom = map.getZoom(); // Current zoom level
+  const finalZoom = targetZoom !== null ? targetZoom : startZoom; // Use current zoom if targetZoom is null
   const startTime = performance.now();
 
   // Normalize longitude difference for shortest path
@@ -5381,23 +5383,32 @@ function animateMapTo(map, targetLngLat, duration = 1000) {
     const elapsed = currentTime - startTime;
     const progress = Math.min(elapsed / duration, 1); // Normalize to 0-1
 
-    // Linear interpolation for smooth movement
+    // Linear interpolation for smooth movement and zoom
     const currentLng = startLng + lngDiff * progress;
     const currentLat = startLat + (targetLat - startLat) * progress;
+    const currentZoom = targetZoom !== null ? startZoom + (finalZoom - startZoom) * progress : startZoom;
 
-    // Update map center
+    // Update map center and zoom separately
     map.setCenter([currentLng, currentLat]);
+    if (targetZoom !== null) {
+      map.setZoom(currentZoom);
+    }
 
     // Continue animation until complete
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      console.log('Animation completed at:', map.getCenter());
+      // Ensure final position and zoom are exact
+      map.setCenter([targetLng, targetLat]);
+      if (targetZoom !== null) {
+        map.setZoom(finalZoom);
+      }
+      console.log('Animation completed at:', map.getCenter(), 'Zoom:', map.getZoom());
     }
   }
 
   // Start the animation
-  console.log('Starting custom animation to:', targetLngLat);
+  console.log('Starting custom animation to:', targetLngLat, 'Zoom:', finalZoom);
   console.log('Shortest path lngDiff:', lngDiff);
   requestAnimationFrame(animate);
 }
@@ -5435,12 +5446,8 @@ function updateClusters() {
 
       el.addEventListener("click", async (e) => {
         e.stopPropagation();
-        const expansionZoom = await index.getClusterExpansionZoom(cluster.id);
-        map.easeTo({
-          center: cluster.geometry.coordinates,
-          zoom: expansionZoom + 0.1,
-          duration: 2000
-        });
+        const expansionZoom = await index.getClusterExpansionZoom(cluster.id) + 0.1;
+        animateMapTo(map, cluster.geometry.coordinates, expansionZoom, 1000);
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
       });
@@ -5481,9 +5488,7 @@ function updateClusters() {
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
         CloseALL();
-        animateMapTo(map, cluster.geometry.coordinates, 2000); // 1000ms duration
-
-
+        animateMapTo(map, cluster.geometry.coordinates, null, 1000);
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
         if (currentUfoModel) {
@@ -5663,11 +5668,7 @@ async function addPolygonWithImageFill(map, polygon) {
             .setLngLat(e.lngLat)
             .setHTML(polygon.description)
             .addTo(map);
-          map.easeTo({
-            center: e.lngLat,
-            zoom: map.getZoom(), // Maintain current zoom level
-            duration: 1000 // Set duration to 1000ms (1 second) or higher for a slower transition
-          });
+          animateMapTo(map, e.lngLat, null, 1000);
           activePolygonPopups.forEach((p) => p.remove());
           activeMarkerPopups.forEach((p) => p.remove());
           CloseALL();
