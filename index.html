@@ -5361,6 +5361,39 @@ const activeMarkerPopups = [];
 
 let currentMarkerSize = 5;
 
+// Function to smoothly animate the map to a target location
+function animateMapTo(map, targetLngLat, duration = 1000) {
+  const start = map.getCenter(); // Current map center
+  const startLng = start.lng;
+  const startLat = start.lat;
+  const targetLng = targetLngLat[0];
+  const targetLat = targetLngLat[1];
+  const startTime = performance.now();
+
+  function animate(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1); // Normalize to 0-1
+
+    // Linear interpolation for smooth movement
+    const currentLng = startLng + (targetLng - startLng) * progress;
+    const currentLat = startLat + (targetLat - startLat) * progress;
+
+    // Update map center
+    map.setCenter([currentLng, currentLat]);
+
+    // Continue animation until complete
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      console.log('Animation completed at:', map.getCenter());
+    }
+  }
+
+  // Start the animation
+  console.log('Starting custom animation to:', targetLngLat);
+  requestAnimationFrame(animate);
+}
+
 function updateClusters() {
   if (geojson.features.length === 0) {
     console.log("No features to update clusters.");
@@ -5440,11 +5473,9 @@ function updateClusters() {
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
         CloseALL();
-        map.easeTo({
-          center: cluster.geometry.coordinates,
-          zoom: map.getZoom(),
-          duration: 2000
-        });
+        animateMapTo(map, cluster.geometry.coordinates, 2000); // 1000ms duration
+
+
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
         if (currentUfoModel) {
