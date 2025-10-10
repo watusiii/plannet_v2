@@ -5447,7 +5447,7 @@ function updateClusters() {
       el.addEventListener("click", async (e) => {
         e.stopPropagation();
         const expansionZoom = await index.getClusterExpansionZoom(cluster.id) + 0.1;
-        animateMapTo(map, cluster.geometry.coordinates, expansionZoom, 1000);
+        animateMapTo(map, cluster.geometry.coordinates, expansionZoom);
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
       });
@@ -5488,7 +5488,7 @@ function updateClusters() {
         activePolygonPopups.forEach((popup) => popup.remove());
         activeMarkerPopups.forEach((popup) => popup.remove());
         CloseALL();
-        animateMapTo(map, cluster.geometry.coordinates, null, 1000);
+        animateMapTo(map, cluster.geometry.coordinates, null);
         popup.setLngLat(cluster.geometry.coordinates).addTo(map);
         applyAllStyles();
         if (currentUfoModel) {
@@ -5668,7 +5668,7 @@ async function addPolygonWithImageFill(map, polygon) {
             .setLngLat(e.lngLat)
             .setHTML(polygon.description)
             .addTo(map);
-          animateMapTo(map, e.lngLat, null, 1000);
+          animateMapTo(map, e.lngLat, null);
           activePolygonPopups.forEach((p) => p.remove());
           activeMarkerPopups.forEach((p) => p.remove());
           CloseALL();
