@@ -99,8 +99,6 @@
 html, body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  height: 100vh;
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -1932,7 +1930,14 @@ button[type="submit"],
   </body>
 
     <script>
-
+window.addEventListener('load', () => {
+  const initialWidth = window.innerWidth;
+  const initialHeight = window.innerHeight;
+  document.documentElement.style.width = `${initialWidth}px`;
+  document.documentElement.style.height = `${initialHeight}px`;
+  document.body.style.width = `${initialWidth}px`;
+  document.body.style.height = `${initialHeight}px`;
+});
 
       const APP_METADATA = {
         name: "PlanNet",
@@ -2034,7 +2039,6 @@ async function extractTopicId() {
     adjustTextareaHeight(inputarea);
 
   initialTopicId = topicId; // Set global variable
-  console.log('Topic ID:', initialTopicId);
   return initialTopicId; // Return for use in async flows
 }
 
@@ -2639,14 +2643,12 @@ document.getElementById("button4").addEventListener("click", async () => {
 });
 
 document.getElementById('go-to-top-msgs').addEventListener('click', function() {
+  const container = document.getElementById('topic-chat-container');
+  container.scrollTop = 0;
+});
 
-    const container = document.getElementById('topic-chat-container');
-    container.scrollTop = 0;
-  });
 
-
-  let storedMessages = []; // Declare an external array to store messages
-
+let storedMessages = []; // Declare an external array to store messages
 let colorForAccidTopicChat = 'rgb(128, 0, 128)'; // Default: purple (#800080) for payerInfo
 let colorForUsernameTopicChat = 'rgb(255, 255, 255)'; // Default: white (#FFFFFF) for username
 let colorForTextTopicChat = 'rgb(255, 255, 255)'; // Default: black for message text
@@ -3341,7 +3343,7 @@ document.getElementById("submit-button-Create_New_Topic").addEventListener("clic
 
 function adjustTextareaHeight(textarea) {
   textarea.style.height = ''; // Reset the height
-  textarea.style.height = textarea.scrollHeight + 10 + 'px'; // Set it to the scroll height
+  textarea.style.height = textarea.scrollHeight + 'px'; // Set it to the scroll height
 }
 
 document.getElementById("generate-private-and-public-key").addEventListener("click", async () => {
@@ -5281,7 +5283,7 @@ function animate() {
     tempSpan.textContent = newCoords;
     document.body.appendChild(tempSpan);
 
-    coordinatesDisplay.style.width = `${tempSpan.offsetWidth + 10}px`;
+    coordinatesDisplay.style.width = `${tempSpan.offsetWidth}px`;
     document.body.removeChild(tempSpan);
   }
 
