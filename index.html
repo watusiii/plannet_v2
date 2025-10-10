@@ -101,6 +101,8 @@ html, body {
   padding: 0;
   overflow: hidden;
   position: fixed;
+  width: 100vw;
+  height: 100vh;
   top: 0;
   left: 0;
 }
@@ -851,22 +853,12 @@ button[type="submit"],
 
 <div id="crosshair"></div>
 
-<div style="display: flex; position: fixed; top: 6.5vh; left: 0; z-index: 1006;" id="main-toggle-btn-container">
+<div style="display: flex; position: fixed; top: 6.5vh; left: 0; z-index: 1006;">
   <button id="main-toggle-btn" class="options-and-topic" style="margin-left: 0.3vh;">OPTIONS
   </button>
-  <button id="topic-chat-btn" class="options-and-topic" style="margin-left: 1vw;">TOPIC CHAT
+  <button id="toggle-toolbar-btn-btn" class="options-and-topic" style="margin-left: 0.3vh; display: none;">TOOLBAR
   </button>
-</div>
-
-<div style="display: none; position: fixed; top: 6.5vh; left: 0; z-index: 1006;" id="toggle-your-fov-btn-container">
-  <button id="toggle-your-fov-btn-btn" class="options-and-topic" style="margin-left: 0.3vh;">YOUR POV
-  </button>
-  <button id="topic-chat-btn" class="options-and-topic" style="margin-left: 1vw;">TOPIC CHAT
-  </button>
-</div>
-
-<div style="display: none; position: fixed; top: 6.5vh; left: 0; z-index: 1006;" id="toggle-toolbar-btn-container">
-  <button id="toggle-toolbar-btn-btn" class="options-and-topic" style="margin-left: 0.3vh;">TOOLBAR
+  <button id="toggle-your-fov-btn-btn" class="options-and-topic" style="margin-left: 0.3vh; display: none;">YOUR POV
   </button>
   <button id="topic-chat-btn" class="options-and-topic" style="margin-left: 1vw;">TOPIC CHAT
   </button>
@@ -1930,23 +1922,6 @@ button[type="submit"],
   </body>
 
     <script>
-window.addEventListener('load', () => {
-  const initialWidth = window.innerWidth;
-  const initialHeight = window.innerHeight;
-  document.documentElement.style.width = `${initialWidth}px`;
-  document.documentElement.style.height = `${initialHeight}px`;
-  document.body.style.width = `${initialWidth}px`;
-  document.body.style.height = `${initialHeight}px`;
-  return { initialWidth, initialHeight };
-});
-
-window.addEventListener('resize', () => {  
-  const { initialWidth, initialHeight } = window.onload();
-  document.documentElement.style.width = `${initialWidth}px`;
-  document.documentElement.style.height = `${initialHeight}px`;
-  document.body.style.width = `${initialWidth}px`;
-  document.body.style.height = `${initialHeight}px`;
-});
 
 
       const APP_METADATA = {
@@ -4174,6 +4149,19 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
+function OpenToggleToolbar() {
+  document.getElementById("main-toggle-btn").style.display = "none";
+  document.getElementById("toggle-toolbar-btn-btn").style.display = "block";
+  document.getElementById("topic-chat-btn").style.display = "block";
+}
+
+function OpenToggleYourFov() {
+  document.getElementById("main-toggle-btn").style.display = "none";
+  document.getElementById("toggle-your-fov-btn-btn").style.display = "block";
+  document.getElementById("topic-chat-btn").style.display = "block";
+}
+  
+
 const everythinginsideoptionsbuttons = [
   "toggle-controls-btn",
   "toggle-your-fov-btn",
@@ -4228,6 +4216,8 @@ function CloseALL() {
   });
   document.getElementById("main-toggle-btn").style.display = "block";
   document.getElementById("topic-chat-btn").style.display = "block";
+  document.getElementById("toggle-toolbar-btn-btn").style.display = "none";
+  document.getElementById("toggle-your-fov-btn-btn").style.display = "none";
 }
 
 document.addEventListener('click', function(event) {
@@ -4294,6 +4284,7 @@ document.getElementById("change-model-settings").addEventListener("click", (even
   CloseALL();
   document.getElementById("model-column").style.display = "block";
   document.getElementById("model-column-container").style.display = "block";
+  OpenToggleYourFov();
 });
 
 document.getElementById("change-crosshair-settings").addEventListener("click", (event) => {
@@ -4301,6 +4292,7 @@ document.getElementById("change-crosshair-settings").addEventListener("click", (
   CloseALL();
   document.getElementById("crosshair-column").style.display = "block";
   document.getElementById("crosshair-column-container").style.display = "block";
+  OpenToggleYourFov();
 });
 
 document.getElementById("change-popup-settings").addEventListener("click", (event) => {
@@ -4308,6 +4300,7 @@ document.getElementById("change-popup-settings").addEventListener("click", (even
   CloseALL();
   document.getElementById("popup-column").style.display = "block";
   document.getElementById("popup-column-container").style.display = "block";
+  OpenToggleYourFov();
 });
 
 document.getElementById("change-color-of-main-buttons").addEventListener("click", (event) => {
@@ -4315,6 +4308,7 @@ document.getElementById("change-color-of-main-buttons").addEventListener("click"
   CloseALL();
   document.getElementById("main-button-column").style.display = "block";
   document.getElementById("main-button-column-container").style.display = "block";
+  OpenToggleYourFov();
 });
 
 document.getElementById("change-marker-options").addEventListener("click", (event) => {
@@ -4322,6 +4316,7 @@ document.getElementById("change-marker-options").addEventListener("click", (even
   CloseALL();
   document.getElementById("marker-options-column").style.display = "block";
   document.getElementById("marker-options-column-container").style.display = "block";
+  OpenToggleYourFov();
 });
 
 document.getElementById("change-button-input-settings").addEventListener("click", (event) => {
@@ -4329,6 +4324,7 @@ document.getElementById("change-button-input-settings").addEventListener("click"
   CloseALL();
   document.getElementById("button-input-column").style.display = "block";
   document.getElementById("button-input-column-container").style.display = "block";
+  OpenToggleYourFov();
 });
 
 document.getElementById("change-container-settings").addEventListener("click", (event) => {
@@ -4336,6 +4332,7 @@ document.getElementById("change-container-settings").addEventListener("click", (
   CloseALL();
   document.getElementById("container-column").style.display = "block";
   document.getElementById("container-column-container").style.display = "block";
+  OpenToggleYourFov();
 });
 
 document.getElementById("change-topic-chat-options").addEventListener("click", (event) => {
@@ -4343,6 +4340,7 @@ document.getElementById("change-topic-chat-options").addEventListener("click", (
   CloseALL();
   document.getElementById("topic-chat-column").style.display = "block";
   document.getElementById("topic-chat-column-container").style.display = "block";
+  OpenToggleYourFov();
 });
 
 document.getElementById("toggle-toolbar-btn").addEventListener("click", (event) => {
@@ -4356,6 +4354,7 @@ document.getElementById("Edit_Profile").addEventListener("click", (event) => {
   CloseALL();
   document.getElementById("Edit_Profile-column").style.display = "block";
   document.getElementById("Edit_Profile-column-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("Load_Everything").addEventListener("click", (event) => {
@@ -4367,6 +4366,7 @@ document.getElementById("Load_Everything").addEventListener("click", (event) => 
   loaded_text_area.value = '';
   loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n');
   adjustTextareaHeight(loaded_text_area);
+  OpenToggleToolbar();
 });
 
 document.getElementById("Upload_To_IPFS").addEventListener("click", (event) => {
@@ -4374,6 +4374,7 @@ document.getElementById("Upload_To_IPFS").addEventListener("click", (event) => {
   CloseALL();
   document.getElementById("upload-to-ipfs-column").style.display = "block";
   document.getElementById("upload-to-ipfs-column-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("Create_New_Topic").addEventListener("click", (event) => {
@@ -4381,6 +4382,7 @@ document.getElementById("Create_New_Topic").addEventListener("click", (event) =>
   CloseALL();
   document.getElementById("create-column").style.display = "block";
   document.getElementById("create-column-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("Create_Marker").addEventListener("click", (event) => {
@@ -4388,6 +4390,7 @@ document.getElementById("Create_Marker").addEventListener("click", (event) => {
   CloseALL();
   document.getElementById("marker-column").style.display = "block";
   document.getElementById("marker-column-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("Create_Polygon").addEventListener("click", (event) => {
@@ -4395,6 +4398,7 @@ document.getElementById("Create_Polygon").addEventListener("click", (event) => {
   CloseALL();
   document.getElementById("polygon-column").style.display = "block";
   document.getElementById("polygon-column-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("Set_Rules").addEventListener("click", (event) => {
@@ -4402,6 +4406,7 @@ document.getElementById("Set_Rules").addEventListener("click", (event) => {
   CloseALL();
   document.getElementById("rules-column").style.display = "block";
   document.getElementById("rules-column-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("NFT-utility").addEventListener("click", (event) => {
@@ -4409,6 +4414,7 @@ document.getElementById("NFT-utility").addEventListener("click", (event) => {
   CloseALL();
   document.getElementById("utility-column").style.display = "block";
   document.getElementById("utility-column-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("Change_Memo").addEventListener("click", (event) => {
@@ -4416,6 +4422,7 @@ document.getElementById("Change_Memo").addEventListener("click", (event) => {
   CloseALL();
   document.getElementById("memo-column").style.display = "block";
   document.getElementById("memo-column-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("Stack_topic_IDs").addEventListener("click", (event) => {
@@ -4423,6 +4430,7 @@ document.getElementById("Stack_topic_IDs").addEventListener("click", (event) => 
   CloseALL();
   document.getElementById("stack-topic-ids").style.display = "block";
   document.getElementById("stack-topic-ids-container").style.display = "block";
+  OpenToggleToolbar();
 });
 
 document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
@@ -4432,6 +4440,19 @@ document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
   activeMarkerPopups.forEach((popup) => popup.remove());
   document.getElementById("topic-chat-container").style.display = "block";
 });
+
+document.getElementById("toggle-toolbar-btn-btn").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("toolbar").style.display = "block";
+});
+
+document.getElementById("toggle-your-fov-btn-btn").addEventListener("click", (event) => {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("rotation-controls").style.display = "block";
+});
+
 
 
 
@@ -5431,13 +5452,9 @@ function animateMapTo(map, targetLngLat, targetZoom = null, duration = 1000) {
       if (targetZoom !== null) {
         map.setZoom(finalZoom);
       }
-      console.log('Animation completed at:', map.getCenter(), 'Zoom:', map.getZoom());
     }
   }
 
-  // Start the animation
-  console.log('Starting custom animation to:', targetLngLat, 'Zoom:', finalZoom);
-  console.log('Shortest path lngDiff:', lngDiff);
   requestAnimationFrame(animate);
 }
 
