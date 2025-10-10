@@ -1940,22 +1940,7 @@ button[type="submit"],
   </body>
 
     <script>
-window.addEventListener('load', () => {
-  const initialWidth = window.innerWidth;
-  const initialHeight = window.innerHeight;
-  document.documentElement.style.width = `${initialWidth}px`;
-  document.documentElement.style.height = `${initialHeight}px`;
-  document.body.style.width = `${initialWidth}px`;
-  document.body.style.height = `${initialHeight}px`;
-});
-const textarea = document.querySelector('textarea');
-textarea.addEventListener('focus', () => {
-  // Force viewport to stay fixed
-  document.querySelector('meta[name="viewport"]').setAttribute(
-    'content',
-    'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'
-  );
-});
+      
       const APP_METADATA = {
         name: "PlanNet",
         description: "A Hashinals application using WalletConnect via Kiloscribe",
@@ -3933,16 +3918,17 @@ async function confirmNFTFunction(accountId) {
   }
 }
 
+const initialWidth = window.innerWidth;
+const initialHeight = window.innerHeight;
+
 const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(initialWidth, initialHeight); // Use initial dimensions
 renderer.setPixelRatio(window.devicePixelRatio);
-document
-  .getElementById("three-container")
-  .appendChild(renderer.domElement);
+document.getElementById("three-container").appendChild(renderer.domElement);
 
 const camera = new THREE.PerspectiveCamera(
   45,
-  window.innerWidth / window.innerHeight,
+  initialWidth / initialHeight, // Use initial dimensions for aspect ratio
   0.1,
   1000
 );
