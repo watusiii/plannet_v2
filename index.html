@@ -100,10 +100,9 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100vw;
+  height: 100vh !important;
   overflow: hidden;
   position: fixed;
-  top: 0;
-  left: 0;
 }
 
 .maplibregl-canvas {
@@ -1931,6 +1930,7 @@ button[type="submit"],
   </body>
 
     <script>
+
 
       const APP_METADATA = {
         name: "PlanNet",
@@ -5318,51 +5318,12 @@ function initializeRotation(initialLng, initialLat) {
 // Example: Call this when your map or scene is initialized
 // initializeRotation(map.getCenter().lng, map.getCenter().lat);
 
-
-    // Capture the initial viewport dimensions
-    const initialWidth = window.innerWidth;
-    const initialHeight = window.innerHeight;
-
-    // Set the html, body, and canvas sizes to initial dimensions
-    window.addEventListener('load', () => {
-      document.documentElement.style.height = `${initialHeight}px`;
-      document.body.style.height = `${initialHeight}px`;
-      // Set initial sizes for Three.js and MapLibre GL
-      camera.aspect = initialWidth / initialHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(initialWidth, initialHeight);
-      map.resize();
-      // Ensure canvas CSS matches
-      updateCanvasSizes();
-    });
-
-    // Prevent resizing when the keyboard opens
-    window.addEventListener('resize', () => {
-      // Force html, body to initial height
-      document.documentElement.style.height = `${initialHeight}px`;
-      document.body.style.height = `${initialHeight}px`;
-      // Use initial dimensions instead of dynamic window.innerWidth/Height
-      camera.aspect = initialWidth / initialHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(initialWidth, initialHeight);
-      map.resize();
-      // Ensure canvas CSS matches
-      updateCanvasSizes();
-    });
-
-    // Function to set canvas CSS sizes
-    function updateCanvasSizes() {
-      const mapCanvas = document.querySelector('#map .maplibregl-canvas');
-      if (mapCanvas) {
-        mapCanvas.style.width = `${initialWidth}px`;
-        mapCanvas.style.height = `${initialHeight}px`;
-      }
-      const threeCanvas = document.querySelector('#three-container canvas');
-      if (threeCanvas) {
-        threeCanvas.style.width = `${initialWidth}px`;
-        threeCanvas.style.height = `${initialHeight}px`;
-      }
-    }
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  map.resize();
+});
 
 animate();
 
