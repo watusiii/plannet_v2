@@ -714,6 +714,10 @@ html, body {
   right: 0;
 }
 
+textarea {
+      resize: none;
+    }
+
 .maplibregl-popup-tip {
   display: none !important; /* Hide anchor triangle */
 }
@@ -5522,7 +5526,7 @@ function updateClusters() {
 
 const debouncedUpdateClusters = debounce(() => {
   updateClusters(); // Run updateClusters
-}, 2000);
+}, 1000);
 // map.on("moveend", debouncedUpdateClusters);
 
 window.addEventListener("beforeunload", () => {
