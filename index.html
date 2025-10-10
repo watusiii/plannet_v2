@@ -2378,7 +2378,7 @@ async function upload() {
       adjustTextareaHeight(document.getElementById('cid-output'));
     }
 
-    if (maxretries === retryCount) {
+    if (maxRetries === retryCount) {
       document.getElementById('cid-output').textContent = `Failed to upload to the network`;
       adjustTextareaHeight(document.getElementById('cid-output'));
     }
