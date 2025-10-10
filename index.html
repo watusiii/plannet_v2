@@ -5361,21 +5361,28 @@ const activeMarkerPopups = [];
 
 let currentMarkerSize = 5;
 
-// Function to smoothly animate the map to a target location
 function animateMapTo(map, targetLngLat, duration = 1000) {
   const start = map.getCenter(); // Current map center
-  const startLng = start.lng;
-  const startLat = start.lat;
-  const targetLng = targetLngLat[0];
+  let startLng = start.lng;
+  let startLat = start.lat;
+  let targetLng = targetLngLat[0];
   const targetLat = targetLngLat[1];
   const startTime = performance.now();
+
+  // Normalize longitude difference for shortest path
+  let lngDiff = targetLng - startLng;
+  if (lngDiff > 180) {
+    lngDiff -= 360; // Go left across antimeridian
+  } else if (lngDiff < -180) {
+    lngDiff += 360; // Go right across antimeridian
+  }
 
   function animate(currentTime) {
     const elapsed = currentTime - startTime;
     const progress = Math.min(elapsed / duration, 1); // Normalize to 0-1
 
     // Linear interpolation for smooth movement
-    const currentLng = startLng + (targetLng - startLng) * progress;
+    const currentLng = startLng + lngDiff * progress;
     const currentLat = startLat + (targetLat - startLat) * progress;
 
     // Update map center
@@ -5391,6 +5398,7 @@ function animateMapTo(map, targetLngLat, duration = 1000) {
 
   // Start the animation
   console.log('Starting custom animation to:', targetLngLat);
+  console.log('Shortest path lngDiff:', lngDiff);
   requestAnimationFrame(animate);
 }
 
