@@ -100,9 +100,11 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  height: 100vh !important;
+  height: 100vh;
   overflow: hidden;
   position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .maplibregl-canvas {
@@ -1967,7 +1969,6 @@ button[type="submit"],
             }
         }
 
-                // Initialize loader with number of checkpoints
                 const loader = new Loader(10); // Set to number of checkpoints you want
 
 
