@@ -99,7 +99,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;
+  width: 100vw;
+  min-height: 100vh; /* Fallback, but may still resize slightly */
   overflow: hidden;
   position: fixed;
 }
@@ -857,7 +858,19 @@ button[type="submit"],
   </button>
 </div>
 
+<div style="display: none; position: fixed; top: 6.5vh; left: 0; z-index: 1006;" id="toggle-your-fov-btn-container">
+  <button id="toggle-your-fov-btn-btn" class="options-and-topic" style="margin-left: 0.3vh;">YOUR POV
+  </button>
+  <button id="topic-chat-btn" class="options-and-topic" style="margin-left: 1vw;">TOPIC CHAT
+  </button>
+</div>
 
+<div style="display: none; position: fixed; top: 6.5vh; left: 0; z-index: 1006;" id="toggle-toolbar-btn-container">
+  <button id="toggle-toolbar-btn-btn" class="options-and-topic" style="margin-left: 0.3vh;">TOOLBAR
+  </button>
+  <button id="topic-chat-btn" class="options-and-topic" style="margin-left: 1vw;">TOPIC CHAT
+  </button>
+</div>
 
 
 <button id="toggle-controls-btn" class="menu_buttons" style="top: 6.5vh;">CONTROLS
