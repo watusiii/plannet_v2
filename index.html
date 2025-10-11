@@ -2007,18 +2007,6 @@ async function extractTopicId() {
   const userInput = path && path !== '/' ? path.slice(1) : '';
   
   let topicId;
-  
-  if (userInput === 'validation-key.txt') {
-    topicId = userInput;
-    const loadColumn = document.getElementById("load-column");
-    loadColumn.style.display = "block";
-    const inputarea = document.getElementById("input-field");
-    inputarea.value = '';
-    inputarea.value = '0169ef08f0f215e046a2cd1b3085e537b362b2f0f5b3cd3559b712151c528399fd1994e430b92f2fd78d3ecb5bb10e2b91f149d14054d429927de00fa0a2a658';
-    adjustTextareaHeight(inputarea);
-    return;
-  }
-
   if (userInput.startsWith('0.0.')) {
     topicId = userInput; // Use the URL path directly if it starts with '0.0.'
   } else {
