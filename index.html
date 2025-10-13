@@ -138,6 +138,7 @@ html, body {
   border-radius: 0.8vh;
   cursor: pointer;
   font-size: 1.5vh;
+  animation: zoomIn 0.5s ease-in-out;
 }
 
 .rotation-controls {
@@ -174,6 +175,12 @@ html, body {
   font-size: 1.5vh;
   display: none;
   margin-left: 0.3vh;
+  animation: zoomIn 0.5s ease-in-out;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 .copy-coordinates {
@@ -3363,13 +3370,10 @@ document.getElementById("submit-button-Change_Memo").addEventListener("click", a
       topicId = userInput;
     }
     const memo =document.getElementById("input-field-memo").value || '';
-
     let adminKey = document.getElementById("input-field-admin-key").value;
-
     const realfee = document.getElementById("input-field-fee").value;
     const tokenId = document.getElementById("input-field-fee-token").value;
     const royaltyAccount = document.getElementById("input-field-royal-acc").value;
-    const feeScheduleKey = document.getElementById("input-field-admin-key").value;
 
     const fee = realfee * 1000000
 
@@ -3385,7 +3389,7 @@ document.getElementById("submit-button-Change_Memo").addEventListener("click", a
       });
       const topic = topicId;
       const changeMemo =
-      await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey, customFees, feeScheduleKey);
+      await window.HashinalsWalletConnectSDK.updateTopic(topic , memo, adminKey, customFees);
     } else {
     const topic = topicId;
     const changeMemo =
@@ -4608,7 +4612,7 @@ document
                   const maxLatitudeSize = 180 / polygonSize;
 
                   formattedRules +=
-                    `Polygon Topic ID: ${lastRule.forpolygon.polygonTopicId}\n` +
+                    `Polygon NFT ID: ${lastRule.forpolygon.polygonTopicId}\n` +
                     `Polygon Messages Per NFT: ${lastRule.forpolygon.polygonMessagesPerNft}\n` +
                     `Polygon Size: ${polygonSize}\n` +
                     `Maximum distance between points is:\n360/${polygonSize}=${maxLongitudeSize} for longitude\n180/${polygonSize}=${maxLatitudeSize} for latitude.\n`;
@@ -4616,7 +4620,7 @@ document
                   }
                 if (lastRule.formarker ) {
                   formattedRules +=
-                    `Marker Topic ID: ${lastRule.formarker.markerTopicId}\n` +
+                    `Marker NFT ID: ${lastRule.formarker.markerTopicId}\n` +
                     `Marker Messages Per NFT: ${lastRule.formarker.markerMessagesPerNft}\n`;
                   hasRules = true;
                 }
@@ -5226,7 +5230,7 @@ document
 
   document.getElementById("delete-polygon-number").addEventListener("click", async () => {
     try {
-      let userInput = document.getElementById("input-field-2-0").value.toLowerCase();
+      let userInput = document.getElementById("input-field-3-0").value.toLowerCase();
       let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
       let topicId;
 
@@ -7777,7 +7781,7 @@ document.getElementById("load-topic-rules-for-marker").addEventListener("click",
 
 
 
-const markerRulesMessage = `You have to own ${loadedTopicRulesForMarker[0].markerTopicId} to show ${loadedTopicRulesForMarker[0].markerMessagesPerNft} messages per NFT.`;
+const markerRulesMessage = `To post markers, you must own NFT ${loadedTopicRulesForMarker[0].markerTopicId}. Each NFT allows posting ${loadedTopicRulesForMarker[0].markerMessagesPerNft} markers.`;
 document.getElementById("loaded-topic-rules-for-marker").textContent = markerRulesMessage;
 adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-marker"));
 
@@ -7851,7 +7855,8 @@ document.getElementById("load-topic-rules-for-polygon").addEventListener("click"
 
 
 
-const polygonRulesMessage = `You have to own NFT ${loadedTopicRulesForPolygon[0].polygonTopicId} to show ${loadedTopicRulesForPolygon[0].polygonMessagesPerNft} messages per NFT.`;
+const polygonRulesMessage =
+`To post polygons, you must own NFT ${loadedTopicRulesForPolygon[0].polygonTopicId}. Each NFT allows posting ${loadedTopicRulesForPolygon[0].polygonMessagesPerNft} polygons.`;
 
 const polygonSize = loadedTopicRulesForPolygon[0].polygonSize;
 const maxLongitudeSize = 360 / polygonSize;
