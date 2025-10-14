@@ -1905,7 +1905,8 @@ self.addEventListener('install', (event) => {
     caches.open('v1').then((cache) => {
       return cache.addAll([
         '/',
-        '/index.html'
+        '/index.html',
+        'https://kiloscribe.com/api/inscription-cdn/0.0.4819119'
       ]);
     })
   );
