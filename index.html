@@ -3235,7 +3235,6 @@ async function connectWallet() {
       PROJECT_ID,
       APP_METADATA
     );
-    console.log("account info is", accountId, balance);
 
     if (accountId && accountId !== null) {
     loadProfile(accountId, balance);
@@ -3266,7 +3265,7 @@ async function initAccount() {
     }
 }
 
-async function initfuckyouAccount(accountResponse) {
+async function initRetryAccount(accountResponse) {
     if (!accountResponse) {
         updateAccountInfo(null, 0);
         return;
@@ -3285,7 +3284,7 @@ async function initfuckyouAccount(accountResponse) {
 
 async function main() {
     const accountResponse = await initAccount();
-    await initfuckyouAccount(accountResponse);
+    await initRetryAccount(accountResponse);
 }
 
 main();
@@ -6868,11 +6867,15 @@ async function loadMainButtonSettings() {
         const colorDisconnect = `rgb(${redDisconnect}, ${greenDisconnect}, ${blueDisconnect})`;
         const colorMainButton = `rgb(${redMainButton}, ${greenMainButton}, ${blueMainButton})`;
         const disconnectButton = document.querySelectorAll('#disconnect-wallet-btn');
+        const connectButton = document.querySelectorAll('#connect-wallet-btn');
         const mainButton_1 = document.querySelectorAll('.menu_buttons');
         const mainButton_2 = document.querySelectorAll('.options-and-topic');
 
-        const disconnectButtons = document.querySelectorAll('#disconnect-wallet-btn');
-        disconnectButtons.forEach(button => {
+        disconnectButton.forEach(button => {
+            button.style.backgroundColor = colorDisconnect;
+        });
+
+        connectButton.forEach(button => {
             button.style.backgroundColor = colorDisconnect;
         });
 
