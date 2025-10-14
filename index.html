@@ -23,7 +23,7 @@
   data-hcs-debug="true"
   data-hcs-retry-attempts="5"
   data-hcs-retry-backoff="500"
-  data-hcs-show-loading-indicator="true"
+  data-hcs-show-loading-indicator="false"
   data-hcs-loading-callback-name="setLoadingIndicator"
   type="e5a3c1b79eab779120034ec1-text/javascript"
 ></script>
@@ -2133,8 +2133,6 @@ let currentUfoModel = null;
 let timeoutForToolbarLoad = true;
 
 async function updateAccountInfo(accountId, balance) {
-if (!accountId) {
-isLoggedIn = false;
   document.getElementById("connect-wallet-btn").style.display ="block";
   document.getElementById("disconnect-wallet-btn").style.display ="none";
   document.getElementById("account-id").textContent = ``;
@@ -2145,25 +2143,16 @@ isLoggedIn = false;
         document.getElementById("crosshair").style.display = "block";
     }, 15000);
   });
-  if (isLoggedIn === false) {
   connectWallet();
   extractTopicId();
   handleAllMessages();
-  }
   document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
-  if (isLoggedIn === false) {
-    if (timeoutForToolbarLoad === true) {
-      timeoutForToolbarLoad = false;
       await handleAllMessages();
-    }}
-    setTimeout(() => {
-      timeoutForToolbarLoad = true;
-    }, 2000);
   }, 500));
   return;
-}
+};
 
-isLoggedIn = true;
+async function loadProfile(accountId, balance) {
   document.getElementById("account-id").textContent = `Acc: ${accountId}`;
   document.getElementById("connect-wallet-btn").style.display = "none";
   document.getElementById("disconnect-wallet-btn").style.display ="block";
@@ -2181,25 +2170,16 @@ isLoggedIn = true;
   const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0
     ? profileObjectSettings[0].urls[0]
     : defaultModelUrl;
-  if (isLoggedIn === true) {
     debounce(async () => {
   extractTopicId();
   await loadUfoModel(modelUrl); // Load the model using the determined URL
   confirmNFTFunction(accountId);
   }, 1000);
-  }
   document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
-    if (isLoggedIn === true) {
-    if (timeoutForToolbarLoad === true) {
-      timeoutForToolbarLoad = false;
-      await confirmNFTFunction(accountId);
-    }}
-    setTimeout(() => {
-      timeoutForToolbarLoad = true;
-    }, 2000);
+    await confirmNFTFunction(accountId);
   }, 500));
   await extractAccountId();
-}
+};
 
 loader.updateProgress();
 
@@ -3249,49 +3229,67 @@ const defaultModelUrl = 'https://kiloscribe.com/api/inscription-cdn/0.0.9742046'
 await loadUfoModel(defaultModelUrl);
 let BetaNFTScaleFactor = 1;
 
-        async function connectWallet() {
-          try {
-            const { balance, accountId } = await sdk.connectWallet(
-              PROJECT_ID,
-              APP_METADATA
-            );
-            console.log("account info is", accountId, balance);
-            updateAccountInfo(accountId, balance);
-          } catch (error) {
-            console.error("Failed to connect wallet:", error);
-          }
-        }
+async function connectWallet() {
+  try {
+    const { balance, accountId } = await sdk.connectWallet(
+      PROJECT_ID,
+      APP_METADATA
+    );
+    console.log("account info is", accountId, balance);
 
-        async function disconnectWallet() {
-          try {
-            await sdk.disconnectWallet(PROJECT_ID, APP_METADATA);
-            updateAccountInfo(undefined);
-          } catch (error) {
-            console.error("Failed to connect wallet:", error);
-          }
-        }
+    if (accountId && accountId !== null) {
+    loadProfile(accountId, balance);
+    } else {
+      updateAccountInfo(undefined);
+    }
 
-        async function initAccount() {
-          const accountResponse = await sdk.initAccount(
-            PROJECT_ID,
-            APP_METADATA
-          );
+  } catch (error) {
+    console.error("Failed to connect wallet:", error);
+  }
+}
 
-          if (accountResponse && accountResponse.accountId) {
-            updateAccountInfo(
-              accountResponse.accountId,
-              accountResponse.balance
-            );
+async function disconnectWallet() {
+  try {
+    await sdk.disconnectWallet(PROJECT_ID, APP_METADATA);
+    updateAccountInfo(undefined);
+  } catch (error) {
+    console.error("Failed to connect wallet:", error);
+  }
+}
 
+async function initAccount() {
+    try {
+        const accountResponse = await sdk.initAccount(PROJECT_ID, APP_METADATA);
+        return accountResponse;
+    } catch (error) {
+        return null;
+    }
+}
 
-          } else {
-            console.log("Account ID not found in response");
-          }
-        }
+async function initfuckyouAccount(accountResponse) {
+    if (!accountResponse) {
+        updateAccountInfo(null, 0);
+        return;
+    }
 
+    updateAccountInfo(
+        accountResponse.accountId || null,
+        accountResponse.balance || 0
+    );
 
-initAccount()
-updateAccountInfo();
+    if (accountResponse.accountId === null) {
+    } else {
+        loadProfile(accountResponse.accountId, accountResponse.balance || 0);
+    }
+}
+
+async function main() {
+    const accountResponse = await initAccount();
+    await initfuckyouAccount(accountResponse);
+}
+
+main();
+
 
 document.getElementById("connect-wallet-btn").addEventListener("click", connectWallet);
 document.getElementById("disconnect-wallet-btn").addEventListener("click", disconnectWallet);
