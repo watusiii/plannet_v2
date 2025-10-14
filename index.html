@@ -2131,39 +2131,54 @@ const ufoLoader = new THREE.GLTFLoader();
 ufoLoader.setDRACOLoader(dracoLoader);
 let currentUfoModel = null;
 let timeoutForToolbarLoad = true;
+let isLoggedIn = false;
 
 async function updateAccountInfo(accountId, balance) {
 if (!accountId) {
-isLoggedIn = false;
-  document.getElementById("connect-wallet-btn").style.display ="block";
-  document.getElementById("disconnect-wallet-btn").style.display ="none";
-  document.getElementById("account-id").textContent = ``;
-  document.getElementById("crosshair").style.display = "block";
-  document.getElementById("connect-wallet-btn").addEventListener("click", () => {
-    document.getElementById("crosshair").style.display = "none";
-    setTimeout(() => {
-        document.getElementById("crosshair").style.display = "block";
-    }, 15000);
-  });
-  if (isLoggedIn === false) {
-  connectWallet();
-  extractTopicId();
-  handleAllMessages();
-  }
-  document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
-  if (isLoggedIn === false) {
-    if (timeoutForToolbarLoad === true) {
-      timeoutForToolbarLoad = false;
-      await handleAllMessages();
-    }}
-    setTimeout(() => {
-      timeoutForToolbarLoad = true;
-    }, 2000);
-  }, 500));
-  return;
-}
 
-isLoggedIn = true;
+  if (isLoggedIn === false) {
+    console.log("isLoggeccccccccccdIn is false");
+    setTimeout(() => {
+      if (isLoggedIn === false) {
+        console.log("isLoggedIn is falaaaaaaaaaaase");
+        initAccount();
+        document.getElementById("connect-wallet-btn").style.display ="block";
+        document.getElementById("disconnect-wallet-btn").style.display ="none";
+        document.getElementById("account-id").textContent = ``;
+        document.getElementById("crosshair").style.display = "block";
+        document.getElementById("connect-wallet-btn").addEventListener("click", () => {
+          document.getElementById("crosshair").style.display = "none";
+          setTimeout(() => {
+              document.getElementById("crosshair").style.display = "block";
+          }, 15000);
+        });
+
+
+        connectWallet();
+        extractTopicId();
+        handleAllMessages();
+        
+
+        document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
+          if (isLoggedIn === false) {
+            if (timeoutForToolbarLoad === true) {
+              timeoutForToolbarLoad = false;
+              await handleAllMessages();
+            }
+          }
+            setTimeout(() => {
+              timeoutForToolbarLoad = true;
+            }, 2000);
+        }, 500));
+          return;
+    }
+  }, 2000);
+  };
+  };};
+
+async function loadProfile(accountId, balance) {
+setTimeout(async () => {
+  console.log("isLoggedIn is true", isLoggedIn);
   document.getElementById("account-id").textContent = `Acc: ${accountId}`;
   document.getElementById("connect-wallet-btn").style.display = "none";
   document.getElementById("disconnect-wallet-btn").style.display ="block";
@@ -2181,13 +2196,11 @@ isLoggedIn = true;
   const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0
     ? profileObjectSettings[0].urls[0]
     : defaultModelUrl;
-  if (isLoggedIn === true) {
-    debounce(async () => {
+
   extractTopicId();
   await loadUfoModel(modelUrl); // Load the model using the determined URL
   confirmNFTFunction(accountId);
-  }, 1000);
-  }
+
   document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
     if (isLoggedIn === true) {
     if (timeoutForToolbarLoad === true) {
@@ -2199,7 +2212,8 @@ isLoggedIn = true;
     }, 2000);
   }, 500));
   await extractAccountId();
-}
+}, 1000);
+};
 
 loader.updateProgress();
 
@@ -2400,7 +2414,36 @@ async function fetchContent() {
 
     try {
 
+          // Find providers for the CID
+    console.log(`Looking for providers of CID: ${cid}`);
+    const providers = [];
+    for await (const provider of helia.libp2p.services.dht.findProviders(cid)) {
+// Check if provider has a peer object with a valid id
+if (provider && provider.peer && provider.peer.id) {
+      providers.push(provider);
+      console.log(`Found provider: ${provider.peer.id.toString()}`);
+    } else {
+      console.warn('Skipping invalid provider:', provider);
+    }
+  }
 
+  // Check if any providers were found
+  if (providers.length === 0) {
+    document.getElementById('cid-output').textContent = 'No providers found for the given CID';
+    return;
+  }
+
+        // Retrieve content from the first provider
+        console.log('Retrieving content...');
+    const content = [];
+    for await (const chunk of fs.cat(cid)) {
+      content.push(chunk);
+    }
+
+    // Combine chunks into a single Buffer
+    const data = Buffer.concat(content);
+    const text = data.toString('utf8'); // Assuming the content is text
+    console.log('Retrieved content:', text);
 
       const gateways = [
   'https://dweb.link/ipfs/',
@@ -3222,12 +3265,13 @@ let BetaNFTScaleFactor = 1;
 
         async function connectWallet() {
           try {
+            isLoggedIn = true;
             const { balance, accountId } = await sdk.connectWallet(
               PROJECT_ID,
               APP_METADATA
             );
             console.log("account info is", accountId, balance);
-            updateAccountInfo(accountId, balance);
+            loadProfile(accountId, balance);
           } catch (error) {
             console.error("Failed to connect wallet:", error);
           }
@@ -3235,8 +3279,9 @@ let BetaNFTScaleFactor = 1;
 
         async function disconnectWallet() {
           try {
+            isLoggedIn = false;
             await sdk.disconnectWallet(PROJECT_ID, APP_METADATA);
-            updateAccountInfo(undefined);
+            updateAccountInfo(undefined,undefined);
           } catch (error) {
             console.error("Failed to connect wallet:", error);
           }
@@ -3253,6 +3298,8 @@ let BetaNFTScaleFactor = 1;
               accountResponse.accountId,
               accountResponse.balance
             );
+            isLoggedIn = true;
+            loadProfile(accountResponse.accountId, accountResponse.balance);
 
 
           } else {
