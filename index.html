@@ -2131,54 +2131,39 @@ const ufoLoader = new THREE.GLTFLoader();
 ufoLoader.setDRACOLoader(dracoLoader);
 let currentUfoModel = null;
 let timeoutForToolbarLoad = true;
-let isLoggedIn = false;
 
 async function updateAccountInfo(accountId, balance) {
 if (!accountId) {
-
-  if (isLoggedIn === false) {
-    console.log("isLoggeccccccccccdIn is false");
+isLoggedIn = false;
+  document.getElementById("connect-wallet-btn").style.display ="block";
+  document.getElementById("disconnect-wallet-btn").style.display ="none";
+  document.getElementById("account-id").textContent = ``;
+  document.getElementById("crosshair").style.display = "block";
+  document.getElementById("connect-wallet-btn").addEventListener("click", () => {
+    document.getElementById("crosshair").style.display = "none";
     setTimeout(() => {
-      if (isLoggedIn === false) {
-        console.log("isLoggedIn is falaaaaaaaaaaase");
-        initAccount();
-        document.getElementById("connect-wallet-btn").style.display ="block";
-        document.getElementById("disconnect-wallet-btn").style.display ="none";
-        document.getElementById("account-id").textContent = ``;
         document.getElementById("crosshair").style.display = "block";
-        document.getElementById("connect-wallet-btn").addEventListener("click", () => {
-          document.getElementById("crosshair").style.display = "none";
-          setTimeout(() => {
-              document.getElementById("crosshair").style.display = "block";
-          }, 15000);
-        });
+    }, 15000);
+  });
+  if (isLoggedIn === false) {
+  connectWallet();
+  extractTopicId();
+  handleAllMessages();
+  }
+  document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
+  if (isLoggedIn === false) {
+    if (timeoutForToolbarLoad === true) {
+      timeoutForToolbarLoad = false;
+      await handleAllMessages();
+    }}
+    setTimeout(() => {
+      timeoutForToolbarLoad = true;
+    }, 2000);
+  }, 500));
+  return;
+}
 
-
-        connectWallet();
-        extractTopicId();
-        handleAllMessages();
-        
-
-        document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
-          if (isLoggedIn === false) {
-            if (timeoutForToolbarLoad === true) {
-              timeoutForToolbarLoad = false;
-              await handleAllMessages();
-            }
-          }
-            setTimeout(() => {
-              timeoutForToolbarLoad = true;
-            }, 2000);
-        }, 500));
-          return;
-    }
-  }, 2000);
-  };
-  };};
-
-async function loadProfile(accountId, balance) {
-setTimeout(async () => {
-  console.log("isLoggedIn is true", isLoggedIn);
+isLoggedIn = true;
   document.getElementById("account-id").textContent = `Acc: ${accountId}`;
   document.getElementById("connect-wallet-btn").style.display = "none";
   document.getElementById("disconnect-wallet-btn").style.display ="block";
@@ -2196,11 +2181,13 @@ setTimeout(async () => {
   const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0
     ? profileObjectSettings[0].urls[0]
     : defaultModelUrl;
-
+  if (isLoggedIn === true) {
+    debounce(async () => {
   extractTopicId();
   await loadUfoModel(modelUrl); // Load the model using the determined URL
   confirmNFTFunction(accountId);
-
+  }, 1000);
+  }
   document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
     if (isLoggedIn === true) {
     if (timeoutForToolbarLoad === true) {
@@ -2212,8 +2199,7 @@ setTimeout(async () => {
     }, 2000);
   }, 500));
   await extractAccountId();
-}, 1000);
-};
+}
 
 loader.updateProgress();
 
@@ -3265,13 +3251,12 @@ let BetaNFTScaleFactor = 1;
 
         async function connectWallet() {
           try {
-            isLoggedIn = true;
             const { balance, accountId } = await sdk.connectWallet(
               PROJECT_ID,
               APP_METADATA
             );
             console.log("account info is", accountId, balance);
-            loadProfile(accountId, balance);
+            updateAccountInfo(accountId, balance);
           } catch (error) {
             console.error("Failed to connect wallet:", error);
           }
@@ -3279,9 +3264,8 @@ let BetaNFTScaleFactor = 1;
 
         async function disconnectWallet() {
           try {
-            isLoggedIn = false;
             await sdk.disconnectWallet(PROJECT_ID, APP_METADATA);
-            updateAccountInfo(undefined,undefined);
+            updateAccountInfo(undefined);
           } catch (error) {
             console.error("Failed to connect wallet:", error);
           }
@@ -3298,8 +3282,6 @@ let BetaNFTScaleFactor = 1;
               accountResponse.accountId,
               accountResponse.balance
             );
-            isLoggedIn = true;
-            loadProfile(accountResponse.accountId, accountResponse.balance);
 
 
           } else {
