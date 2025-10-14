@@ -42,8 +42,6 @@
 
 <script data-src="hcs://1/0.0.9705945" data-script-id="dracoBase64"></script>
 
-<script data-src="hcs://1/0.0.9872320" data-script-id="ipfs-core"></script>
-
 <script data-src="hcs://1/0.0.9961904" data-script-id="helia@5.5.1"></script>
 
 <script data-src="hcs://1/0.0.9961944" data-script-id="unixfs@5.1.0"></script>
@@ -58,41 +56,9 @@
 
 <script data-src="hcs://1/0.0.10013813" data-script-id="libp2p-noise@17.0.0"></script>
 
-<script data-src="hcs://1/0.0.10014184" data-script-id="libp2ppeer-id"></script>
-
 <script data-src="hcs://1/0.0.10015601" data-script-id="helia-verified-fetch@3.2.3"></script>
 
-<script data-src="hcs://1/0.0.10017359" data-script-id="blockstore-idb@3.0.1"></script>
-
 <script data-src="hcs://1/0.0.10017498" data-script-id="helia-bitswap@3.0.3"></script>
-
-<script data-src="hcs://1/0.0.10017540" data-script-id="libp2p/logger@6.0.5"></script>
-
-<script data-src="hcs://1/0.0.10021978" data-script-id="chainsafe-libp2p-yamux@8.0.0"></script>
-
-<script data-src="hcs://1/0.0.10022000" data-script-id="helia-routers@3.1.3"></script>
-
-<script data-src="hcs://1/0.0.10022010" data-script-id="libp2p-autonat@3.0.5"></script>
-
-<script data-src="hcs://1/0.0.10022013" data-script-id="libp2p-circuit-relay-v2@4.0.5"></script>
-
-<script data-src="hcs://1/0.0.10022017" data-script-id="libp2p-dcutr@3.0.5"></script>
-
-<script data-src="hcs://1/0.0.10022020" data-script-id="ibp2p-identify@4.0.5"></script>
-
-<script data-src="hcs://1/0.0.10022025" data-script-id="libp2p-keychain@6.0.5"></script>
-
-<script data-src="hcs://1/0.0.10022034" data-script-id="libp2p-mplex@12.0.6"></script>
-
-<script data-src="hcs://1/0.0.10022054" data-script-id="libp2p-webrtc@6.0.6"></script>
-
-<script data-src="hcs://1/0.0.10022056" data-script-id="helia-delegated-routing-v1-http-api-client@4.2.5"></script>
-
-<script data-src="hcs://1/0.0.10022058" data-script-id="helia-http@2.2.1"></script>
-
-<script data-src="hcs://1/0.0.10022060" data-script-id="ipns@10.1.2"></script>
-
-<script data-src="hcs://1/0.0.10022637" data-script-id="multiformats-multiaddr@12.2.3"></script>
 
 <style>
 
@@ -2180,9 +2146,9 @@ isLoggedIn = false;
     }, 15000);
   });
   if (isLoggedIn === false) {
+  connectWallet();
   extractTopicId();
   handleAllMessages();
-  connectWallet();
   }
   document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
   if (isLoggedIn === false) {
@@ -2242,6 +2208,8 @@ document.getElementById('upload-to-ipfs-button').disabled = true;
 let helia = null;
 let fs = null;
 
+console.log('initHeliabitswap' , window.Libp2p);
+
 async function initHelia() {
 
   try {
@@ -2254,7 +2222,7 @@ async function initHelia() {
       '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/p2p/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
     ];
 
-    const noise = window.ChainsafeLibp2PNoise?.noise?.() || window.Libp2p?.noise?.();
+    const noise = window.ChainsafeLibp2PNoise?.noise?.();
 
     const kuboClient = window.KuboRpcClient.create({
       url: 'https://delegated-ipfs.dev/api/v0'
@@ -2302,6 +2270,8 @@ async function initHelia() {
     };
 
     helia = await window.Helia.createHelia({ Libp2p: libp2pOptions });
+    bitswap = window.HeliaBitswap.createBitswap(helia);
+
     fs = window.HeliaUnixfs.unixfs(helia);
 
 
@@ -2349,7 +2319,7 @@ async function upload() {
 
     const cid = await fs.addBytes(fileBytes);
     console.log('Uploaded and pinned locally, CID:', cid.toString());
-    document.getElementById('cid-output').textContent = `w8 for it to upload to the network`;
+    document.getElementById('cid-output').textContent = `w8 for it to upload to the network it usually takes few minutes, if this text doesnt change retry after 5 minutes and wait again`;
 
     adjustTextareaHeight(document.getElementById('cid-output'));
 
@@ -2403,7 +2373,7 @@ document.getElementById('fetch-from-ipfs-button').addEventListener('click', asyn
   await fetchContent();
 });
 
-
+console.log('fetchContentaaaaaaaaaaaaaaaaaa', window.Helia.createHelia());
 async function fetchContent() {
   const cidInput = document.getElementById('cid-input').value.trim();
   if (!cidInput) {
@@ -2429,6 +2399,8 @@ async function fetchContent() {
     let chunks = [];
 
     try {
+
+
 
       const gateways = [
   'https://dweb.link/ipfs/',
