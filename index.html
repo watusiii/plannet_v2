@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 <title>Meritocracy</title>
 
+<link rel="manifest" href="manifest.json">
 
 <div class="loader-container" id="loaderContainer">
   <div>
@@ -1898,6 +1899,25 @@ button[type="submit"],
   </body>
 
     <script>
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open('v1').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/index.html'
+      ]);
+    })
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
+});
 
 
       const APP_METADATA = {
