@@ -60,6 +60,8 @@
 
 <script data-src="hcs://1/0.0.10017498" data-script-id="helia-bitswap@3.0.3"></script>
 
+<script data-src="hcs://1/0.0.10034692" data-script-id="HeliaBlockBrokers"></script>
+
 <style>
 
 html, body {
@@ -2197,7 +2199,7 @@ document.getElementById('upload-to-ipfs-button').disabled = true;
 let helia = null;
 let fs = null;
 
-console.log('initHeliabitswap' , window.Libp2p);
+console.log('initHeliabitswap' , window.HeliaBlockBrokers);
 
 async function initHelia() {
 
@@ -2258,8 +2260,10 @@ async function initHelia() {
       },
     };
 
-    helia = await window.Helia.createHelia({ Libp2p: libp2pOptions });
+    helia = await window.Helia.createHelia({ Libp2p: libp2pOptions});
     bitswap = window.HeliaBitswap.createBitswap(helia);
+
+    console.log("bitswap", bitswap);
 
     fs = window.HeliaUnixfs.unixfs(helia);
 
@@ -2369,6 +2373,7 @@ async function fetchContent() {
     alert('No CID provided');
     return;
   }
+
   if (!fs || !helia) {
     document.getElementById('cid-output').textContent = 'Helia not initialized.';
     return;
@@ -2385,22 +2390,26 @@ async function fetchContent() {
   const contentType = document.getElementById('content-type')?.value || 'image';
 
   try {
+
     let chunks = [];
 
     try {
 
-          // Find providers for the CID
     console.log(`Looking for providers of CID: ${cid}`);
+
     const providers = [];
+
     for await (const provider of helia.libp2p.services.dht.findProviders(cid)) {
-// Check if provider has a peer object with a valid id
-if (provider && provider.peer && provider.peer.id) {
-      providers.push(provider);
-      console.log(`Found provider: ${provider.peer.id.toString()}`);
-    } else {
-      console.warn('Skipping invalid provider:', provider);
+
+      console.log('provider', provider);
+      
+      if (provider && provider.peer) {
+            providers.push(provider);
+            console.log(`Found provider: ${provider.peer}`);
+          } else {
+            console.warn('Skipping invalid provider:', provider);
+          }
     }
-  }
 
   // Check if any providers were found
   if (providers.length === 0) {
@@ -2864,12 +2873,19 @@ if (payer !== previousPayer) {
   });
 
   messagesContainer.innerHTML = allMessages;
+  console.log("allMessages", allMessages);
+  if (allMessages.length === 0) {
+    messagesContainer.innerHTML = 'no messages found';
+  }
   adjustTextareaHeight(messagesContainer);
 
   // Scroll to the bottom of the message container
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
   } catch (error) {
+    const messagesContainer = document.getElementById('messages-from-topic-chat');
+    messagesContainer.innerHTML = 'invalid topic id';
+    adjustTextareaHeight(messagesContainer);
     console.error("Error setting rules:", error);
   }
 });
