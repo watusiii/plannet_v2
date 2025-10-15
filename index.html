@@ -945,8 +945,8 @@ button[type="submit"],
     <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topics with names not domains:
     </label>
 
-    <textarea class="toolbar-column" type="text" id="loaded-topics" placeholder="Loaded Topics" onclick="event.stopPropagation();" readonly
-    ></textarea>
+    <div class="toolbar-column" style="user-select: text;" id="loaded-topics" placeholder="Loaded Topics" onclick="event.stopPropagation();"
+    ></div>
 
     <textarea class="toolbar-column" type="text" id="load-msgs-from-ids" placeholder="user ID or IDs separated by comma"
     onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
@@ -2157,7 +2157,10 @@ async function updateAccountInfo(accountId, balance) {
   connectWallet();
   extractTopicId();
   handleAllMessages();
-  document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
+  const toolbarLoad = document.getElementById("toolbar-load");
+  toolbarLoad.replaceWith(toolbarLoad.cloneNode(true));
+  const newToolbarLoad = document.getElementById("toolbar-load");
+  newToolbarLoad.addEventListener("click", debounce(async () => {
       await handleAllMessages();
   }, 500));
   return;
@@ -2186,8 +2189,11 @@ async function loadProfile(accountId, balance) {
   await loadUfoModel(modelUrl); // Load the model using the determined URL
   confirmNFTFunction(accountId);
   }, 1000);
-  document.getElementById("toolbar-load").addEventListener("click", debounce(async () => {
-    await confirmNFTFunction(accountId);
+  const toolbarLoad = document.getElementById("toolbar-load");
+  toolbarLoad.replaceWith(toolbarLoad.cloneNode(true));
+  const newToolbarLoad = document.getElementById("toolbar-load");
+  newToolbarLoad.addEventListener("click", debounce(async () => {
+      await confirmNFTFunction(accountId);
   }, 500));
   await extractAccountId();
 };
@@ -3686,8 +3692,8 @@ window.loadTOPIC4PIC = async function(payer) {
     const inputarea = document.getElementById("input-field");
     inputarea.value = '';
     const loaded_text_area = document.getElementById("loaded-topics");
-    loaded_text_area.value = '';
-    loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n');
+    loaded_text_area.innerHTML = '';
+    loaded_text_area.innerHTML = globalLoadedTopicIdsWithNames.join('<br>');
     adjustTextareaHeight(loaded_text_area);
 
     return { loadedTopicIdsWithNames };
@@ -3744,6 +3750,13 @@ async function handleAllMessages() {
 
     const loaded_text_area = document.getElementById("loaded-topics");
     loaded_text_area.value = '';
+    const topicSpinnerChat = `
+    <div style="display: flex; justify-content: left; align-items: left; padding-top: 1vh; padding-bottom: 1vh;">
+      <div id="topicspinnerchat"></div>
+       <span style="margin-left: 1vw;">loading messages from ${topicId}</span>
+      </div>`;
+    loaded_text_area.innerHTML = topicSpinnerChat;
+    adjustTextareaHeight(loaded_text_area);
 
     let hasMoreThanOneTopic = false;
 
@@ -3859,7 +3872,7 @@ async function handleAllMessages() {
       return idA - idB;
     });
 
-    loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n'); // Update with new values
+    loaded_text_area.innerHTML = globalLoadedTopicIdsWithNames.join('<br>'); // Update with new values
     adjustTextareaHeight(loaded_text_area); // Adjust height after loading
 
     return loadedTopicIdsWithNames; // Return the loadedTopicsIds array
@@ -4408,8 +4421,8 @@ document.getElementById("Load_Everything").addEventListener("click", (event) => 
   document.getElementById("load-column").style.display = "block";
   document.getElementById("load-column-container").style.display = "block";
   const loaded_text_area = document.getElementById("loaded-topics");
-  loaded_text_area.value = '';
-  loaded_text_area.value = globalLoadedTopicIdsWithNames.join('\n');
+  loaded_text_area.innerHTML = '';
+  loaded_text_area.innerHTML = globalLoadedTopicIdsWithNames.join('<br>');
   adjustTextareaHeight(loaded_text_area);
   OpenToggleToolbar();
 });
