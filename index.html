@@ -2780,15 +2780,18 @@ function isValidUrl(string) {
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
 
 
-      const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
-  hour12: false,
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit'
-}); // Format as MM/DD/YYYY HH:MM:SS
+const timestamp = new Date(parsedMessage.created)
+  .toLocaleString('en-US', {
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+  .replace(/[/]/g, '') // Remove slashes
+  .replace(/[:]/g, ''); // Remove colons
 
 const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
               const username = message.payer && usernames[message.payer] ?
@@ -2919,15 +2922,18 @@ function isValidUrl(string) {
 
 // Check if payerImage is valid, if not use fallback
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
-    const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
-  hour12: false,
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit'
-}); // Format as MM/DD/YYYY HH:MM:SS
+const timestamp = new Date(parsedMessage.created)
+  .toLocaleString('en-US', {
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+  .replace(/[/]/g, '') // Remove slashes
+  .replace(/[:]/g, ''); // Remove colons
 
 const payerInfo = parsedMessage.payer ? `${parsedMessage.payer}` : 'Anonymous';
               const username = parsedMessage.payer && usernames[parsedMessage.payer] ?
@@ -3035,15 +3041,18 @@ function isValidUrl(string) {
 
 // Check if payerImage is valid, if not use fallback
 const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
-    const timestamp = new Date(parsedMessage.created).toLocaleString('en-US', {
-  hour12: false,
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit'
-}); // Format as MM/DD/YYYY HH:MM:SS
+const timestamp = new Date(parsedMessage.created)
+  .toLocaleString('en-US', {
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+  .replace(/[/]/g, '') // Remove slashes
+  .replace(/[:]/g, ''); // Remove colons
 
 const payerInfo = parsedMessage.payer ? `${parsedMessage.payer}` : 'Anonymous';
               const username = parsedMessage.payer && usernames[parsedMessage.payer] ?
