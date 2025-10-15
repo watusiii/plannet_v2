@@ -2670,7 +2670,7 @@ document.getElementById("load-msgs-from").addEventListener("click", async () => 
     const topicSpinnerChat = `
     <div style="display: flex; justify-content: left; align-items: left; height: 100%;  padding-top: 1vh; padding-bottom: 1vh;">
       <div id="topicspinnerchat"></div>
-       <span style="margin-left: 1vw;">loading messages from ${topicId}</span>
+       <span style="margin-left: 1vw;">Loading messages from ${topicId}</span>
       </div>`;
     messagesContainer.innerHTML = topicSpinnerChat;
     adjustTextareaHeight(messagesContainer);
@@ -2890,7 +2890,10 @@ if (payer !== previousPayer) {
 
   } catch (error) {
     const messagesContainer = document.getElementById('messages-from-topic-chat');
-    messagesContainer.innerHTML = 'invalid topic id';
+    messagesContainer.innerHTML = 
+    `<div style="display: flex; justify-content: left; align-items: left; height: 100%;  padding-top: 1vh; padding-bottom: 1vh;">
+       <span style="margin-left: 1vw;">Invalid Topic ID</span>
+      </div>`;
     adjustTextareaHeight(messagesContainer);
     console.error("Error setting rules:", error);
   }
