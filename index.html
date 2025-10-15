@@ -771,8 +771,8 @@ button[type="submit"],
 }
 
 .loader {
-  width: 300px;
-  height: 20px;
+  width: 80vw;
+  height: 1vh;
   background-color: #e0e0e0;
   border-radius: 10px;
   overflow: hidden;
@@ -804,6 +804,15 @@ button[type="submit"],
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
+}
+
+#topicspinnerchat {
+  width: 2vh;
+  height: 2vh;
+  border: 0.5vh solid #ccc;
+  border-top: 0.5vh solid #4caf50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -2641,6 +2650,12 @@ document.getElementById("load-msgs-from").addEventListener("click", async () => 
       topicId = userInput;
     }
 
+    
+    const messageContainer = document.getElementById("messages-from-topic-chat");
+    const topicSpinnerChat = `<div style="display: flex; justify-content: center; align-items: left; height: 100%;"><div id="topicspinnerchat"></div> <span>loading messages...</span></div>`;
+    messageContainer.innerHTML = topicSpinnerChat + 'loading messages...';
+    adjustTextareaHeight(messageContainer);
+
     const topicInfo = await sdk.getTopicInfo(topicId);
           const topicAdmin = [];
           const memo = topicInfo.memo;
@@ -2677,6 +2692,7 @@ document.getElementById("load-msgs-from").addEventListener("click", async () => 
     const topicActions = new Map();
 
     const loadedNFTsForTopicChat = [];
+
 
 
     for (let index = 0; index < result.messages.length; index++) {
@@ -2843,7 +2859,6 @@ messagesContainer.addEventListener('touchmove', (e) => {
 });
 
 
-const messageContainer = document.getElementById("messages-from-topic-chat");
 messageContainer.innerHTML = allMessages;
 adjustTextareaHeight(messageContainer);
 
