@@ -3811,7 +3811,7 @@ async function handleAllMessages() {
         if (typeof message === 'string') {
           parsedMessage = JSON.parse(message);
         }
-        const timestamp = message.timestamp || Date.now(); // Use message timestamp or current time
+        const timestamp = message.consensus_timestamp
 
         if (parsedMessage.addTopic && parsedMessage.addTopic.addTopic && (topicAdmin.length === 0 || topicAdmin.includes(message.payer))) {
           hasMoreThanOneTopic = true;
@@ -8151,6 +8151,18 @@ async function processTopicMessages(topicId) {
                 parsedMessage = JSON.parse(message);
               }
 
+              const timestamp = new Date(parsedMessage.created)
+              .toLocaleString('en-US', {
+                hour12: false,
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+              })
+
+
               const defaultProfilePic = "https://kiloscribe.com/api/inscription-cdn/0.0.4819119";
               const profileUrl = isValidUrl(message.payer && profilePics[message.payer] ?
                 profilePics[message.payer].url :
@@ -8235,6 +8247,7 @@ async function processTopicMessages(topicId) {
           <p class="text_color">${parsedMessage.marker.data.msg}</p>
         </div>
       </div>
+      <div style="position: absolute; bottom: 0em; right: 1vh; font-size: 1vh; color: gray;">${timestamp}</div>
     `,
     imageUrl: isValidUrl(parsedMessage.marker.data.coverimage) ? parsedMessage.marker.data.coverimage : profileUrl
   },
@@ -8316,6 +8329,8 @@ async function processTopicMessages(topicId) {
               <p class="text_color">${parsedMessage.polygon.data.msg}</p>
             </div>
           </div>
+          <div style="position: absolute; bottom: 0em; right: 1vh; font-size: 1vh; color: gray;">${timestamp}</div>
+
                           `,
                           imageUrl: isValidUrl(parsedMessage.polygon.data.coverimage) ? parsedMessage.polygon.data.coverimage : profileUrl
                         });
