@@ -807,8 +807,8 @@ button[type="submit"],
 }
 
 #topicspinnerchat {
-  width: 2vh;
-  height: 2vh;
+  width: 1.5vh;
+  height: 1.5vh;
   border: 0.5vh solid #ccc;
   border-top: 0.5vh solid #4caf50;
   border-radius: 50%;
@@ -2651,10 +2651,14 @@ document.getElementById("load-msgs-from").addEventListener("click", async () => 
     }
 
     
-    const messageContainer = document.getElementById("messages-from-topic-chat");
-    const topicSpinnerChat = `<div style="display: flex; justify-content: center; align-items: left; height: 100%;"><div id="topicspinnerchat"></div> <span>loading messages...</span></div>`;
-    messageContainer.innerHTML = topicSpinnerChat + 'loading messages...';
-    adjustTextareaHeight(messageContainer);
+    const messagesContainer = document.getElementById("messages-from-topic-chat");
+    const topicSpinnerChat = `
+    <div style="display: flex; justify-content: left; align-items: left; height: 100%;  padding-top: 1vh; padding-bottom: 1vh;">
+      <div id="topicspinnerchat"></div>
+       <span style="margin-left: 1vw;">loading messages from ${topicId}</span>
+      </div>`;
+    messagesContainer.innerHTML = topicSpinnerChat;
+    adjustTextareaHeight(messagesContainer);
 
     const topicInfo = await sdk.getTopicInfo(topicId);
           const topicAdmin = [];
@@ -2827,7 +2831,7 @@ if (payer !== previousPayer) {
   }
 }
 
-const chatContainer = document.getElementById('topic-chat-container');
+  const chatContainer = document.getElementById('topic-chat-container');
   let startY, scrollTop;
 
   chatContainer.addEventListener('touchstart', (e) => {
@@ -2842,28 +2846,25 @@ const chatContainer = document.getElementById('topic-chat-container');
     e.preventDefault(); // Prevent default touch behavior
   });
 
-  const messagesContainer = document.getElementById('messages-from-topic-chat');
+  messagesContainer.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].pageY - messagesContainer.offsetTop;
+    scrollTop = messagesContainer.scrollTop;
+    e.stopPropagation(); // Stop the event from bubbling up
+  });
 
-messagesContainer.addEventListener('touchstart', (e) => {
-  startY = e.touches[0].pageY - messagesContainer.offsetTop;
-  scrollTop = messagesContainer.scrollTop;
-  e.stopPropagation(); // Stop the event from bubbling up
-});
+  messagesContainer.addEventListener('touchmove', (e) => {
+    const y = e.touches[0].pageY - messagesContainer.offsetTop;
+    const walk = (y - startY) * 2; // Adjust the multiplier for sensitivity
+    messagesContainer.scrollTop = scrollTop - walk;
+    e.preventDefault(); // Prevent default touch behavior
+    e.stopPropagation(); // Stop the event from bubbling up
+  });
 
-messagesContainer.addEventListener('touchmove', (e) => {
-  const y = e.touches[0].pageY - messagesContainer.offsetTop;
-  const walk = (y - startY) * 2; // Adjust the multiplier for sensitivity
-  messagesContainer.scrollTop = scrollTop - walk;
-  e.preventDefault(); // Prevent default touch behavior
-  e.stopPropagation(); // Stop the event from bubbling up
-});
+  messagesContainer.innerHTML = allMessages;
+  adjustTextareaHeight(messagesContainer);
 
-
-messageContainer.innerHTML = allMessages;
-adjustTextareaHeight(messageContainer);
-
-// Scroll to the bottom of the message container
-messageContainer.scrollTop = messageContainer.scrollHeight;
+  // Scroll to the bottom of the message container
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
   } catch (error) {
     console.error("Error setting rules:", error);
@@ -2901,7 +2902,6 @@ document.getElementById("topic-msgs-filter").addEventListener("click", async () 
   let filteredMessagesHtml = '';
   let previousPayer = null;
 
-
   filteredMessages.forEach(parsedMessage => {
     const userMessage = parsedMessage.userMessage;
     const payer = parsedMessage.payer || 'Unknown';
@@ -2929,13 +2929,13 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
   second: '2-digit'
 }); // Format as MM/DD/YYYY HH:MM:SS
 
-const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
-              const username = message.payer && usernames[message.payer] ?
-                ` ${usernames[message.payer].username}` :
+const payerInfo = parsedMessage.payer ? `${parsedMessage.payer}` : 'Anonymous';
+              const username = parsedMessage.payer && usernames[parsedMessage.payer] ?
+                ` ${usernames[parsedMessage.payer].username}` :
                 '';
 
-                const click2link= message.payer && click2url[message.payer] ?
-                ` ${click2url[message.payer].click2url}` :
+                const click2link= parsedMessage.payer && click2url[parsedMessage.payer] ?
+                ` ${click2url[parsedMessage.payer].click2url}` :
                 '';
 
 const displayHeader = 
@@ -2943,15 +2943,15 @@ const displayHeader =
 ${click2link ? `<a href="${click2link}" target="_blank" style="color: ${colorForUsernameTopicChat};
 text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUsernameTopicChat};">${username}</span>`}`;
 
-      storedMessages.push(parsedMessage);
+      filteredMessages.push(parsedMessage);
 
 
 
       if (payer !== previousPayer) {
-  allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em; border-color: ${colorForTextContainerTopicChat};">
+  filteredMessagesHtml += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
     <img src="${validPayerImage}" alt="Profile photo"
     style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
-    onclick="loadTOPIC4PIC('${message.payer}');">
+    onclick="loadTOPIC4PIC('${parsedMessage.payer}');">
                     <div style="display: flex; flex-direction: column; justify-content: center;">
                       <div>${displayHeader}</div>
                       <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
@@ -2959,7 +2959,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUserna
                     </div>
                   </div><br>`;
 } else {
-  allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em; border-color: ${colorForTextContainerTopicChat};">
+  filteredMessagesHtml += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
                     <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
                   </div><br>`;
 }
@@ -3045,13 +3045,13 @@ const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscrib
   second: '2-digit'
 }); // Format as MM/DD/YYYY HH:MM:SS
 
-const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
-              const username = message.payer && usernames[message.payer] ?
-                ` ${usernames[message.payer].username}` :
+const payerInfo = parsedMessage.payer ? `${parsedMessage.payer}` : 'Anonymous';
+              const username = parsedMessage.payer && usernames[parsedMessage.payer] ?
+                ` ${usernames[parsedMessage.payer].username}` :
                 '';
 
-                const click2link= message.payer && click2url[message.payer] ?
-                ` ${click2url[message.payer].click2url}` :
+                const click2link= parsedMessage.payer && click2url[parsedMessage.payer] ?
+                ` ${click2url[parsedMessage.payer].click2url}` :
                 '';
 
                 const displayHeader = 
@@ -3060,15 +3060,15 @@ ${click2link ? `<a href="${click2link}" target="_blank" style="color: ${colorFor
 text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUsernameTopicChat};">${username}</span>`}`;
 
       // Store the message in the external array
-      storedMessages.push(parsedMessage);
+      filteredMessages.push(parsedMessage);
 
 
 
       if (payer !== previousPayer) {
-  allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em; border-color: ${colorForTextContainerTopicChat};">
+  filteredMessagesHtml += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
     <img src="${validPayerImage}" alt="Profile photo"
     style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
-    onclick="loadTOPIC4PIC('${message.payer}');">
+    onclick="loadTOPIC4PIC('${parsedMessage.payer}');">
                     <div style="display: flex; flex-direction: column; justify-content: center;">
                       <div>${displayHeader}</div>
                       <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
@@ -3076,7 +3076,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUserna
                     </div>
                   </div><br>`;
 } else {
-  allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em; border-color: ${colorForTextContainerTopicChat};">
+  filteredMessagesHtml += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
                     <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
                   </div><br>`;
 }
