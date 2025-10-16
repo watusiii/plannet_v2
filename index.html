@@ -1119,9 +1119,9 @@ button[type="submit"],
 
     <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
     
-    <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-marker" placeholder="Loaded Topic Rules"
-    onclick="event.stopPropagation();" readonly oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-    ></textarea>
+    <div class="toolbar-column" type="text" style="user-select: text;" id="loaded-topic-rules-for-marker" placeholder="Loaded Topic Rules"
+    onclick="event.stopPropagation();"
+    ></div>
     <button id="load-topic-rules-for-marker" class="toolbar-column-btns">
     Load Topic Rules
     </button>
@@ -1178,9 +1178,9 @@ button[type="submit"],
     <button id="submit-button-Create_Polygon" class="toolbar-column-btns" style="display: block;">Submit
     </button>
     <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:</label>
-    <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-polygon" placeholder="Loaded Topic Rules"
-    onclick="event.stopPropagation();" readonly
-    ></textarea>
+    <div class="toolbar-column" type="text" style="user-select: text;" id="loaded-topic-rules-for-polygon" placeholder="Loaded Topic Rules"
+    onclick="event.stopPropagation();"
+    ></div>
     <button id="load-topic-rules-for-polygon" class="toolbar-column-btns">Load Topic Rules
     </button>
 
@@ -1204,8 +1204,8 @@ button[type="submit"],
     ></textarea>
     <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Rules:
     </label>
-    <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-topic" placeholder="Loaded Topic Rules"
-    onclick="event.stopPropagation();" readonly></textarea>
+    <div class="toolbar-column" style="user-select: text;" id="loaded-topic-rules-for-topic" placeholder="Loaded Topic Rules"
+    onclick="event.stopPropagation();"></div>
     <button id="load-topic-rules-for-topic" class="toolbar-column-btns">Load Topic Rules
     </button>
     <label for="input-field-rules-for-polygons"style="font-size: 2vh; padding: 0px;">These come in pair and they overwrite last set:
@@ -1255,8 +1255,8 @@ button[type="submit"],
     ></textarea>
     <label for="loaded-topics" style=" font-size: 2vh;padding: 0px;">Loaded Topic Logic:
     </label>
-    <textarea class="toolbar-column" type="text" id="loaded-topic-rules-for-utility" placeholder="Loaded Topic Rules"
-    onclick="event.stopPropagation();" readonly></textarea>
+    <div class="toolbar-column" style="user-select: text;" id="loaded-topic-rules-for-utility" placeholder="Loaded Topic Rules"
+    onclick="event.stopPropagation();"></div>
     <button id="load-topic-rules-for-utility" class="toolbar-column-btns">Load Topic Rules
     </button>
 
@@ -2991,10 +2991,11 @@ if (payer !== previousPayer) {
   });
 
   messagesContainer.innerHTML = allMessages;
-  console.log("allMessages", allMessages);
+
   if (allMessages.length === 0) {
     messagesContainer.innerHTML = 'no messages found';
   }
+  
   adjustTextareaHeight(messagesContainer);
 
   // Scroll to the bottom of the message container
@@ -4808,6 +4809,19 @@ document
         } else {
             topicId = userInput;
         }
+
+
+            const messagesContainer = document.getElementById('loaded-topic-rules-for-topic');
+              messagesContainer.innerHTML = '';
+              const topicSpinnerChat = `
+        <div style="display: flex; justify-content: left; align-items: left; padding-top: 1vh; padding-bottom: 1vh;">
+          <div id="topicspinnerchat"></div>
+          <span style="margin-left: 1vw;">loading messages from ${topicId}</span>
+          </div>`;
+        messagesContainer.innerHTML = topicSpinnerChat;
+        adjustTextareaHeight(messagesContainer);
+
+
         const response = await window.HashinalsWalletConnectSDK.getMessages(topicId);
         const topicInfo = await sdk.getTopicInfo(topicId);
         const topicAdmin = [];
@@ -4840,7 +4854,7 @@ document
                 if (typeof message === 'string') {
                     parsedMessage = JSON.parse(message);
                 }
-                if (parsedMessage.rules && (topicAdmin.length === 0 || topicAdmin.includes(message.payer))) {
+                if (parsedMessage.rules && topicAdmin.includes(message.payer)) {
                     lastRule = parsedMessage.rules;
                     break; // Exit the loop after finding the last message with rules
                 }
@@ -4850,42 +4864,48 @@ document
             }
         }
 
-              let formattedRules = '';
-              if (lastRule) {
-                if (lastRule.forpolygon) {
-                  const polygonSize = lastRule.forpolygon.polygonSize;
-                  const maxLongitudeSize = 360 / polygonSize;
-                  const maxLatitudeSize = 180 / polygonSize;
+      let formattedRules = '';
+      if (lastRule) {
+        if (lastRule.forpolygon) {
+          const polygonSize = lastRule.forpolygon.polygonSize;
+          const maxLongitudeSize = 360 / polygonSize;
+          const maxLatitudeSize = 180 / polygonSize;
+          formattedRules +=
+            `<span style="user-select: text;">Polygon NFT ID: ${lastRule.forpolygon.polygonTopicId}</span><br>
+            <span style="user-select: text;">Polygon Messages Per NFT: ${lastRule.forpolygon.polygonMessagesPerNft}</span><br>
+            <span style="user-select: text;">Maximum distance between points is:</span> <br>
+            <span style="user-select: text;">Polygon Size: ${polygonSize}</span><br>
+            <span style="user-select: text;">360/${polygonSize} = ${maxLongitudeSize} for longitude</span><br>
+            <span style="user-select: text;">180/${polygonSize} = ${maxLatitudeSize} for latitude.</span><br>`;
+          hasRules = true;
+          }
 
-                  formattedRules +=
-                    `Polygon NFT ID: ${lastRule.forpolygon.polygonTopicId}\n` +
-                    `Polygon Messages Per NFT: ${lastRule.forpolygon.polygonMessagesPerNft}\n` +
-                    `Polygon Size: ${polygonSize}\n` +
-                    `Maximum distance between points is:\n360/${polygonSize}=${maxLongitudeSize} for longitude\n180/${polygonSize}=${maxLatitudeSize} for latitude.\n`;
-                  hasRules = true;
-                  }
-                if (lastRule.formarker ) {
-                  formattedRules +=
-                    `Marker NFT ID: ${lastRule.formarker.markerTopicId}\n` +
-                    `Marker Messages Per NFT: ${lastRule.formarker.markerMessagesPerNft}\n`;
-                  hasRules = true;
-                }
-              }
+        if (lastRule.formarker ) {
+          formattedRules +=
+            `<span style="user-select: text;">Marker NFT ID: ${lastRule.formarker.markerTopicId}</span><br>
+            <span style="user-select: text;">Marker Messages Per NFT: ${lastRule.formarker.markerMessagesPerNft}</span>`;
+          hasRules = true;
+        }
+      }
 
                       // Check if messages exist and is an array
         if (hasRules===false) {
-            const markerRulesMessage = `No rules for this topic.`;
-            document.getElementById("loaded-topic-rules-for-topic").textContent = markerRulesMessage;
-            adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-topic"));
-            return;
+          const noRulesMessage = `<span style="padding-top: 1vh;">No rules for this topic.</span>`;
+          messagesContainer.innerHTML = noRulesMessage;
+          adjustTextareaHeight(messagesContainer);
+          return;
         }
 
                       // Log the formatted rules onto the textarea
-                      document.getElementById("loaded-topic-rules-for-topic").textContent = formattedRules;
-                      adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-topic"));
+                      messagesContainer.innerHTML = formattedRules;
+                      adjustTextareaHeight(messagesContainer);
 
                   } catch (error) {
-                      console.error("Error creating topic:", error);
+                    const messagesContainer = document.getElementById('loaded-topic-rules-for-topic');
+                    const invalidTopicIdMessage = `<span style="padding-top: 1vh;">Invalid Topic ID</span>`;
+                    messagesContainer.innerHTML = invalidTopicIdMessage;
+                    adjustTextareaHeight(messagesContainer);
+                      
                   }
               });
 
@@ -4900,6 +4920,18 @@ document.getElementById("load-topic-rules-for-utility").addEventListener("click"
         } else {
             topicId = userInput;
         }
+
+        const messagesContainer = document.getElementById('loaded-topic-rules-for-utility');
+              messagesContainer.innerHTML = '';
+              const topicSpinnerChat = `
+        <div style="display: flex; justify-content: left; align-items: left; padding-top: 1vh; padding-bottom: 1vh;">
+          <div id="topicspinnerchat"></div>
+          <span style="margin-left: 1vw;">loading messages from ${topicId}</span>
+          </div>`;
+        messagesContainer.innerHTML = topicSpinnerChat;
+        adjustTextareaHeight(messagesContainer);
+
+
         const response = await window.HashinalsWalletConnectSDK.getMessages(topicId);
         const topicInfo = await sdk.getTopicInfo(topicId);
         const topicAdmin = [];
@@ -4920,6 +4952,8 @@ document.getElementById("load-topic-rules-for-utility").addEventListener("click"
         });
 
         const messages = response.messages; // Extract messages
+
+        let formattedRules;
 
 
 const loadedNFTsForModel = [];
@@ -4973,13 +5007,10 @@ if (parsedMessage.removeTopicNFT && (topicAdmin.length === 0 || topicAdmin.inclu
       loadedNFTsForTopicChat.push(nft);
     }
   });
-  console.log("NFT added to topic chat:", loadedNFTsForTopicChat.join(', '));
 }
 
 if (parsedMessage.removeTopicChatNFT && (topicAdmin.length === 0 || topicAdmin.includes(message.payer))) {
   const nft = parsedMessage.removeTopicChatNFT.trim();
-
-
   const index = loadedNFTsForTopicChat.indexOf(nft);
   if (index !== -1) {
     loadedNFTsForTopicChat.splice(index, 1);
@@ -4987,39 +5018,45 @@ if (parsedMessage.removeTopicChatNFT && (topicAdmin.length === 0 || topicAdmin.i
 }
 }
 catch (messageError) {
-                console.error(`Error processing message ${index}:`, messageError);
-            }
+  console.error(`Error processing message ${index}:`, messageError);
+  }
 }
 
-let formattedRules = '';
+if (loadedNFTsForModel.length === 0 && loadedNFTScaleForModel.length === 0 && loadedNFTsForTopicChat.length === 0) {
+  formattedRules = '<span style="user-select: text;">No rules for this topic.</span>';
+}
 
   if (loadedNFTsForModel.length > 0) {
-    formattedRules += `NFTs for model: ${loadedNFTsForModel.join(', ')}\n`;
+    formattedRules += `<span style="user-select: text;">NFTs for model: ${loadedNFTsForModel.join(', ')}</span><br>`;
     hasRules = true;
   }
   if (loadedNFTScaleForModel.length > 0) {
-    formattedRules += `Scales for model: ${loadedNFTScaleForModel.map(item => `${item.NFT} = ${item.scale}`).join(', ')}\n`;
+    formattedRules += `<span style="user-select: text;">Scales for model: ${loadedNFTScaleForModel.map(item => `${item.NFT} = ${item.scale}`).join(', ')}</span><br>`;
     hasRules = true;
   }
   if (loadedNFTsForTopicChat.length > 0) {
-    formattedRules += `NFTs for topic chat: ${loadedNFTsForTopicChat.join(', ')}\n`;
+    formattedRules += `<span style="user-select: text;">NFTs for topic chat: ${loadedNFTsForTopicChat.join(', ')}</span><br>`;
     hasRules = true;
   }
 
           // Check if messages exist and is an array
           if (hasRules===false) {
-            const utilityRulesMessage = `No rules for this topic.`;
-            document.getElementById("loaded-topic-rules-for-utility").textContent = utilityRulesMessage;
-            adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-utility"));
+            const utilityRulesMessage = `<span>No rules for this topic.</span>`;
+            messagesContainer.innerHTML = utilityRulesMessage;
+            adjustTextareaHeight(messagesContainer);
             return;
         }
 
         // Log the formatted rules onto the textarea
-        document.getElementById("loaded-topic-rules-for-utility").textContent = formattedRules;
-        adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-utility"));
+        messagesContainer.innerHTML = formattedRules;
+        adjustTextareaHeight(messagesContainer);
 
     } catch (error) {
         console.error("Error creating topic:", error);
+        const messagesContainer = document.getElementById('loaded-topic-rules-for-utility');
+        const invalidTopicIdMessage = `<span style="padding-top: 1vh;">Invalid Topic ID</span>`;
+        messagesContainer.innerHTML = invalidTopicIdMessage;
+        adjustTextareaHeight(messagesContainer);
     }
 });
 
@@ -8291,6 +8328,18 @@ document.getElementById("load-topic-rules-for-marker").addEventListener("click",
               } else {
                 topicId = userInput;
               }
+
+              const messagesContainer = document.getElementById('loaded-topic-rules-for-marker');
+              messagesContainer.innerHTML = '';
+              const topicSpinnerChat = `
+        <div style="display: flex; justify-content: left; align-items: left; padding-top: 1vh; padding-bottom: 1vh;">
+          <div id="topicspinnerchat"></div>
+          <span style="margin-left: 1vw;">loading messages from ${topicId}</span>
+          </div>`;
+        messagesContainer.innerHTML = topicSpinnerChat;
+        adjustTextareaHeight(messagesContainer);
+
+        
       const response = await window.HashinalsWalletConnectSDK.getMessages(topicId);
       const topicInfo = await sdk.getTopicInfo(topicId);
       const topicAdmin = [];
@@ -8333,22 +8382,27 @@ document.getElementById("load-topic-rules-for-marker").addEventListener("click",
       }
 
         if (hasRules===false) {
-        const markerRulesMessage = `No rules for this topic.`;
-        document.getElementById("loaded-topic-rules-for-marker").textContent = markerRulesMessage;
-        adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-marker"));
-        return;
+          const utilityRulesMessage = `<span>No rules for this topic.</span>`;
+          messagesContainer.innerHTML = utilityRulesMessage;
+          adjustTextareaHeight(messagesContainer);
+          return;
       }
 
 
 
-const markerRulesMessage = `To post markers, you must own NFT ${loadedTopicRulesForMarker[0].markerTopicId}. Each NFT allows posting ${loadedTopicRulesForMarker[0].markerMessagesPerNft} markers.`;
-document.getElementById("loaded-topic-rules-for-marker").textContent = markerRulesMessage;
-adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-marker"));
+  const markerRulesMessage = `<span style="user-select: text;">To post markers, you must own NFT.<br>
+    NFT = ${loadedTopicRulesForMarker[0].markerTopicId}.<br>
+    Each NFT allows posting ${loadedTopicRulesForMarker[0].markerMessagesPerNft} markers.</span>`;
+  messagesContainer.innerHTML = markerRulesMessage;
+  adjustTextareaHeight(messagesContainer);
 
 
 
     } catch (error) {
-      console.error("Error creating topic:", error);
+        const messagesContainer = document.getElementById('loaded-topic-rules-for-marker');
+        const invalidTopicIdMessage = `<span style="padding-top: 1vh;">Invalid Topic ID</span>`;
+        messagesContainer.innerHTML = invalidTopicIdMessage;
+        adjustTextareaHeight(messagesContainer);
     }
 });
 
@@ -8366,6 +8420,18 @@ document.getElementById("load-topic-rules-for-polygon").addEventListener("click"
               } else {
                 topicId = userInput;
               }
+
+              const messagesContainer = document.getElementById('loaded-topic-rules-for-polygon');
+              messagesContainer.innerHTML = '';
+              const topicSpinnerChat = `
+        <div style="display: flex; justify-content: left; align-items: left; padding-top: 1vh; padding-bottom: 1vh;">
+          <div id="topicspinnerchat"></div>
+          <span style="margin-left: 1vw;">loading messages from ${topicId}</span>
+          </div>`;
+        messagesContainer.innerHTML = topicSpinnerChat;
+        adjustTextareaHeight(messagesContainer);
+
+
       const response = await window.HashinalsWalletConnectSDK.getMessages(topicId);
       const topicInfo = await sdk.getTopicInfo(topicId);
       const topicAdmin = [];
@@ -8407,31 +8473,37 @@ document.getElementById("load-topic-rules-for-polygon").addEventListener("click"
       }
 
         if (hasRules===false) {
-        const polygonRulesMessage = `No rules for this topic.`;
-        document.getElementById("loaded-topic-rules-for-polygon").textContent = polygonRulesMessage;
-        adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-polygon"));
-        return;
+          const utilityRulesMessage = `<span>No rules for this topic.</span>`;
+          messagesContainer.innerHTML = utilityRulesMessage;
+          adjustTextareaHeight(messagesContainer);
+          return;
       }
 
 
 
-const polygonRulesMessage =
-`To post polygons, you must own NFT ${loadedTopicRulesForPolygon[0].polygonTopicId}. Each NFT allows posting ${loadedTopicRulesForPolygon[0].polygonMessagesPerNft} polygons.`;
+const polygonRulesMessage = `<span style="user-select: text;">To post polygons, you must own NFT.<br>
+  NFT = ${loadedTopicRulesForPolygon[0].polygonTopicId}.<br>
+  Each NFT allows posting ${loadedTopicRulesForPolygon[0].polygonMessagesPerNft} polygons.<br></span>`;
 
 const polygonSize = loadedTopicRulesForPolygon[0].polygonSize;
 const maxLongitudeSize = 360 / polygonSize;
 const maxLatitudeSize = 180 / polygonSize;
 
-const polygonRulesMessages = `Maximum distance between points is ${maxLongitudeSize} for longitude and ${maxLatitudeSize} for latitude. If not = wont load.`;
+const polygonRulesMessages = `<span style="user-select: text;">Maximum distance between points is:<br>
+   ${maxLongitudeSize} for longitude<br>
+   ${maxLatitudeSize} for latitude.<br>
+   If not = wont load.</span>`;
 
-document.getElementById("loaded-topic-rules-for-polygon").textContent = `${polygonRulesMessage}\n${polygonRulesMessages}`;
-adjustTextareaHeight(document.getElementById("loaded-topic-rules-for-polygon"));
+  messagesContainer.innerHTML = polygonRulesMessage + polygonRulesMessages;
+  adjustTextareaHeight(messagesContainer);
 
 
 
     } catch (error) {
-      console.error("Error creating topic:", error);
-    }
+      const messagesContainer = document.getElementById('loaded-topic-rules-for-polygon');
+        const invalidTopicIdMessage = `<span style="padding-top: 1vh;">Invalid Topic ID</span>`;
+        messagesContainer.innerHTML = invalidTopicIdMessage;
+        adjustTextareaHeight(messagesContainer);    }
 });
 
 
