@@ -620,6 +620,7 @@ html, body {
   transform: translate(-50%, -50%) !important; /* Center both horizontally and vertically */
   max-width: 80vw !important;
   width: max-content !important; /* Allow content to dictate width up to max-width */
+  max-height: 70vh !important;
   box-sizing: border-box; /* Ensure padding/borders don’t increase width */
   font: 2vh/3vh 'Helvetica Neue', Arial, Helvetica, sans-serif;
   text-align: left;
@@ -1771,8 +1772,8 @@ button[type="submit"],
   </div>
 </div>
 
-<div id="popup-column-3" style="display: none; position: absolute; z-index: 1002; top: 82.5vh; max-height: 95vh; left: 0; width: 100vw;">
-  <div id="popup-column-container-3" style="max-height: 95vh;" class="yourfovcontainer" onclick="event.stopPropagation();">
+<div id="popup-column-3" style="position: fixed; bottom: 2.5vh; left: 0; width: 100vw; z-index: 1002; max-height: 50vh; overflow-y: auto;">
+  <div id="popup-column-container-3" class="yourfovcontainer" style="display: none; flex-direction: column;" onclick="event.stopPropagation();">
 
     <div id="popup-column-3-border"style="display: none; align-items: center;" >
       <label style="margin-bottom: 1vh; font-size: 1.5vh;">Border:</label>
