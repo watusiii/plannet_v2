@@ -266,12 +266,12 @@ html, body {
   margin-bottom: 0.5vh;
   height: 5vh;
   background-color: transparent;
-  border: 0.1vh solid rgb(0, 123, 255);
+  border: 0.1vh solid #007bff;
 }
 
 .toolbar-column-btns:hover,
 .toolbar-column-btns:active {
-  background-color: rgb(0, 123, 255);
+  background-color: #007bff;
   color: white;
 }
 
@@ -291,7 +291,7 @@ html, body {
   box-sizing: border-box;
   margin-bottom: 0.5vh;
   height: 5vh;
-  border: 0.1vh solid rgb(0, 123, 255);
+  border: 0.1vh solid #007bff;
   overflow: hidden; /* Hide scrollbars */
   resize: none; /* Prevent manual resizing */
   background-color: transparent;
@@ -324,7 +324,7 @@ html, body {
   font-size: 2vh;
   box-sizing: border-box;
   margin-bottom: 0.5vh;
-  border: 0.1vh solid rgb(0, 123, 255);
+  border: 0.1vh solid #007bff;
   overflow: hidden; /* Hide scrollbars */
   resize: none; /* Prevent manual resizing */
   background-color: transparent;
@@ -369,13 +369,13 @@ html, body {
   width: 100% !important;
   color: white;
   padding-left: 1vw;
-  border: 0.1vh solid white;
+  padding-right: 1vw;
   border-radius: 1vh;
   font-size: 2vh;
   box-sizing: border-box;
   margin-bottom: 0.5vh;
   height: 5vh;
-  border: 0.1vh solid rgb(0, 123, 255);
+  border: 0.1vh solid #007bff;
   overflow: hidden; /* Hide scrollbars */
   resize: none; /* Prevent manual resizing */
   background-color: transparent;
@@ -408,7 +408,7 @@ html, body {
 }
 
 #connect-wallet-btn {
-  background-color: #007bff;
+  background-color: #ffc107;
   color: white;
   border: none;
   padding: 0.8vh 1vw;
@@ -745,7 +745,7 @@ button[type="submit"],
 #crosshair::before {
   content: '';
   position: absolute;
-  background-color: var(--crosshair-color, rgb(0, 0, 0)); /* Default color if variable is not set */
+  background-color: var(--crosshair-color, #000000); /* Default color if variable is not set */
   width: var(--crosshair-before-width, 20px); /* Width of the crosshair line */
   height: var(--crosshair-before-height, 2px); /* Default thickness */
   top: 50%; /* Center vertically */
@@ -756,7 +756,7 @@ button[type="submit"],
 #crosshair::after {
   content: '';
   position: absolute;
-  background-color: var(--crosshair-color, rgb(0, 0, 0)); /* Default color if variable is not set */
+  background-color: var(--crosshair-color, #000000); /* Default color if variable is not set */
   width: var(--crosshair-after-width, 2px); /* Width of the crosshair line */
   height: var(--crosshair-after-height, 20px); /* Height of the crosshair line */
   top: 50%; /* Center vertically */
@@ -1479,15 +1479,11 @@ button[type="submit"],
   </div>
   <div class="toolbar-column" id="change-crosshair-settings">Change crosshair settings
   </div>
-  <div class="toolbar-column" id="change-popup-settings">Change popup settings
-  </div>
   <div class="toolbar-column" id="change-color-of-main-buttons">Change color of main buttons
   </div>
   <div class="toolbar-column" id="change-marker-options">Change marker options
   </div>
   <div class="toolbar-column" id="change-button-input-settings">Change button/input settings
-  </div>
-  <div class="toolbar-column" id="change-container-settings">Change container settings
   </div>
   <div class="toolbar-column" id="change-topic-chat-options">Change topic chat options
   </div>
@@ -1517,30 +1513,38 @@ button[type="submit"],
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <button id="toggle-polygon-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show polygons:
-      </button>
       <span id="polygon-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
       </span>
+      <button id="toggle-polygon-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show polygons:
+      </button>
+      <span id="polygon-visibility-value2" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      </span>
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <button id="toggle-marker-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show markers
-      </button>
       <span id="marker-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
       </span>
-    </div>
-
-    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <button id="toggle-3d-model-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show 3D models
+      <button id="toggle-marker-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show markers
       </button>
-      <span id="3d-model-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      <span id="marker-visibility-value2" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
       </span>
     </div>
 
     <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <span id="3d-model-visibility-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      </span>
+      <button id="toggle-3d-model-visibility" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">Show 3D models
+      </button>
+      <span id="3d-model-visibility-value2" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      </span>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+      <span id="updates-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      </span>
       <button id="toggle-updates" class="toolbar-column-btns" style="color: white; text-shadow: 0 0 0.5vh black;">model updates
       </button>
-      <span id="updates-value" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
+      <span id="updates-value2" style="font-size: 2vh; padding-bottom: 0.5vh; color: white; text-shadow: 0 0 0.5vh black;">On
       </span>
     </div>
 
@@ -1615,8 +1619,14 @@ button[type="submit"],
       onchange="document.getElementById('scale-factor').value = this.value;" />
     </div>
 
-    <button id="savesettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black;">Save settings
-    </button>
+  </div>
+</div>
+
+<div id="model-column-save" style="position: fixed; bottom: 2.5vh; left: 0; width: 100vw; z-index: 1002; max-height: 50vh; overflow-y: auto;">
+  <div id="model-column-container-save" class="yourfovcontainer" style="display: none; flex-direction: column;" onclick="event.stopPropagation();">
+
+    <div id="savesettings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save settings
+    </div>
 
   </div>
 </div>
@@ -1625,28 +1635,9 @@ button[type="submit"],
 <div id="crosshair-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
   <div id="crosshair-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-red" class="yourfov">Red:
-      </label>
-      <input type="range" class="model_sliders" id="color-red" min="0" max="255" value="0"/>
-      <input type="number" id="color-red-value"   class="yourfov" value="0"
-      onchange="document.getElementById('color-red').value = this.value;" />
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Green:
-      </label>
-      <input type="range" class="model_sliders" id="color-green" min="0" max="255" value="0"/>
-      <input type="number" id="color-green-value" class="yourfov" value="0"
-      onchange="document.getElementById('color-green').value = this.value;" />
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-blue" class="yourfov">Blue:
-      </label>
-      <input type="range" class="model_sliders" id="color-blue" min="0" max="255" value="0"/>
-      <input type="number" id="color-blue-value" class="yourfov" value="0"
-      onchange="document.getElementById('color-blue').value = this.value;" />
+    <div>
+      <label style="font-size: 1.5vh;">Crosshair Color:</label>
+      <input type="color" id="crosshair-color" class="yourfov" value="#000000">
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
@@ -1665,78 +1656,13 @@ button[type="submit"],
       onchange="document.getElementById('crosshair-after-before').value = this.value;" />
     </div>
 
-    <div id="savecrosshair" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save crosshair
-    </div>
-
   </div>
 </div>
 
-<div id="popup-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="popup-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
+<div id="crosshair-column-save" style="position: fixed; bottom: 2.5vh; left: 0; width: 100vw; z-index: 1002; max-height: 50vh; overflow-y: auto;">
+  <div id="crosshair-column-container-save" class="yourfovcontainer" style="display: none; flex-direction: column;" onclick="event.stopPropagation();">
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Border:
-      </label>
-      <input type="number" id="color-red-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-border" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Number:
-      </label>
-      <input type="number" id="color-red-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-number" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Close:
-      </label>
-      <input type="number" id="color-red-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-close" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">AccID:
-      </label>
-      <input type="number" id="color-red-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-accid" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Username:
-      </label>
-      <input type="number" id="color-red-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-username" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-username" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Title:
-      </label>
-      <input type="number" id="color-red-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-titles" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Text:
-      </label>
-      <input type="number" id="color-red-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-text" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Font Size:
-      </label>
-      <input type="number" id="popup-font-size" class="yourfov" style="margin-left: 1vw;" value='2' max="255" placeholder="Default Size = 2"/>
-    </div>
-
-    <div id="savepopup" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save popup
+    <div id="savecrosshair" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save settings
     </div>
 
   </div>
@@ -1775,84 +1701,50 @@ button[type="submit"],
 <div id="popup-column-3" style="position: fixed; bottom: 2.5vh; left: 0; width: 100vw; z-index: 1002; max-height: 50vh; overflow-y: auto;">
   <div id="popup-column-container-3" class="yourfovcontainer" style="display: none; flex-direction: column;" onclick="event.stopPropagation();">
 
-    <div style="display: flex; align-items: center;">
-      <label for="color-picker" class="yourfov">Pick Color:</label>
-      <input type="color" id="color-picker-popup-border" class="yourfov" style="margin-left: 1vw;" onchange="updateSlidersFromPicker()">
+    <div id="popup-column-3-border" style="display: none; align-items: center;">
+      <label style="font-size: 1.5vh;">Border:</label>
+      <input type="color" id="color-picker-popup-border" class="yourfov" value="#ffffff">
     </div>
 
-    <div id="popup-column-3-border"style="display: none; align-items: center;" >
-      <label style="margin-bottom: 1vh; font-size: 1.5vh;">Border:</label>
-      <div style="display: flex; align-items: center; padding-bottom: 1vh;">
-      <input type="number" id="color-red-border3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-        <input type="number" id="color-green-border3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-        <input type="number" id="color-blue-border3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-      </div>
+    <div id="popup-column-3-number" style="display: none; align-items: center;">
+      <label style="font-size: 1.5vh;">Number:</label>
+      <input type="color" id="color-picker-popup-number" class="yourfov" value="#ffffff">
     </div>
 
-    <div id="popup-column-3-number" style="display: none; align-items: center;" >
-      <label style="margin-bottom: 1vh; font-size: 1.5vh;">Number:</label>
-      <div style="display: flex; align-items: center; padding-bottom: 1vh;">
-      <input type="number" id="color-red-number3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-number3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-number3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-      </div>
+    <div id="popup-column-3-close" style="display: none; align-items: center;">
+      <label style="font-size: 1.5vh;">Close:</label>
+      <input type="color" id="color-picker-popup-close" class="yourfov" value="#ffffff">
     </div>
 
-    <div id="popup-column-3-close" style="display: none; align-items: center;" >
-      <label style="margin-bottom: 1vh; font-size: 1.5vh;">Close:</label>
-      <div style="display: flex; align-items: center; padding-bottom: 1vh;">
-      <input type="number" id="color-red-close3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-close3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-close3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-      </div>
+    <div id="popup-column-3-accid" style="display: none; align-items: center;">
+      <label style="font-size: 1.5vh;">AccID:</label>
+      <input type="color" id="color-picker-popup-accid" class="yourfov" value="#800080">
     </div>
 
-    <div id="popup-column-3-accid" style="display: none; align-items: center;" >
-      <label style="margin-bottom: 1vh; font-size: 1.5vh;">AccID:</label>
-      <div style="display: flex; align-items: center; padding-bottom: 1vh;">
-      <input type="number" id="color-red-accid3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-accid3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-accid3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-      </div>
+    <div id="popup-column-3-username" style="display: none; align-items: center;">
+      <label style="font-size: 1.5vh;">Username:</label>
+      <input type="color" id="color-picker-popup-username" class="yourfov" value="#ffffff">
     </div>
 
-    <div id="popup-column-3-username" style="display: none; align-items: center;" >
-      <label style="margin-bottom: 1vh; font-size: 1.5vh;">Username:</label>
-      <div style="display: flex; align-items: center; padding-bottom: 1vh;">
-      <input type="number" id="color-red-username3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-username3" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-username3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-      </div>
+    <div id="popup-column-3-titles" style="display: none; align-items: center;">
+      <label style="font-size: 1.5vh;">Title:</label>
+      <input type="color" id="color-picker-popup-titles" class="yourfov" value="#ffffff">
     </div>
 
-    <div id="popup-column-3-titles" style="display: none; align-items: center;" >
-      <label style="margin-bottom: 1vh; font-size: 1.5vh;">Title:</label>
-      <div style="display: flex; align-items: center; padding-bottom: 1vh;">
-      <input type="number" id="color-red-titles3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-titles3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-titles3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-      </div>
-    </div>
-
-    <div id="popup-column-3-text" style="display: none; align-items: center;" >
-      <label style="margin-bottom: 1vh; font-size: 1.5vh;">Text:</label>
-      <div style="display: flex; align-items: center; padding-bottom: 1vh;">
-      <input type="number" id="color-red-text3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-text3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-text3" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-      </div>
+    <div id="popup-column-3-text" style="display: none; align-items: center;">
+      <label style="font-size: 1.5vh;">Text:</label>
+      <input type="color" id="color-picker-popup-text" class="yourfov" value="#ffffff">
     </div>
 
     <div id="popup-column-3-font" style="display: none; align-items: center;" >
-      <label style="margin-bottom: 1vh; font-size: 1.5vh;">Font:</label>
+      <label style="font-size: 1.5vh;">Font:</label>
       <div style="display: flex; align-items: center; padding-bottom: 1vh;">
-      <input type="number" id="popup-font-size3" class="yourfov" style="margin-left: 1vw;" value='2' max="255" placeholder="Default Size = 2"/>
+      <input type="number" id="popup-font-size" class="yourfov" style="margin-left: 1vw;" value='2' max="255"/>
       </div>
     </div>
 
-    <div id="popup-column-3-save" ></div>
+    <div></div>
     <div id="savepopup3" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save popup
-    </div>
     </div>
 
   </div>
@@ -1861,23 +1753,23 @@ button[type="submit"],
 <div id="main-button-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
   <div id="main-button-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Disconnect:
-      </label>
-      <input type="number" id="color-red-disconnect-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-disconnect-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-disconnect-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    <div>
+      <label style="font-size: 1.5vh;">Connect/Disconnect Button Color:</label>
+      <input type="color" id="disconnect-button-color" class="yourfov" value="#ffc107">
     </div>
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Main Buttons:
-      </label>
-      <input type="number" id="color-red-main-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-main-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-main-button" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    <div>
+      <label style="font-size: 1.5vh;">Main Buttons Color:</label>
+      <input type="color" id="main-button-color" class="yourfov" value="#007bff">
     </div>
 
-    <div id="save-main-button" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save settings
+  </div>
+</div>
+
+<div id="main-button-column-save" style="position: fixed; bottom: 2.5vh; left: 0; width: 100vw; z-index: 1002; max-height: 50vh; overflow-y: auto;">
+  <div id="main-button-column-container-save" class="yourfovcontainer" style="display: none; flex-direction: column;" onclick="event.stopPropagation();">
+
+    <div id="save-main-button" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Settings
     </div>
 
   </div>
@@ -1889,10 +1781,16 @@ button[type="submit"],
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">Size:
       </label>
-      <input type="number" id="Marker-Size" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Default Size = 5"/>
+      <input type="number" id="Marker-Size" class="yourfov" style="margin-left: 1vw;" max="255" value="5"/>
     </div>
 
-    <div id="save-marker-settings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Marker Settings
+  </div>
+</div>
+
+<div id="marker-column-save" style="position: fixed; bottom: 2.5vh; left: 0; width: 100vw; z-index: 1002; max-height: 50vh; overflow-y: auto;">
+  <div id="marker-column-container-save" class="yourfovcontainer" style="display: none; flex-direction: column;" onclick="event.stopPropagation();">
+
+    <div id="save-marker-settings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Settings
     </div>
 
   </div>
@@ -1902,120 +1800,83 @@ button[type="submit"],
   <div id="button-input-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Input Border:
-      </label>
-      <input type="number" id="color-red-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Input Font Color:
-      </label>
-      <input type="number" id="color-red-font-color-input-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-font-color-input-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-font-color-input-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Button Border:
-      </label>
-      <input type="number" id="color-red-button-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-button-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-button-border-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Button Font Color:
-      </label>
-      <input type="number" id="color-red-font-color-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-font-color-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-font-color-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">OnHover:
-      </label>
-      <input type="number" id="color-red-onhover-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-onhover-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-onhover-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">Font Size:
       </label>
-      <input type="number" id="font-for-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Size"/>
+      <input type="number" id="font-for-button-input" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Size" value="2"/>
     </div>
 
     <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
       <label for="color-green" class="yourfov">Transparency:
       </label>
-      <input type="number" id="color-red-transparency-button-input" class="yourfov" style="margin-left: 1vw;" min='0.5' step="0.01" max="1" placeholder="Opacity"/>
+      <input type="number" id="transparency-button-input" class="yourfov" style="margin-left: 1vw;" min='0.5' step="0.01" max="1" placeholder="Opacity" value="1"/>
     </div>
 
-    <div id="save-button-button-input" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Button/Input Settings
+    <div>
+      <label style="font-size: 1.5vh;">Input Border Color:</label>
+      <input type="color" id="input-border-color" class="yourfov" value="#007bff">
+    </div>
+
+    <div>
+      <label style="font-size: 1.5vh;">Input Font Color:</label>
+      <input type="color" id="input-font-color" class="yourfov" value="#ffffff">
+    </div>
+
+    <div>
+      <label style="font-size: 1.5vh;">Button Border Color:</label>
+      <input type="color" id="button-border-color" class="yourfov" value="#007bff">
+    </div>
+
+    <div>
+      <label style="font-size: 1.5vh;">Button Font Color:</label>
+      <input type="color" id="button-font-color" class="yourfov" value="#ffffff">
+    </div>
+
+    <div>
+      <label style="font-size: 1.5vh;">OnHover Button Color:</label>
+      <input type="color" id="onhover-button-color" class="yourfov" value="#007bff">
+    </div>
+    
+  </div>
+</div>
+
+<div id="button-input-column-save" style="position: fixed; bottom: 2.5vh; left: 0; width: 100vw; z-index: 1002; max-height: 50vh; overflow-y: auto;">
+  <div id="button-input-column-container-save" class="yourfovcontainer" style="display: none; flex-direction: column;" onclick="event.stopPropagation();">
+
+    <div id="save-button-button-input" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Settings
     </div>
 
   </div>
 </div>
 
-<div id="container-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-  <div id="container-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Border:
-      </label>
-      <input type="number" id="color-red-border-container" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-border-container" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-border-container" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
-    </div>
-
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Transparency:
-      </label>
-      <input type="number" id="color-red-transparency-container" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Opacity"/>
-    </div>
-
-    <div id="save-container-settings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Container Settings
-    </div>
-
-  </div>
-</div>
 
 <div id="topic-chat-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
   <div id="topic-chat-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">AccID:
-      </label>
-      <input type="number" id="color-red-accid-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-accid-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-accid-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    <div>
+      <label style="font-size: 1.5vh;">AccID Color:</label>
+      <input type="color" id="accid-topic-chat-color" class="yourfov" value="#800080">
     </div>
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Username:
-      </label>
-      <input type="number" id="color-red-username-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-username-topic-chat" class="yourfov" style="  margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-username-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    <div>
+      <label style="font-size: 1.5vh;">Username Color:</label>
+      <input type="color" id="username-topic-chat-color" class="yourfov" value="#ffffff">
     </div>
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Text:
-      </label>
-      <input type="number" id="color-red-text-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-text-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-text-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    <div>
+      <label style="font-size: 1.5vh;">Text Color:</label>
+      <input type="color" id="text-topic-chat-color" class="yourfov" value="#ffffff">
     </div>
 
-    <div style="display: flex; align-items: center; padding-bottom: 1vh;" >
-      <label for="color-green" class="yourfov">Text Container Color:
-      </label>
-      <input type="number" id="color-red-text-container-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Red"/>
-      <input type="number" id="color-green-text-container-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Green"/>
-      <input type="number" id="color-blue-text-container-topic-chat" class="yourfov" style="margin-left: 1vw;" max="255" placeholder="Blue"/>
+    <div>
+      <label style="font-size: 1.5vh;">Text Container Color:</label>
+      <input type="color" id="text-container-topic-chat-color" class="yourfov" value="#ffffff">
     </div>
+
+  </div>
+</div>
+
+<div id="topic-chat-save" style="position: fixed; bottom: 2.5vh; left: 0; width: 100vw; z-index: 1002; max-height: 50vh; overflow-y: auto;">
+  <div id="topic-chat-container-save" class="yourfovcontainer" style="display: none; flex-direction: column;" onclick="event.stopPropagation();">
 
     <div id="save-topic-chat-settings" class="toolbar-column-btns" style="text-shadow: 0 0 0.5vh black; text-align: center; padding-top: 1vh;">Save Settings
     </div>
@@ -2765,10 +2626,10 @@ document.getElementById('go-to-top-msgs').addEventListener('click', function() {
 });
 
 
-let storedMessages = []; // Declare an external array to store messages
-let colorForAccidTopicChat = 'rgb(128, 0, 128)'; // Default: purple (#800080) for payerInfo
-let colorForUsernameTopicChat = 'rgb(255, 255, 255)'; // Default: white (#FFFFFF) for username
-let colorForTextTopicChat = 'rgb(255, 255, 255)'; // Default: black for message text
+let storedMessages = [];
+let accidTopicChatColor = '#800080';
+let usernameTopicChatColor = '#ffffff';
+let textTopicChatColor = '#ffffff';
 
 document.getElementById("load-msgs-from").addEventListener("click", async () => {
   try {
@@ -2935,9 +2796,9 @@ const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
                 '';
 
 const displayHeader = 
-`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${colorForAccidTopicChat}; text-decoration: none;">${payerInfo}</a>
-${click2link ? `<a href="${click2link}" target="_blank" style="color: ${colorForUsernameTopicChat};
-text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUsernameTopicChat};">${username}</span>`}`;
+`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${accidTopicChatColor}; text-decoration: none;">${payerInfo}</a>
+${click2link ? `<a href="${click2link}" target="_blank" style="color: ${usernameTopicChatColor};
+text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicChatColor};">${username}</span>`}`;
 
 storedMessages.push(parsedMessage);
 
@@ -2949,12 +2810,12 @@ if (payer !== previousPayer) {
                     <div style="display: flex; flex-direction: column; justify-content: center;">
                       <div>${displayHeader}</div>
                       <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
-                      <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                      <div style="color: ${textTopicChatColor};">${userMessage}</div>
                     </div>
                   </div><br>`;
 } else {
   allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
-                    <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                    <div style="color: ${textTopicChatColor};">${userMessage}</div>
                   </div><br>`;
 }
       previousPayer = payer; // Update the previous payer
@@ -3088,9 +2949,9 @@ const payerInfo = parsedMessage.payer ? `${parsedMessage.payer}` : 'Anonymous';
                 '';
 
 const displayHeader = 
-`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${colorForAccidTopicChat}; text-decoration: none;">${payerInfo}</a>
-${click2link ? `<a href="${click2link}" target="_blank" style="color: ${colorForUsernameTopicChat};
-text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUsernameTopicChat};">${username}</span>`}`;
+`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${accidTopicChatColor}; text-decoration: none;">${payerInfo}</a>
+${click2link ? `<a href="${click2link}" target="_blank" style="color: ${usernameTopicChatColor};
+text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicChatColor};">${username}</span>`}`;
 
       filteredMessages.push(parsedMessage);
 
@@ -3104,12 +2965,12 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUserna
                     <div style="display: flex; flex-direction: column; justify-content: center;">
                       <div>${displayHeader}</div>
                       <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
-                      <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                      <div style="color: ${textTopicChatColor};">${userMessage}</div>
                     </div>
                   </div><br>`;
 } else {
   filteredMessagesHtml += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
-                    <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                    <div style="color: ${textTopicChatColor};">${userMessage}</div>
                   </div><br>`;
 }
       previousPayer = payer; // Update the previous payer
@@ -3207,9 +3068,9 @@ const payerInfo = parsedMessage.payer ? `${parsedMessage.payer}` : 'Anonymous';
                 '';
 
                 const displayHeader = 
-`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${colorForAccidTopicChat}; text-decoration: none;">${payerInfo}</a>
-${click2link ? `<a href="${click2link}" target="_blank" style="color: ${colorForUsernameTopicChat};
-text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUsernameTopicChat};">${username}</span>`}`;
+`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${accidTopicChatColor}; text-decoration: none;">${payerInfo}</a>
+${click2link ? `<a href="${click2link}" target="_blank" style="color: ${usernameTopicChatColor};
+text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicChatColor};">${username}</span>`}`;
 
       // Store the message in the external array
       filteredMessages.push(parsedMessage);
@@ -3224,12 +3085,12 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${colorForUserna
                     <div style="display: flex; flex-direction: column; justify-content: center;">
                       <div>${displayHeader}</div>
                       <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
-                      <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                      <div style="color: ${textTopicChatColor};">${userMessage}</div>
                     </div>
                   </div><br>`;
 } else {
   filteredMessagesHtml += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
-                    <div style="color: ${colorForTextTopicChat};">${userMessage}</div>
+                    <div style="color: ${textTopicChatColor};">${userMessage}</div>
                   </div><br>`;
 }
       previousPayer = payer; // Update the previous payer
@@ -4377,15 +4238,19 @@ const firstlayercolumns = [
 
 const everythinginsideyourfov = [
   "model-column",
+  "model-column-save",
   "crosshair-column",
-  "popup-column",
+  "crosshair-column-save",
   "popup-column-2",
   "popup-column-3",
   "main-button-column",
+  "main-button-column-save",
   "marker-options-column",
+  "marker-column-save",
   "button-input-column",
-  "container-column",
+  "button-input-column-save",
   "topic-chat-column",
+  "topic-chat-save",
 ];
 
 const everythinginsidetoolbar = [
@@ -4484,6 +4349,8 @@ document.getElementById("change-model-settings").addEventListener("click", (even
   CloseALL();
   document.getElementById("model-column").style.display = "block";
   document.getElementById("model-column-container").style.display = "block";
+  document.getElementById("model-column-save").style.display = "block";
+  document.getElementById("model-column-container-save").style.display = "block";
   OpenToggleYourFov();
 });
 
@@ -4492,14 +4359,8 @@ document.getElementById("change-crosshair-settings").addEventListener("click", (
   CloseALL();
   document.getElementById("crosshair-column").style.display = "block";
   document.getElementById("crosshair-column-container").style.display = "block";
-  OpenToggleYourFov();
-});
-
-document.getElementById("change-popup-settings").addEventListener("click", (event) => {
-  event.stopPropagation();
-  CloseALL();
-  document.getElementById("popup-column").style.display = "block";
-  document.getElementById("popup-column-container").style.display = "block";
+  document.getElementById("crosshair-column-save").style.display = "block";
+  document.getElementById("crosshair-column-container-save").style.display = "block";
   OpenToggleYourFov();
 });
 
@@ -4508,6 +4369,8 @@ document.getElementById("change-color-of-main-buttons").addEventListener("click"
   CloseALL();
   document.getElementById("main-button-column").style.display = "block";
   document.getElementById("main-button-column-container").style.display = "block";
+  document.getElementById("main-button-column-save").style.display = "block";
+  document.getElementById("main-button-column-container-save").style.display = "block";
   OpenToggleYourFov();
 });
 
@@ -4516,6 +4379,8 @@ document.getElementById("change-marker-options").addEventListener("click", (even
   CloseALL();
   document.getElementById("marker-options-column").style.display = "block";
   document.getElementById("marker-options-column-container").style.display = "block";
+  document.getElementById("marker-column-save").style.display = "block";
+  document.getElementById("marker-column-container-save").style.display = "block";
   OpenToggleYourFov();
 });
 
@@ -4524,14 +4389,8 @@ document.getElementById("change-button-input-settings").addEventListener("click"
   CloseALL();
   document.getElementById("button-input-column").style.display = "block";
   document.getElementById("button-input-column-container").style.display = "block";
-  OpenToggleYourFov();
-});
-
-document.getElementById("change-container-settings").addEventListener("click", (event) => {
-  event.stopPropagation();  
-  CloseALL();
-  document.getElementById("container-column").style.display = "block";
-  document.getElementById("container-column-container").style.display = "block";
+  document.getElementById("button-input-column-save").style.display = "block";
+  document.getElementById("button-input-column-container-save").style.display = "block";
   OpenToggleYourFov();
 });
 
@@ -4540,6 +4399,8 @@ document.getElementById("change-topic-chat-options").addEventListener("click", (
   CloseALL();
   document.getElementById("topic-chat-column").style.display = "block";
   document.getElementById("topic-chat-column-container").style.display = "block";
+  document.getElementById("topic-chat-save").style.display = "block";
+  document.getElementById("topic-chat-container-save").style.display = "block";
   OpenToggleYourFov();
 });
 
@@ -4664,7 +4525,6 @@ function closePopupColumn3options() {
   document.getElementById("popup-column-3-titles").style.display = "none";
   document.getElementById("popup-column-3-text").style.display = "none";
   document.getElementById("popup-column-3-font").style.display = "none";
-  document.getElementById("popup-column-3-save").style.display = "none";
 };
 
 document.getElementById("popup-column-2-border").addEventListener("click", (event) => {
@@ -6247,6 +6107,7 @@ document.getElementById("button_for_topic2pic").addEventListener("click", async 
       });
       // Update the button state text
       document.getElementById("marker-visibility-value").textContent = markersVisible ? "On" : "Off";
+      document.getElementById("marker-visibility-value2").textContent = markersVisible ? "On" : "Off";
 
       // Prevent updating clusters if markers are not visible
       if (!markersVisible) {
@@ -6274,6 +6135,7 @@ document.getElementById("button_for_topic2pic").addEventListener("click", async 
       });
 
       document.getElementById("polygon-visibility-value").textContent = polygonsVisible ? "On" : "Off"; // Update button state
+      document.getElementById("polygon-visibility-value2").textContent = polygonsVisible ? "On" : "Off"; // Update button state
   }
 
   document.getElementById("toggle-polygon-visibility").addEventListener("click", togglePolygons);
@@ -6488,9 +6350,7 @@ event.stopPropagation();
         try {
             const topicId = "0.0.9609927";
 
-            const colorRed = document.getElementById("color-red").value;
-            const colorGreen = document.getElementById("color-green").value;
-            const colorBlue = document.getElementById("color-blue").value;
+            const colorCrosshair = document.getElementById("crosshair-color").value;
 
             const crosshairBeforeWidth = document.getElementById("crosshair-before-after").value;
             const crosshairAfterHeight = document.getElementById("crosshair-after-before").value;
@@ -6499,9 +6359,7 @@ event.stopPropagation();
             const messageData = {
                 data: {
                     color: {
-                        red: colorRed,
-                        green: colorGreen,
-                        blue: colorBlue
+                        colorCrosshair: colorCrosshair
                     },
                     crosshair: {
                         beforeWidth: crosshairBeforeWidth,
@@ -6547,7 +6405,7 @@ async function loadProfileCrosshair() {
     if (lastMessage && lastMessage.data) {
 
         // Extract relevant data
-        const { rotation, position, color, scale, crosshair } = lastMessage.data;
+        const { color, crosshair } = lastMessage.data;
 
         // Store the settings in accountObjectSettings
         accountObjectSettings.push({
@@ -6555,12 +6413,7 @@ async function loadProfileCrosshair() {
             crosshair
         });
 
-        document.getElementById("color-red").value = color.red; // Set color red
-        document.getElementById("color-red-value").value = color.red; // Set color red value
-        document.getElementById("color-green").value = color.green; // Set color green
-        document.getElementById("color-green-value").value = color.green; // Set color green value
-        document.getElementById("color-blue").value = color.blue; // Set color blue
-        document.getElementById("color-blue-value").value = color.blue; // Set color blue value
+        document.getElementById("crosshair-color").value = color.colorCrosshair; // Set color crosshair
 
         document.getElementById("crosshair-before-after").value = crosshair.beforeWidth; // Set crosshair before width
         document.getElementById("crosshair-before-after-value").value = crosshair.beforeWidth; // Set crosshair before width value
@@ -6624,164 +6477,14 @@ document.getElementById("crosshair-after-before-value").addEventListener("input"
     updateCrosshairAfterBefore(value);
 });
 
-function applyAllStyles() {
-    updatePopupBorder();
-    updatePopupNumber();
-    updatePopupClose();
-    updatePopupAccid();
-    updatePopupUsername();
-    updatePopupTitles();
-    updatePopupText();
-    updatePopupFontSize();
-}
-
-document.getElementById("color-red").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("color-red-value").textContent = value; // Update displayed value
-    document.getElementById("color-red-value").value = value; // Update number input
-    updateColorCrosshair(); // Call function to update color immediately
-});
-
-document.getElementById("color-green").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("color-green-value").textContent = value; // Update displayed value
-    document.getElementById("color-green-value").value = value; // Update number input
-    updateColorCrosshair(); // Call function to update color immediately
-});
-
-document.getElementById("color-blue").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("color-blue-value").textContent = value; // Update displayed value
-    document.getElementById("color-blue-value").value = value; // Update number input
-    updateColorCrosshair(); // Call function to update color immediately
-});
-
-document.getElementById("color-red-value").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("color-red").value = value; // Update range input
-    updateColorCrosshair(); // Call function to update color immediately
-});
-
-document.getElementById("color-green-value").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("color-green").value = value; // Update range input
-    updateColorCrosshair(); // Call function to update color immediately
-});
-
-document.getElementById("color-blue-value").addEventListener("input", (event) => {
-    const value = event.target.value;
-    document.getElementById("color-blue").value = value; // Update range input
-    updateColorCrosshair(); // Call function to update color immediately
-});
-
-// Function to update the color based on slider values
 function updateColorCrosshair() {
-    const red = document.getElementById("color-red").value;
-    const green = document.getElementById("color-green").value;
-    const blue = document.getElementById("color-blue").value;
-
-    // Construct the RGB color string
-    const color = `rgb(${red}, ${green}, ${blue})`;
-
-    // Change the color of the crosshair
-    const crosshair = document.getElementById("crosshair");
-    if (crosshair) {
-        crosshair.style.setProperty('--crosshair-color', color);
-    }
+  const color = document.getElementById("crosshair-color").value;
+  const crosshair = document.getElementById("crosshair");
+  crosshair.style.setProperty('--crosshair-color', color);
 }
+document.getElementById("crosshair-color").addEventListener("input", (event) => {updateColorCrosshair();});
 
-document.getElementById("savepopup").addEventListener("click", async (event) => {
-event.stopPropagation();
 
-        try {
-            const topicId = "0.0.9771374";
-
-            const colorRedBorder = Math.min(parseInt(document.getElementById("color-red-border").value) || 0, 255);
-            const colorGreenBorder = Math.min(parseInt(document.getElementById("color-green-border").value) || 0, 255);
-            const colorBlueBorder = Math.min(parseInt(document.getElementById("color-blue-border").value) || 0, 255);
-
-            const colorRedNumber = Math.min(parseInt(document.getElementById("color-red-number").value) || 0, 255);
-            const colorGreenNumber = Math.min(parseInt(document.getElementById("color-green-number").value) || 0, 255);
-            const colorBlueNumber = Math.min(parseInt(document.getElementById("color-blue-number").value) || 0, 255);
-
-            const colorRedClose = Math.min(parseInt(document.getElementById("color-red-close").value) || 0, 255);
-            const colorGreenClose = Math.min(parseInt(document.getElementById("color-green-close").value) || 0, 255);
-            const colorBlueClose = Math.min(parseInt(document.getElementById("color-blue-close").value) || 0, 255);
-
-            const colorRedUsername = Math.min(parseInt(document.getElementById("color-red-username").value) || 0, 255);
-            const colorGreenUsername = Math.min(parseInt(document.getElementById("color-green-username").value) || 0, 255);
-            const colorBlueUsername = Math.min(parseInt(document.getElementById("color-blue-username").value) || 0, 255);
-
-            const colorRedAccid = Math.min(parseInt(document.getElementById("color-red-accid").value) || 0, 255);
-            const colorGreenAccid = Math.min(parseInt(document.getElementById("color-green-accid").value) || 0, 255);
-            const colorBlueAccid = Math.min(parseInt(document.getElementById("color-blue-accid").value) || 0, 255);
-
-            const colorRedText = Math.min(parseInt(document.getElementById("color-red-text").value) || 0, 255);
-            const colorGreenText = Math.min(parseInt(document.getElementById("color-green-text").value) || 0, 255);
-            const colorBlueText = Math.min(parseInt(document.getElementById("color-blue-text").value) || 0, 255);
-
-            const colorRedTitles = Math.min(parseInt(document.getElementById("color-red-titles").value) || 0, 255);
-            const colorGreenTitles = Math.min(parseInt(document.getElementById("color-green-titles").value) || 0, 255);
-            const colorBlueTitles = Math.min(parseInt(document.getElementById("color-blue-titles").value) || 0, 255);
-
-            const popupFontSize = Math.min(parseInt(document.getElementById("popup-font-size").value) || 0.5, 10);
-
-            const messageData = {
-                data: {
-                    colorBorder: {
-                        redBorder: colorRedBorder,
-                        greenBorder: colorGreenBorder,
-                        blueBorder: colorBlueBorder
-                    },
-                    colorNumber: {
-                        redNumber: colorRedNumber,
-                        greenNumber: colorGreenNumber,
-                        blueNumber: colorBlueNumber
-                    },
-                    colorClose: {
-                        redClose: colorRedClose,
-                        greenClose: colorGreenClose,
-                        blueClose: colorBlueClose
-                    },
-                    colorUsername: {
-                        redUsername: colorRedUsername,
-                        greenUsername: colorGreenUsername,
-                        blueUsername: colorBlueUsername
-                    },
-                    colorAccid: {
-                        redAccid: colorRedAccid,
-                        greenAccid: colorGreenAccid,
-                        blueAccid: colorBlueAccid
-                    },
-                    colorText: {
-                        redText: colorRedText,
-                        greenText: colorGreenText,
-                        blueText: colorBlueText
-                    },
-                    colorTitles: {
-                        redTitles: colorRedTitles,
-                        greenTitles: colorGreenTitles,
-                        blueTitles: colorBlueTitles
-                    },
-                    popupFontSize: {
-                        popupFontSize: popupFontSize
-                    }
-                },
-            };
-
-            const message = JSON.stringify(messageData);
-
-            const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
-                topicId,
-                message
-            );
-            console.log("Profile settings updated successfully:", receipt);
-
-        } catch (error) {
-            console.error("Error updating settings picture:", error);
-            // Removed alert
-        }
-      });
 
       document.getElementById("savepopup3").addEventListener("click", async (event) => {
 event.stopPropagation();
@@ -6789,76 +6492,25 @@ event.stopPropagation();
         try {
             const topicId = "0.0.9771374";
 
-            const colorRedBorder = Math.min(parseInt(document.getElementById("color-red-border3").value) || 0, 255);
-            const colorGreenBorder = Math.min(parseInt(document.getElementById("color-green-border3").value) || 0, 255);
-            const colorBlueBorder = Math.min(parseInt(document.getElementById("color-blue-border3").value) || 0, 255);
-
-            const colorRedNumber = Math.min(parseInt(document.getElementById("color-red-number3").value) || 0, 255);
-            const colorGreenNumber = Math.min(parseInt(document.getElementById("color-green-number3").value) || 0, 255);
-            const colorBlueNumber = Math.min(parseInt(document.getElementById("color-blue-number3").value) || 0, 255);
-
-            const colorRedClose = Math.min(parseInt(document.getElementById("color-red-close3").value) || 0, 255);
-            const colorGreenClose = Math.min(parseInt(document.getElementById("color-green-close3").value) || 0, 255);
-            const colorBlueClose = Math.min(parseInt(document.getElementById("color-blue-close3").value) || 0, 255);
-
-            const colorRedUsername = Math.min(parseInt(document.getElementById("color-red-username3").value) || 0, 255);
-            const colorGreenUsername = Math.min(parseInt(document.getElementById("color-green-username3").value) || 0, 255);
-            const colorBlueUsername = Math.min(parseInt(document.getElementById("color-blue-username3").value) || 0, 255);
-
-            const colorRedAccid = Math.min(parseInt(document.getElementById("color-red-accid3").value) || 0, 255);
-            const colorGreenAccid = Math.min(parseInt(document.getElementById("color-green-accid3").value) || 0, 255);
-            const colorBlueAccid = Math.min(parseInt(document.getElementById("color-blue-accid3").value) || 0, 255);
-
-            const colorRedText = Math.min(parseInt(document.getElementById("color-red-text3").value) || 0, 255);
-            const colorGreenText = Math.min(parseInt(document.getElementById("color-green-text3").value) || 0, 255);
-            const colorBlueText = Math.min(parseInt(document.getElementById("color-blue-text3").value) || 0, 255);
-
-            const colorRedTitles = Math.min(parseInt(document.getElementById("color-red-titles3").value) || 0, 255);
-            const colorGreenTitles = Math.min(parseInt(document.getElementById("color-green-titles3").value) || 0, 255);
-            const colorBlueTitles = Math.min(parseInt(document.getElementById("color-blue-titles3").value) || 0, 255);
-
+            const hexColorBorder = document.getElementById('color-picker-popup-border').value;
+            const hexColorNumber = document.getElementById('color-picker-popup-number').value;
+            const hexColorClose = document.getElementById('color-picker-popup-close').value;
+            const hexColorAccid = document.getElementById('color-picker-popup-accid').value;
+            const hexColorUsername = document.getElementById('color-picker-popup-username').value;
+            const hexColorTitles = document.getElementById('color-picker-popup-titles').value;
+            const hexColorText = document.getElementById('color-picker-popup-text').value;
             const popupFontSize = Math.min(parseInt(document.getElementById("popup-font-size3").value) || 0.5, 10);
 
             const messageData = {
                 data: {
-                    colorBorder: {
-                        redBorder: colorRedBorder,
-                        greenBorder: colorGreenBorder,
-                        blueBorder: colorBlueBorder
-                    },
-                    colorNumber: {
-                        redNumber: colorRedNumber,
-                        greenNumber: colorGreenNumber,
-                        blueNumber: colorBlueNumber
-                    },
-                    colorClose: {
-                        redClose: colorRedClose,
-                        greenClose: colorGreenClose,
-                        blueClose: colorBlueClose
-                    },
-                    colorUsername: {
-                        redUsername: colorRedUsername,
-                        greenUsername: colorGreenUsername,
-                        blueUsername: colorBlueUsername
-                    },
-                    colorAccid: {
-                        redAccid: colorRedAccid,
-                        greenAccid: colorGreenAccid,
-                        blueAccid: colorBlueAccid
-                    },
-                    colorText: {
-                        redText: colorRedText,
-                        greenText: colorGreenText,
-                        blueText: colorBlueText
-                    },
-                    colorTitles: {
-                        redTitles: colorRedTitles,
-                        greenTitles: colorGreenTitles,
-                        blueTitles: colorBlueTitles
-                    },
-                    popupFontSize: {
-                        popupFontSize: popupFontSize
-                    }
+                    colorBorder: hexColorBorder,
+                    colorNumber: hexColorNumber,
+                    colorClose: hexColorClose,
+                    colorUsername: hexColorUsername,
+                    colorAccid: hexColorAccid,
+                    colorText: hexColorText,
+                    colorTitles: hexColorTitles,
+                    popupFontSize: popupFontSize
                 },
             };
 
@@ -6894,89 +6546,30 @@ async function loadProfilePopup() {
 
         // Check if the last message has valid data
         if (lastMessage && lastMessage.data) {
+            console.log(lastMessage.data);
             // Extract relevant data and clamp to max 255
             const { colorBorder, colorNumber, colorClose, colorUsername, colorAccid, colorText, colorTitles, popupFontSize } = lastMessage.data;
 
-            // Clamp values to max 255
-            const clampedColorBorder = {
-                redBorder: Math.min(parseInt(colorBorder.redBorder) || 0, 255),
-                greenBorder: Math.min(parseInt(colorBorder.greenBorder) || 0, 255),
-                blueBorder: Math.min(parseInt(colorBorder.blueBorder) || 0, 255)
-            };
-            const clampedColorNumber = {
-                redNumber: Math.min(parseInt(colorNumber.redNumber) || 0, 255),
-                greenNumber: Math.min(parseInt(colorNumber.greenNumber) || 0, 255),
-                blueNumber: Math.min(parseInt(colorNumber.blueNumber) || 0, 255)
-            };
-            const clampedColorClose = {
-                redClose: Math.min(parseInt(colorClose.redClose) || 0, 255),
-                greenClose: Math.min(parseInt(colorClose.greenClose) || 0, 255),
-                blueClose: Math.min(parseInt(colorClose.blueClose) || 0, 255)
-            };
-            const clampedColorUsername = {
-                redUsername: Math.min(parseInt(colorUsername.redUsername) || 0, 255),
-                greenUsername: Math.min(parseInt(colorUsername.greenUsername) || 0, 255),
-                blueUsername: Math.min(parseInt(colorUsername.blueUsername) || 0, 255)
-            };
-            const clampedColorAccid = {
-                redAccid: Math.min(parseInt(colorAccid.redAccid) || 0, 255),
-                greenAccid: Math.min(parseInt(colorAccid.greenAccid) || 0, 255),
-                blueAccid: Math.min(parseInt(colorAccid.blueAccid) || 0, 255)
-            };
-            const clampedColorText = {
-                redText: Math.min(parseInt(colorText.redText) || 0, 255),
-                greenText: Math.min(parseInt(colorText.greenText) || 0, 255),
-                blueText: Math.min(parseInt(colorText.blueText) || 0, 255)
-            };
-            const clampedColorTitles = {
-                redTitles: Math.min(parseInt(colorTitles.redTitles) || 0, 255),
-                greenTitles: Math.min(parseInt(colorTitles.greenTitles) || 0, 255),
-                blueTitles: Math.min(parseInt(colorTitles.blueTitles) || 0, 255)
-            };
-            const clampedPopupFontSize = Math.min(parseInt(popupFontSize.popupFontSize) || 0.5, 10);
-            
             accountObjectSettings.push({
-                colorBorder: clampedColorBorder,
-                colorNumber: clampedColorNumber,
-                colorClose: clampedColorClose,
-                colorUsername: clampedColorUsername,
-                colorAccid: clampedColorAccid,
-                colorText: clampedColorText,
-                colorTitles: clampedColorTitles,
-                popupFontSize: clampedPopupFontSize
+                colorBorder: colorBorder,
+                colorNumber: colorNumber,
+                colorClose: colorClose,
+                colorUsername: colorUsername,
+                colorAccid: colorAccid,
+                colorText: colorText,
+                colorTitles: colorTitles,
+                popupFontSize: popupFontSize
             });
 
-            document.getElementById("color-red-border").value = clampedColorBorder.redBorder;
-            document.getElementById("color-green-border").value = clampedColorBorder.greenBorder;
-            document.getElementById("color-blue-border").value = clampedColorBorder.blueBorder;
+            document.getElementById("color-picker-popup-border").value = colorBorder;
+            document.getElementById("color-picker-popup-number").value = colorNumber;
+            document.getElementById("color-picker-popup-close").value = colorClose;
+            document.getElementById("color-picker-popup-accid").value = colorAccid;
+            document.getElementById("color-picker-popup-username").value = colorUsername;
+            document.getElementById("color-picker-popup-titles").value = colorTitles;
+            document.getElementById("color-picker-popup-text").value = colorText;
+            document.getElementById("popup-font-size").value = popupFontSize;
 
-            document.getElementById("color-red-number").value = clampedColorNumber.redNumber;
-            document.getElementById("color-green-number").value = clampedColorNumber.greenNumber;
-            document.getElementById("color-blue-number").value = clampedColorNumber.blueNumber;
-
-            document.getElementById("color-red-close").value = clampedColorClose.redClose;
-            document.getElementById("color-green-close").value = clampedColorClose.greenClose;
-            document.getElementById("color-blue-close").value = clampedColorClose.blueClose;
-
-            document.getElementById("color-red-username").value = clampedColorUsername.redUsername;
-            document.getElementById("color-green-username").value = clampedColorUsername.greenUsername;
-            document.getElementById("color-blue-username").value = clampedColorUsername.blueUsername;
-
-            document.getElementById("color-red-accid").value = clampedColorAccid.redAccid;
-            document.getElementById("color-green-accid").value = clampedColorAccid.greenAccid;
-            document.getElementById("color-blue-accid").value = clampedColorAccid.blueAccid;
-
-            document.getElementById("color-red-text").value = clampedColorText.redText;
-            document.getElementById("color-green-text").value = clampedColorText.greenText;
-            document.getElementById("color-blue-text").value = clampedColorText.blueText;
-
-            document.getElementById("color-red-titles").value = clampedColorTitles.redTitles;
-            document.getElementById("color-green-titles").value = clampedColorTitles.greenTitles;
-            document.getElementById("color-blue-titles").value = clampedColorTitles.blueTitles;
-
-            document.getElementById("popup-font-size").value = clampedPopupFontSize;
-
-            // Call update functions to apply the loaded values
             updatePopupBorder();
             updatePopupNumber();
             updatePopupClose();
@@ -6985,46 +6578,6 @@ async function loadProfilePopup() {
             updatePopupTitles();
             updatePopupText();
             updatePopupFontSize();
-
-            document.getElementById("color-red-border3").value = clampedColorBorder.redBorder;
-            document.getElementById("color-green-border3").value = clampedColorBorder.greenBorder;
-            document.getElementById("color-blue-border3").value = clampedColorBorder.blueBorder;
-
-            document.getElementById("color-red-number3").value = clampedColorNumber.redNumber;
-            document.getElementById("color-green-number3").value = clampedColorNumber.greenNumber;
-            document.getElementById("color-blue-number3").value = clampedColorNumber.blueNumber;
-
-            document.getElementById("color-red-close3").value = clampedColorClose.redClose;
-            document.getElementById("color-green-close3").value = clampedColorClose.greenClose;
-            document.getElementById("color-blue-close3").value = clampedColorClose.blueClose;
-
-            document.getElementById("color-red-username3").value = clampedColorUsername.redUsername;
-            document.getElementById("color-green-username3").value = clampedColorUsername.greenUsername;
-            document.getElementById("color-blue-username3").value = clampedColorUsername.blueUsername;
-
-            document.getElementById("color-red-accid3").value = clampedColorAccid.redAccid;
-            document.getElementById("color-green-accid3").value = clampedColorAccid.greenAccid;
-            document.getElementById("color-blue-accid3").value = clampedColorAccid.blueAccid;
-
-            document.getElementById("color-red-text3").value = clampedColorText.redText;
-            document.getElementById("color-green-text3").value = clampedColorText.greenText;
-            document.getElementById("color-blue-text3").value = clampedColorText.blueText;
-
-            document.getElementById("color-red-titles3").value = clampedColorTitles.redTitles;
-            document.getElementById("color-green-titles3").value = clampedColorTitles.greenTitles;
-            document.getElementById("color-blue-titles3").value = clampedColorTitles.blueTitles;
-
-            document.getElementById("popup-font-size3").value = clampedPopupFontSize;
-
-            // Call update functions to apply the loaded values
-            updatePopupBorder3();
-            updatePopupNumber3();
-            updatePopupClose3();
-            updatePopupAccid3();
-            updatePopupUsername3();
-            updatePopupTitles3();
-            updatePopupText3();
-            updatePopupFontSize3();
 
         } else {
             console.log("Last message does not have valid data.");
@@ -7038,379 +6591,103 @@ async function loadProfilePopup() {
     }
 }
 
-document.getElementById("color-red-border").addEventListener("input", (event) => {updatePopupBorder();});
-
-document.getElementById("color-green-border").addEventListener("input", (event) => {updatePopupBorder();});
-
-document.getElementById("color-blue-border").addEventListener("input", (event) => {updatePopupBorder();});
-
-document.getElementById("color-red-number").addEventListener("input", (event) => {updatePopupNumber();});
-
-document.getElementById("color-green-number").addEventListener("input", (event) => {updatePopupNumber();});
-
-document.getElementById("color-blue-number").addEventListener("input", (event) => {updatePopupNumber();});
-
-document.getElementById("color-red-close").addEventListener("input", (event) => {updatePopupClose();});
-
-document.getElementById("color-green-close").addEventListener("input", (event) => {updatePopupClose();});
-
-document.getElementById("color-blue-close").addEventListener("input", (event) => {updatePopupClose();});
-
-document.getElementById("color-red-accid").addEventListener("input", (event) => {updatePopupAccid();});
-
-document.getElementById("color-green-accid").addEventListener("input", (event) => {updatePopupAccid();});
-
-document.getElementById("color-blue-accid").addEventListener("input", (event) => {updatePopupAccid();});
-
-document.getElementById("color-red-username").addEventListener("input", (event) => {updatePopupUsername();});
-
-document.getElementById("color-green-username").addEventListener("input", (event) => {updatePopupUsername();});
-
-document.getElementById("color-blue-username").addEventListener("input", (event) => {updatePopupUsername();});
-
-document.getElementById("color-red-titles").addEventListener("input", (event) => {updatePopupTitles();});
-
-document.getElementById("color-green-titles").addEventListener("input", (event) => {updatePopupTitles();});
-
-document.getElementById("color-blue-titles").addEventListener("input", (event) => {updatePopupTitles();});
-
-document.getElementById("color-red-text").addEventListener("input", (event) => {updatePopupText();});
-
-document.getElementById("color-green-text").addEventListener("input", (event) => {updatePopupText();});
-
-document.getElementById("color-blue-text").addEventListener("input", (event) => {updatePopupText();});
-
-document.getElementById("popup-font-size").addEventListener("input", (event) => {updatePopupFontSize();});
-
-document.getElementById("color-red-border3").addEventListener("input", (event) => {updatePopupBorder3();});
-
-document.getElementById("color-green-border3").addEventListener("input", (event) => {updatePopupBorder3();});
-
-document.getElementById("color-blue-border3").addEventListener("input", (event) => {updatePopupBorder3();});
-
-document.getElementById("color-red-number3").addEventListener("input", (event) => {updatePopupNumber3();});
-
-document.getElementById("color-green-number3").addEventListener("input", (event) => {updatePopupNumber3();});
-
-document.getElementById("color-blue-number3").addEventListener("input", (event) => {updatePopupNumber3();});
-
-document.getElementById("color-red-close3").addEventListener("input", (event) => {updatePopupClose3();});
-
-document.getElementById("color-green-close3").addEventListener("input", (event) => {updatePopupClose3();});
-
-document.getElementById("color-blue-close3").addEventListener("input", (event) => {updatePopupClose3();});
-
-document.getElementById("color-red-accid3").addEventListener("input", (event) => {updatePopupAccid3();});
-
-document.getElementById("color-green-accid3").addEventListener("input", (event) => {updatePopupAccid3();});
-
-document.getElementById("color-blue-accid3").addEventListener("input", (event) => {updatePopupAccid3();});
-
-document.getElementById("color-red-username3").addEventListener("input", (event) => {updatePopupUsername3();});
-
-document.getElementById("color-green-username3").addEventListener("input", (event) => {updatePopupUsername3();});
-
-document.getElementById("color-blue-username3").addEventListener("input", (event) => {updatePopupUsername3();});
-
-document.getElementById("color-red-titles3").addEventListener("input", (event) => {updatePopupTitles3();});
-
-document.getElementById("color-green-titles3").addEventListener("input", (event) => {updatePopupTitles3();});
-
-document.getElementById("color-blue-titles3").addEventListener("input", (event) => {updatePopupTitles3();});
-
-document.getElementById("color-red-text3").addEventListener("input", (event) => {updatePopupText3();});
-
-document.getElementById("color-green-text3").addEventListener("input", (event) => {updatePopupText3();});
-
-document.getElementById("color-blue-text3").addEventListener("input", (event) => {updatePopupText3();});
-
-document.getElementById("popup-font-size3").addEventListener("input", (event) => {updatePopupFontSize3();});
-
-// Convert RGB to Hex for color picker
-function rgbToHex(r, g, b) {
-    return `#${((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1).padStart(6, '0')}`;
-  }
-
-  // Convert Hex to RGB for sliders
-  function hexToRgb(hex) {
-    const bigint = parseInt(hex.slice(1), 16);
-    return {
-      r: (bigint >> 16) & 255,
-      g: (bigint >> 8) & 255,
-      b: bigint & 255
-    };
-}
-
-document.getElementById('color-picker-popup-border').addEventListener('input', (event) => {
-    const color = event.target.value;
-    const { r, g, b } = hexToRgb(color);
-    document.getElementById('color-red-border').value = r;
-    document.getElementById('color-green-border').value = g;
-    document.getElementById('color-blue-border').value = b;
+function applyAllStyles() {
     updatePopupBorder();
-});
+    updatePopupNumber();
+    updatePopupClose();
+    updatePopupAccid();
+    updatePopupUsername();
+    updatePopupTitles();
+    updatePopupText();
+    updatePopupFontSize();
+}
 
 function updatePopupBorder() {
-    const red_border = document.getElementById("color-red-border").value;
-    const green_border = document.getElementById("color-green-border").value;
-    const blue_border = document.getElementById("color-blue-border").value;
-    const color_border = `rgb(${red_border}, ${green_border}, ${blue_border})`;
-    document.getElementById("color-red-border3").value = red_border;
-    document.getElementById("color-green-border3").value = green_border;
-    document.getElementById("color-blue-border3").value = blue_border;
-
-    const popupContents = document.querySelectorAll('.maplibregl-popup');
-
-    popupContents.forEach(popup => {
-        popup.style.borderColor = color_border;
-    });
-
-    document.getElementById('color-picker-popup-border').value = rgbToHex(red_border, green_border, blue_border);
+  const color = document.getElementById('color-picker-popup-border').value;
+  const popupContents = document.querySelectorAll('.maplibregl-popup');
+  popupContents.forEach(popup => {
+      popup.style.borderColor = color;
+  });
 }
-
-function updatePopupBorder3() {
-    const red_border = document.getElementById("color-red-border3").value;
-    const green_border = document.getElementById("color-green-border3").value;
-    const blue_border = document.getElementById("color-blue-border3").value;
-    const color_border = `rgb(${red_border}, ${green_border}, ${blue_border})`;
-    document.getElementById("color-red-border").value = red_border;
-    document.getElementById("color-green-border").value = green_border;
-    document.getElementById("color-blue-border").value = blue_border;
-
-    const popupContents = document.querySelectorAll('.maplibregl-popup');
-
-    popupContents.forEach(popup => {
-        popup.style.borderColor = color_border;
-    });
-}
+document.getElementById('color-picker-popup-border').addEventListener('input', (event) => {updatePopupBorder();});
 
 function updatePopupNumber() {
-    const red_number = document.getElementById("color-red-number").value;
-    const green_number = document.getElementById("color-green-number").value;
-    const blue_number = document.getElementById("color-blue-number").value;
-    const color_number = `rgb(${red_number}, ${green_number}, ${blue_number})`;
-    document.getElementById("color-red-number3").value = red_number;
-    document.getElementById("color-green-number3").value = green_number;
-    document.getElementById("color-blue-number3").value = blue_number;
-    const popupNumbers = document.querySelectorAll('.maplibregl-popup .number');
-
-    popupNumbers.forEach(number => {
-        number.style.color = color_number;
-    });
+  const color = document.getElementById('color-picker-popup-number').value;
+  const popupNumbers = document.querySelectorAll('.maplibregl-popup .number');
+  popupNumbers.forEach(number => {
+    number.style.color = color;
+  });
 }
-
-function updatePopupNumber3() {
-    const red_number = document.getElementById("color-red-number3").value;
-    const green_number = document.getElementById("color-green-number3").value;
-    const blue_number = document.getElementById("color-blue-number3").value;
-    const color_number = `rgb(${red_number}, ${green_number}, ${blue_number})`;
-    document.getElementById("color-red-number").value = red_number;
-    document.getElementById("color-green-number").value = green_number;
-    document.getElementById("color-blue-number").value = blue_number;
-    const popupNumbers = document.querySelectorAll('.maplibregl-popup .number');
-
-    popupNumbers.forEach(number => {
-        number.style.color = color_number;
-    });
-}
+document.getElementById('color-picker-popup-number').addEventListener('input', (event) => {updatePopupNumber();});
 
 function updatePopupClose() {
-
-    const red_close = document.getElementById("color-red-close").value;
-    const green_close = document.getElementById("color-green-close").value;
-    const blue_close = document.getElementById("color-blue-close").value;
-    const color_close = `rgb(${red_close}, ${green_close}, ${blue_close})`;
-    document.getElementById("color-red-close3").value = red_close;
-    document.getElementById("color-green-close3").value = green_close;
-    document.getElementById("color-blue-close3").value = blue_close;
-
-    const popupCloses = document.querySelectorAll('.maplibregl-popup-close-button');
-
-    popupCloses.forEach(close => {
-        close.style.color = color_close;
-    });
+  const color = document.getElementById('color-picker-popup-close').value;
+  const popupCloses = document.querySelectorAll('.maplibregl-popup .close-button');
+  popupCloses.forEach(close => {
+    close.style.color = color;
+  });
 }
-
-function updatePopupClose3() {
-    const red_close = document.getElementById("color-red-close3").value;
-    const green_close = document.getElementById("color-green-close3").value;
-    const blue_close = document.getElementById("color-blue-close3").value;
-    const color_close = `rgb(${red_close}, ${green_close}, ${blue_close})`;
-    document.getElementById("color-red-close").value = red_close;
-    document.getElementById("color-green-close").value = green_close;
-    document.getElementById("color-blue-close").value = blue_close;
-    const popupCloses = document.querySelectorAll('.maplibregl-popup-close-button');
-
-    popupCloses.forEach(close => {
-        close.style.color = color_close;
-    });
-}
+document.getElementById('color-picker-popup-close').addEventListener('input', (event) => {updatePopupClose();});
 
 function updatePopupAccid() {
-    const red_accid = document.getElementById("color-red-accid").value;
-    const green_accid = document.getElementById("color-green-accid").value;
-    const blue_accid = document.getElementById("color-blue-accid").value;
-    const color_accid = `rgb(${red_accid}, ${green_accid}, ${blue_accid})`;
-    document.getElementById("color-red-accid3").value = red_accid;
-    document.getElementById("color-green-accid3").value = green_accid;
-    document.getElementById("color-blue-accid3").value = blue_accid;
-    const popupAccids = document.querySelectorAll('.maplibregl-popup .payer-info');
-
-    popupAccids.forEach(accid => {
-        accid.style.color = color_accid;
-    });
+  const color = document.getElementById('color-picker-popup-accid').value;
+  const popupAccids = document.querySelectorAll('.maplibregl-popup .payer-info');
+  popupAccids.forEach(accid => {
+    accid.style.color = color;
+  });
 }
-
-function updatePopupAccid3() {
-    const red_accid = document.getElementById("color-red-accid3").value;
-    const green_accid = document.getElementById("color-green-accid3").value;
-    const blue_accid = document.getElementById("color-blue-accid3").value;
-    const color_accid = `rgb(${red_accid}, ${green_accid}, ${blue_accid})`;
-    document.getElementById("color-red-accid").value = red_accid;
-    document.getElementById("color-green-accid").value = green_accid;
-    document.getElementById("color-blue-accid").value = blue_accid;
-    const popupAccids = document.querySelectorAll('.maplibregl-popup .payer-info');
-
-    popupAccids.forEach(accid => {
-        accid.style.color = color_accid;
-    });
-}
+document.getElementById('color-picker-popup-accid').addEventListener('input', (event) => {updatePopupAccid();});
 
 function updatePopupUsername() {
-    const red_username = document.getElementById("color-red-username").value;
-    const green_username = document.getElementById("color-green-username").value;
-    const blue_username = document.getElementById("color-blue-username").value;
-    const color_username = `rgb(${red_username}, ${green_username}, ${blue_username})`;
-    document.getElementById("color-red-username3").value = red_username;
-    document.getElementById("color-green-username3").value = green_username;
-    document.getElementById("color-blue-username3").value = blue_username;
-    const popupUsernames = document.querySelectorAll('.maplibregl-popup .username');
-
-    popupUsernames.forEach(username => {
-        username.style.color = color_username;
-    });
+  const color = document.getElementById('color-picker-popup-username').value;
+  const popupUsernames = document.querySelectorAll('.maplibregl-popup .username');
+  popupUsernames.forEach(username => {
+    username.style.color = color;
+  });
 }
-
-function updatePopupUsername3() {
-    const red_username = document.getElementById("color-red-username3").value;
-    const green_username = document.getElementById("color-green-username3").value;
-    const blue_username = document.getElementById("color-blue-username3").value;
-    const color_username = `rgb(${red_username}, ${green_username}, ${blue_username})`;
-    document.getElementById("color-red-username").value = red_username;
-    document.getElementById("color-green-username").value = green_username;
-    document.getElementById("color-blue-username").value = blue_username;
-    const popupUsernames = document.querySelectorAll('.maplibregl-popup .username');
-
-    popupUsernames.forEach(username => {
-        username.style.color = color_username;
-    });
-}
+document.getElementById('color-picker-popup-username').addEventListener('input', (event) => {updatePopupUsername();});
 
 function updatePopupTitles() {
-    const red_titles = document.getElementById("color-red-titles").value;
-    const green_titles = document.getElementById("color-green-titles").value;
-    const blue_titles = document.getElementById("color-blue-titles").value;
-    const color_titles = `rgb(${red_titles}, ${green_titles}, ${blue_titles})`;
-    document.getElementById("color-red-titles3").value = red_titles;
-    document.getElementById("color-green-titles3").value = green_titles;
-    document.getElementById("color-blue-titles3").value = blue_titles;
-    const popupTitles = document.querySelectorAll('.maplibregl-popup .title_color');
-
-    popupTitles.forEach(title => {
-        title.style.color = color_titles;
-    });
+  const color = document.getElementById('color-picker-popup-titles').value;
+  const popupTitles = document.querySelectorAll('.maplibregl-popup .title_color');
+  popupTitles.forEach(title => {
+    title.style.color = color;
+  });
 }
-
-function updatePopupTitles3() {
-    const red_titles = document.getElementById("color-red-titles3").value;
-    const green_titles = document.getElementById("color-green-titles3").value;
-    const blue_titles = document.getElementById("color-blue-titles3").value;
-    const color_titles = `rgb(${red_titles}, ${green_titles}, ${blue_titles})`;
-    document.getElementById("color-red-titles").value = red_titles;
-    document.getElementById("color-green-titles").value = green_titles;
-    document.getElementById("color-blue-titles").value = blue_titles;
-    const popupTitles = document.querySelectorAll('.maplibregl-popup .title_color');
-
-    popupTitles.forEach(title => {
-        title.style.color = color_titles;
-    });
-}
+document.getElementById('color-picker-popup-titles').addEventListener('input', (event) => {updatePopupTitles();});
 
 function updatePopupText() {
-    const red_text = document.getElementById("color-red-text").value;
-    const green_text = document.getElementById("color-green-text").value;
-    const blue_text = document.getElementById("color-blue-text").value;
-    const color_text = `rgb(${red_text}, ${green_text}, ${blue_text})`;
-    document.getElementById("color-red-text3").value = red_text;
-    document.getElementById("color-green-text3").value = green_text;
-    document.getElementById("color-blue-text3").value = blue_text;
-    const popupTexts = document.querySelectorAll('.maplibregl-popup .text_color');
-
-    popupTexts.forEach(text => {
-        text.style.color = color_text;
-    });
+  const color = document.getElementById('color-picker-popup-text').value;
+  const popupTexts = document.querySelectorAll('.maplibregl-popup-content');
+  popupTexts.forEach(text => {
+    text.style.color = color;
+  });
 }
-
-function updatePopupText3() {
-    const red_text = document.getElementById("color-red-text3").value;
-    const green_text = document.getElementById("color-green-text3").value;
-    const blue_text = document.getElementById("color-blue-text3").value;
-    const color_text = `rgb(${red_text}, ${green_text}, ${blue_text})`;
-    document.getElementById("color-red-text").value = red_text;
-    document.getElementById("color-green-text").value = green_text;
-    document.getElementById("color-blue-text").value = blue_text;
-    const popupTexts = document.querySelectorAll('.maplibregl-popup .text_color');
-
-    popupTexts.forEach(text => {
-        text.style.color = color_text;
-    });
-}
+document.getElementById('color-picker-popup-text').addEventListener('input', (event) => {updatePopupText();});
 
 function updatePopupFontSize() {
     const popupFontSize = document.getElementById("popup-font-size").value;
     const popupFontSizeValue = Math.min(parseInt(popupFontSize) || 0.5, 10);
-    document.getElementById("popup-font-size3").value = popupFontSize;
     const popupTexts = document.querySelectorAll('.maplibregl-popup-content');
     popupTexts.forEach(text => {
         text.style.fontSize = `${popupFontSizeValue}vh`;
     });
 }
+document.getElementById('popup-font-size').addEventListener('input', (event) => {updatePopupFontSize();});
 
-function updatePopupFontSize3() {
-    const popupFontSize = document.getElementById("popup-font-size3").value;
-    const popupFontSizeValue = Math.min(parseInt(popupFontSize) || 0.5, 10);
-    document.getElementById("popup-font-size").value = popupFontSize;
-    const popupTexts = document.querySelectorAll('.maplibregl-popup-content');
-    popupTexts.forEach(text => {
-        text.style.fontSize = `${popupFontSizeValue}vh`;
-    });
-}
+
 document.getElementById("save-main-button").addEventListener("click", async (event) => {
     event.stopPropagation();
     
     try {
         const topicId = "0.0.9797981";
         
-        const colorRedDisconnect = Math.min(parseInt(document.getElementById("color-red-disconnect-button").value) || 0, 255);
-        const colorGreenDisconnect = Math.min(parseInt(document.getElementById("color-green-disconnect-button").value) || 0, 255);
-        const colorBlueDisconnect = Math.min(parseInt(document.getElementById("color-blue-disconnect-button").value) || 0, 255);
-
-        const colorRedMainButton = Math.min(parseInt(document.getElementById("color-red-main-button").value) || 0, 255);
-        const colorGreenMainButton = Math.min(parseInt(document.getElementById("color-green-main-button").value) || 0, 255);
-        const colorBlueMainButton = Math.min(parseInt(document.getElementById("color-blue-main-button").value) || 0, 255);
-
+        const colorDisconnect = document.getElementById("disconnect-button-color").value;
+        const colorMainButton = document.getElementById("main-button-color").value;
         const messageData = {
             data: {
-                colorDisconnect: {
-                    redDisconnect: colorRedDisconnect,
-                    greenDisconnect: colorGreenDisconnect,
-                    blueDisconnect: colorBlueDisconnect
-                },
-                colorMainButton: {
-                    redMainButton: colorRedMainButton,
-                    greenMainButton: colorGreenMainButton,
-                    blueMainButton: colorBlueMainButton
-                }
+                colorDisconnect: colorDisconnect,
+                colorMainButton: colorMainButton
             }
         };
 
@@ -7448,28 +6725,13 @@ async function loadMainButtonSettings() {
             // Extract relevant data and clamp to max 255
             const { colorDisconnect, colorMainButton } = lastMessage.data;
 
-            const clampedColorDisconnect = {
-                redDisconnect: Math.min(parseInt(colorDisconnect.redDisconnect) || 0, 255),
-                greenDisconnect: Math.min(parseInt(colorDisconnect.greenDisconnect) || 0, 255),
-                blueDisconnect: Math.min(parseInt(colorDisconnect.blueDisconnect) || 0, 255)
-            };
-            const clampedColorMainButton = {
-                redMainButton: Math.min(parseInt(colorMainButton.redMainButton) || 0, 255),
-                greenMainButton: Math.min(parseInt(colorMainButton.greenMainButton) || 0, 255),
-                blueMainButton: Math.min(parseInt(colorMainButton.blueMainButton) || 0, 255)
-            };
-
             accountObjectSettings.push({
-                colorDisconnect: clampedColorDisconnect,
-                colorMainButton: clampedColorMainButton
+                colorDisconnect: colorDisconnect,
+                colorMainButton: colorMainButton
             });
 
-            document.getElementById("color-red-disconnect-button").value = clampedColorDisconnect.redDisconnect;
-            document.getElementById("color-green-disconnect-button").value = clampedColorDisconnect.greenDisconnect;
-            document.getElementById("color-blue-disconnect-button").value = clampedColorDisconnect.blueDisconnect;
-            document.getElementById("color-red-main-button").value = clampedColorMainButton.redMainButton;
-            document.getElementById("color-green-main-button").value = clampedColorMainButton.greenMainButton;
-            document.getElementById("color-blue-main-button").value = clampedColorMainButton.blueMainButton;
+            document.getElementById("disconnect-button-color").value = colorDisconnect;
+            document.getElementById("main-button-color").value = colorMainButton;
 
             updateMainButtonSettings();
 
@@ -7484,18 +6746,15 @@ async function loadMainButtonSettings() {
     }
 
     function updateMainButtonSettings() {
-        const redDisconnect = document.getElementById("color-red-disconnect-button").value;
-        const greenDisconnect = document.getElementById("color-green-disconnect-button").value;
-        const blueDisconnect = document.getElementById("color-blue-disconnect-button").value;
-        const redMainButton = document.getElementById("color-red-main-button").value;
-        const greenMainButton = document.getElementById("color-green-main-button").value;
-        const blueMainButton = document.getElementById("color-blue-main-button").value;
-        const colorDisconnect = `rgb(${redDisconnect}, ${greenDisconnect}, ${blueDisconnect})`;
-        const colorMainButton = `rgb(${redMainButton}, ${greenMainButton}, ${blueMainButton})`;
+        const colorDisconnect = document.getElementById("disconnect-button-color").value;
+        const colorMainButton = document.getElementById("main-button-color").value;
+
         const disconnectButton = document.querySelectorAll('#disconnect-wallet-btn');
         const connectButton = document.querySelectorAll('#connect-wallet-btn');
-        const mainButton_1 = document.querySelectorAll('.menu_buttons');
-        const mainButton_2 = document.querySelectorAll('.options-and-topic');
+        const menuButtons = document.querySelectorAll('.menu_buttons');
+        const optionsButtons = document.querySelectorAll('.options-and-topic');
+
+
 
         disconnectButton.forEach(button => {
             button.style.backgroundColor = colorDisconnect;
@@ -7505,25 +6764,17 @@ async function loadMainButtonSettings() {
             button.style.backgroundColor = colorDisconnect;
         });
 
-        // Update menu_buttons background color
-        const menuButtons = document.querySelectorAll('.menu_buttons');
         menuButtons.forEach(button => {
             button.style.backgroundColor = colorMainButton;
         });
 
-        // Update options-and-topic background color
-        const optionsButtons = document.querySelectorAll('.options-and-topic');
         optionsButtons.forEach(button => {
             button.style.backgroundColor = colorMainButton;
         });
     }
 
-    document.getElementById("color-red-disconnect-button").addEventListener("input", (event) => {updateMainButtonSettings();});
-    document.getElementById("color-green-disconnect-button").addEventListener("input", (event) => {updateMainButtonSettings();});
-    document.getElementById("color-blue-disconnect-button").addEventListener("input", (event) => {updateMainButtonSettings();});
-    document.getElementById("color-red-main-button").addEventListener("input", (event) => {updateMainButtonSettings();});
-    document.getElementById("color-green-main-button").addEventListener("input", (event) => {updateMainButtonSettings();});
-    document.getElementById("color-blue-main-button").addEventListener("input", (event) => {updateMainButtonSettings();});
+    document.getElementById("disconnect-button-color").addEventListener("input", (event) => {updateMainButtonSettings();});
+    document.getElementById("main-button-color").addEventListener("input", (event) => {updateMainButtonSettings();});
 
 document.getElementById("save-marker-settings").addEventListener("click", async (event) => {
     event.stopPropagation();
@@ -7605,59 +6856,23 @@ document.getElementById("save-button-button-input").addEventListener("click", as
     try {
         const topicId = "0.0.9798047";
 
-        const colorRedBorderButtonInput = Math.min(parseInt(document.getElementById("color-red-border-button-input").value) || 0, 255);
-        const colorGreenBorderButtonInput = Math.min(parseInt(document.getElementById("color-green-border-button-input").value) || 0, 255);
-        const colorBlueBorderButtonInput = Math.min(parseInt(document.getElementById("color-blue-border-button-input").value) || 0, 255);
-
-        const colorRedFontColorInput = Math.min(parseInt(document.getElementById("color-red-font-color-input-button-input").value) || 0, 255);
-        const colorGreenFontColorInput = Math.min(parseInt(document.getElementById("color-green-font-color-input-button-input").value) || 0, 255);
-        const colorBlueFontColorInput = Math.min(parseInt(document.getElementById("color-blue-font-color-input-button-input").value) || 0, 255);
-
-        const colorRedButtonBorderButtonInput = Math.min(parseInt(document.getElementById("color-red-button-border-button-input").value) || 0, 255);
-        const colorGreenButtonBorderButtonInput = Math.min(parseInt(document.getElementById("color-green-button-border-button-input").value) || 0, 255);
-        const colorBlueButtonBorderButtonInput = Math.min(parseInt(document.getElementById("color-blue-button-border-button-input").value) || 0, 255);
-
-        const colorRedOnhoverButtonInput = Math.min(parseInt(document.getElementById("color-red-onhover-button-input").value) || 0, 255);
-        const colorGreenOnhoverButtonInput = Math.min(parseInt(document.getElementById("color-green-onhover-button-input").value) || 0, 255);
-        const colorBlueOnhoverButtonInput = Math.min(parseInt(document.getElementById("color-blue-onhover-button-input").value) || 0, 255);
-
-        const fontForButtonInput = Math.min(parseInt(document.getElementById("font-for-button-input").value) || 1.5, 10);
-        const transparencyButtonInput = Math.min(parseInt(document.getElementById("color-red-transparency-button-input").value) || 0.5, 1);
-
-        const colorRedFontColorButtonInput = Math.min(parseInt(document.getElementById("color-red-font-color-button-input").value) || 0, 255);
-        const colorGreenFontColorButtonInput = Math.min(parseInt(document.getElementById("color-green-font-color-button-input").value) || 0, 255);
-        const colorBlueFontColorButtonInput = Math.min(parseInt(document.getElementById("color-blue-font-color-button-input").value) || 0, 255);
+        const InputBorderColor = document.getElementById("input-border-color").value;
+        const InputFontColor = document.getElementById("input-font-color").value;
+        const ButtonBorderColor = document.getElementById("button-border-color").value;
+        const ButtonFontColor = document.getElementById("button-font-color").value;
+        const OnhoverButtonColor = document.getElementById("onhover-button-color").value;
+        const FontForButtonInput = Math.min(parseInt(document.getElementById("font-for-button-input").value) || 1.5, 10);
+        const TransparencyButtonInput = Math.min(parseInt(document.getElementById("transparency-button-input").value) || 0.5, 1);
 
         const messageData = {
             data: {
-                colorBorderButtonInput: {
-                    redBorderButtonInput: colorRedBorderButtonInput,
-                    greenBorderButtonInput: colorGreenBorderButtonInput,
-                    blueBorderButtonInput: colorBlueBorderButtonInput
-                },
-                fontForButtonInput: fontForButtonInput,
-                transparencyButtonInput: transparencyButtonInput,
-
-                colorFontColorButtonInput: {
-                    redFontColorButtonInput: colorRedFontColorButtonInput,
-                    greenFontColorButtonInput: colorGreenFontColorButtonInput,
-                    blueFontColorButtonInput: colorBlueFontColorButtonInput
-                },
-                colorOnhoverButtonInput: {
-                    redOnhoverButtonInput: colorRedOnhoverButtonInput,
-                    greenOnhoverButtonInput: colorGreenOnhoverButtonInput,
-                    blueOnhoverButtonInput: colorBlueOnhoverButtonInput
-                },
-                colorButtonBorderButtonInput: {
-                    redButtonBorderButtonInput: colorRedButtonBorderButtonInput,
-                    greenButtonBorderButtonInput: colorGreenButtonBorderButtonInput,
-                    blueButtonBorderButtonInput: colorBlueButtonBorderButtonInput
-                },
-                colorFontColorInputButtonInput: {
-                    redFontColorInputButtonInput: colorRedFontColorInput,
-                    greenFontColorInputButtonInput: colorGreenFontColorInput,
-                    blueFontColorInputButtonInput: colorBlueFontColorInput
-                }
+                InputBorderColor: InputBorderColor,
+                InputFontColor: InputFontColor,
+                ButtonBorderColor: ButtonBorderColor,
+                ButtonFontColor: ButtonFontColor,
+                OnhoverButtonColor: OnhoverButtonColor,
+                FontForButtonInput: FontForButtonInput,
+                TransparencyButtonInput: TransparencyButtonInput,
             }
         };
 
@@ -7676,322 +6891,119 @@ document.getElementById("save-button-button-input").addEventListener("click", as
 });
 
 async function loadButtonInputSettings() {
-            const topicId = "0.0.9798047";
-            const accountObjectSettings = []; // Initialize an empty array to store account Settings
-            try {
-                const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
-                // Check if result exists and has messages
-                if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
-                    return accountObjectSettings; // Return empty array if no messages
-                }
+  const topicId = "0.0.9798047";
+  const accountObjectSettings = []; // Initialize an empty array to store account Settings
+  try {
+      const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+      // Check if result exists and has messages
+      if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
+          return accountObjectSettings; // Return empty array if no messages
+      }
 
-                // Filter messages to find those from the current user
-                const userMessages = result.messages.filter(message => message.payer === globalAccountId);
+      // Filter messages to find those from the current user
+      const userMessages = result.messages.filter(message => message.payer === globalAccountId);
 
-                // Get the last message from the filtered user messages
-                const lastMessage = userMessages[userMessages.length - 1];
+      // Get the last message from the filtered user messages
+      const lastMessage = userMessages[userMessages.length - 1];
 
-                // Check if the last message has valid data
-                if (lastMessage && lastMessage.data) {
-                    // Extract relevant data and clamp to max 255
-                    const { colorBorderButtonInput, fontForButtonInput, transparencyButtonInput,
-                       colorFontColorButtonInput, colorOnhoverButtonInput, colorButtonBorderButtonInput, colorFontColorInputButtonInput } = lastMessage.data;
+      // Check if the last message has valid data
+      if (lastMessage && lastMessage.data) {
+          // Extract relevant data and clamp to max 255
+          const { InputBorderColor, InputFontColor, ButtonBorderColor, ButtonFontColor, OnhoverButtonColor, FontForButtonInput, TransparencyButtonInput } = lastMessage.data;
 
-                    const clampedColorBorderButtonInput = {
-                        redBorderButtonInput: Math.min(parseInt(colorBorderButtonInput.redBorderButtonInput) || 0, 255),
-                        greenBorderButtonInput: Math.min(parseInt(colorBorderButtonInput.greenBorderButtonInput) || 0, 255),
-                        blueBorderButtonInput: Math.min(parseInt(colorBorderButtonInput.blueBorderButtonInput) || 0, 255)
-                    };
-                    const clampedFontForButtonInput = Math.min(parseInt(fontForButtonInput) || 1.5, 10);
-                    const clampedTransparencyButtonInput = Math.min(parseInt(transparencyButtonInput) || 0.5, 1);
-
-
-                    const clampedColorFontColorButtonInput = {
-                        redFontColorButtonInput: Math.min(parseInt(colorFontColorButtonInput.redFontColorButtonInput) || 0, 255),
-                        greenFontColorButtonInput: Math.min(parseInt(colorFontColorButtonInput.greenFontColorButtonInput) || 0, 255),
-                        blueFontColorButtonInput: Math.min(parseInt(colorFontColorButtonInput.blueFontColorButtonInput) || 0, 255)
-                    };
-
-                    const clampedColorOnhoverButtonInput = {
-                        redOnhoverButtonInput: Math.min(parseInt(colorOnhoverButtonInput.redOnhoverButtonInput) || 0, 255),
-                        greenOnhoverButtonInput: Math.min(parseInt(colorOnhoverButtonInput.greenOnhoverButtonInput) || 0, 255),
-                        blueOnhoverButtonInput: Math.min(parseInt(colorOnhoverButtonInput.blueOnhoverButtonInput) || 0, 255)
-                    };
-
-                    const clampedColorButtonBorderButtonInput = {
-                        redButtonBorderButtonInput: Math.min(parseInt(colorButtonBorderButtonInput.redButtonBorderButtonInput) || 0, 255),
-                        greenButtonBorderButtonInput: Math.min(parseInt(colorButtonBorderButtonInput.greenButtonBorderButtonInput) || 0, 255),
-                        blueButtonBorderButtonInput: Math.min(parseInt(colorButtonBorderButtonInput.blueButtonBorderButtonInput) || 0, 255)
-                    };
-
-                    const clampedColorFontColorInputButtonInput = {
-                        redFontColorInputButtonInput: Math.min(parseInt(colorFontColorInputButtonInput.redFontColorInputButtonInput) || 0, 255),
-                        greenFontColorInputButtonInput: Math.min(parseInt(colorFontColorInputButtonInput.greenFontColorInputButtonInput) || 0, 255),
-                        blueFontColorInputButtonInput: Math.min(parseInt(colorFontColorInputButtonInput.blueFontColorInputButtonInput) || 0, 255)
-                    };
-
-                    accountObjectSettings.push({
-                        colorBorderButtonInput: clampedColorBorderButtonInput,
-                        fontForButtonInput: clampedFontForButtonInput,
-                        transparencyButtonInput: clampedTransparencyButtonInput,
-                        colorFontColorButtonInput: clampedColorFontColorButtonInput,
-                        colorOnhoverButtonInput: clampedColorOnhoverButtonInput,
-                        colorButtonBorderButtonInput: clampedColorButtonBorderButtonInput,
-                        colorFontColorInputButtonInput: clampedColorFontColorInputButtonInput
-                    });
-
-                    document.getElementById("color-red-border-button-input").value = clampedColorBorderButtonInput.redBorderButtonInput;
-                    document.getElementById("color-green-border-button-input").value = clampedColorBorderButtonInput.greenBorderButtonInput;
-                    document.getElementById("color-blue-border-button-input").value = clampedColorBorderButtonInput.blueBorderButtonInput;
-                    document.getElementById("font-for-button-input").value = clampedFontForButtonInput;
-                    document.getElementById("color-red-transparency-button-input").value = clampedTransparencyButtonInput;
-                    document.getElementById("color-red-font-color-button-input").value = clampedColorFontColorButtonInput.redFontColorButtonInput;
-                    document.getElementById("color-green-font-color-button-input").value = clampedColorFontColorButtonInput.greenFontColorButtonInput;
-                    document.getElementById("color-blue-font-color-button-input").value = clampedColorFontColorButtonInput.blueFontColorButtonInput;
-                    document.getElementById("color-red-onhover-button-input").value = clampedColorOnhoverButtonInput.redOnhoverButtonInput;
-                    document.getElementById("color-green-onhover-button-input").value = clampedColorOnhoverButtonInput.greenOnhoverButtonInput;
-                    document.getElementById("color-blue-onhover-button-input").value = clampedColorOnhoverButtonInput.blueOnhoverButtonInput;
-                    document.getElementById("color-red-button-border-button-input").value = clampedColorButtonBorderButtonInput.redButtonBorderButtonInput;
-                    document.getElementById("color-green-button-border-button-input").value = clampedColorButtonBorderButtonInput.greenButtonBorderButtonInput;
-                    document.getElementById("color-blue-button-border-button-input").value = clampedColorButtonBorderButtonInput.blueButtonBorderButtonInput;
-                    document.getElementById("color-red-font-color-input-button-input").value = clampedColorFontColorInputButtonInput.redFontColorInputButtonInput;
-                    document.getElementById("color-green-font-color-input-button-input").value = clampedColorFontColorInputButtonInput.greenFontColorInputButtonInput;
-                    document.getElementById("color-blue-font-color-input-button-input").value = clampedColorFontColorInputButtonInput.blueFontColorInputButtonInput;
-                    updateButtonInputSettings();
-                }
-
-                return accountObjectSettings;
-
-            } catch (error) {
-                console.log("Error in loadButtonInputSettings:", error);
-                return [];
-            }
-            }
-
-            function updateButtonInputSettings() {
-                const colorRedBorderButtonInput = document.getElementById("color-red-border-button-input").value;
-                const colorGreenBorderButtonInput = document.getElementById("color-green-border-button-input").value;
-                const colorBlueBorderButtonInput = document.getElementById("color-blue-border-button-input").value;
-                const fontForButtonInput = document.getElementById("font-for-button-input").value;
-                let transparencyButtonInput = document.getElementById("color-red-transparency-button-input").value;
-                transparencyButtonInput = Math.max(parseFloat(transparencyButtonInput), 0.5);
-                const colorRedFontColorButtonInput = document.getElementById("color-red-font-color-button-input").value;
-                const colorGreenFontColorButtonInput = document.getElementById("color-green-font-color-button-input").value;
-                const colorBlueFontColorButtonInput = document.getElementById("color-blue-font-color-button-input").value;
-                const colorRedOnhoverButtonInput = document.getElementById("color-red-onhover-button-input").value;
-                const colorGreenOnhoverButtonInput = document.getElementById("color-green-onhover-button-input").value;
-                const colorBlueOnhoverButtonInput = document.getElementById("color-blue-onhover-button-input").value;
-                const colorRedButtonBorderButtonInput = document.getElementById("color-red-button-border-button-input").value;
-                const colorGreenButtonBorderButtonInput = document.getElementById("color-green-button-border-button-input").value;
-                const colorBlueButtonBorderButtonInput = document.getElementById("color-blue-button-border-button-input").value;
-                const colorRedFontColorInputButtonInput = document.getElementById("color-red-font-color-input-button-input").value;
-                const colorGreenFontColorInputButtonInput = document.getElementById("color-green-font-color-input-button-input").value;
-                const colorBlueFontColorInputButtonInput = document.getElementById("color-blue-font-color-input-button-input").value;
-
-                const inputFontColor = `rgb(${colorRedFontColorInputButtonInput}, ${colorGreenFontColorInputButtonInput}, ${colorBlueFontColorInputButtonInput})`;
-                const colorForInputBorder = `rgb(${colorRedBorderButtonInput}, ${colorGreenBorderButtonInput}, ${colorBlueBorderButtonInput})`;
-                const fontsizewithunits = `${fontForButtonInput}vh`;
-                const colorForButtonFont = `rgb(${colorRedFontColorButtonInput}, ${colorGreenFontColorButtonInput}, ${colorBlueFontColorButtonInput})`;
-                const colorOnhoverButton = `rgb(${colorRedOnhoverButtonInput}, ${colorGreenOnhoverButtonInput}, ${colorBlueOnhoverButtonInput})`;
-                const colorForButtonBorder = `rgb(${colorRedButtonBorderButtonInput}, ${colorGreenButtonBorderButtonInput}, ${colorBlueButtonBorderButtonInput})`;
-
-                const inputButtons = document.querySelectorAll('.toolbar-column, .yourfov');
-                inputButtons.forEach(button => {
-                    button.style.borderColor = colorForInputBorder;
-                    button.style.opacity = transparencyButtonInput;
-                    button.style.fontSize = fontsizewithunits;
-                    button.style.color = inputFontColor;
-                });
-
-                const ButtonInputButtons = document.querySelectorAll('.toolbar-column-btns');
-                ButtonInputButtons.forEach(button => {
-                    button.style.borderColor = colorForButtonBorder;
-                    button.style.opacity = transparencyButtonInput;
-                    button.style.fontSize = fontsizewithunits;
-                    button.style.color = colorForButtonFont;
-                    button.addEventListener('mouseover', () => {
-                        button.style.backgroundColor = colorOnhoverButton;
-                    });
-                    button.addEventListener('mouseout', () => {
-                        button.style.backgroundColor = 'transparent';
-                        button.style.color = colorForButtonFont;
-                    });
-                });
+          accountObjectSettings.push({
+              InputBorderColor,
+              InputFontColor,
+              ButtonBorderColor,
+              ButtonFontColor,
+              OnhoverButtonColor,
+              FontForButtonInput,
+              TransparencyButtonInput,
+          });
 
 
-            }
+          document.getElementById("input-border-color").value = InputBorderColor;
+          document.getElementById("input-font-color").value = InputFontColor;
+          document.getElementById("button-border-color").value = ButtonBorderColor;
+          document.getElementById("button-font-color").value = ButtonFontColor;
+          document.getElementById("onhover-button-color").value = OnhoverButtonColor;
+          document.getElementById("font-for-button-input").value = FontForButtonInput;
+          document.getElementById("transparency-button-input").value = TransparencyButtonInput;
+          updateButtonInputSettings();
+      }
 
-            const everythingInsdieButtonInput = [
-              document.getElementById("color-red-border-button-input"),
-              document.getElementById("color-green-border-button-input"),
-              document.getElementById("color-blue-border-button-input"),
-              document.getElementById("color-red-transparency-button-input"),
-              document.getElementById("color-red-font-color-button-input"),
-              document.getElementById("color-green-font-color-button-input"),
-              document.getElementById("color-blue-font-color-button-input"),
-              document.getElementById("color-red-font-color-input-button-input"),
-              document.getElementById("color-green-font-color-input-button-input"),
-              document.getElementById("color-blue-font-color-input-button-input"),
-              document.getElementById("color-red-onhover-button-input"),
-              document.getElementById("color-green-onhover-button-input"),
-              document.getElementById("color-blue-onhover-button-input"),
-              document.getElementById("color-red-button-border-button-input"),
-              document.getElementById("color-green-button-border-button-input"),
-              document.getElementById("color-blue-button-border-button-input"),
-              document.getElementById("font-for-button-input"),
-            ]
+      return accountObjectSettings;
 
-            everythingInsdieButtonInput.forEach(element => {
-              element.addEventListener("input", (event) => {updateButtonInputSettings();});
-            });
+  } catch (error) {
+      console.log("Error in loadButtonInputSettings:", error);
+      return [];
+  }
+  }
 
+  function updateButtonInputSettings() {
+      const inputFontColor = document.getElementById("input-font-color").value;
+      const inputBorderColor = document.getElementById("input-border-color").value;
+      const buttonFontColor = document.getElementById("button-font-color").value;
+      const onhoverButtonColor = document.getElementById("onhover-button-color").value;
+      const buttonBorderColor = document.getElementById("button-border-color").value;
+      const fontForButtonInput = Math.min(parseInt(document.getElementById("font-for-button-input").value) || 1.5, 10);
+      const transparencyButtonInput = Math.min(parseInt(document.getElementById("transparency-button-input").value) || 0.5, 1);
 
-document.getElementById("save-container-settings").addEventListener("click", async (event) => {
-    event.stopPropagation();
-    
-    try {
-        const topicId = "0.0.9798047";
+      const inputButtons = document.querySelectorAll('.toolbar-column, .yourfov');
+      inputButtons.forEach(button => {
+          button.style.borderColor = inputBorderColor;
+          button.style.opacity = transparencyButtonInput;
+          button.style.fontSize = fontForButtonInput + "vh" ;
+          button.style.color = inputFontColor;
+      });
 
-        const colorRedBorderContainer = Math.min(parseInt(document.getElementById("color-red-border-container").value) || 0, 255);
-        const colorGreenBorderContainer = Math.min(parseInt(document.getElementById("color-green-border-container").value) || 0, 255);
-        const colorBlueBorderContainer = Math.min(parseInt(document.getElementById("color-blue-border-container").value) || 0, 255);
+      const ButtonInputButtons = document.querySelectorAll('.toolbar-column-btns');
+      ButtonInputButtons.forEach(button => {
+          button.style.borderColor = buttonBorderColor;
+          button.style.opacity = transparencyButtonInput;
+          button.style.fontSize = fontForButtonInput + "vh" ;
+          button.style.color = buttonFontColor;
+          button.addEventListener('mouseover', () => {
+              button.style.backgroundColor = onhoverButtonColor;
+          });
+          button.addEventListener('mouseout', () => {
+              button.style.backgroundColor = 'transparent';
+              button.style.color = buttonFontColor;
+          });
+      });
+  }
 
-        const transparencyContainer = Math.min(parseInt(document.getElementById("color-red-transparency-container").value) || 0.1, 1);
+  const everythingInsdieButtonInput = [
+    document.getElementById("input-border-color"),
+    document.getElementById("input-font-color"),
+    document.getElementById("button-border-color"),
+    document.getElementById("button-font-color"),
+    document.getElementById("onhover-button-color"),
+    document.getElementById("font-for-button-input"),
+    document.getElementById("transparency-button-input"),
+  ]
 
-        const messageData = {
-            data: {
-                colorBorderContainer: {
-                    redBorderContainer: colorRedBorderContainer,
-                    greenBorderContainer: colorGreenBorderContainer,
-                    blueBorderContainer: colorBlueBorderContainer
-                },
-                transparencyContainer: transparencyContainer
-            }
-        };
-
-        const message = JSON.stringify(messageData);
-
-        const receipt = await window.HashinalsWalletConnectSDK.submitMessageToTopic(
-            topicId,
-            message
-        );
-        console.log("Profile settings updated successfully:", receipt);
-
-    } catch (error) {
-        console.error("Error updating settings picture:", error);
-    }
-});
-
-async function loadContainerSettings() {
-    const topicId = "0.0.9798064";
-    const accountObjectSettings = []; // Initialize an empty array to store account Settings
-    try {
-        const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
-        // Check if result exists and has messages
-        if (!result || !Array.isArray(result.messages) || result.messages.length === 0) {
-            return accountObjectSettings; // Return empty array if no messages
-        }
-
-        // Filter messages to find those from the current user
-        const userMessages = result.messages.filter(message => message.payer === globalAccountId);
-
-        // Get the last message from the filtered user messages
-        const lastMessage = userMessages[userMessages.length - 1];
-
-        // Check if the last message has valid data
-        if (lastMessage && lastMessage.data) {
-            // Extract relevant data and clamp to max 255
-            const { colorBorderContainer, colorBackgroundContainer, transparencyContainer } = lastMessage.data;
-
-            const clampedColorBorderContainer = {
-                redBorderContainer: Math.min(parseInt(colorBorderContainer.redBorderContainer) || 0, 255),
-                greenBorderContainer: Math.min(parseInt(colorBorderContainer.greenBorderContainer) || 0, 255),
-                blueBorderContainer: Math.min(parseInt(colorBorderContainer.blueBorderContainer) || 0, 255)
-            };
-            const clampedTransparencyContainer = Math.min(parseInt(transparencyContainer) || 0.1, 1);
-
-            accountObjectSettings.push({
-                colorBorderContainer: clampedColorBorderContainer,
-                transparencyContainer: clampedTransparencyContainer
-            });
-
-            document.getElementById("color-red-border-container").value = clampedColorBorderContainer.redBorderContainer;
-            document.getElementById("color-green-border-container").value = clampedColorBorderContainer.greenBorderContainer;
-            document.getElementById("color-blue-border-container").value = clampedColorBorderContainer.blueBorderContainer;
-            document.getElementById("color-red-transparency-container").value = clampedTransparencyContainer;
-
-            updateContainerSettings();
-          }
-
-return accountObjectSettings;
-
-} catch (error) {
-console.log("Error in loadButtonInputSettings:", error);
-return [];
-}
-}
-
-function updateContainerSettings() {
-  const colorRedBorderContainer = document.getElementById("color-red-border-container").value;
-  const colorGreenBorderContainer = document.getElementById("color-green-border-container").value;
-  const colorBlueBorderContainer = document.getElementById("color-blue-border-container").value;
-  const transparencyContainer = document.getElementById("color-red-transparency-container").value;
-  const colorForBorder = `rgb(${colorRedBorderContainer}, ${colorGreenBorderContainer}, ${colorBlueBorderContainer})`;
-  const containerSettings = document.querySelectorAll('.toolbar-group');
-  containerSettings.forEach(container => {
-    container.style.borderColor = colorForBorder;
-    container.style.opacity = transparencyContainer;
+  everythingInsdieButtonInput.forEach(element => {
+    element.addEventListener("input", (event) => {updateButtonInputSettings();});
   });
-}
 
-document.getElementById("color-red-border-container").addEventListener("input", (event) => {updateContainerSettings();});
-document.getElementById("color-green-border-container").addEventListener("input", (event) => {updateContainerSettings();});
-document.getElementById("color-blue-border-container").addEventListener("input", (event) => {updateContainerSettings();});
-document.getElementById("color-red-transparency-container").addEventListener("input", (event) => {updateContainerSettings();});
 
 document.getElementById("save-topic-chat-settings").addEventListener("click", async (event) => {
     event.stopPropagation();
 
     try {
         const topicId = "0.0.9798064";
-        const colorRedAccidTopicChat = Math.min(parseInt(document.getElementById("color-red-accid-topic-chat").value) || 0, 255);
-        const colorGreenAccidTopicChat = Math.min(parseInt(document.getElementById("color-green-accid-topic-chat").value) || 0, 255);
-        const colorBlueAccidTopicChat = Math.min(parseInt(document.getElementById("color-blue-accid-topic-chat").value) || 0, 255);
-
-        const colorRedUsernameTopicChat = Math.min(parseInt(document.getElementById("color-red-username-topic-chat").value) || 0, 255);
-        const colorGreenUsernameTopicChat = Math.min(parseInt(document.getElementById("color-green-username-topic-chat").value) || 0, 255);
-        const colorBlueUsernameTopicChat = Math.min(parseInt(document.getElementById("color-blue-username-topic-chat").value) || 0, 255);
-
-        const colorRedTextContainerTopicChat = Math.min(parseInt(document.getElementById("color-red-text-container-topic-chat").value) || 0, 255);
-        const colorGreenTextContainerTopicChat = Math.min(parseInt(document.getElementById("color-green-text-container-topic-chat").value) || 0, 255);
-        const colorBlueTextContainerTopicChat = Math.min(parseInt(document.getElementById("color-blue-text-container-topic-chat").value) || 0, 255);
-
-        const colorRedTextTopicChat = Math.min(parseInt(document.getElementById("color-red-text-topic-chat").value) || 0, 255);
-        const colorGreenTextTopicChat = Math.min(parseInt(document.getElementById("color-green-text-topic-chat").value) || 0, 255);
-        const colorBlueTextTopicChat = Math.min(parseInt(document.getElementById("color-blue-text-topic-chat").value) || 0, 255);
+        const accidTopicChatColor = document.getElementById("accid-topic-chat-color").value;
+        const usernameTopicChatColor = document.getElementById("username-topic-chat-color").value;
+        const textTopicChatColor = document.getElementById("text-topic-chat-color").value;
+        const textContainerTopicChatColor = document.getElementById("text-container-topic-chat-color").value;
 
         const messageData = {
             data: {
-                colorAccidTopicChat: {
-                    redAccidTopicChat: colorRedAccidTopicChat,
-                    greenAccidTopicChat: colorGreenAccidTopicChat,
-                    blueAccidTopicChat: colorBlueAccidTopicChat
-                },
-                colorUsernameTopicChat: {
-                    redUsernameTopicChat: colorRedUsernameTopicChat,
-                    greenUsernameTopicChat: colorGreenUsernameTopicChat,
-                    blueUsernameTopicChat: colorBlueUsernameTopicChat
-                },
-                colorTextContainerTopicChat: {
-                    redTextContainerTopicChat: colorRedTextContainerTopicChat,
-                    greenTextContainerTopicChat: colorGreenTextContainerTopicChat,
-                    blueTextContainerTopicChat: colorBlueTextContainerTopicChat
-                },
-                colorTextTopicChat: {
-                    redTextTopicChat: colorRedTextTopicChat,
-                    greenTextTopicChat: colorGreenTextTopicChat,
-                    blueTextTopicChat: colorBlueTextTopicChat
-                }
+                accidTopicChatColor: accidTopicChatColor,
+                usernameTopicChatColor: usernameTopicChatColor,
+                textTopicChatColor: textTopicChatColor,
+                textContainerTopicChatColor: textContainerTopicChatColor,
             }
         };
 
@@ -8029,49 +7041,20 @@ async function loadTopicChatSettings() {
         // Check if the last message has valid data
         if (lastMessage && lastMessage.data) {
             // Extract relevant data and clamp to max 255
-            const { colorAccidTopicChat, colorUsernameTopicChat, colorTextContainerTopicChat, colorTextTopicChat } = lastMessage.data;
+            const { accidTopicChatColor, usernameTopicChatColor, textTopicChatColor, textContainerTopicChatColor } = lastMessage.data;
 
-            const clampedColorAccidTopicChat = {
-                redAccidTopicChat: Math.min(parseInt(colorAccidTopicChat.redAccidTopicChat) || 0, 255),
-                greenAccidTopicChat: Math.min(parseInt(colorAccidTopicChat.greenAccidTopicChat) || 0, 255),
-                blueAccidTopicChat: Math.min(parseInt(colorAccidTopicChat.blueAccidTopicChat) || 0, 255)
-            };
-            const clampedColorUsernameTopicChat = {
-                redUsernameTopicChat: Math.min(parseInt(colorUsernameTopicChat.redUsernameTopicChat) || 0, 255),
-                greenUsernameTopicChat: Math.min(parseInt(colorUsernameTopicChat.greenUsernameTopicChat) || 0, 255),
-                blueUsernameTopicChat: Math.min(parseInt(colorUsernameTopicChat.blueUsernameTopicChat) || 0, 255)
-            };
-
-            const clampedColorTextContainerTopicChat = {
-                redTextContainerTopicChat: Math.min(parseInt(colorTextContainerTopicChat.redTextContainerTopicChat) || 0, 255),
-                greenTextContainerTopicChat: Math.min(parseInt(colorTextContainerTopicChat.greenTextContainerTopicChat) || 0, 255),
-                blueTextContainerTopicChat: Math.min(parseInt(colorTextContainerTopicChat.blueTextContainerTopicChat) || 0, 255)
-            };
-            const clampedColorTextTopicChat = {
-                redTextTopicChat: Math.min(parseInt(colorTextTopicChat.redTextTopicChat) || 0, 255),
-                greenTextTopicChat: Math.min(parseInt(colorTextTopicChat.greenTextTopicChat) || 0, 255),
-                blueTextTopicChat: Math.min(parseInt(colorTextTopicChat.blueTextTopicChat) || 0, 255)
-            };
 
             accountObjectSettings.push({
-                colorAccidTopicChat: clampedColorAccidTopicChat,
-                colorUsernameTopicChat: clampedColorUsernameTopicChat,
-                colorTextContainerTopicChat: clampedColorTextContainerTopicChat,
-                colorTextTopicChat: clampedColorTextTopicChat
+                accidTopicChatColor: accidTopicChatColor,
+                usernameTopicChatColor: usernameTopicChatColor,
+                textTopicChatColor: textTopicChatColor,
+                textContainerTopicChatColor: textContainerTopicChatColor,
             });
 
-            document.getElementById("color-red-accid-topic-chat").value = clampedColorAccidTopicChat.redAccidTopicChat;
-            document.getElementById("color-green-accid-topic-chat").value = clampedColorAccidTopicChat.greenAccidTopicChat;
-            document.getElementById("color-blue-accid-topic-chat").value = clampedColorAccidTopicChat.blueAccidTopicChat;
-            document.getElementById("color-red-username-topic-chat").value = clampedColorUsernameTopicChat.redUsernameTopicChat;
-            document.getElementById("color-green-username-topic-chat").value = clampedColorUsernameTopicChat.greenUsernameTopicChat;
-            document.getElementById("color-blue-username-topic-chat").value = clampedColorUsernameTopicChat.blueUsernameTopicChat;
-            document.getElementById("color-red-text-container-topic-chat").value = clampedColorTextContainerTopicChat.redTextContainerTopicChat;
-            document.getElementById("color-green-text-container-topic-chat").value = clampedColorTextContainerTopicChat.greenTextContainerTopicChat;
-            document.getElementById("color-blue-text-container-topic-chat").value = clampedColorTextContainerTopicChat.blueTextContainerTopicChat;
-            document.getElementById("color-red-text-topic-chat").value = clampedColorTextTopicChat.redTextTopicChat;
-            document.getElementById("color-green-text-topic-chat").value = clampedColorTextTopicChat.greenTextTopicChat;
-            document.getElementById("color-blue-text-topic-chat").value = clampedColorTextTopicChat.blueTextTopicChat;
+            document.getElementById("accid-topic-chat-color").value = accidTopicChatColor;
+            document.getElementById("username-topic-chat-color").value = usernameTopicChatColor;
+            document.getElementById("text-topic-chat-color").value = textTopicChatColor;
+            document.getElementById("text-container-topic-chat-color").value = textContainerTopicChatColor;
 
             updateTopicChatSettings();
         }
@@ -8085,49 +7068,29 @@ async function loadTopicChatSettings() {
     }
 
     function updateTopicChatSettings() {
-    const colorRedAccidTopicChat = document.getElementById("color-red-accid-topic-chat").value;
-    const colorGreenAccidTopicChat = document.getElementById("color-green-accid-topic-chat").value;
-    const colorBlueAccidTopicChat = document.getElementById("color-blue-accid-topic-chat").value;
-    const colorRedUsernameTopicChat = document.getElementById("color-red-username-topic-chat").value;
-    const colorGreenUsernameTopicChat = document.getElementById("color-green-username-topic-chat").value;
-    const colorBlueUsernameTopicChat = document.getElementById("color-blue-username-topic-chat").value;
-    const colorRedTextContainerTopicChat = document.getElementById("color-red-text-container-topic-chat").value;
-    const colorGreenTextContainerTopicChat = document.getElementById("color-green-text-container-topic-chat").value;
-    const colorBlueTextContainerTopicChat = document.getElementById("color-blue-text-container-topic-chat").value;
-    const colorRedTextTopicChat = document.getElementById("color-red-text-topic-chat").value;
-    const colorGreenTextTopicChat = document.getElementById("color-green-text-topic-chat").value;
-    const colorBlueTextTopicChat = document.getElementById("color-blue-text-topic-chat").value;
+    const newAccidTopicChatColor = document.getElementById("accid-topic-chat-color").value;
+    const newUsernameTopicChatColor = document.getElementById("username-topic-chat-color").value;
+    const newTextTopicChatColor = document.getElementById("text-topic-chat-color").value;
+    const newTextContainerTopicChatColor = document.getElementById("text-container-topic-chat-color").value;
 
-    // Update global variables
-    colorForAccidTopicChat = `rgb(${colorRedAccidTopicChat}, ${colorGreenAccidTopicChat}, ${colorBlueAccidTopicChat})`;
-    colorForUsernameTopicChat = `rgb(${colorRedUsernameTopicChat}, ${colorGreenUsernameTopicChat}, ${colorBlueUsernameTopicChat})`;
-    colorForTextTopicChat = `rgb(${colorRedTextTopicChat}, ${colorGreenTextTopicChat}, ${colorBlueTextTopicChat})`;
-
-    const colorForTextContainerTopicChat = `rgb(${colorRedTextContainerTopicChat}, ${colorGreenTextContainerTopicChat}, ${colorBlueTextContainerTopicChat})`;
+    accidTopicChatColor = newAccidTopicChatColor;
+    usernameTopicChatColor = newUsernameTopicChatColor;
+    textTopicChatColor = newTextTopicChatColor;
+    textContainerTopicChatColor = newTextContainerTopicChatColor;
 
     const topicChatSettings = document.querySelectorAll('.chat-container');
     topicChatSettings.forEach(topicChat => {
-        topicChat.style.borderColor = colorForTextContainerTopicChat;
+        topicChat.style.borderColor = textContainerTopicChatColor;
     });
 
-    return { colorForAccidTopicChat, colorForUsernameTopicChat, colorForTextTopicChat };
+    return { accidTopicChatColor, usernameTopicChatColor, textTopicChatColor };
+
 }
 
-    document.getElementById("color-red-accid-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-green-accid-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-blue-accid-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-red-username-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-green-username-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-blue-username-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-red-text-container-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-green-text-container-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-blue-text-container-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-red-text-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-green-text-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-    document.getElementById("color-blue-text-topic-chat").addEventListener("input", (event) => {updateTopicChatSettings();});
-
-
-
+document.getElementById("accid-topic-chat-color").addEventListener("input", (event) => {updateTopicChatSettings();});
+document.getElementById("username-topic-chat-color").addEventListener("input", (event) => {updateTopicChatSettings();});
+document.getElementById("text-topic-chat-color").addEventListener("input", (event) => {updateTopicChatSettings();});
+document.getElementById("text-container-topic-chat-color").addEventListener("input", (event) => {updateTopicChatSettings();});
 
 
 async function loadUfoModel(modelUrl) {
@@ -9132,16 +8095,18 @@ document.getElementById("update-loop").addEventListener("click", () => {
 
 document.getElementById("toggle-updates").addEventListener("click", () => {
   const updatesValue = document.getElementById("updates-value");
+  const updatesValue2 = document.getElementById("updates-value2");
   const visibilityValue = document.getElementById("3d-model-visibility-value");
   const toggle3DModelButton = document.getElementById("toggle-3d-model-visibility");
 
   if (updatesValue.textContent === "On") {
     stopUpdateMapLayerLoop(); // Stop the update loop
     updatesValue.textContent = "Off";
+    updatesValue2.textContent = "Off";
   } else {
     startUpdateMapLayerLoop(); // Start the update loop
     updatesValue.textContent = "On";
-
+    updatesValue2.textContent = "On";
     // Ensure 3D models are visible
     if (visibilityValue.textContent === "Off") {
       toggle3DModelButton.click(); // Simulate a click to turn on 3D models
@@ -9173,12 +8138,14 @@ document.getElementById("update-map-layer-btn").addEventListener("click", async 
 document.getElementById("toggle-3d-model-visibility").addEventListener("click", async function() {
     const button = this;
     const visibilityValue = document.getElementById("3d-model-visibility-value");
+    const visibilityValue2 = document.getElementById("3d-model-visibility-value2");
     const updatesValue = document.getElementById("updates-value");
 
     if (visibilityValue.textContent === "Off") {
         await updateMapLayer(); // Show 3D models
         startUpdateMapLayerLoop(); // Start the update loop
         visibilityValue.textContent = "On";
+        visibilityValue2.textContent = "On";
         button.textContent = "Hide 3D models";
         updatesValue.textContent = "On"; // Ensure updates are "On"
     } else {
@@ -9187,6 +8154,7 @@ document.getElementById("toggle-3d-model-visibility").addEventListener("click", 
         }
         stopUpdateMapLayerLoop(); // Stop the update loop
         visibilityValue.textContent = "Off";
+        visibilityValue2.textContent = "Off";
         button.textContent = "Show 3D models";
         updatesValue.textContent = "Off"; // Turn updates "Off" when 3D models are hidden
     }
