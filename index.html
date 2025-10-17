@@ -6622,7 +6622,7 @@ document.getElementById('color-picker-popup-number').addEventListener('input', (
 
 function updatePopupClose() {
   const color = document.getElementById('color-picker-popup-close').value;
-  const popupCloses = document.querySelectorAll('.maplibregl-popup .close-button');
+  const popupCloses = document.querySelectorAll('.maplibregl-popup-close-button');
   popupCloses.forEach(close => {
     close.style.color = color;
   });
