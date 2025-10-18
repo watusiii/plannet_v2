@@ -62,6 +62,8 @@
 
 <script data-src="hcs://1/0.0.10034692" data-script-id="HeliaBlockBrokers"></script>
 
+<script data-src="hcs://1/0.0.10040862" data-script-id="sodium"></script>
+
 <style>
 
 html, body {
@@ -862,6 +864,9 @@ button[type="submit"],
 <button id="toggle-toolbar-btn" class="menu_buttons" style="top: 20vh;">TOOLBAR
 </button>
 
+<button id="toggle-encrypted-chat-btn" class="menu_buttons" style="top: 24.5vh;">E2ECHAT
+</button>
+
 <div id="toolbar" class="toolbar" style="display: none; flex-direction: column;">
   <div class="toolbar-column" id="Edit_Profile">Edit
   </div>
@@ -888,7 +893,7 @@ button[type="submit"],
 <div id="Edit_Profile-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
   <div id="Edit_Profile-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
-    <textarea type="text" id="toolbar-input" placeholder="URL/name/domain"
+    <textarea type="text" id="toolbar-input" placeholder="URL/Name/Domain"
     class="toolbar-column" onclick="event.stopPropagation();"
     oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
@@ -914,11 +919,11 @@ button[type="submit"],
       </button>
     </div>
 
-    <textarea type="text" id="domain-time-left" placeholder="Domain time left"
+    <textarea type="text" id="domain-time-left" placeholder="Domain Time Left"
     class="toolbar-column" onclick="event.stopPropagation();" readonly>
     </textarea>
 
-    <button class="toolbar-column-btns" id="button4">Check domain availability
+    <button class="toolbar-column-btns" id="button4">Check Domain Availability
     </button>
 
     <label for="domain-time-left" style="font-size: 2vh;">1 USDC
@@ -1049,22 +1054,16 @@ button[type="submit"],
       <button id="submit-button-Create_New_Topic" class="toolbar-column-btns" style="display: block;">Create
       </button>
     </div>
-    <!--
-    <div class="toolbar-group">
-      <label for="public-key-label"style="font-size: 2vh; padding: 0px;">Public Key:</label>
+
+      <label for="public-key-label"style="font-size: 2vh; padding: 0px;">Public Key:
+      </label>
       <textarea
       class="toolbar-column"
       id="generated-public-key"
       placeholder="Generated Public Key"
-      style="
-      background-color: transparent;
-      overflow: hidden; /* Hide scrollbars */
-      resize: none; /* Prevent manual resizing */
-    "
       readonly
       onclick="event.stopPropagation();"
     ></textarea>
-    -->
 
     <label for="private-key-label"style="font-size: 2vh; padding: 0px;">Private Key:
     </label>
@@ -1406,27 +1405,43 @@ button[type="submit"],
 <div id="topic-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh;">
   <div class="chat-topic-chat-container"  onclick="event.stopPropagation();">
 
-    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
+    <div style="display: flex; align-items: center;">
+
       <textarea class="toolbar-column" type="text" id="topic-chat-topic-id" placeholder="Domain/Topic ID"
       onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
       ></textarea>
-      <button id="load-msgs-from" class="toolbar-column-btns" style="margin-left: 1vw;">Use
-      </button>
+
+      <div style="display: flex; align-items: center;">
+        <button id="load-msgs-from" class="toolbar-column-btns" style="margin-left: 1vw; width: 20vw;">Load
+        </button>
+        <button id="show-options-from-topic-chat" class="toolbar-column-btns" style="margin-left: 1vw; width: 20vw;">Options
+        </button>
+        <button id="show-options-from-topic-chat-btn" display: none; class="toolbar-column-btns" style="margin-left: 1vw; width: 20vw;">Hide
+        </button>
+      </div>
     </div>
 
-    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <input type="number" id="from-mmddyyyy" class="toolbar-column" step="1" placeholder="MMDDYYYY" />
-      <input type="number" id="to-mmddyyyy" class="toolbar-column" step="1" placeholder="MMDDYYYY" style="margin-left: 1vw;" />
-      <button id="topic-msgs-filter" class="toolbar-column-btns" style="width: 50vw; margin-left: 1vw;">Filter
-      </button>
-    </div>
+  <div id="options-from-topic-chat" style="display: none;">
 
-    <div style="display: flex; align-items: center; margin-bottom: 1vh;">
-      <input type="number" id="from-hhmmss" class="toolbar-column" step="1" placeholder="HHMMSS" />
-      <input type="number" id="to-hhmmss" class="toolbar-column" step="1" placeholder="HHMMSS" style="margin-left: 1vw;" />
-      <button id="topic-msgs-filter-time" class="toolbar-column-btns" style="width: 50vw; margin-left: 1vw;">Filter
-      </button>
-    </div>
+    <label for="from-mmddyyyy-encrypted-chat" style="font-size: 2vh; padding-bottom: 0.5vh;">Month Day Year:
+      <div style="display: flex; align-items: center;">
+        <input type="number" id="from-mmddyyyy" class="toolbar-column" step="1" placeholder="MMDDYYYY" />
+        <input type="number" id="to-mmddyyyy" class="toolbar-column" step="1" placeholder="MMDDYYYY" style="margin-left: 1vw;" />
+        <button id="topic-msgs-filter" class="toolbar-column-btns" style="width: 50vw; margin-left: 1vw;">Filter
+        </button>
+      </div>
+    </label>
+
+    <label for="from-mmddyyyy-encrypted-chat" style="font-size: 2vh; padding-bottom: 0.5vh;">Hour Minute Second:
+      <div style="display: flex; align-items: center;">
+        <input type="number" id="from-hhmmss" class="toolbar-column" step="1" placeholder="HHMMSS" />
+        <input type="number" id="to-hhmmss" class="toolbar-column" step="1" placeholder="HHMMSS" style="margin-left: 1vw;" />
+        <button id="topic-msgs-filter-time" class="toolbar-column-btns" style="width: 50vw; margin-left: 1vw;">Filter
+        </button>
+      </div>
+    </label>
+
+  </div>
 
     <div class="chat-container" id="messages-from-topic-chat" onclick="event.stopPropagation();">
       <textarea
@@ -1451,7 +1466,6 @@ button[type="submit"],
       style="
       max-height: 50vh;
       overflow: auto;
-      margin-top: 2vh;
       "
       onclick="event.stopPropagation();"
       oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter').textContent = this.value.length + '/256';"
@@ -1461,7 +1475,7 @@ button[type="submit"],
       </div>
     </div>
 
-    <div style="display: flex; align-items: center; margin-top: 1.5vh;">
+    <div style="display: flex; align-items: center;">
       <button id="go-to-top-msgs" class="toolbar-column-btns">Go to the top
       </button>
       <button id="post-msg" class="toolbar-column-btns" style="margin-left: 1vw ">Submit Message
@@ -1472,20 +1486,120 @@ button[type="submit"],
 </div>
 
 
+<div id="encrypted-chat-container" class="topic-chat-container" style="display: none; position: absolute; z-index: 1002; top: 10vh;">
+  <div class="chat-encrypted-chat-container"  onclick="event.stopPropagation();">
+
+    <textarea class="toolbar-column" type="text" id="encrypted-chat-private-key" placeholder="Private Key"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+
+    <div style="display: flex; align-items: center;">
+
+      <textarea class="toolbar-column" type="text" id="encrypted-chat-topic-id" placeholder="Domain/Topic ID"
+      onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+
+      <div style="display: flex; align-items: center;">
+        <button id="load-msgs-from-encrypted-chat" class="toolbar-column-btns" style="margin-left: 1vw; width: 20vw;">Load
+        </button>
+        <button id="show-options-from-encrypted-chat" class="toolbar-column-btns" style="margin-left: 1vw; width: 20vw;">Options
+        </button>
+        <button id="show-options-from-encrypted-chat-btn" display: none; class="toolbar-column-btns" style="margin-left: 1vw; width: 20vw;">Hide
+        </button>
+     </div> 
+    </div>
+
+    <div id="options-from-encrypted-chat" style="display: none;">
+
+  <label for="from-mmddyyyy-encrypted-chat" style="font-size: 2vh; padding-bottom: 0.5vh;">Month Day Year:
+    <div style="display: flex; align-items: center;">
+      <input type="number" id="from-mmddyyyy-encrypted-chat" class="toolbar-column" step="1" placeholder="MMDDYYYY" />
+      <input type="number" id="to-mmddyyyy-encrypted-chat" class="toolbar-column" step="1" placeholder="MMDDYYYY" style="margin-left: 1vw;" />
+      <button id="topic-msgs-filter-encrypted-chat" class="toolbar-column-btns" style="width: 50vw; margin-left: 1vw;">Filter
+      </button>
+    </div>
+  </label>
+
+  <label for="from-mmddyyyy-encrypted-chat" style="font-size: 2vh; padding-bottom: 0.5vh;">Hour Minute Second:
+    <div style="display: flex; align-items: center;">
+      <input type="number" id="from-hhmmss-encrypted-chat" class="toolbar-column" step="1" placeholder="HHMMSS" />
+      <input type="number" id="to-hhmmss-encrypted-chat" class="toolbar-column" step="1" placeholder="HHMMSS" style="margin-left: 1vw;" />
+      <button id="topic-msgs-filter-time-encrypted-chat" class="toolbar-column-btns" style="width: 50vw; margin-left: 1vw;">Filter
+      </button>
+    </div>
+  </label>
+
+    <textarea class="toolbar-column" style="text-align: center; padding-top: 2vh;" type="text" id="load-msgs-from-ids-encrypted-chat" 
+    placeholder="User ID or IDs separated by comma"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+
+    <button id="load-msgs-from-ids-encrypted-chat-button" class="toolbar-column-btns">^ Load Messages From ^
+    </button>
+
+  </div>
+
+    <div class="chat-container" id="messages-from-encrypted-chat" onclick="event.stopPropagation();">
+      <textarea
+      style="
+      width: 100%;
+      height: 100px;
+      resize: none; /* Prevent manual resizing */
+      overflow: auto; /* Enable scrolling */
+      background-color: transparent;
+      border: none;
+      "
+      onfocus="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+    </div>
+
+    <textarea class="toolbar-column" type="text" id="encrypted-chat-public-key" placeholder="Public Key"
+    onclick="event.stopPropagation();" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
+    ></textarea>
+    
+    <div style="position: relative;">
+      <textarea
+      class="toolbar-column"
+      type="text"
+      id="user-write-message-encrypted-chat"
+      placeholder="Write a message (max 256 characters)"
+      style="
+      max-height: 50vh;
+      overflow: auto;
+      "
+      onclick="event.stopPropagation();"
+      oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter').textContent = this.value.length + '/256';"
+      maxlength="256"
+      ></textarea>
+      <div id="char-counter" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">0/256
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center;">
+      <button id="go-to-top-msgs-encrypted-chat" class="toolbar-column-btns">Go to the top
+      </button>
+      <button id="post-msg-encrypted-chat" class="toolbar-column-btns" style="margin-left: 1vw ">Submit Message
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
 
 
 <div id="rotation-controls" class='rotation-controls' onclick="event.stopPropagation();">
-  <div class="toolbar-column" id="change-model-settings">Change model settings
+  <div class="toolbar-column" id="change-model-settings">Model Settings
   </div>
-  <div class="toolbar-column" id="change-crosshair-settings">Change crosshair settings
+  <div class="toolbar-column" id="change-crosshair-settings">Crosshair Settings
   </div>
-  <div class="toolbar-column" id="change-color-of-main-buttons">Change color of main buttons
+  <div class="toolbar-column" id="change-color-of-main-buttons">Color of Main Buttons
   </div>
-  <div class="toolbar-column" id="change-marker-options">Change marker options
+  <div class="toolbar-column" id="change-marker-options">Marker Options
   </div>
-  <div class="toolbar-column" id="change-button-input-settings">Change button/input settings
+  <div class="toolbar-column" id="change-button-input-settings">Button/Input Settings
   </div>
-  <div class="toolbar-column" id="change-topic-chat-options">Change topic chat options
+  <div class="toolbar-column" id="change-topic-chat-options">Topic chat Colors
   </div>
 </div>
 
@@ -1738,7 +1852,7 @@ button[type="submit"],
 
     <div id="popup-column-3-font" style="display: none; align-items: center;" >
       <label style="font-size: 1.5vh;">Font:</label>
-      <div style="display: flex; align-items: center; padding-bottom: 1vh;">
+      <div style="display: flex; align-items: center;">
       <input type="number" id="popup-font-size" class="yourfov" style="margin-left: 1vw;" value='2' max="255"/>
       </div>
     </div>
@@ -2157,7 +2271,6 @@ async function loadProfile(accountId, balance) {
   const profileMainButton = await loadMainButtonSettings();
   const profileMarker = await loadMarkerSettings();
   const profileButtonInput = await loadButtonInputSettings();
-  const profileContainer = await loadContainerSettings();
   const profileTopicChat = await loadTopicChatSettings();
   const modelUrl = profileObjectSettings.length > 0 && profileObjectSettings[0].urls && profileObjectSettings[0].urls.length > 0
     ? profileObjectSettings[0].urls[0]
@@ -2178,12 +2291,389 @@ async function loadProfile(accountId, balance) {
 
 loader.updateProgress();
 
+
+const sodium = window.sodium;
+
+function hexToBytes(hex) {
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) {
+    bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+  }
+  return bytes;
+}
+
+function parsePublicKey(derHex) {
+  const derBytes = hexToBytes(derHex);
+  return derBytes.slice(derBytes.length - 32);
+}
+
+function parsePrivateKey(derHex) {
+  const derBytes = hexToBytes(derHex);
+  const seed = derBytes.slice(derBytes.length - 32);
+  const keyPair = sodium.crypto_sign_seed_keypair(seed);
+  return keyPair.privateKey;
+}
+
+async function encryptMessage(message, recipientPublicKey) {
+  await sodium.ready;
+  const recipientX25519Public = sodium.crypto_sign_ed25519_pk_to_curve25519(recipientPublicKey);
+  const ciphertext = sodium.crypto_box_seal(message, recipientX25519Public);
+
+  return {
+    ciphertext: sodium.to_base64(ciphertext)
+  };
+}
+
+async function decryptMessage(encryptedData, recipientPrivateKey) {
+  await sodium.ready;
+  const recipientPublicKey = recipientPrivateKey.slice(32);
+  const recipientX25519Private = sodium.crypto_sign_ed25519_sk_to_curve25519(recipientPrivateKey);
+  const recipientX25519Public = sodium.crypto_sign_ed25519_pk_to_curve25519(recipientPublicKey);
+
+  const ciphertext = sodium.from_base64(encryptedData.ciphertext);
+  const decrypted = sodium.crypto_box_seal_open(ciphertext, recipientX25519Public, recipientX25519Private);
+
+  return sodium.to_string(decrypted);
+}
+
+async function a() {
+  try {
+    const publicKeyHex = '302a300506032b65700321009eac2996306ae12c68a876a88cbea209e69d60ffddc3386738157bd526d2fd1d';
+    const privateKeyHex = '302e020100300506032b65700422042058110c84febccc97ec4eb34995690a1b9f20f7e743e45cdf1bbea6b2420a59fc';
+
+    const publicKey = parsePublicKey(publicKeyHex);
+    const privateKey = parsePrivateKey(privateKeyHex);
+
+    const message = 'Secret message!';
+
+    const encrypted = await encryptMessage(message, publicKey);
+    console.log('Encrypted:', encrypted);
+
+    const decrypted = await decryptMessage(encrypted, privateKey);
+    console.log('Decrypted:', decrypted);
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
+
+a();
+
+
+document.getElementById("post-msg-encrypted-chat").addEventListener("click", async () => {
+  try {
+    let userInput = document.getElementById("encrypted-chat-topic-id").value.toLowerCase();
+    let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+    const PublicKey = parsePublicKey(document.getElementById("encrypted-chat-public-key").value);
+    let topicId;
+
+    if (domainEntry && domainEntry.lastMessage) {
+      topicId = domainEntry.lastMessage.topic;
+    } else {
+      topicId = userInput;
+    }
+
+    const message = document.getElementById("user-write-message-encrypted-chat").value;
+    const encryptedMessage = await encryptMessage(message, PublicKey);
+
+
+
+    const meesageobject = {
+    encryptedMessage: encryptedMessage
+  };
+    
+    const newMeesage = JSON.stringify(meesageobject);
+    console.log('New Meesage:', newMeesage);
+    const reciept = await window.HashinalsWalletConnectSDK.submitMessageToTopic(topicId, newMeesage);
+    console.log('Reciept:', reciept);
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+});
+
+
+document.getElementById("load-msgs-from-encrypted-chat").addEventListener("click", async () => {
+  try {
+    let userInput = document.getElementById("encrypted-chat-topic-id").value.toLowerCase();
+    let domainEntry = loadedDomains.find(entry => entry.domain === userInput);
+    const PrivateKey = parsePrivateKey(document.getElementById("encrypted-chat-private-key").value);
+    let topicId;
+
+    if (domainEntry && domainEntry.lastMessage) {
+      topicId = domainEntry.lastMessage.topic;
+    } else {
+      topicId = userInput;
+    }
+
+    
+    const messagesContainer = document.getElementById("messages-from-encrypted-chat");
+    const topicSpinnerChat = `
+    <div style="display: flex; justify-content: left; align-items: left; height: 100%;  padding-top: 1vh; padding-bottom: 1vh;">
+      <div id="topicspinnerchat"></div>
+       <span style="margin-left: 1vw;">Loading messages from ${topicId}</span>
+      </div>`;
+    messagesContainer.innerHTML = topicSpinnerChat;
+    adjustTextareaHeight(messagesContainer);
+
+    try {
+    const topicInfo = await sdk.getTopicInfo(topicId);
+          const topicAdmin = [];
+          const memo = topicInfo.memo;
+
+          // Split the memo by commas
+          const parts = memo.split(',');
+
+          // Iterate over each part
+          parts.forEach(part => {
+            // Check if the part starts with "0.0."
+            if (part.startsWith("0.0.")) {
+              // Add it to the topicAdmin array
+              topicAdmin.push(part);
+            }
+          });
+    } catch (error) {
+      const messagesContainer = document.getElementById("messages-from-encrypted-chat");
+      const topicSpinnerChat = `
+      <div style="display: flex; justify-content: left; align-items: left; height: 100%;  padding-top: 1vh; padding-bottom: 1vh;">
+        <span style="margin-left: 1vw;">Invalid Topic ID</span>
+      </div>`;
+      messagesContainer.innerHTML = topicSpinnerChat;
+      adjustTextareaHeight(messagesContainer);
+      console.error("Error getting topic info:", error);
+      return;
+    }
+
+    const result = await window.HashinalsWalletConnectSDK.getMessages(topicId);
+
+    if (!result || !Array.isArray(result.messages)) {
+      console.log("No messages found or result is not an array.");
+      return [];
+    }
+
+    const profilePictures = await loadProfilePicture(); // Load profile pictures
+    const usernames = await loadUsername(); // Load usernames
+    const click2url = await loadCLICK2URL();
+    const topic2pic = await loadTOPIC2PIC();
+
+
+    let allMessages = ''; // Initialize an empty string to hold all messages
+
+    let previousPayer = null; // Track the previous payer
+
+    const topicActions = new Map();
+
+    const loadedNFTsForTopicChat = [];
+
+
+
+    for (let index = 0; index < result.messages.length; index++) {
+      const message = result.messages[index];
+      try {
+        let parsedMessage = message;
+        if (typeof message === 'string') {
+          parsedMessage = JSON.parse(message);
+        }
+        const timestamp = message.timestamp || Date.now(); // Use message timestamp or current time
+
+        if (parsedMessage.addTopicChatNFT && (topicAdmin.length === 0 || topicAdmin.includes(message.payer))) {
+        const nfts = parsedMessage.addTopicChatNFT.split(',').map(nft => nft.trim());
+        nfts.forEach(nft => {
+          if (nft.startsWith("0.0.") && !loadedNFTsForTopicChat.includes(nft)) { // Check if NFT starts with "0.0."
+            loadedNFTsForTopicChat.push(nft);
+          }
+        });
+      }
+
+      if (parsedMessage.removeTopicChatNFT && (topicAdmin.length === 0 || topicAdmin.includes(message.payer))) {
+        const nft = parsedMessage.removeTopicChatNFT.trim();
+        if (nft.startsWith("0.0.")) { // Check if NFT starts with "0.0."
+          const index = loadedNFTsForTopicChat.indexOf(nft);
+          if (index !== -1) {
+            loadedNFTsForTopicChat.splice(index, 1);
+          }
+        }
+      }
+      } catch (messageError) {
+        console.error(`Error processing message ${index}:`, messageError);
+      }
+    }
+
+
+    if (loadedNFTsForTopicChat.length > 0) {
+  console.log("loadedNFTsForTopicChat", loadedNFTsForTopicChat);
+}
+
+// Process messages
+for (let index = 0; index < result.messages.length; index++) {
+  const message = result.messages[index];
+  try {
+    let parsedMessage = message;
+    if (typeof message === 'string') {
+      parsedMessage = JSON.parse(message);
+    }
+
+    const payer = parsedMessage.payer || 'Unknown';
+
+    // Check if the payer owns any NFT from loadedNFTsForTopicChat
+    let payerHasNFT = false;
+    if (loadedNFTsForTopicChat.length > 0) {
+      for (const item of loadedNFTsForTopicChat) {
+        const checkIfUserHasNFT = await sdk.getAccountNFTs(payer, item);
+        if (checkIfUserHasNFT.length > 0) {
+          payerHasNFT = true;
+          break;
+        }
+      }
+    } else {
+      payerHasNFT = true; // If no NFTs to check, allow all messages
+    }
+
+    if (payerHasNFT && parsedMessage.encryptedMessage) {
+      const userMessage = parsedMessage.encryptedMessage;
+
+  let decryptedMessage = null;
+  try {
+      decryptedMessage = await decryptMessage(userMessage, PrivateKey);
+  } catch (error) {
+    const messagesContainer = document.getElementById("messages-from-encrypted-chat");
+    const topicSpinnerChat = `
+        <div style="display: flex; justify-content: left; align-items: left; height: 100%;  padding-top: 1vh; padding-bottom: 1vh;">
+          <span style="margin-left: 1vw;">Invalid Private Key</span>
+        </div>`;
+    messagesContainer.innerHTML = topicSpinnerChat;
+    adjustTextareaHeight(messagesContainer);
+    console.error("Error decrypting message:", error);
+    continue;
+  }
+
+const payerImage = profilePictures[payer]?.url || 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
+
+// Function to validate URL
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+// Check if payerImage is valid, if not use fallback
+const validPayerImage = isValidUrl(payerImage) ? payerImage : 'https://kiloscribe.com/api/inscription-cdn/0.0.4819119';
+
+
+const timestamp = new Date(parsedMessage.created)
+  .toLocaleString('en-US', {
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+  .replace(/[/]/g, '') // Remove slashes
+  .replace(/[:]/g, ''); // Remove colons
+
+const payerInfo = message.payer ? `${message.payer}` : 'Anonymous';
+              const username = message.payer && usernames[message.payer] ?
+                ` ${usernames[message.payer].username}` :
+                '';
+
+                const click2link= message.payer && click2url[message.payer] ?
+                ` ${click2url[message.payer].click2url}` :
+                '';
+
+const displayHeader = 
+`<a href="https://explore.hashpack.app/${payerInfo}" target="_blank" style="color: ${accidTopicChatColor}; text-decoration: none;">${payerInfo}</a>
+${click2link ? `<a href="${click2link}" target="_blank" style="color: ${usernameTopicChatColor};
+text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicChatColor};">${username}</span>`}`;
+
+storedMessages.push(parsedMessage);
+
+if (payer !== previousPayer) {
+  allMessages += `<div style="display: flex; align-items: center; margin-top: 0.1em;">
+    <img src="${validPayerImage}" alt="Profile photo"
+    style="width: 2em; height: 2em; margin-right: 0.5em; border-radius: 1em; cursor: pointer;"
+    onclick="loadTOPIC4PIC('${message.payer}');">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                      <div>${displayHeader}</div>
+                      <span style="font-size: 0.8em; color: gray;">${timestamp}</span>
+                      <div style="color: ${textTopicChatColor};">${decryptedMessage}</div>
+                    </div>
+                  </div><br>`;
+} else {
+  allMessages += `<div style="display: flex; align-items: center; margin-left: 2.5em; margin-top: -1.25em;">
+                    <div style="color: ${textTopicChatColor};">${decryptedMessage}</div>
+                  </div><br>`;
+}
+      previousPayer = payer; // Update the previous payer
+    } else {
+      console.warn(`Message ${index} is missing payer or data.`);
+    }
+  } catch (messageError) {
+    console.error(`Error processing message ${index}:`, messageError);
+  }
+}
+
+  const chatContainer = document.getElementById('topic-chat-container');
+  let startY, scrollTop;
+
+  chatContainer.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].pageY - chatContainer.offsetTop;
+    scrollTop = chatContainer.scrollTop;
+  });
+
+  chatContainer.addEventListener('touchmove', (e) => {
+    const y = e.touches[0].pageY - chatContainer.offsetTop;
+    const walk = (y - startY) * 2; // Adjust the multiplier for sensitivity
+    chatContainer.scrollTop = scrollTop - walk;
+    e.preventDefault(); // Prevent default touch behavior
+  });
+
+  messagesContainer.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].pageY - messagesContainer.offsetTop;
+    scrollTop = messagesContainer.scrollTop;
+    e.stopPropagation(); // Stop the event from bubbling up
+  });
+
+  messagesContainer.addEventListener('touchmove', (e) => {
+    const y = e.touches[0].pageY - messagesContainer.offsetTop;
+    const walk = (y - startY) * 2; // Adjust the multiplier for sensitivity
+    messagesContainer.scrollTop = scrollTop - walk;
+    e.preventDefault(); // Prevent default touch behavior
+    e.stopPropagation(); // Stop the event from bubbling up
+  });
+
+  messagesContainer.innerHTML = allMessages;
+
+  if (allMessages.length === 0) {
+    messagesContainer.innerHTML = 'no messages found';
+  }
+  
+  adjustTextareaHeight(messagesContainer);
+
+  // Scroll to the bottom of the message container
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+  } catch (error) {
+    const messagesContainer = document.getElementById('messages-from-topic-chat');
+    messagesContainer.innerHTML = 
+    `<div style="display: flex; justify-content: left; align-items: left; height: 100%;  padding-top: 1vh; padding-bottom: 1vh;">
+       <span style="margin-left: 1vw;">Invalid Topic ID</span>
+      </div>`;
+    adjustTextareaHeight(messagesContainer);
+    console.error("Error setting rules:", error);
+  }
+});
+
+
+
 document.getElementById('upload-to-ipfs-button').disabled = true;
 
 let helia = null;
 let fs = null;
 
-console.log('initHeliabitswap' , window.HeliaBlockBrokers);
+console.log('initHeliabitswap' , window.sodium);
 
 async function initHelia() {
 
@@ -3347,7 +3837,7 @@ document.getElementById("submit-button-Create_New_Topic").addEventListener("clic
     if (memo && adminKey) {
       createdTopicId = await window.HashinalsWalletConnectSDK.createTopic(memo, adminKey);
       } else {
-      createdTopicId = await window.HashinalsWalletConnectSDK.createTopic();
+      createdTopicId = await window.HashinalsWalletConnectSDK.createTopic(adminKey);
     }
 
     console.log("createdTopicId is", createdTopicId);
@@ -3375,9 +3865,10 @@ document.getElementById("generate-private-and-public-key").addEventListener("cli
     const publicKeyTextarea = document.getElementById("generated-public-key");
 
     privateKeyTextarea.value = privateKey;
+    publicKeyTextarea.value = publicKey;
 
     adjustTextareaHeight(privateKeyTextarea);
-
+    adjustTextareaHeight(publicKeyTextarea);
     } catch (error) {
     console.error("Error creating topic:", error);
   }
@@ -3571,7 +4062,7 @@ async function loadTOPIC2PIC() {
 }
 
 window.openPopupSettings = function() {
-  setTimeout(() => {
+  requestAnimationFrame(() => {
     if (document.getElementById("popup-column-2").style.display === "block" && document.getElementById("popup-column-3").style.display === "block") {
       document.getElementById("popup-column-2").style.display = "none";
       document.getElementById("popup-column-container-2").style.display = "none";
@@ -3583,8 +4074,9 @@ window.openPopupSettings = function() {
       document.getElementById("popup-column-3").style.display = "block";
       document.getElementById("popup-column-container-3").style.display = "block";
       OpenToggleYourFov();
+      removeUfoModel();
     }
-  }, 100);
+  });
 };
 
 
@@ -4225,7 +4717,8 @@ const everythinginsideoptionsbuttons = [
   "toggle-controls-btn",
   "toggle-your-fov-btn",
   "toggle-visibility-controls-btn",
-  "toggle-toolbar-btn"
+  "toggle-toolbar-btn",
+  "toggle-encrypted-chat-btn"
 ];
 
 const firstlayercolumns = [
@@ -4233,6 +4726,7 @@ const firstlayercolumns = [
   "toolbar",
   "visibility-controls",
   "topic-chat-container",
+  "encrypted-chat-container"
 ];
 
 
@@ -4266,6 +4760,8 @@ const everythinginsidetoolbar = [
   "stack-topic-ids",
 ];
 
+let popIsOpen = false;
+
 function CloseALL() {
   everythinginsideoptionsbuttons.forEach(buttonId => {
     document.getElementById(buttonId).style.display = "none";
@@ -4283,11 +4779,26 @@ function CloseALL() {
   document.getElementById("topic-chat-btn").style.display = "block";
   document.getElementById("toggle-toolbar-btn-btn").style.display = "none";
   document.getElementById("toggle-your-fov-btn-btn").style.display = "none";
+  if (popIsOpen === true) {
+    if (currentUfoModel) {
+            scene.add(currentUfoModel);
+            crosshair.style.display = "block";
+          }
+  }
+  popIsOpen = false;
 }
 
 document.addEventListener('click', function(event) {
   CloseALL();
 });
+
+function removeUfoModel() {
+  if (currentUfoModel) {
+    scene.remove(currentUfoModel);
+    crosshair.style.display = "none";
+  }
+  popIsOpen = true;
+}
 
 document.getElementById("main-toggle-btn").addEventListener("click", function(event) {
   event.stopPropagation();
@@ -4336,9 +4847,16 @@ document.getElementById("toggle-visibility-controls-btn").addEventListener("clic
   event.stopPropagation();
   CloseALL();
   document.getElementById("visibility-controls").style.display = "block";
+  removeUfoModel();
 });
 
 document.getElementById("toggle-your-fov-btn").addEventListener("click", function(event) {
+  event.stopPropagation();
+  CloseALL();
+  document.getElementById("rotation-controls").style.display = "block";
+});
+
+document.getElementById("toggle-your-fov-btn-btn").addEventListener("click", (event) => {
   event.stopPropagation();
   CloseALL();
   document.getElementById("rotation-controls").style.display = "block";
@@ -4372,6 +4890,7 @@ document.getElementById("change-color-of-main-buttons").addEventListener("click"
   document.getElementById("main-button-column-save").style.display = "block";
   document.getElementById("main-button-column-container-save").style.display = "block";
   OpenToggleYourFov();
+  removeUfoModel();
 });
 
 document.getElementById("change-marker-options").addEventListener("click", (event) => {
@@ -4382,6 +4901,7 @@ document.getElementById("change-marker-options").addEventListener("click", (even
   document.getElementById("marker-column-save").style.display = "block";
   document.getElementById("marker-column-container-save").style.display = "block";
   OpenToggleYourFov();
+  removeUfoModel();
 });
 
 document.getElementById("change-button-input-settings").addEventListener("click", (event) => {
@@ -4392,6 +4912,7 @@ document.getElementById("change-button-input-settings").addEventListener("click"
   document.getElementById("button-input-column-save").style.display = "block";
   document.getElementById("button-input-column-container-save").style.display = "block";
   OpenToggleYourFov();
+  removeUfoModel();
 });
 
 document.getElementById("change-topic-chat-options").addEventListener("click", (event) => {
@@ -4402,12 +4923,14 @@ document.getElementById("change-topic-chat-options").addEventListener("click", (
   document.getElementById("topic-chat-save").style.display = "block";
   document.getElementById("topic-chat-container-save").style.display = "block";
   OpenToggleYourFov();
+  removeUfoModel();
 });
 
 document.getElementById("toggle-toolbar-btn").addEventListener("click", (event) => {
   event.stopPropagation();
   CloseALL();
   document.getElementById("toolbar").style.display = "block";
+  removeUfoModel();
 });
 
 document.getElementById("Edit_Profile").addEventListener("click", (event) => {
@@ -4416,6 +4939,7 @@ document.getElementById("Edit_Profile").addEventListener("click", (event) => {
   document.getElementById("Edit_Profile-column").style.display = "block";
   document.getElementById("Edit_Profile-column-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("Load_Everything").addEventListener("click", (event) => {
@@ -4428,6 +4952,7 @@ document.getElementById("Load_Everything").addEventListener("click", (event) => 
   loaded_text_area.innerHTML = globalLoadedTopicIdsWithNames.join('<br>');
   adjustTextareaHeight(loaded_text_area);
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("Upload_To_IPFS").addEventListener("click", (event) => {
@@ -4436,6 +4961,7 @@ document.getElementById("Upload_To_IPFS").addEventListener("click", (event) => {
   document.getElementById("upload-to-ipfs-column").style.display = "block";
   document.getElementById("upload-to-ipfs-column-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("Create_New_Topic").addEventListener("click", (event) => {
@@ -4444,6 +4970,7 @@ document.getElementById("Create_New_Topic").addEventListener("click", (event) =>
   document.getElementById("create-column").style.display = "block";
   document.getElementById("create-column-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("Create_Marker").addEventListener("click", (event) => {
@@ -4452,6 +4979,7 @@ document.getElementById("Create_Marker").addEventListener("click", (event) => {
   document.getElementById("marker-column").style.display = "block";
   document.getElementById("marker-column-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("Create_Polygon").addEventListener("click", (event) => {
@@ -4460,6 +4988,7 @@ document.getElementById("Create_Polygon").addEventListener("click", (event) => {
   document.getElementById("polygon-column").style.display = "block";
   document.getElementById("polygon-column-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("Set_Rules").addEventListener("click", (event) => {
@@ -4468,6 +4997,7 @@ document.getElementById("Set_Rules").addEventListener("click", (event) => {
   document.getElementById("rules-column").style.display = "block";
   document.getElementById("rules-column-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("NFT-utility").addEventListener("click", (event) => {
@@ -4476,6 +5006,7 @@ document.getElementById("NFT-utility").addEventListener("click", (event) => {
   document.getElementById("utility-column").style.display = "block";
   document.getElementById("utility-column-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("Change_Memo").addEventListener("click", (event) => {
@@ -4484,6 +5015,7 @@ document.getElementById("Change_Memo").addEventListener("click", (event) => {
   document.getElementById("memo-column").style.display = "block";
   document.getElementById("memo-column-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("Stack_topic_IDs").addEventListener("click", (event) => {
@@ -4492,6 +5024,7 @@ document.getElementById("Stack_topic_IDs").addEventListener("click", (event) => 
   document.getElementById("stack-topic-ids").style.display = "block";
   document.getElementById("stack-topic-ids-container").style.display = "block";
   OpenToggleToolbar();
+  removeUfoModel();
 });
 
 document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
@@ -4500,20 +5033,51 @@ document.getElementById("topic-chat-btn").addEventListener("click", (event) => {
   activePolygonPopups.forEach((popup) => popup.remove());
   activeMarkerPopups.forEach((popup) => popup.remove());
   document.getElementById("topic-chat-container").style.display = "block";
+  document.getElementById("options-from-topic-chat").style.display = "none";
+  document.getElementById("show-options-from-topic-chat").style.display = "block";
+  document.getElementById("show-options-from-topic-chat-btn").style.display = "none";
+  removeUfoModel();
+});
+
+document.getElementById("show-options-from-topic-chat").addEventListener("click", (event) => {
+  document.getElementById("options-from-topic-chat").style.display = "block";
+  document.getElementById("show-options-from-topic-chat").style.display = "none";
+  document.getElementById("show-options-from-topic-chat-btn").style.display = "block";
+});
+
+document.getElementById("show-options-from-topic-chat-btn").addEventListener("click", (event) => {
+  document.getElementById("options-from-topic-chat").style.display = "none";
+  document.getElementById("show-options-from-topic-chat-btn").style.display = "none";
+  document.getElementById("show-options-from-topic-chat").style.display = "block";
 });
 
 document.getElementById("toggle-toolbar-btn-btn").addEventListener("click", (event) => {
   event.stopPropagation();
   CloseALL();
   document.getElementById("toolbar").style.display = "block";
+  removeUfoModel();
 });
 
-document.getElementById("toggle-your-fov-btn-btn").addEventListener("click", (event) => {
+document.getElementById("toggle-encrypted-chat-btn").addEventListener("click", (event) => {
   event.stopPropagation();
   CloseALL();
-  document.getElementById("rotation-controls").style.display = "block";
-  activePolygonPopups.forEach((popup) => popup.remove());
-  activeMarkerPopups.forEach((popup) => popup.remove());
+  document.getElementById("encrypted-chat-container").style.display = "block";
+  document.getElementById("options-from-encrypted-chat").style.display = "none";
+  document.getElementById("show-options-from-encrypted-chat").style.display = "block";
+  document.getElementById("show-options-from-encrypted-chat-btn").style.display = "none";
+  removeUfoModel();
+});
+
+document.getElementById("show-options-from-encrypted-chat").addEventListener("click", (event) => {
+  document.getElementById("options-from-encrypted-chat").style.display = "block";
+  document.getElementById("show-options-from-encrypted-chat").style.display = "none";
+  document.getElementById("show-options-from-encrypted-chat-btn").style.display = "block";
+});
+
+document.getElementById("show-options-from-encrypted-chat-btn").addEventListener("click", (event) => {
+  document.getElementById("options-from-encrypted-chat").style.display = "none";
+  document.getElementById("show-options-from-encrypted-chat-btn").style.display = "none";
+  document.getElementById("show-options-from-encrypted-chat").style.display = "block";
 });
 
 function closePopupColumn3options() {
@@ -4525,6 +5089,7 @@ function closePopupColumn3options() {
   document.getElementById("popup-column-3-titles").style.display = "none";
   document.getElementById("popup-column-3-text").style.display = "none";
   document.getElementById("popup-column-3-font").style.display = "none";
+  removeUfoModel();
 };
 
 document.getElementById("popup-column-2-border").addEventListener("click", (event) => {
@@ -5677,6 +6242,7 @@ function updateClusters() {
       activeMarkerPopups.push(popup);
 
       popup.on("close", () => {
+        popIsOpen = false;
         if (currentUfoModel) {
           scene.add(currentUfoModel);
           crosshair.style.display = "block";
@@ -5875,6 +6441,7 @@ async function addPolygonWithImageFill(map, polygon) {
           activePolygonPopups.push(popup);
           applyAllStyles();
         }
+        popIsOpen = false;
         if (currentUfoModel) {
           scene.remove(currentUfoModel);
           crosshair.style.display = "none";
