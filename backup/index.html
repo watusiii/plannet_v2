@@ -6,10 +6,6 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
   <title>Meritocracy</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-    rel="stylesheet">
   <link rel="stylesheet" href="main.css">
 
 
@@ -70,7 +66,7 @@
 <body>
 
   <div class="app-container">
-
+    
     <!-- Left Sidebar Panel -->
     <div class="sidebar-panel" id="sidebarPanel">
       <div class="sidebar-header">
@@ -79,7 +75,7 @@
           <span class="toggle-icon">←</span>
         </button>
       </div>
-
+      
       <div class="sidebar-content">
         <div class="sidebar-section">
           <h4 class="section-title">Wallet</h4>
@@ -91,16 +87,6 @@
           </button>
           <div class="account-display" id="modernAccountId"></div>
         </div>
-
-        <div class="sidebar-section">
-          <h4 class="section-title">Menu</h4>
-          <button class="modern-btn modern-btn-secondary" id="main-toggle-btn">
-            OPTIONS
-          </button>
-          <button class="modern-btn modern-btn-secondary" id="topic-chat-btn">
-            TOPIC CHAT
-          </button>
-        </div>
       </div>
     </div>
 
@@ -108,7 +94,7 @@
     <div class="view-panel" id="viewPanel">
       <div id="map"></div>
       <div id="three-container"></div>
-
+      
       <input id="coordinates-display" value="Coordinates:" />
       <button id="copy-coordinates" class="copy-coordinates"></button>
       <div id="crosshair"></div>
@@ -122,7 +108,7 @@
           <span class="toggle-icon">→</span>
         </button>
       </div>
-
+      
       <div class="sidebar-content">
         <div class="sidebar-section">
           <h4 class="section-title">Controls</h4>
@@ -133,11 +119,8 @@
             Visibility
           </button>
         </div>
-
+        
         <div class="sidebar-section">
-          <div class="px-4">
-
-          </div>
           <h4 class="section-title">3D View</h4>
           <button class="modern-btn modern-btn-secondary" id="rightToggleFov">
             Your POV
@@ -146,33 +129,24 @@
             Model Settings
           </button>
         </div>
-
-        <div class="sidebar-section">
-          <h4 class="section-title">Selected Content</h4>
-          <div id="marker-content-display" class="content-display">
-            Click on a marker to view its content
-          </div>
-        </div>
       </div>
     </div>
 
-    <!-- Sidebar Toggle Buttons (when collapsed) -->
-    <button class="sidebar-opener" id="sidebarOpener" style="display: none;">
-      <span class="opener-icon">→</span>
-    </button>
+  <!-- Sidebar Toggle Buttons (when collapsed) -->
+  <button class="sidebar-opener" id="sidebarOpener" style="display: none;">
+    <span class="opener-icon">→</span>
+  </button>
+  
+  <button class="sidebar-opener right-sidebar-opener" id="rightSidebarOpener" style="display: none;">
+    <span class="opener-icon">←</span>
+  </button>
 
-    <button class="sidebar-opener right-sidebar-opener" id="rightSidebarOpener" style="display: none;">
-      <span class="opener-icon">←</span>
-    </button>
-
-    <!-- Original menu buttons - repositioned within view panel -->
-    <div class="original-menu-container" style="display:none;"></div>
-    <button id="main-toggle-btn" style="display:none;" class="options-and-topic">OPTIONS</button>
-    <button id="toggle-toolbar-btn-btn" style="display:none;" class="options-and-topic"
-      style="display: none;">TOOLBAR</button>
-    <button id="toggle-your-fov-btn-btn" style="display:none;" class="options-and-topic" style="display: none;">YOUR
-      POV</button>
-    <button id="topic-chat-btn" style="display:none;" class="options-and-topic">TOPIC CHAT</button>
+  <!-- Original menu buttons - repositioned within view panel -->
+  <div class="original-menu-container">
+    <button id="main-toggle-btn" class="options-and-topic">OPTIONS</button>
+    <button id="toggle-toolbar-btn-btn" class="options-and-topic" style="display: none;">TOOLBAR</button>
+    <button id="toggle-your-fov-btn-btn" class="options-and-topic" style="display: none;">YOUR POV</button>
+    <button id="topic-chat-btn" class="options-and-topic">TOPIC CHAT</button>
   </div>
 
 
@@ -281,8 +255,7 @@
   <div id="upload-to-ipfs-column" style="display: none; position: absolute; z-index: 1002; top:10vh;">
     <div id="upload-to-ipfs-column-container" class="toolbar-containers" onclick="event.stopPropagation();">
 
-      <label for="fileInput" style="font-size: 2vh; padding: 0px;">Currentlly work in progress, once finished u will
-        be
+      <label for="fileInput" style="font-size: 2vh; padding: 0px;">Currentlly work in progress, once finished u will be
         able to upload imgs/videos/files
       </label>
 
@@ -777,8 +750,7 @@
       " onclick="event.stopPropagation();"
           oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter').textContent = this.value.length + '/256';"
           maxlength="256"></textarea>
-        <div id="char-counter" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">
-          0/256
+        <div id="char-counter" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">0/256
         </div>
       </div>
 
@@ -878,8 +850,7 @@
       " onclick="event.stopPropagation();"
           oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'; document.getElementById('char-counter').textContent = this.value.length + '/256';"
           maxlength="256"></textarea>
-        <div id="char-counter" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">
-          0/256
+        <div id="char-counter" style="position: absolute; bottom: 5px; right: 10px; font-size: 2vh; color: #666;">0/256
         </div>
       </div>
 
@@ -3178,26 +3149,26 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       document.getElementById("disconnect-wallet-btn").addEventListener("click", disconnectWallet);
 
       // ===== MODERN SIDEBAR FUNCTIONALITY =====
-
+      
       // Sidebar Toggle Functionality
       const sidebarPanel = document.getElementById('sidebarPanel');
       const sidebarToggle = document.getElementById('sidebarToggle');
       const sidebarOpener = document.getElementById('sidebarOpener');
-
+      
       function toggleSidebar() {
         sidebarPanel.classList.toggle('collapsed');
-
+        
         // Show/hide opener button
         if (sidebarPanel.classList.contains('collapsed')) {
           sidebarOpener.style.display = 'flex';
         } else {
           sidebarOpener.style.display = 'none';
         }
-
+        
         // Update toggle icon
         const toggleIcon = sidebarToggle.querySelector('.toggle-icon');
         const openerIcon = sidebarOpener.querySelector('.opener-icon');
-
+        
         if (sidebarPanel.classList.contains('collapsed')) {
           toggleIcon.textContent = '→';
           openerIcon.textContent = '→';
@@ -3206,19 +3177,19 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
           openerIcon.textContent = '→';
         }
       }
-
+      
       sidebarToggle.addEventListener('click', toggleSidebar);
       sidebarOpener.addEventListener('click', toggleSidebar);
-
+      
       // Modern Wallet Integration
       const modernConnectBtn = document.getElementById('modernConnectWallet');
       const modernDisconnectBtn = document.getElementById('modernDisconnectWallet');
       const modernAccountDisplay = document.getElementById('modernAccountId');
-
+      
       // Sync modern buttons with original wallet functionality
       modernConnectBtn.addEventListener('click', connectWallet);
       modernDisconnectBtn.addEventListener('click', disconnectWallet);
-
+      
       // Function to update modern UI when wallet state changes
       function updateModernWalletUI(isConnected, accountId = '') {
         if (isConnected) {
@@ -3233,13 +3204,13 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
           modernAccountDisplay.style.display = 'none';
         }
       }
-
+      
       // Watch for wallet state changes and sync UI
       // Override original functions to sync with modern UI
       const originalConnectWallet = connectWallet;
       const originalDisconnectWallet = disconnectWallet;
-
-      connectWallet = async function () {
+      
+      connectWallet = async function() {
         await originalConnectWallet();
         // Check if connection was successful and update modern UI
         const accountElement = document.getElementById('account-id');
@@ -3247,12 +3218,12 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
           updateModernWalletUI(true, accountElement.textContent);
         }
       };
-
-      disconnectWallet = async function () {
+      
+      disconnectWallet = async function() {
         await originalDisconnectWallet();
         updateModernWalletUI(false);
       };
-
+      
       // Initialize modern UI state on page load
       setTimeout(() => {
         const accountElement = document.getElementById('account-id');
@@ -3265,26 +3236,26 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       }, 1000);
 
       // ===== RIGHT SIDEBAR FUNCTIONALITY =====
-
+      
       // Right Sidebar Toggle Functionality
       const rightSidebarPanel = document.getElementById('rightSidebarPanel');
       const rightSidebarToggle = document.getElementById('rightSidebarToggle');
       const rightSidebarOpener = document.getElementById('rightSidebarOpener');
-
+      
       function toggleRightSidebar() {
         rightSidebarPanel.classList.toggle('collapsed');
-
+        
         // Show/hide opener button
         if (rightSidebarPanel.classList.contains('collapsed')) {
           rightSidebarOpener.style.display = 'flex';
         } else {
           rightSidebarOpener.style.display = 'none';
         }
-
+        
         // Update toggle icon
         const toggleIcon = rightSidebarToggle.querySelector('.toggle-icon');
         const openerIcon = rightSidebarOpener.querySelector('.opener-icon');
-
+        
         if (rightSidebarPanel.classList.contains('collapsed')) {
           toggleIcon.textContent = '←';
           openerIcon.textContent = '←';
@@ -3293,23 +3264,23 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
           openerIcon.textContent = '←';
         }
       }
-
+      
       rightSidebarToggle.addEventListener('click', toggleRightSidebar);
       rightSidebarOpener.addEventListener('click', toggleRightSidebar);
-
+      
       // Right sidebar button functionality - connect to existing features
       document.getElementById('rightToggleControls').addEventListener('click', () => {
         document.getElementById('toggle-controls-btn').click();
       });
-
+      
       document.getElementById('rightToggleVisibility').addEventListener('click', () => {
         document.getElementById('toggle-visibility-controls-btn').click();
       });
-
+      
       document.getElementById('rightToggleFov').addEventListener('click', () => {
         document.getElementById('toggle-your-fov-btn').click();
       });
-
+      
       document.getElementById('rightToggleModels').addEventListener('click', () => {
         // This could link to model settings when we implement them
         console.log('Model settings clicked');
@@ -5761,13 +5732,8 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
               activeMarkerPopups.forEach((popup) => popup.remove());
               CloseALL();
               animateMapTo(map, cluster.geometry.coordinates, null);
-
-              // Display content in right sidebar instead of popup
-              const contentDisplay = document.getElementById('marker-content-display');
-              if (contentDisplay) {
-                contentDisplay.innerHTML = cluster.properties.message;
-              }
-
+              popup.setLngLat(cluster.geometry.coordinates).addTo(map);
+              applyAllStyles();
               if (currentUfoModel) {
                 scene.remove(currentUfoModel);
                 crosshair.style.display = "none";
@@ -7826,7 +7792,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
 
               const displayHeader = `
               <h2>
-                <a href="https://explore.hashpack.app/${payerInfo}" target="_blank" class="payer-info">${payerInfo}</a>
+                <a href="https://explore.hashpack.app/${payerInfo}" target="_blank" class="payer-info" style="color: #800080; text-decoration: none;">${payerInfo}</a>
                 <br>
                 ${click2link ? `<a href="${click2link}" target="_blank" class="username" style="color: #FFFFFF; text-decoration: none;">${username}</a>` : `${username}`}
               </h2>`;
@@ -7882,7 +7848,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       onclick="loadTOPIC4PIC('${message.payer}');">
         <div>${displayHeader}</div>
       </div>
-      <div>
+      <div style="text-align: center;">
         <div style='margin-bottom: 1vh;'>
             <strong class="title_color">${parsedMessage.marker.data.title}</strong>
         </div>
@@ -8759,7 +8725,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
   }
 </script>
 <script src="script.js"></script>
-</div> <!-- .app-container -->
+  </div> <!-- .app-container -->
 </body>
 
 </html>
