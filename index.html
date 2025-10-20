@@ -333,6 +333,148 @@
             </div>
           </div>
         </div>
+
+        <!-- Color of Main Buttons Settings Page -->
+        <div class="sidebar-page" id="color-settings-page" style="display: none;">
+          <div class="sidebar-header">
+            <button class="modern-btn modern-btn-secondary back-btn" id="color-settings-back-btn">
+              ←
+            </button>
+            <h3 class="page-title">Color of Main Buttons</h3>
+          </div>
+          
+          <div class="sidebar-section">
+            <h4 class="section-title">Button Colors</h4>
+            <div class="visibility-control">
+              <label for="sidebar-disconnect-button-color" class="control-label">Connect/Disconnect Button Color:</label>
+              <input type="color" id="sidebar-disconnect-button-color" value="#ffc107" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-main-button-color" class="control-label">Main Buttons Color:</label>
+              <input type="color" id="sidebar-main-button-color" value="#007bff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <button class="modern-btn modern-btn-primary" id="sidebar-save-main-button">Save Settings</button>
+          </div>
+        </div>
+
+        <!-- Button/Input Settings Page -->
+        <div class="sidebar-page" id="button-input-settings-page" style="display: none;">
+          <div class="sidebar-header">
+            <button class="modern-btn modern-btn-secondary back-btn" id="button-input-settings-back-btn">
+              ←
+            </button>
+            <h3 class="page-title">Button/Input Settings</h3>
+          </div>
+          
+          <div class="sidebar-section">
+            <h4 class="section-title">Typography</h4>
+            <div class="visibility-control">
+              <label for="sidebar-font-for-button-input" class="control-label">Font Size:</label>
+              <div class="input-group">
+                <input type="number" id="sidebar-font-for-button-input" class="modern-input" max="255" value="2" style="width: 80px;" />
+              </div>
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-transparency-button-input" class="control-label">Transparency:</label>
+              <div class="input-group">
+                <input type="number" id="sidebar-transparency-button-input" class="modern-input" min="0.5" step="0.01" max="1" value="1" style="width: 80px;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Input Colors</h4>
+            <div class="visibility-control">
+              <label for="sidebar-input-border-color" class="control-label">Input Border Color:</label>
+              <input type="color" id="sidebar-input-border-color" value="#007bff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-input-font-color" class="control-label">Input Font Color:</label>
+              <input type="color" id="sidebar-input-font-color" value="#ffffff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Button Colors</h4>
+            <div class="visibility-control">
+              <label for="sidebar-button-border-color" class="control-label">Button Border Color:</label>
+              <input type="color" id="sidebar-button-border-color" value="#007bff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-button-font-color" class="control-label">Button Font Color:</label>
+              <input type="color" id="sidebar-button-font-color" value="#ffffff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-onhover-button-color" class="control-label">OnHover Button Color:</label>
+              <input type="color" id="sidebar-onhover-button-color" value="#007bff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <button class="modern-btn modern-btn-primary" id="sidebar-save-button-input">Save Settings</button>
+          </div>
+        </div>
+
+        <!-- Marker Options Settings Page -->
+        <div class="sidebar-page" id="marker-options-settings-page" style="display: none;">
+          <div class="sidebar-header">
+            <button class="modern-btn modern-btn-secondary back-btn" id="marker-options-settings-back-btn">
+              ←
+            </button>
+            <h3 class="page-title">Marker Options</h3>
+          </div>
+          
+          <div class="sidebar-section">
+            <h4 class="section-title">Marker Configuration</h4>
+            <div class="visibility-control">
+              <label for="sidebar-marker-size" class="control-label">Size:</label>
+              <div class="input-group">
+                <input type="number" id="sidebar-marker-size" class="modern-input" max="255" value="5" style="width: 80px;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <button class="modern-btn modern-btn-primary" id="sidebar-save-marker-settings">Save Settings</button>
+          </div>
+        </div>
+
+        <!-- Topic Chat Options Settings Page -->
+        <div class="sidebar-page" id="topic-chat-settings-page" style="display: none;">
+          <div class="sidebar-header">
+            <button class="modern-btn modern-btn-secondary back-btn" id="topic-chat-settings-back-btn">
+              ←
+            </button>
+            <h3 class="page-title">Topic Chat Colors</h3>
+          </div>
+          
+          <div class="sidebar-section">
+            <h4 class="section-title">Chat Color Configuration</h4>
+            <div class="visibility-control">
+              <label for="sidebar-accid-topic-chat-color" class="control-label">AccID Color:</label>
+              <input type="color" id="sidebar-accid-topic-chat-color" value="#800080" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-username-topic-chat-color" class="control-label">Username Color:</label>
+              <input type="color" id="sidebar-username-topic-chat-color" value="#ffffff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-text-topic-chat-color" class="control-label">Text Color:</label>
+              <input type="color" id="sidebar-text-topic-chat-color" value="#ffffff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-text-container-topic-chat-color" class="control-label">Text Container Color:</label>
+              <input type="color" id="sidebar-text-container-topic-chat-color" value="#ffffff" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <button class="modern-btn modern-btn-primary" id="sidebar-save-topic-chat-settings">Save Settings</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -4481,7 +4623,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       // Sidebar page navigation system
       function navigateToPage(pageId) {
         // Hide all sidebar pages
-        const allPages = ['main-menu-page', 'visibility-page', 'pov-page', 'model-settings-page', 'crosshair-settings-page'];
+        const allPages = ['main-menu-page', 'visibility-page', 'pov-page', 'model-settings-page', 'crosshair-settings-page', 'color-settings-page', 'button-input-settings-page', 'marker-options-settings-page', 'topic-chat-settings-page'];
         allPages.forEach(id => {
           const page = document.getElementById(id);
           if (page) {
@@ -4537,6 +4679,26 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       });
 
       document.getElementById("crosshair-settings-back-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        goBackToPovPage();
+      });
+
+      document.getElementById("color-settings-back-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        goBackToPovPage();
+      });
+
+      document.getElementById("button-input-settings-back-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        goBackToPovPage();
+      });
+
+      document.getElementById("marker-options-settings-back-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        goBackToPovPage();
+      });
+
+      document.getElementById("topic-chat-settings-back-btn").addEventListener("click", function (event) {
         event.stopPropagation();
         goBackToPovPage();
       });
@@ -4750,58 +4912,29 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
 
       // Removed toggle-your-fov-btn-btn event listener - button no longer exists
 
-      document.getElementById("change-model-settings").addEventListener("click", (event) => {
+
+      document.getElementById("change-color-of-main-buttons").addEventListener("click", function (event) {
         event.stopPropagation();
         CloseALL();
-        document.getElementById("model-column").style.display = "block";
-        document.getElementById("model-column-container").style.display = "block";
-        document.getElementById("model-column-save").style.display = "block";
-        document.getElementById("model-column-container-save").style.display = "block";
-        OpenToggleYourFov();
+        navigateToPage('color-settings-page');
       });
 
-      document.getElementById("change-color-of-main-buttons").addEventListener("click", (event) => {
+      document.getElementById("change-marker-options").addEventListener("click", function (event) {
         event.stopPropagation();
         CloseALL();
-        document.getElementById("main-button-column").style.display = "block";
-        document.getElementById("main-button-column-container").style.display = "block";
-        document.getElementById("main-button-column-save").style.display = "block";
-        document.getElementById("main-button-column-container-save").style.display = "block";
-        OpenToggleYourFov();
-        removeUfoModel();
+        navigateToPage('marker-options-settings-page');
       });
 
-      document.getElementById("change-marker-options").addEventListener("click", (event) => {
+      document.getElementById("change-button-input-settings").addEventListener("click", function (event) {
         event.stopPropagation();
         CloseALL();
-        document.getElementById("marker-options-column").style.display = "block";
-        document.getElementById("marker-options-column-container").style.display = "block";
-        document.getElementById("marker-column-save").style.display = "block";
-        document.getElementById("marker-column-container-save").style.display = "block";
-        OpenToggleYourFov();
-        removeUfoModel();
+        navigateToPage('button-input-settings-page');
       });
 
-      document.getElementById("change-button-input-settings").addEventListener("click", (event) => {
+      document.getElementById("change-topic-chat-options").addEventListener("click", function (event) {
         event.stopPropagation();
         CloseALL();
-        document.getElementById("button-input-column").style.display = "block";
-        document.getElementById("button-input-column-container").style.display = "block";
-        document.getElementById("button-input-column-save").style.display = "block";
-        document.getElementById("button-input-column-container-save").style.display = "block";
-        OpenToggleYourFov();
-        removeUfoModel();
-      });
-
-      document.getElementById("change-topic-chat-options").addEventListener("click", (event) => {
-        event.stopPropagation();
-        CloseALL();
-        document.getElementById("topic-chat-column").style.display = "block";
-        document.getElementById("topic-chat-column-container").style.display = "block";
-        document.getElementById("topic-chat-save").style.display = "block";
-        document.getElementById("topic-chat-container-save").style.display = "block";
-        OpenToggleYourFov();
-        removeUfoModel();
+        navigateToPage('topic-chat-settings-page');
       });
 
       document.getElementById("toggle-toolbar-btn").addEventListener("click", (event) => {
