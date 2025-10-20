@@ -133,7 +133,7 @@
         <div class="sidebar-page" id="visibility-page" style="display: none;">
           <div class="sidebar-header">
             <button class="modern-btn modern-btn-secondary back-btn" id="visibility-back-btn">
-              ← Back
+              ←
             </button>
             <h3 class="page-title">Visibility Controls</h3>
           </div>
@@ -175,6 +175,164 @@
             <button id="sidebar-update-map" class="modern-btn modern-btn-primary">Update Map</button>
           </div>
         </div>
+
+        <!-- Your POV Controls Page -->
+        <div class="sidebar-page" id="pov-page" style="display: none;">
+          <div class="sidebar-header">
+            <button class="modern-btn modern-btn-secondary back-btn" id="pov-back-btn">
+              ←
+            </button>
+            <h3 class="page-title">Your POV</h3>
+          </div>
+          
+          <div class="sidebar-section">
+            <h4 class="section-title">Model & Display</h4>
+            <button class="modern-btn modern-btn-secondary" id="change-model-settings">
+              Model Settings
+            </button>
+            <button class="modern-btn modern-btn-secondary" id="change-crosshair-settings">
+              Crosshair Settings
+            </button>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Interface</h4>
+            <button class="modern-btn modern-btn-secondary" id="change-color-of-main-buttons">
+              Color of Main Buttons
+            </button>
+            <button class="modern-btn modern-btn-secondary" id="change-button-input-settings">
+              Button/Input Settings
+            </button>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Content</h4>
+            <button class="modern-btn modern-btn-secondary" id="change-marker-options">
+              Marker Options
+            </button>
+            <button class="modern-btn modern-btn-secondary" id="change-topic-chat-options">
+              Topic Chat Colors
+            </button>
+          </div>
+        </div>
+
+        <!-- Model Settings Page -->
+        <div class="sidebar-page" id="model-settings-page" style="display: none;">
+          <div class="sidebar-header">
+            <button class="modern-btn modern-btn-secondary back-btn" id="model-settings-back-btn">
+              ←
+            </button>
+            <h3 class="page-title">Model Settings</h3>
+          </div>
+          
+          <div class="sidebar-section">
+            <h4 class="section-title">Object</h4>
+            <div class="visibility-control">
+              <label for="sidebar-object-input" class="control-label">Object URL:</label>
+              <div class="input-group">
+                <input type="text" id="sidebar-object-input" class="modern-input" placeholder="Enter URL" />
+                <button id="sidebar-change-object" class="modern-btn modern-btn-secondary">Change</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Rotation</h4>
+            <div class="visibility-control">
+              <label for="sidebar-rotation-x" class="control-label">Rotation X:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-rotation-x" class="modern-slider" min="0" max="360" value="0">
+                <input type="number" id="sidebar-rotation-x-value" class="modern-input" value="0" style="width: 80px;" />
+              </div>
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-rotation-y" class="control-label">Rotation Y:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-rotation-y" class="modern-slider" min="0" max="360" value="0">
+                <input type="number" id="sidebar-rotation-y-value" class="modern-input" value="0" style="width: 80px;" />
+              </div>
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-rotation-z" class="control-label">Rotation Z:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-rotation-z" class="modern-slider" min="0" max="360" value="0">
+                <input type="number" id="sidebar-rotation-z-value" class="modern-input" value="0" style="width: 80px;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Position</h4>
+            <div class="visibility-control">
+              <label for="sidebar-position-x" class="control-label">Position X:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-position-x" class="modern-slider" min="-100" max="100" step="0.1" value="0">
+                <input type="number" id="sidebar-position-x-value" class="modern-input" value="0" style="width: 80px;" />
+              </div>
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-position-y" class="control-label">Position Y:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-position-y" class="modern-slider" min="-100" max="100" step="0.1" value="0">
+                <input type="number" id="sidebar-position-y-value" class="modern-input" value="0" style="width: 80px;" />
+              </div>
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-position-z" class="control-label">Position Z:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-position-z" class="modern-slider" min="-100" max="100" step="0.1" value="0">
+                <input type="number" id="sidebar-position-z-value" class="modern-input" value="0" style="width: 80px;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Scale</h4>
+            <div class="visibility-control">
+              <label for="sidebar-scale-factor" class="control-label">Scale Factor:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-scale-factor" class="modern-slider" min="0.1" max="5" step="0.1" value="1">
+                <input type="number" id="sidebar-scale-factor-value" class="modern-input" value="1" style="width: 80px;" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Crosshair Settings Page -->
+        <div class="sidebar-page" id="crosshair-settings-page" style="display: none;">
+          <div class="sidebar-header">
+            <button class="modern-btn modern-btn-secondary back-btn" id="crosshair-settings-back-btn">
+              ←
+            </button>
+            <h3 class="page-title">Crosshair Settings</h3>
+          </div>
+          
+          <div class="sidebar-section">
+            <h4 class="section-title">Appearance</h4>
+            <div class="visibility-control">
+              <label for="sidebar-crosshair-color" class="control-label">Crosshair Color:</label>
+              <input type="color" id="sidebar-crosshair-color" value="#000000" style="width: 60px; height: 36px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Size</h4>
+            <div class="visibility-control">
+              <label for="sidebar-crosshair-length" class="control-label">Length:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-crosshair-length" class="modern-slider" min="0" max="100" value="20">
+                <input type="number" id="sidebar-crosshair-length-value" class="modern-input" value="20" style="width: 80px;" />
+              </div>
+            </div>
+            <div class="visibility-control">
+              <label for="sidebar-crosshair-thickness" class="control-label">Thickness:</label>
+              <div class="input-group">
+                <input type="range" id="sidebar-crosshair-thickness" class="modern-slider" min="0" max="10" value="2">
+                <input type="number" id="sidebar-crosshair-thickness-value" class="modern-input" value="2" style="width: 80px;" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -198,29 +356,6 @@
       </div>
 
       <div class="sidebar-content">
-        <div class="sidebar-section">
-          <h4 class="section-title">Controls</h4>
-          <button class="modern-btn modern-btn-secondary" id="rightToggleControls">
-            Show Controls
-          </button>
-          <button class="modern-btn modern-btn-secondary" id="rightToggleVisibility">
-            Visibility
-          </button>
-        </div>
-
-        <div class="sidebar-section">
-          <div class="px-4">
-
-          </div>
-          <h4 class="section-title">3D View</h4>
-          <button class="modern-btn modern-btn-secondary" id="rightToggleFov">
-            Your POV
-          </button>
-          <button class="modern-btn modern-btn-secondary" id="rightToggleModels">
-            Model Settings
-          </button>
-        </div>
-
         <div class="sidebar-section">
           <h4 class="section-title">Selected Content</h4>
           <div id="marker-content-display" class="content-display">
@@ -1063,72 +1198,24 @@
     </div>
   </div>
 
-  <div id="model-column" style="display: none; position: absolute; z-index: 1002; top: 10vh; left: 0; width: 100vw;">
-    <div id="model-column-container" class="yourfovcontainer" onclick="event.stopPropagation();">
-
-      <input type="text" class="toolbar-column" id="object-input" placeholder="Enter URL" style="text-align: center;"
-        onclick="event.stopPropagation();" />
-      <button id="buttonforobject" class="toolbar-column-btns"
-        style="text-shadow: 0 0 0.5vh black; margin-top: 1vh;">Change object
-      </button>
-
-      <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh; padding-top: 1vh;">
-        <label for="rotation-x" class="toolbar-column">Rotation X:
-        </label>
-        <input type="range" class="model_sliders" id="rotation-x" min="0" max="360" value="0" />
-        <input type="number" class="toolbar-column" style="text-align: center;" id="rotation-x-value" value="0"
-          onchange="document.getElementById('rotation-x').value = this.value;" />
-      </div>
-
-      <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-        <label for="rotation-y" class="toolbar-column">Rotation Y:
-        </label>
-        <input type="range" class="model_sliders" id="rotation-y" min="0" max="360" value="0" />
-        <input type="number" class="toolbar-column" style="text-align: center;" id="rotation-y-value" value="0"
-          onchange="document.getElementById('rotation-y').value = this.value;" />
-      </div>
-
-      <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-        <label for="rotation-z" class="toolbar-column">Rotation Z:
-        </label>
-        <input type="range" class="model_sliders" id="rotation-z" min="0" max="360" value="0" />
-        <input type="number" class="toolbar-column" style="text-align: center;" id="rotation-z-value" value="0"
-          onchange="document.getElementById('rotation-z').value = this.value;" />
-      </div>
-
-      <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-        <label for="position-x" class="toolbar-column">Position X:
-        </label>
-        <input type="range" class="model_sliders" id="position-x" min="-100" max="100" step="0.1" value="0" />
-        <input type="number" class="toolbar-column" style="text-align: center;" id="position-x-value" value="0"
-          onchange="document.getElementById('position-x').value = this.value;" />
-      </div>
-
-      <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-        <label for="position-y" class="toolbar-column">Position Y:
-        </label>
-        <input type="range" class="model_sliders" id="position-y" min="-100" max="100" step="0.1" value="0" />
-        <input type="number" class="toolbar-column" style="text-align: center;" id="position-y-value" value="0"
-          onchange="document.getElementById('position-y').value = this.value;" />
-      </div>
-
-      <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-        <label for="position-z" class="toolbar-column">Position Z:
-        </label>
-        <input type="range" class="model_sliders" id="position-z" min="-100" max="100" step="0.1" value="0" />
-        <input type="number" class="toolbar-column" style="text-align: center;" id="position-z-value" value="0"
-          onchange="document.getElementById('position-z').value = this.value;" />
-      </div>
-
-      <div style="display: flex; align-items: center; padding-left: 1vh; padding-bottom: 1vh;">
-        <label for="scale-factor" class="toolbar-column">Scale Factor:
-        </label>
-        <input type="range" class="model_sliders" id="scale-factor" step="0.000001" value="1" />
-        <input type="number" class="toolbar-column" style="text-align: center;" id="scale-factor-value" value="1"
-          onchange="document.getElementById('scale-factor').value = this.value;" />
-      </div>
-
-    </div>
+  <!-- Hidden elements for bridge functions to work with sidebar Model Settings -->
+  <div style="display: none;">
+    <input type="text" id="object-input" />
+    <button id="buttonforobject"></button>
+    <input type="range" id="rotation-x" min="0" max="360" value="0" />
+    <input type="number" id="rotation-x-value" value="0" />
+    <input type="range" id="rotation-y" min="0" max="360" value="0" />
+    <input type="number" id="rotation-y-value" value="0" />
+    <input type="range" id="rotation-z" min="0" max="360" value="0" />
+    <input type="number" id="rotation-z-value" value="0" />
+    <input type="range" id="position-x" min="-100" max="100" step="0.1" value="0" />
+    <input type="number" id="position-x-value" value="0" />
+    <input type="range" id="position-y" min="-100" max="100" step="0.1" value="0" />
+    <input type="number" id="position-y-value" value="0" />
+    <input type="range" id="position-z" min="-100" max="100" step="0.1" value="0" />
+    <input type="number" id="position-z-value" value="0" />
+    <input type="range" id="scale-factor" min="0.1" max="5" step="0.1" value="1" />
+    <input type="number" id="scale-factor-value" value="1" />
   </div>
 
   <div id="model-column-save"
@@ -3363,23 +3450,6 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       rightSidebarToggle.addEventListener('click', toggleRightSidebar);
       rightSidebarOpener.addEventListener('click', toggleRightSidebar);
 
-      // Right sidebar button functionality - connect to existing features
-      document.getElementById('rightToggleControls').addEventListener('click', () => {
-        document.getElementById('toggle-controls-btn').click();
-      });
-
-      document.getElementById('rightToggleVisibility').addEventListener('click', () => {
-        document.getElementById('toggle-visibility-controls-btn').click();
-      });
-
-      document.getElementById('rightToggleFov').addEventListener('click', () => {
-        document.getElementById('toggle-your-fov-btn').click();
-      });
-
-      document.getElementById('rightToggleModels').addEventListener('click', () => {
-        // This could link to model settings when we implement them
-        console.log('Model settings clicked');
-      });
 
       async function extractAccountId() {
         const thisAccountId = globalAccountId;
@@ -4290,7 +4360,6 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
 
 
       const everythinginsideyourfov = [
-        "model-column",
         "model-column-save",
         "crosshair-column",
         "crosshair-column-save",
@@ -4329,13 +4398,16 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         // });
         
         everythinginsideyourfov.forEach(buttonId => {
-          document.getElementById(buttonId).style.display = "none";
+          const element = document.getElementById(buttonId);
+          if (element) element.style.display = "none";
         });
         everythinginsidetoolbar.forEach(buttonId => {
-          document.getElementById(buttonId).style.display = "none";
+          const element = document.getElementById(buttonId);
+          if (element) element.style.display = "none";
         });
         firstlayercolumns.forEach(buttonId => {
-          document.getElementById(buttonId).style.display = "none";
+          const element = document.getElementById(buttonId);
+          if (element) element.style.display = "none";
         });
         
         // Old overlay buttons removed - no need to hide them
@@ -4409,7 +4481,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       // Sidebar page navigation system
       function navigateToPage(pageId) {
         // Hide all sidebar pages
-        const allPages = ['main-menu-page', 'visibility-page'];
+        const allPages = ['main-menu-page', 'visibility-page', 'pov-page', 'model-settings-page', 'crosshair-settings-page'];
         allPages.forEach(id => {
           const page = document.getElementById(id);
           if (page) {
@@ -4423,6 +4495,10 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
           targetPage.style.display = 'flex';
           targetPage.style.animation = 'slideIn 0.3s ease-in-out';
         }
+      }
+
+      function goBackToPovPage() {
+        navigateToPage('pov-page');
       }
 
       function goBackToMainMenu() {
@@ -4440,6 +4516,37 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       document.getElementById("visibility-back-btn").addEventListener("click", function (event) {
         event.stopPropagation();
         goBackToMainMenu();
+      });
+
+      document.getElementById("pov-back-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        goBackToMainMenu();
+      });
+
+      document.getElementById("model-settings-back-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        goBackToPovPage();
+      });
+
+      // Model Settings navigation
+      document.getElementById("change-model-settings").addEventListener("click", function (event) {
+        event.stopPropagation();
+        CloseALL(); // Close any overlay panels
+        navigateToPage('model-settings-page');
+        syncModelSettings(); // Sync the controls when entering the page
+      });
+
+      document.getElementById("crosshair-settings-back-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        goBackToPovPage();
+      });
+
+      // Crosshair Settings navigation
+      document.getElementById("change-crosshair-settings").addEventListener("click", function (event) {
+        event.stopPropagation();
+        CloseALL(); // Close any overlay panels
+        navigateToPage('crosshair-settings-page');
+        syncCrosshairSettings(); // Sync the controls when entering the page
       });
 
       // Bridge sidebar visibility controls to original functionality
@@ -4506,6 +4613,104 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         document.getElementById("update-map-layer-btn").click();
       });
 
+      // Model Settings bridge functions
+      function syncModelSettings() {
+        // Sync object input
+        const originalObjectInput = document.getElementById("object-input");
+        if (originalObjectInput) {
+          document.getElementById("sidebar-object-input").value = originalObjectInput.value;
+        }
+
+        // Sync rotation values
+        const syncRotationSlider = (sidebarId, originalId, valueId) => {
+          const originalSlider = document.getElementById(originalId);
+          const originalValue = document.getElementById(valueId);
+          if (originalSlider && originalValue) {
+            document.getElementById(sidebarId).value = originalSlider.value;
+            document.getElementById(sidebarId + '-value').value = originalValue.value;
+          }
+        };
+
+        syncRotationSlider('sidebar-rotation-x', 'rotation-x', 'rotation-x-value');
+        syncRotationSlider('sidebar-rotation-y', 'rotation-y', 'rotation-y-value');
+        syncRotationSlider('sidebar-rotation-z', 'rotation-z', 'rotation-z-value');
+        syncRotationSlider('sidebar-position-x', 'position-x', 'position-x-value');
+        syncRotationSlider('sidebar-position-y', 'position-y', 'position-y-value');
+        syncRotationSlider('sidebar-position-z', 'position-z', 'position-z-value');
+        syncRotationSlider('sidebar-scale-factor', 'scale-factor', 'scale-factor-value');
+      }
+
+      // Bridge sidebar model settings to original functionality
+      document.getElementById("sidebar-change-object").addEventListener("click", function() {
+        const urlValue = document.getElementById("sidebar-object-input").value;
+        document.getElementById("object-input").value = urlValue;
+        document.getElementById("buttonforobject").click();
+      });
+
+      // Rotation controls bridge
+      const setupSliderBridge = (sidebarSliderId, sidebarValueId, originalSliderId, originalValueId) => {
+        const sidebarSlider = document.getElementById(sidebarSliderId);
+        const sidebarValue = document.getElementById(sidebarValueId);
+        
+        sidebarSlider.addEventListener("input", function() {
+          document.getElementById(originalSliderId).value = this.value;
+          document.getElementById(originalValueId).value = this.value;
+          sidebarValue.value = this.value;
+          // Trigger the original slider's input event
+          document.getElementById(originalSliderId).dispatchEvent(new Event('input'));
+        });
+
+        sidebarValue.addEventListener("input", function() {
+          document.getElementById(originalSliderId).value = this.value;
+          document.getElementById(originalValueId).value = this.value;
+          sidebarSlider.value = this.value;
+          // Trigger the original slider's input event
+          document.getElementById(originalSliderId).dispatchEvent(new Event('input'));
+        });
+      };
+
+      setupSliderBridge('sidebar-rotation-x', 'sidebar-rotation-x-value', 'rotation-x', 'rotation-x-value');
+      setupSliderBridge('sidebar-rotation-y', 'sidebar-rotation-y-value', 'rotation-y', 'rotation-y-value');
+      setupSliderBridge('sidebar-rotation-z', 'sidebar-rotation-z-value', 'rotation-z', 'rotation-z-value');
+      setupSliderBridge('sidebar-position-x', 'sidebar-position-x-value', 'position-x', 'position-x-value');
+      setupSliderBridge('sidebar-position-y', 'sidebar-position-y-value', 'position-y', 'position-y-value');
+      setupSliderBridge('sidebar-position-z', 'sidebar-position-z-value', 'position-z', 'position-z-value');
+      setupSliderBridge('sidebar-scale-factor', 'sidebar-scale-factor-value', 'scale-factor', 'scale-factor-value');
+
+      // Crosshair Settings bridge functions
+      function syncCrosshairSettings() {
+        // Sync crosshair color
+        const originalColor = document.getElementById("crosshair-color");
+        if (originalColor) {
+          document.getElementById("sidebar-crosshair-color").value = originalColor.value;
+        }
+
+        // Sync crosshair length
+        const originalLength = document.getElementById("crosshair-before-after");
+        const originalLengthValue = document.getElementById("crosshair-before-after-value");
+        if (originalLength && originalLengthValue) {
+          document.getElementById("sidebar-crosshair-length").value = originalLength.value;
+          document.getElementById("sidebar-crosshair-length-value").value = originalLengthValue.value;
+        }
+
+        // Sync crosshair thickness
+        const originalThickness = document.getElementById("crosshair-after-before");
+        const originalThicknessValue = document.getElementById("crosshair-after-before-value");
+        if (originalThickness && originalThicknessValue) {
+          document.getElementById("sidebar-crosshair-thickness").value = originalThickness.value;
+          document.getElementById("sidebar-crosshair-thickness-value").value = originalThicknessValue.value;
+        }
+      }
+
+      // Bridge sidebar crosshair settings to original functionality
+      document.getElementById("sidebar-crosshair-color").addEventListener("input", function() {
+        document.getElementById("crosshair-color").value = this.value;
+        document.getElementById("crosshair-color").dispatchEvent(new Event('input'));
+      });
+
+      setupSliderBridge('sidebar-crosshair-length', 'sidebar-crosshair-length-value', 'crosshair-before-after', 'crosshair-before-after-value');
+      setupSliderBridge('sidebar-crosshair-thickness', 'sidebar-crosshair-thickness-value', 'crosshair-after-before', 'crosshair-after-before-value');
+
       // Function to sync sidebar controls with original control states
       function syncSidebarControls() {
         // Sync polygon transparency
@@ -4539,8 +4744,8 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
 
       document.getElementById("toggle-your-fov-btn").addEventListener("click", function (event) {
         event.stopPropagation();
-        CloseALL();
-        document.getElementById("rotation-controls").style.display = "block";
+        CloseALL(); // Close any overlay panels
+        navigateToPage('pov-page');
       });
 
       // Removed toggle-your-fov-btn-btn event listener - button no longer exists
@@ -4552,16 +4757,6 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         document.getElementById("model-column-container").style.display = "block";
         document.getElementById("model-column-save").style.display = "block";
         document.getElementById("model-column-container-save").style.display = "block";
-        OpenToggleYourFov();
-      });
-
-      document.getElementById("change-crosshair-settings").addEventListener("click", (event) => {
-        event.stopPropagation();
-        CloseALL();
-        document.getElementById("crosshair-column").style.display = "block";
-        document.getElementById("crosshair-column-container").style.display = "block";
-        document.getElementById("crosshair-column-save").style.display = "block";
-        document.getElementById("crosshair-column-container-save").style.display = "block";
         OpenToggleYourFov();
       });
 
