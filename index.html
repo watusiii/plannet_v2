@@ -69,6 +69,20 @@
 
 <body>
 
+  <!-- Header space - no background, just natural layout -->
+  <div class="header-space">
+    <h1 class="site-logo">PlanNet</h1>
+    <div class="wallet-controls">
+      <button class="wallet-btn wallet-btn-primary" id="headerConnectWallet">
+        Connect Wallet
+      </button>
+      <button class="wallet-btn wallet-btn-secondary" id="headerDisconnectWallet" style="display: none;">
+        Disconnect
+      </button>
+      <div class="wallet-account-display" id="headerAccountId"></div>
+    </div>
+  </div>
+
   <div class="app-container">
 
     <!-- Left Sidebar Panel -->
@@ -81,25 +95,85 @@
       </div>
 
       <div class="sidebar-content">
-        <div class="sidebar-section">
-          <h4 class="section-title">Wallet</h4>
-          <button class="modern-btn modern-btn-primary" id="modernConnectWallet">
-            Connect Wallet
-          </button>
-          <button class="modern-btn modern-btn-secondary" id="modernDisconnectWallet" style="display: none;">
-            Disconnect
-          </button>
-          <div class="account-display" id="modernAccountId"></div>
+
+        <!-- Main Menu Page -->
+        <div class="sidebar-page" id="main-menu-page">
+          <div class="sidebar-section">
+            <h4 class="section-title">Interface Controls</h4>
+            <button class="modern-btn modern-btn-secondary" id="toggle-controls-btn">
+              Controls
+            </button>
+            <button class="modern-btn modern-btn-secondary" id="toggle-visibility-controls-btn">
+              Visibility
+            </button>
+            <button class="modern-btn modern-btn-secondary" id="toggle-your-fov-btn">
+              Your POV
+            </button>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Tools & Features</h4>
+            <button class="modern-btn modern-btn-secondary" id="toggle-toolbar-btn">
+              Toolbar
+            </button>
+            <button class="modern-btn modern-btn-secondary" id="toggle-encrypted-chat-btn">
+              E2E Chat
+            </button>
+          </div>
+
+          <div class="sidebar-section">
+            <h4 class="section-title">Communication</h4>
+            <button class="modern-btn modern-btn-secondary" id="topic-chat-btn">
+              Topic Chat
+            </button>
+          </div>
         </div>
 
-        <div class="sidebar-section">
-          <h4 class="section-title">Menu</h4>
-          <button class="modern-btn modern-btn-secondary" id="main-toggle-btn">
-            OPTIONS
-          </button>
-          <button class="modern-btn modern-btn-secondary" id="topic-chat-btn">
-            TOPIC CHAT
-          </button>
+        <!-- Visibility Controls Page -->
+        <div class="sidebar-page" id="visibility-page" style="display: none;">
+          <div class="sidebar-header">
+            <button class="modern-btn modern-btn-secondary back-btn" id="visibility-back-btn">
+              ← Back
+            </button>
+            <h3 class="page-title">Visibility Controls</h3>
+          </div>
+          
+          <div class="visibility-control">
+            <label for="sidebar-time-input" class="control-label">Update Time (ms):</label>
+            <div class="input-group">
+              <input type="number" id="sidebar-time-input" class="modern-input" />
+              <button id="sidebar-update-loop" class="modern-btn modern-btn-secondary">Update</button>
+            </div>
+          </div>
+
+          <div class="visibility-control">
+            <label for="sidebar-polygon-opacity" class="control-label">Polygon Transparency:</label>
+            <input type="range" id="sidebar-polygon-opacity" class="modern-slider" min="0" max="1" step="0.01" value="1">
+          </div>
+
+          <div class="visibility-control">
+            <label class="control-label">Show Polygons:</label>
+            <button id="sidebar-toggle-polygons" class="modern-btn modern-btn-secondary toggle-btn">On</button>
+          </div>
+
+          <div class="visibility-control">
+            <label class="control-label">Show Markers:</label>
+            <button id="sidebar-toggle-markers" class="modern-btn modern-btn-secondary toggle-btn">On</button>
+          </div>
+
+          <div class="visibility-control">
+            <label class="control-label">Show 3D Models:</label>
+            <button id="sidebar-toggle-3d-models" class="modern-btn modern-btn-secondary toggle-btn">On</button>
+          </div>
+
+          <div class="visibility-control">
+            <label class="control-label">Model Updates:</label>
+            <button id="sidebar-toggle-updates" class="modern-btn modern-btn-secondary toggle-btn">On</button>
+          </div>
+
+          <div class="visibility-control">
+            <button id="sidebar-update-map" class="modern-btn modern-btn-primary">Update Map</button>
+          </div>
         </div>
       </div>
     </div>
@@ -168,20 +242,12 @@
     <!-- Original menu buttons - repositioned within view panel -->
     <div class="original-menu-container" style="display:none;"></div>
     <button id="main-toggle-btn" style="display:none;" class="options-and-topic">OPTIONS</button>
-    <button id="toggle-toolbar-btn-btn" style="display:none;" class="options-and-topic"
-      style="display: none;">TOOLBAR</button>
-    <button id="toggle-your-fov-btn-btn" style="display:none;" class="options-and-topic" style="display: none;">YOUR
-      POV</button>
+    <!-- Old overlay buttons removed - functionality moved to sidebar -->
     <button id="topic-chat-btn" style="display:none;" class="options-and-topic">TOPIC CHAT</button>
   </div>
 
 
-  <!-- Left menu buttons - restored individual positioning -->
-  <button id="toggle-controls-btn" class="menu_buttons menu-btn-1">CONTROLS</button>
-  <button id="toggle-your-fov-btn" class="menu_buttons menu-btn-2">YOUR POV</button>
-  <button id="toggle-visibility-controls-btn" class="menu_buttons menu-btn-3">VISIBILITY</button>
-  <button id="toggle-toolbar-btn" class="menu_buttons menu-btn-4">TOOLBAR</button>
-  <button id="toggle-encrypted-chat-btn" class="menu_buttons menu-btn-5">E2ECHAT</button>
+  <!-- Old positioned menu buttons removed - functionality moved to sidebar -->
 
   <div id="toolbar" class="toolbar" style="display: none; flex-direction: column;">
     <div class="toolbar-column" id="Edit_Profile">Edit
@@ -3210,27 +3276,27 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       sidebarToggle.addEventListener('click', toggleSidebar);
       sidebarOpener.addEventListener('click', toggleSidebar);
 
-      // Modern Wallet Integration
-      const modernConnectBtn = document.getElementById('modernConnectWallet');
-      const modernDisconnectBtn = document.getElementById('modernDisconnectWallet');
-      const modernAccountDisplay = document.getElementById('modernAccountId');
+      // Header Wallet Integration  
+      const headerConnectBtn = document.getElementById('headerConnectWallet');
+      const headerDisconnectBtn = document.getElementById('headerDisconnectWallet');
+      const headerAccountDisplay = document.getElementById('headerAccountId');
 
-      // Sync modern buttons with original wallet functionality
-      modernConnectBtn.addEventListener('click', connectWallet);
-      modernDisconnectBtn.addEventListener('click', disconnectWallet);
+      // Sync header buttons with original wallet functionality
+      headerConnectBtn.addEventListener('click', connectWallet);
+      headerDisconnectBtn.addEventListener('click', disconnectWallet);
 
       // Function to update modern UI when wallet state changes
-      function updateModernWalletUI(isConnected, accountId = '') {
+      function updateHeaderWalletUI(isConnected, accountId = '') {
         if (isConnected) {
-          modernConnectBtn.style.display = 'none';
-          modernDisconnectBtn.style.display = 'block';
-          modernAccountDisplay.textContent = accountId;
-          modernAccountDisplay.style.display = 'block';
+          headerConnectBtn.style.display = 'none';
+          headerDisconnectBtn.style.display = 'block';
+          headerAccountDisplay.textContent = accountId;
+          headerAccountDisplay.style.display = 'block';
         } else {
-          modernConnectBtn.style.display = 'block';
-          modernDisconnectBtn.style.display = 'none';
-          modernAccountDisplay.textContent = '';
-          modernAccountDisplay.style.display = 'none';
+          headerConnectBtn.style.display = 'block';
+          headerDisconnectBtn.style.display = 'none';
+          headerAccountDisplay.textContent = '';
+          headerAccountDisplay.style.display = 'none';
         }
       }
 
@@ -3244,13 +3310,13 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         // Check if connection was successful and update modern UI
         const accountElement = document.getElementById('account-id');
         if (accountElement && accountElement.textContent) {
-          updateModernWalletUI(true, accountElement.textContent);
+          updateHeaderWalletUI(true, accountElement.textContent);
         }
       };
 
       disconnectWallet = async function () {
         await originalDisconnectWallet();
-        updateModernWalletUI(false);
+        updateHeaderWalletUI(false);
       };
 
       // Initialize modern UI state on page load
@@ -3258,9 +3324,9 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         const accountElement = document.getElementById('account-id');
         const isConnected = accountElement && accountElement.textContent;
         if (isConnected) {
-          updateModernWalletUI(true, accountElement.textContent);
+          updateHeaderWalletUI(true, accountElement.textContent);
         } else {
-          updateModernWalletUI(false);
+          updateHeaderWalletUI(false);
         }
       }, 1000);
 
@@ -4203,17 +4269,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         }
       });
 
-      function OpenToggleToolbar() {
-        document.getElementById("main-toggle-btn").style.display = "none";
-        document.getElementById("toggle-toolbar-btn-btn").style.display = "block";
-        document.getElementById("topic-chat-btn").style.display = "block";
-      }
-
-      function OpenToggleYourFov() {
-        document.getElementById("main-toggle-btn").style.display = "none";
-        document.getElementById("toggle-your-fov-btn-btn").style.display = "block";
-        document.getElementById("topic-chat-btn").style.display = "block";
-      }
+      // Removed OpenToggleToolbar and OpenToggleYourFov functions - no longer needed with sidebar implementation
 
 
       const everythinginsideoptionsbuttons = [
@@ -4266,10 +4322,12 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
       let popIsOpen = false;
 
       function CloseALL() {
-        everythinginsideoptionsbuttons.forEach(buttonId => {
-          const element = document.getElementById(buttonId);
-          if (element) element.style.display = "none";
-        });
+        // Note: Options buttons are now permanently visible in sidebar, so we don't hide them
+        // everythinginsideoptionsbuttons.forEach(buttonId => {
+        //   const element = document.getElementById(buttonId);
+        //   if (element) element.style.display = "none";
+        // });
+        
         everythinginsideyourfov.forEach(buttonId => {
           document.getElementById(buttonId).style.display = "none";
         });
@@ -4279,10 +4337,9 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         firstlayercolumns.forEach(buttonId => {
           document.getElementById(buttonId).style.display = "none";
         });
-        document.getElementById("main-toggle-btn").style.display = "block";
-        document.getElementById("topic-chat-btn").style.display = "block";
-        document.getElementById("toggle-toolbar-btn-btn").style.display = "none";
-        document.getElementById("toggle-your-fov-btn-btn").style.display = "none";
+        
+        // Old overlay buttons removed - no need to hide them
+        
         if (popIsOpen === true) {
           if (currentUfoModel) {
             scene.add(currentUfoModel);
@@ -4304,18 +4361,19 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         popIsOpen = true;
       }
 
-      document.getElementById("main-toggle-btn").addEventListener("click", function (event) {
-        event.stopPropagation();
-        CloseALL();
-        activePolygonPopups.forEach((popup) => popup.remove());
-        activeMarkerPopups.forEach((popup) => popup.remove());
-        document.getElementById("main-toggle-btn").style.display = "none";
-        document.getElementById("topic-chat-btn").style.display = "none";
-        everythinginsideoptionsbuttons.forEach(buttonId => {
-          const element = document.getElementById(buttonId);
-          if (element) element.style.display = "block";
-        });
-      });
+      // main-toggle-btn functionality removed - options now permanently visible in sidebar
+      // document.getElementById("main-toggle-btn").addEventListener("click", function (event) {
+      //   event.stopPropagation();
+      //   CloseALL();
+      //   activePolygonPopups.forEach((popup) => popup.remove());
+      //   activeMarkerPopups.forEach((popup) => popup.remove());
+      //   document.getElementById("main-toggle-btn").style.display = "none";
+      //   document.getElementById("topic-chat-btn").style.display = "none";
+      //   everythinginsideoptionsbuttons.forEach(buttonId => {
+      //     const element = document.getElementById(buttonId);
+      //     if (element) element.style.display = "block";
+      //   });
+      // });
 
       let toggleControlsPressCount = 0;
 
@@ -4348,11 +4406,135 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         }
       });
 
+      // Sidebar page navigation system
+      function navigateToPage(pageId) {
+        // Hide all sidebar pages
+        const allPages = ['main-menu-page', 'visibility-page'];
+        allPages.forEach(id => {
+          const page = document.getElementById(id);
+          if (page) {
+            page.style.display = 'none';
+          }
+        });
+
+        // Show the requested page
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+          targetPage.style.display = 'flex';
+          targetPage.style.animation = 'slideIn 0.3s ease-in-out';
+        }
+      }
+
+      function goBackToMainMenu() {
+        navigateToPage('main-menu-page');
+      }
+
       document.getElementById("toggle-visibility-controls-btn").addEventListener("click", function (event) {
         event.stopPropagation();
-        CloseALL();
-        document.getElementById("visibility-controls").style.display = "block";
-        removeUfoModel();
+        CloseALL(); // Close any overlay panels
+        navigateToPage('visibility-page');
+        syncSidebarControls(); // Sync the controls when entering the page
+      });
+
+      // Back button functionality
+      document.getElementById("visibility-back-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        goBackToMainMenu();
+      });
+
+      // Bridge sidebar visibility controls to original functionality
+      document.getElementById("sidebar-update-loop").addEventListener("click", function() {
+        const timeValue = document.getElementById("sidebar-time-input").value;
+        if (timeValue) {
+          document.getElementById("time-input").value = timeValue;
+          document.getElementById("update-loop").click();
+        }
+      });
+
+      document.getElementById("sidebar-polygon-opacity").addEventListener("input", function() {
+        const opacityValue = this.value;
+        document.getElementById("raster-opacity-slider").value = opacityValue;
+        document.getElementById("raster-opacity-slider").dispatchEvent(new Event('input'));
+      });
+
+      document.getElementById("sidebar-toggle-polygons").addEventListener("click", function() {
+        document.getElementById("toggle-polygon-visibility").click();
+        // Update button text to match the new state
+        setTimeout(() => {
+          const currentState = document.getElementById("polygon-visibility-value").textContent;
+          this.textContent = currentState;
+          this.className = currentState === 'On' ? 
+            'modern-btn modern-btn-secondary toggle-btn active' : 
+            'modern-btn modern-btn-secondary toggle-btn inactive';
+        }, 10);
+      });
+
+      document.getElementById("sidebar-toggle-markers").addEventListener("click", function() {
+        document.getElementById("toggle-marker-visibility").click();
+        setTimeout(() => {
+          const currentState = document.getElementById("marker-visibility-value").textContent;
+          this.textContent = currentState;
+          this.className = currentState === 'On' ? 
+            'modern-btn modern-btn-secondary toggle-btn active' : 
+            'modern-btn modern-btn-secondary toggle-btn inactive';
+        }, 10);
+      });
+
+      document.getElementById("sidebar-toggle-3d-models").addEventListener("click", function() {
+        document.getElementById("toggle-3d-model-visibility").click();
+        setTimeout(() => {
+          const currentState = document.getElementById("3d-model-visibility-value").textContent;
+          this.textContent = currentState;
+          this.className = currentState === 'On' ? 
+            'modern-btn modern-btn-secondary toggle-btn active' : 
+            'modern-btn modern-btn-secondary toggle-btn inactive';
+        }, 10);
+      });
+
+      document.getElementById("sidebar-toggle-updates").addEventListener("click", function() {
+        document.getElementById("toggle-updates").click();
+        setTimeout(() => {
+          const currentState = document.getElementById("updates-value").textContent;
+          this.textContent = currentState;
+          this.className = currentState === 'On' ? 
+            'modern-btn modern-btn-secondary toggle-btn active' : 
+            'modern-btn modern-btn-secondary toggle-btn inactive';
+        }, 10);
+      });
+
+      document.getElementById("sidebar-update-map").addEventListener("click", function() {
+        document.getElementById("update-map-layer-btn").click();
+      });
+
+      // Function to sync sidebar controls with original control states
+      function syncSidebarControls() {
+        // Sync polygon transparency
+        const originalOpacity = document.getElementById("raster-opacity-slider").value;
+        document.getElementById("sidebar-polygon-opacity").value = originalOpacity;
+
+        // Sync time input
+        const originalTime = document.getElementById("time-input").value;
+        document.getElementById("sidebar-time-input").value = originalTime;
+
+        // Sync toggle button states
+        const syncToggleButton = (sidebarId, originalStateId) => {
+          const originalState = document.getElementById(originalStateId).textContent;
+          const sidebarBtn = document.getElementById(sidebarId);
+          sidebarBtn.textContent = originalState;
+          sidebarBtn.className = originalState === 'On' ? 
+            'modern-btn modern-btn-secondary toggle-btn active' : 
+            'modern-btn modern-btn-secondary toggle-btn inactive';
+        };
+
+        syncToggleButton('sidebar-toggle-polygons', 'polygon-visibility-value');
+        syncToggleButton('sidebar-toggle-markers', 'marker-visibility-value');
+        syncToggleButton('sidebar-toggle-3d-models', '3d-model-visibility-value');
+        syncToggleButton('sidebar-toggle-updates', 'updates-value');
+      }
+
+      // Initialize main menu page as visible
+      document.addEventListener('DOMContentLoaded', function() {
+        navigateToPage('main-menu-page');
       });
 
       document.getElementById("toggle-your-fov-btn").addEventListener("click", function (event) {
@@ -4361,11 +4543,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         document.getElementById("rotation-controls").style.display = "block";
       });
 
-      document.getElementById("toggle-your-fov-btn-btn").addEventListener("click", (event) => {
-        event.stopPropagation();
-        CloseALL();
-        document.getElementById("rotation-controls").style.display = "block";
-      });
+      // Removed toggle-your-fov-btn-btn event listener - button no longer exists
 
       document.getElementById("change-model-settings").addEventListener("click", (event) => {
         event.stopPropagation();
@@ -4556,12 +4734,7 @@ text-decoration: none;">${username}</a>` : `<span style="color: ${usernameTopicC
         document.getElementById("show-options-from-topic-chat").style.display = "block";
       });
 
-      document.getElementById("toggle-toolbar-btn-btn").addEventListener("click", (event) => {
-        event.stopPropagation();
-        CloseALL();
-        document.getElementById("toolbar").style.display = "block";
-        removeUfoModel();
-      });
+      // Removed toggle-toolbar-btn-btn event listener - button no longer exists
 
       document.getElementById("toggle-encrypted-chat-btn").addEventListener("click", (event) => {
         event.stopPropagation();
